@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from './ui/button';
 import { SignOutButton, SignInButton, SignedIn, SignedOut, useClerk, UserButton } from "@clerk/clerk-react";
 import { useNavigate } from 'react-router-dom';
+import Auth from './Auth';
 
 export default function MainNav() {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function MainNav() {
                 <UserButton/>
                 {/* <SignOutButton signOutCallback={handleSignOut} /> */}
             </SignedIn>
-          
+<Auth></Auth>          
         </Button>
     );
 }

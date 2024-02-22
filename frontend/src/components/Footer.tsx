@@ -9,6 +9,7 @@ export default function Footer() {
             <span> Privacy Policy</span>
             <span> Terms of service </span>
         </span>
+
     </div>
   )
 }
