@@ -4,16 +4,28 @@ import './index.css'
 import { BrowserRouter as Router } from 'react-router-dom'
 import AppRoutes from './AppRoutes'
 import { ClerkProvider } from '@clerk/clerk-react'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+
+})
+
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 
- const customTheme = {
+const customTheme = {
   colors: {
     primary: '#FDBA74',
     secondary: '#ffff',
-   
-  }}
+
+  }
+}
 if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key")
 }
@@ -21,10 +33,12 @@ if (!PUBLISHABLE_KEY) {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-  <Router>
-  <ClerkProvider publishableKey={PUBLISHABLE_KEY} >
-     <AppRoutes></AppRoutes>
-    </ClerkProvider>   
-  </Router>
+    <Router>
+      <QueryClientProvider client={queryClient}>
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY} >
+          <AppRoutes></AppRoutes>
+        </ClerkProvider>
+      </QueryClientProvider>
+    </Router>
   </React.StrictMode>,
 )
