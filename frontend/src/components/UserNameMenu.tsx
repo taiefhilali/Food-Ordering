@@ -14,8 +14,8 @@ export default function UserNameMenu() {
   return (
     <DropdownMenu>
         <DropdownMenuTrigger className='flex items-center px-3 font-bold hover:text-orange-400 gap-2'>
-            <CircleUserRound className='text-orange-500'>
-              <h1> {user?.firstName}</h1> 
+            <CircleUserRound className='text-white-500'>
+             <h1> {user?.firstName}</h1> 
             </CircleUserRound>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
