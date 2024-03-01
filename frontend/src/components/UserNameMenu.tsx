@@ -27,6 +27,14 @@ export default function UserNameMenu() {
             <DropdownMenuItem>
                 <Button className='flex flex-1 font-bold bg-orange-500'> LogOut</Button>
             </DropdownMenuItem>
+            <DropdownMenuItem>
+          <Link
+            to="/manage-restaurant"
+            className="font-bold hover:text-orange-500"
+          >
+            Manage Restaurant
+          </Link>
+        </DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
   )

@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer"
 import MyRestaurantController from "../controllers/MyRestaurantController";
-
+import {validateMyRestaurantRequest} from "../middleware/validation"
 
 const router=express.Router();
 const storage=multer.memoryStorage();
@@ -14,6 +14,6 @@ const upload=multer({
 
 
 // /api/my/restaurant
-router.post("/", upload.single("imageFile"),MyRestaurantController.createMyRestaurant);
+router.post("/",upload.single("imageFile"), validateMyRestaurantRequest,MyRestaurantController.createMyRestaurant);
 
 export default router;

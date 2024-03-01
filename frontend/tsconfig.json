@@ -3,6 +3,8 @@
 
     "baseUrl": ".",
     "paths": {
+      "zod": ["node_modules/zod"],
+      "react-hook-form": ["node_modules/react-hook-form"],
       "@/*": [
         "./src/*"
       ]},
