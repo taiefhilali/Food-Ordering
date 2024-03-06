@@ -1,6 +1,7 @@
 // Import necessary dependencies and components
 
 import { useCreateMyRestaurant, useGetMyRestaurant, useUpdateRestaurant } from "@/api/MyRestaurantApi";
+import Sidebar from "@/components/Sidebar ";
 import ManageRestaurantForm from "@/forms/manage-restaurant-form/ManageRestaurantForm";
 
 export default function ManageRestaurantPage() {
@@ -15,8 +16,9 @@ export default function ManageRestaurantPage() {
   //   // You can make an API request, update the state, or perform any necessary actions.
   // };
 
-  return (
-    <ManageRestaurantForm restaurant={restaurant}
-      onSave={isEditing? updateRestaurant:createRestaurant} isLoading={isCreateLoading || isUpdateloading} />
-  );
+  return (<>  
+  <ManageRestaurantForm restaurant={restaurant}
+    onSave={isEditing? updateRestaurant:createRestaurant} isLoading={isCreateLoading || isUpdateloading} />
+</>);
+  
 }
