@@ -1,11 +1,11 @@
 import React from 'react'
-import { DropdownMenu, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Circle, CircleUserRound, User } from 'lucide-react'
 import { useUser } from '@clerk/clerk-react';
 import { DropdownMenuContent, DropdownMenuItem } from '@radix-ui/react-dropdown-menu';
 import { Link } from 'react-router-dom';
-import { Separator } from './ui/separator';
-import { Button } from './ui/button';
+import { Separator } from '../ui/separator';
+import { Button } from '../ui/button';
 
 export default function UserNameMenu() {
     const { user} = useUser();

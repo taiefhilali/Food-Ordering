@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSession, useUser } from '@clerk/clerk-react';
+import ForgotPasswordPage from '../forgotPassword';
 
 function Auth() {
   const { session } = useSession();
@@ -83,7 +84,9 @@ function Auth() {
   }
 
   // If no user is available, render a loading or login message
-  return<> </>
+  return<>       
+  </>
+  
 }
 
 export default Auth;
