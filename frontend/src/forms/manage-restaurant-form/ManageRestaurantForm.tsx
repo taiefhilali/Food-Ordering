@@ -59,10 +59,6 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     if (!restaurant) {
       return;
     }
-
-    // price lowest domination of 100 = 100pence == 1GBP
-  
-
     const menuItemsFormatted = restaurant.menuItems.map((item) => ({
       ...item,
       price: parseInt((item.price / 100).toFixed(2)),

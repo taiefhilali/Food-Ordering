@@ -1,11 +1,14 @@
 // Import necessary dependencies and components
 
-import { useCreateMyRestaurant } from "@/api/MyRestaurantApi";
+import { useCreateMyRestaurant, useGetMyRestaurant, useUpdateRestaurant } from "@/api/MyRestaurantApi";
 import ManageRestaurantForm from "@/forms/manage-restaurant-form/ManageRestaurantForm";
 
 export default function ManageRestaurantPage() {
-  const {createRestaurant,isLoading}=useCreateMyRestaurant();
-  
+  const { createRestaurant, isLoading: isCreateLoading } = useCreateMyRestaurant();
+  const { restaurant } = useGetMyRestaurant();
+  const { updateRestaurant, isLoading: isUpdateloading } = useUpdateRestaurant();
+  const isEditing = !!restaurant;
+
   // const handleSave = (restaurantFormData: FormData) => {
   //   // Implement your logic here to handle the form data submission
   //   console.log('Form Data:', restaurantFormData);
@@ -13,6 +16,7 @@ export default function ManageRestaurantPage() {
   // };
 
   return (
-    <ManageRestaurantForm onSave={createRestaurant} isLoading={isLoading} />
+    <ManageRestaurantForm restaurant={restaurant}
+      onSave={isEditing? updateRestaurant:createRestaurant} isLoading={isCreateLoading || isUpdateloading} />
   );
 }

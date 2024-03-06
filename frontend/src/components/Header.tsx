@@ -27,7 +27,7 @@ const Header = () => {
 
         {/* Navigation Menu (visible on larger screens) */}
         <nav className="hidden md:flex space-x-4">
-          <Link to="/" className="text-white hover:text-gray-300 transition duration-300">
+          {/* <Link to="/" className="text-white hover:text-gray-300 transition duration-300">
             Home
           </Link>
           <Link to="/about" className="text-white hover:text-gray-300 transition duration-300">
@@ -35,7 +35,7 @@ const Header = () => {
           </Link>
           <Link to="/contact" className="text-white hover:text-gray-300 transition duration-300">
             Contact
-          </Link>
+          </Link> */}
 
           <div className='md:hidden'><MobileNav /></div>
           <div className='hidden md:block'><MainNav /></div>
