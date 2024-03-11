@@ -6,7 +6,7 @@ import myUserRoute from "./routes/MyUserRoute"
 import {v2 as cloudinary} from "cloudinary";
 import myRestaurantRoute from"./routes/MyRestaurantRoute";
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(()=> console.log("CONNECTED TO DB!!"));//casting 
-
+import RestaurantRoute from "./routes/RestaurantRoute";
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -23,6 +23,7 @@ app.use(cors());
 
 app.use("/api/my/user",myUserRoute);
 app.use("/api/my/restaurant",myRestaurantRoute);
+app.use("/api/restaurant",RestaurantRoute);
 
 
 
