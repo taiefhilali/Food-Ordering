@@ -3,8 +3,10 @@
 import { useCreateMyRestaurant, useGetMyRestaurant, useUpdateRestaurant } from "@/api/MyRestaurantApi";
 import Sidebar from "@/components/Sidebar ";
 import ManageRestaurantForm from "@/forms/manage-restaurant-form/ManageRestaurantForm";
+import DefaultLayout from "@/layouts/DefaultLayout";
 
 export default function ManageRestaurantPage() {
+  
   const { createRestaurant, isLoading: isCreateLoading } = useCreateMyRestaurant();
   const { restaurant } = useGetMyRestaurant();
   const { updateRestaurant, isLoading: isUpdateloading } = useUpdateRestaurant();
@@ -16,9 +18,10 @@ export default function ManageRestaurantPage() {
   //   // You can make an API request, update the state, or perform any necessary actions.
   // };
 
-  return (<>  
+  return (  
+  <DefaultLayout>
   <ManageRestaurantForm restaurant={restaurant}
-    onSave={isEditing? updateRestaurant:createRestaurant} isLoading={isCreateLoading || isUpdateloading} />
-</>);
+    onSave={isEditing? updateRestaurant:createRestaurant} isLoading={isCreateLoading || isUpdateloading} /></DefaultLayout>
+);
   
 }

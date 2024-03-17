@@ -21,6 +21,7 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
+import Header from "@/components/Header";
 
 function Copyright(props: any) {
   return (
@@ -112,15 +113,16 @@ export default function Dashboard() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: 'flex' }}>
-        <CssBaseline />
-        {/* <AppBar position="absolute" open={open}>
-          <Toolbar
+      <Box  sx={{ display: 'flex' }} >
+        <CssBaseline  />
+        { <AppBar position="absolute"  open={open} >
+          <Toolbar 
             sx={{
-              pr: '24px', // keep right padding when drawer closed
+              pr: '24px',
+               // keep right padding when drawer closed
             }}
           >
-            <IconButton
+            <IconButton 
               edge="start"
               color="inherit"
               aria-label="open drawer"
@@ -130,8 +132,10 @@ export default function Dashboard() {
                 ...(open && { display: 'none' }),
               }}
             >
-              <MenuIcon />
+                
+              <MenuIcon   />
             </IconButton>
+            
             <Typography
               component="h1"
               variant="h6"
@@ -147,7 +151,7 @@ export default function Dashboard() {
               </Badge>
             </IconButton>
           </Toolbar>
-        </AppBar> */}
+        </AppBar> }
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
@@ -183,7 +187,7 @@ export default function Dashboard() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
+              <Grid  item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
                     p: 2,

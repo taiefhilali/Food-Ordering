@@ -5,7 +5,10 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import AppRoutes from './AppRoutes'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ClerkProvider, useUser, SignedOut } from '@clerk/clerk-react';
-
+import './css/style.css';
+import './css/satoshi.css';
+import 'jsvectormap/dist/css/jsvectormap.css';
+import 'flatpickr/dist/flatpickr.min.css';
 
 const queryClient = new QueryClient({
   
