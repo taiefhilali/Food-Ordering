@@ -2,7 +2,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './layouts/layout'
 import HomePage from './pages/HomePage'
-import ManageRestaurantPage from './pages/ManageRestaurantPage'
+import ManageRestaurantPage from './pages/Restaurant/ManageRestaurantPage'
 import ForgotPasswordPage from './components/Authentication/forgotPassword'
 import Dashboard from './components/Dashboard'
 import SidebarLayout from './layouts/SidebarLayout'
@@ -19,6 +19,7 @@ import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
+import Displayrestaurants from './pages/Restaurant/Displayrestaurants'
 
 const AppRoutes = () => {
   return (
@@ -43,12 +44,7 @@ const AppRoutes = () => {
          
         }
       />
-      <Route
-        path="/dashboards"
-        element={
-          <SidebarLayout />
-        }
-      />
+     
       <Route
         path="/forgot-password"
         element={
@@ -58,7 +54,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/dash"
+        path="/dashboards"
 
         element={
           <>
@@ -86,11 +82,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/forms/form-elements"
+        path="/display-restaurant-details"
         element={
           <>
-            <PageTitle title="Form Elements | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-            <FormElements />
+            <Displayrestaurants />
           </>
         }
       />
