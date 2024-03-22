@@ -1,24 +1,41 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios'; // Make sure to have axios installed
 import { Restaurant } from '@/types';
+import { useClerk } from '@clerk/clerk-react';
 
 const displayrestaurants = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const { user } = useClerk();
 
+  const getUserIdFromSession = () => {
+    // Implement this function to retrieve the user ID from the session
+    // For example, if you are using localStorage:
+    return localStorage.getItem("userInfo");
+  };
   useEffect(() => {
     const fetchRestaurantData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URLVITE_API_BASE_URL}/api/my/restaurant`);
-        setRestaurants(response.data);
-        console.log(response.data);
+        if (!user) {
+          console.error('User not authenticated');
+          return;
+        }
 
+        const userId = user.id;
+        console.log(userId)
+
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URLVITE_API_BASE_URL}/api/my/restaurant`, {
+          params: { userId }
+        });
+
+        setRestaurants(response.data);
       } catch (error) {
         console.error('Error fetching restaurant data:', error);
       }
     };
 
     fetchRestaurantData();
-  }, []);
+  }, [user]);
+
 
  
 
