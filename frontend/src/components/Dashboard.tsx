@@ -22,6 +22,7 @@ import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
 import Header from "@/components/Header";
+import Auth from './Authentication/Auth';
 
 function Copyright(props: any) {
   return (
@@ -223,6 +224,8 @@ export default function Dashboard() {
           </Container>
         </Box>
       </Box>
+      <Auth></Auth>  
+
     </ThemeProvider>
   );
 }

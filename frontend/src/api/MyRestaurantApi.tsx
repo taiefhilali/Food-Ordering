@@ -3,36 +3,42 @@ import { useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { Restaurant } from "@/types";
+import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URLVITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.API_BASE_URL;
 
-
+const getUserIdFromSession = () => {
+  // Implement this function to retrieve the user ID from the session
+  // For example, if you are using localStorage:
+  const userInfo = localStorage.getItem("userInfo");
+  if (userInfo) {
+    const userObj = JSON.parse(userInfo);
+    return userObj._id;
+  }
+  return null;
+};
 
 export const useGetMyRestaurant = () => {
-  const { session } = useClerk();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!session) {
+        const userId = getUserIdFromSession();
+
+        if (!userId) {
           console.error("User is not authenticated");
           return;
         }
 
-        const accessToken = session.getToken;
-
-        const response = await fetch(`${API_BASE_URL}/api/my/restaurant`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+        const response = await axios.get(`${API_BASE_URL}/api/my/restaurant`, {
+          params: { userId } // Corrected to pass userId as an object
         });
 
-        if (!response.ok) {
+        if (!response.data) {
           throw new Error("Failed to get restaurant");
         }
 
-        const restaurant = await response.json();
+        const restaurant = response.data;
+        
         console.log("Restaurant data:", restaurant);
       } catch (error) {
         console.error("Error fetching restaurant data:", error);
@@ -40,12 +46,11 @@ export const useGetMyRestaurant = () => {
     };
 
     fetchData();
-  }, [session]);
+  }, []);
 
   return {};
-
-  // const {data: restaurant, isLoading }=useQuery ("fetchMyRestaurant",useGetMyRestaurant)
 };
+
 
 export const useCreateMyRestaurant = () => {
   const { session } = useClerk();

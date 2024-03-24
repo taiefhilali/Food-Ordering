@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useSession, useUser } from '@clerk/clerk-react';
-import ForgotPasswordPage from '../forgotPassword';
 
 function Auth() {
   const { session } = useSession();
   const { user } = useUser();
 
   if (session) {
+
+    
     const userId = session.user.id;
     console.log('User ID!!:', userId);
 
-    // Now, you can send this userId to your Node.js backend
-    // to create a restaurant associated with this user.
+    
   }
 
   useEffect(() => {
