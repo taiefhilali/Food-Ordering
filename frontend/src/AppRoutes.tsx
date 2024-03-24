@@ -20,6 +20,7 @@ import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import Displayrestaurants from './pages/Restaurant/Displayrestaurants'
+import DetailsSection from './forms/manage-restaurant-form/DetailsSection'
 
 const AppRoutes = () => {
   return (
@@ -86,6 +87,14 @@ const AppRoutes = () => {
         element={
           <>
             <Displayrestaurants />
+          </>
+        }
+      />
+      <Route
+        path="/details"
+        element={
+          <>
+            <DetailsSection />
           </>
         }
       />

@@ -34,7 +34,7 @@
 
 //   useEffect(() => {
 //     const userId = getUserIdFromSession();
-   
+
 
 //     fetchRestaurants(userId)
 //     .then((data) => {
@@ -97,31 +97,31 @@
 // //       const fetchData = async () => {
 // //         try {
 // //           const userId = getUserIdFromSession();
-  
+
 // //           if (!userId) {
 // //             console.error("User is not authenticated");
 // //             return;
 // //           }
-  
+
 // //           const response = await axios.get(`${API_BASE_URL}/api/my/restaurant`, {
 // //             params: { userId } // Corrected to pass userId as an object
 // //           });
-  
+
 // //           if (!response.data) {
 // //             throw new Error("Failed to get restaurant");
 // //           }
-  
+
 // //           const restaurants = response.data;
-          
+
 // //           console.log("Restaurant data:", restaurants);
 // //         } catch (error) {
 // //           console.error("Error fetching restaurant data:", error);
 // //         }
 // //       };
-  
+
 // //       fetchData();
 // //     }, []);
-  
+
 //   // useEffect(() => {
 //   //   const fetchRestaurants = async () => {
 //   //     try {
@@ -315,8 +315,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Restaurant } from '@/types';
+import DefaultLayout from '@/layouts/DefaultLayout';
 
- const BASE_URL = import.meta.env.BASE_URL;
+const BASE_URL = import.meta.env.BASE_URL;
 
 // interface Restaurant {
 //   _id: string;
@@ -335,61 +336,111 @@ const RestaurantList = () => {
             userId: '65dc946b32f786ee4a943c23' // Replace with actual user ID
           }
         });
-  
-    setRestaurants(response.data);
-    console.log(response.data)
-  } catch (error) {
-    console.error('Error fetching restaurants:', error);
+
+        setRestaurants(response.data);
+        console.log(response.data)
+      } catch (error) {
+        console.error('Error fetching restaurants:', error);
+      }
+    };
+
+    fetchRestaurants();
+  }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
-};
 
-fetchRestaurants();
-}, []);
+  return (
 
-if (error) {
-return <div>Error: {error}</div>;
+
+
+    <DefaultLayout>
+
+
+
+
+
+
+    <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+        Restaurant Details
+      </h4>
+
+      <div className="flex flex-col">
+        <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
+          <div className="p-2.5 xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Source
+            </h5>
+          </div>
+          <div className="p-2.5 text-center xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Visitors
+            </h5>
+          </div>
+          <div className="p-2.5 text-center xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Revenues
+            </h5>
+          </div>
+          <div className="hidden p-2.5 text-center sm:block xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Sales
+            </h5>
+          </div>
+          <div className="hidden p-2.5 text-center sm:block xl:p-5">
+            <h5 className="text-sm font-medium uppercase xsm:text-base">
+              Conversion
+            </h5>
+          </div>
+        </div>
+
+        {restaurants.map((restaurant, key) => (
+          <div
+            className={`grid grid-cols-3 sm:grid-cols-5 ${key === restaurants.length - 1
+                ? ''
+                : 'border-b border-stroke dark:border-strokedark'
+              }`}
+            key={key}
+          >
+            <div className="flex items-center gap-3 p-2.5 xl:p-5">
+              <div className="flex-shrink-0">
+                <img width ="55px" src={restaurant.imageUrl} alt="Brand" />
+              </div>
+              <p className="hidden text-black dark:text-white sm:block">
+                {restaurant.restaurantName}
+              </p>
+            </div>
+
+            <div className="flex items-center justify-center p-2.5 xl:p-5">
+              <p className="text-black dark:text-white">{restaurant.user}K</p>
+            </div>
+
+            <div className="flex items-center justify-center p-2.5 xl:p-5">
+              <p className="text-meta-3">${restaurant.estimatedDeliveryTime}</p>
+            </div>
+
+            <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+              <p className="text-black dark:text-white">{restaurant.cuisines}</p>
+            </div>
+
+            <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+              <p className="text-meta-5">{restaurant.lastUpdated}%</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div></DefaultLayout>
+  );
+
+
+
 }
 
-return (
-      <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
-          Restaurant Details
-        </h4>
-  
-        <div className="flex flex-col">
-          <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
-            {/* Header content */}
-          </div>
-  
-          {restaurants? (
-            <div className="grid grid-cols-3 sm:grid-cols-5">
-              {restaurants.map((restaurant, key) => (
-                <div
-                  className={`grid grid-cols-3 sm:grid-cols-5 ${key === restaurants.length - 1
-                      ? ''
-                      : 'border-b border-stroke dark:border-strokedark'
-                    }`}
-                  key={key}
-                >
-                  <div className="flex items-center gap-3 p-2.5 xl:p-5">
-                    {/* Render restaurant logo */}
-                    <div className="flex-shrink-0">
-                      <img  width=" 55px" src={restaurant.imageUrl} alt="Restaurant" />
-                    </div>
-                    {/* Render restaurant name */}
-                    <p className="hidden text-black dark:text-white sm:block">
-                      {restaurant.restaurantName}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div>No restaurants found</div>
-          )}
-        </div>
-      </div>
-    );
-  };
+
+
+
+
 
 export default RestaurantList;
