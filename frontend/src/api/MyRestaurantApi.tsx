@@ -65,7 +65,7 @@ export const useCreateMyRestaurant = () => {
 
       const accessToken = session.getToken;
 
-      const response = await fetch(`${API_BASE_URL}/api/my/restaurant`, {
+      const response = await fetch(`http://localhost:7000/api/my/restaurant`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -115,7 +115,7 @@ export const useUpdateRestaurant=()=>{
 
       const accessToken = session.getToken;
 
-      const response = await fetch(`${API_BASE_URL}/api/my/restaurant`, {
+      const response = await fetch(`http://localhost:7000/api/my/restaurant`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${accessToken}`,

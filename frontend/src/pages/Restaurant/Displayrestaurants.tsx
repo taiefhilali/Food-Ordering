@@ -319,21 +319,28 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 
 const BASE_URL = import.meta.env.BASE_URL;
 
-// interface Restaurant {
-//   _id: string;
-//   restaurantName: string;
-//   // Other properties from your restaurant model
-// }
+const getUserIdFromSession = () => {
+  // Implement this function to retrieve the user ID from the session
+  // For example, if you are using localStorage:
+  const userInfo = localStorage.getItem("userInfo");
+  if (userInfo) {
+    const userObj = JSON.parse(userInfo);
+    return userObj._id;
+  }
+  return null;
+};
+
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchRestaurants = async () => {
+      const userid=getUserIdFromSession();
       try {
         const response = await axios.get(`http://localhost:7000/api/my/restaurant`, {
           params: {
-            userId: '65dc946b32f786ee4a943c23' // Replace with actual user ID
+            userId: userid // Replace with actual user ID
           }
         });
 
