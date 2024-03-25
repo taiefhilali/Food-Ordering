@@ -69,7 +69,7 @@ const updateMyRestaurant = async (req: Request, res: Response) => {
   const { userId } = req.body;
 
   try {
-    const restaurant = await Restaurant.findOne({
+    const restaurant = await Restaurant.findOneAndUpdate({
       user: userId
 
     });

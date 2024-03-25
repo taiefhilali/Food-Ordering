@@ -316,8 +316,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Restaurant } from '@/types';
 import DefaultLayout from '@/layouts/DefaultLayout';
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 const BASE_URL = import.meta.env.BASE_URL;
+
 
 const getUserIdFromSession = () => {
   // Implement this function to retrieve the user ID from the session
@@ -378,27 +381,24 @@ const RestaurantList = () => {
         <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
           <div className="p-2.5 xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Source
+              Name
             </h5>
           </div>
-          <div className="p-2.5 text-center xl:p-5">
+         
+          
+          <div className="hidden p-2.5 text-center sm:block xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Visitors
-            </h5>
-          </div>
-          <div className="p-2.5 text-center xl:p-5">
-            <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Revenues
+              Cuisines
             </h5>
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Sales
+              LastUpdated
             </h5>
           </div>
           <div className="hidden p-2.5 text-center sm:block xl:p-5">
             <h5 className="text-sm font-medium uppercase xsm:text-base">
-              Conversion
+              ACTIONS
             </h5>
           </div>
         </div>
@@ -420,13 +420,9 @@ const RestaurantList = () => {
               </p>
             </div>
 
-            <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-black dark:text-white">{restaurant.user}K</p>
-            </div>
+            
 
-            <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-meta-3">${restaurant.estimatedDeliveryTime}</p>
-            </div>
+        
 
             <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
               <p className="text-black dark:text-white">{restaurant.cuisines}</p>
@@ -434,6 +430,14 @@ const RestaurantList = () => {
 
             <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
               <p className="text-meta-5">{restaurant.lastUpdated}%</p>
+            </div>
+            <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+            <Link
+                to={`/manage-restaurant/${restaurant._id}`}
+
+              >
+                <Button>Update</Button> {/* Button to redirect to form */}
+              </Link>
             </div>
           </div>
         ))}
