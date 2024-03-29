@@ -29,7 +29,7 @@ export const useGetMyRestaurant = () => {
           return;
         }
 
-        const response = await axios.get(`${API_BASE_URL}/api/my/restaurant`, {
+        const response = await axios.get(`http://localhost:7000/api/my/restaurant`, {
           params: { userId } // Corrected to pass userId as an object
         });
 
