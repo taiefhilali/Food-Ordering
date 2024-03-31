@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Restaurant } from "@/types";
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.API_BASE_URL;
+const API_BASE_URL = import.meta.env.BASE_URL;
 
 const getUserIdFromSession = () => {
   // Implement this function to retrieve the user ID from the session
@@ -22,15 +22,15 @@ export const useGetMyRestaurant = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userId = getUserIdFromSession();
+        // const userId = getUserIdFromSession();
 
-        if (!userId) {
-          console.error("User is not authenticated");
-          return;
-        }
+        // if (!userId) {
+        //   console.error("User is not authenticated");
+        //   return;
+        // }
 
         const response = await axios.get(`http://localhost:7000/api/my/restaurant`, {
-          params: { userId } // Corrected to pass userId as an object
+          params: { userId:"6555df721203964eb381763a" } // Corrected to pass userId as an object
         });
 
         if (!response.data) {
