@@ -16,7 +16,18 @@
             throw new Error('Function not implemented.')
         }
     
+<<<<<<< HEAD
         
+=======
+        useEffect(() => {
+            // Check if the user is signed in when the component mounts
+            if (clerk.session) {
+                // If a session exists, navigate to /dashboard
+                navigate('/dashboards');
+            }
+        }, [clerk, navigate]);
+    
+>>>>>>> 2873ed88deadcb02478cd3e21ddc449eeb3b584b
         return (
             <Sheet>
                 <SheetTrigger>
@@ -33,7 +44,11 @@
                                     <SignInButton />
                                 </SignedOut>
                                 <SignedIn>
+<<<<<<< HEAD
                                     <SignOutButton  />
+=======
+                                    <SignOutButton signOutCallback={handleSignOut} />
+>>>>>>> 2873ed88deadcb02478cd3e21ddc449eeb3b584b
                                 </SignedIn>
                             </Button>
                         </SheetDescription>
