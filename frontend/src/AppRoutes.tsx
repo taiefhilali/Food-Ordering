@@ -21,7 +21,7 @@ import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import Displayrestaurants from './pages/Restaurant/Displayrestaurants'
 import DetailsSection from './forms/manage-restaurant-form/DetailsSection'
-import ManageRestaurantUpdForm from './forms/manage-restaurant-form/ManageRestaurantUpdatedForm'
+import ManageRestaurantUpdatedForm from './forms/manage-restaurant-form/ManageRestaurantUpdatedForm'
 
 const AppRoutes = () => {
   return (
@@ -46,9 +46,7 @@ const AppRoutes = () => {
 
         }
       />
-      <Route path="/manage-restaurant/:restaurantId">
-        <ManageRestaurantUpdForm />
-      </Route>
+     
       <Route
         path="/forgot-password"
         element={

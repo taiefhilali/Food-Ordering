@@ -5,17 +5,27 @@ import { z } from "zod";
 import DetailsSection from "./DetailsSection";
 import { Separator } from "@/components/ui/separator";
 import CuisinesSection from "./CuisinesSection";
+import MenuSection from "./MenuSection";
 import ImageSection from "./ImageSection";
 import LoadingButton from "@/components/LoadingButton";
 import { Button } from "@/components/ui/button";
 import { Restaurant } from "@/types";
 import { useEffect } from "react";
-import MenuSection from "./MenuSection";
 
 const formSchema = z
   .object({
     restaurantName: z.string({
       required_error: "restuarant name is required",
+    }),
+    city: z.string({
+      required_error: "city is required",
+    }),
+    country: z.string({
+      required_error: "country is required",
+    }),
+    deliveryPrice: z.coerce.number({
+      required_error: "delivery price is required",
+      invalid_type_error: "must be a valid number",
     }),
     estimatedDeliveryTime: z.coerce.number({
       required_error: "estimated delivery time is required",
@@ -59,6 +69,9 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     if (!restaurant) {
       return;
     }
+
+
+
     const menuItemsFormatted = restaurant.menuItems.map((item) => ({
       ...item,
       price: parseInt((item.price / 100).toFixed(2)),
@@ -76,8 +89,13 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     const formData = new FormData();
 
     formData.append("restaurantName", formDataJson.restaurantName);
+    formData.append("city", formDataJson.city);
+    formData.append("country", formDataJson.country);
 
-   
+    formData.append(
+      "deliveryPrice",
+      (formDataJson.deliveryPrice * 100).toString()
+    );
     formData.append(
       "estimatedDeliveryTime",
       formDataJson.estimatedDeliveryTime.toString()
@@ -113,7 +131,7 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
         <MenuSection />
         <Separator />
         <ImageSection />
-        {isLoading ? <LoadingButton /> : <Button className="bg-yellow-500 max-h-fit" type="submit">Submit</Button>}
+        {isLoading ? <LoadingButton /> : <Button type="submit">Submit</Button>}
       </form>
     </Form>
   );
