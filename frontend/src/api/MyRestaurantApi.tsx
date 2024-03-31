@@ -165,12 +165,13 @@ export const useUpdateRestaurant=()=>{
         },
         body: restaurantFormData,
       });
-
-      if (!response.ok) {
+console.log( response)
+      if (!response.ok) { 
         throw new Error("Failed to update restaurant");
       }
 
       return response.json();
+     
     } catch (error) {
       console.error("Error update restaurant:", error);
       throw error;
