@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
   category: { type: String, enum: ['main', 'side', 'beverage', 'entry'], required: true },
   restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
   quantity: { type: Number, required: true },
-  imageUrl: { type: String } // Add image URL field
+  imageUrl:{type:String,required:true},
 
 
 });

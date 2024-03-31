@@ -23,7 +23,7 @@ exports.createMyProduct = async (req: Request, res: Response) => {
       
       const imageUrl = await uploadimage(req.file as Express.Multer.File);
       const product = new Product(req.body);
-      Product.imageUrl = imageUrl;
+      product.imageUrl = imageUrl;
   
       // Save the restaurant to the database
       await product.save();
