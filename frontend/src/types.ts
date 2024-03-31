@@ -11,7 +11,6 @@ export type MenuItem = {
   _id: string;
   name: string;
   price: number;
-  quantity:number;
 };
 
 export type Restaurant = {

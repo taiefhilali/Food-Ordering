@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { Restaurant } from "@/types";
 import axios from "axios";
+import { useUser } from '@clerk/clerk-react';
 
 const API_BASE_URL = import.meta.env.BASE_URL;
 
@@ -17,40 +18,82 @@ const getUserIdFromSession = () => {
   }
   return null;
 };
+// export const useGetMyRestaurant = () => {
+//   const { session } = useClerk();
+
+//   const getMyRestaurantRequest = async (): Promise<Restaurant> => {
+//      if (!session) {
+//         throw new Error("User is not authenticated");
+//       }
+//     const accessToken = session.getToken;
+//     console.log(accessToken)
+//     if (!accessToken) {
+//       throw new Error("User email not available");
+//     }
+
+//     const response = await fetch(`http://localhost:7000/api/my/restaurant`, {
+//       method: "GET",
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
+
+//     if (!response.ok) {
+//       throw new Error("Failed to get restaurant");
+//     }
+//     return response.json();
+//   };
+
+//   const { data: restaurant, isLoading } = useQuery(
+//     "fetchMyRestaurant",
+//     getMyRestaurantRequest
+//   );
+
+//   return { restaurant, isLoading };
+// };
+
+
+
+
+
+
+
 
 export const useGetMyRestaurant = () => {
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const userId = getUserIdFromSession();
+  const fetchData = async () => {
+    try {
+      const userId = getUserIdFromSession();
 
-        // if (!userId) {
-        //   console.error("User is not authenticated");
-        //   return;
-        // }
-
-        const response = await axios.get(`http://localhost:7000/api/my/restaurant`, {
-          params: { userId:"6555df721203964eb381763a" } // Corrected to pass userId as an object
-        });
-
-        if (!response.data) {
-          throw new Error("Failed to get restaurant");
-        }
-
-        const restaurant = response.data;
-        
-        console.log("Restaurant data:", restaurant);
-      } catch (error) {
-        console.error("Error fetching restaurant data:", error);
+      if (!userId) {
+        console.error("User is not authenticated");
+        return;
       }
-    };
 
-    fetchData();
-  }, []);
+      const response = await axios.get('http://localhost:7000/api/my/restaurant', {
+        params: { userId }
+      });
 
-  return {};
+      if (!response.data) {
+        throw new Error("Failed to get restaurant");
+      }
+
+      const restaurant = response.data;
+
+      console.log("Restaurant data:", restaurant);
+      return restaurant; // Return the fetched restaurant data
+    } catch (error) {
+      console.error("Error fetching restaurant data:", error);
+      throw error; // Throw the error to be caught by useQuery
+    }
+  };
+
+  const { data: restaurant, isLoading } = useQuery(
+    "fetchMyRestaurant",
+    fetchData
+  );
+
+  return { restaurant, isLoading };
 };
-
 
 export const useCreateMyRestaurant = () => {
   const { session } = useClerk();

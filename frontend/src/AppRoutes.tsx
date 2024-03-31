@@ -21,7 +21,6 @@ import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import Displayrestaurants from './pages/Restaurant/Displayrestaurants'
 import DetailsSection from './forms/manage-restaurant-form/DetailsSection'
-import ManageRestaurantUpdatedForm from './forms/manage-restaurant-form/ManageRestaurantUpdatedForm'
 
 const AppRoutes = () => {
   return (

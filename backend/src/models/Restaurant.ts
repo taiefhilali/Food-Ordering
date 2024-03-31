@@ -5,8 +5,8 @@ import mongoose from "mongoose";
 const menuItemSchema= new mongoose.Schema({
     name:{type:String,required:true},
     price:{type:Number,required:true},
-    imageItem: { type: String }, // Image URL
-    quantity: { type: Number, required: true } // Quantity of the menu item
+    // imageItem: { type: String }, // Image URL
+    // quantity: { type: Number, required: true } // Quantity of the menu item
 });
 
 const restaurantSchema = new mongoose.Schema({

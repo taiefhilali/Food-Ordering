@@ -51,20 +51,7 @@ const MenuItemInput = ({ index, removeMenuItem }: Props) => {
           </FormItem>
         )}
       />
-      <FormField
-        control={control}
-        name={`menuItems.${index}.quantity`}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="flex items-center gap-1">
-              Quantity <FormMessage />
-            </FormLabel>
-            <FormControl>
-              <Input {...field} placeholder="1" className="bg-white" />
-            </FormControl>
-          </FormItem>
-        )}
-      />
+      
       <Button
         type="button"
         onClick={removeMenuItem}

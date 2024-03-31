@@ -3,7 +3,6 @@ export type Product = {
   name: string;
   category: string;
   price: number;
-  quantity:number;
   sold: number;
   profit: number;
 };
