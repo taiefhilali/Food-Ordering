@@ -64,30 +64,9 @@ export const useGetMyRestaurant = () => {
     try {
       const userId = getUserIdFromSession();
 
-<<<<<<< HEAD
       if (!userId) {
         console.error("User is not authenticated");
         return;
-=======
-        if (!userId) {
-          console.error("User is not authenticated");
-          return;
-        }
-
-        const response = await axios.get(`http://localhost:7000/api/my/restaurant`, {
-          params: { userId } // Corrected to pass userId as an object
-        });
-
-        if (!response.data) {
-          throw new Error("Failed to get restaurant");
-        }
-
-        const restaurant = response.data;
-        
-        console.log("Restaurant data:", restaurant);
-      } catch (error) {
-        console.error("Error fetching restaurant data:", error);
->>>>>>> 2873ed88deadcb02478cd3e21ddc449eeb3b584b
       }
 
       const response = await axios.get('http://localhost:7000/api/my/restaurant', {

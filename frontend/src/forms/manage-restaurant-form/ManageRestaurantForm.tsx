@@ -17,20 +17,6 @@ const formSchema = z
     restaurantName: z.string({
       required_error: "restuarant name is required",
     }),
-<<<<<<< HEAD
-
-=======
-    city: z.string({
-      required_error: "city is required",
-    }),
-    country: z.string({
-      required_error: "country is required",
-    }),
-    deliveryPrice: z.coerce.number({
-      required_error: "delivery price is required",
-      invalid_type_error: "must be a valid number",
-    }),
->>>>>>> 2873ed88deadcb02478cd3e21ddc449eeb3b584b
     estimatedDeliveryTime: z.coerce.number({
       required_error: "estimated delivery time is required",
       invalid_type_error: "must be a valid number",
@@ -73,13 +59,7 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     if (!restaurant || !restaurant.menuItems) {
       return;
     }
-<<<<<<< HEAD
   
-=======
-
-
-
->>>>>>> 2873ed88deadcb02478cd3e21ddc449eeb3b584b
     const menuItemsFormatted = restaurant.menuItems.map((item) => ({
       ...item,
       price: parseInt((item.price / 100).toFixed(2)),
@@ -97,18 +77,9 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     const formData = new FormData();
 
     formData.append("restaurantName", formDataJson.restaurantName);
-    formData.append("city", formDataJson.city);
-    formData.append("country", formDataJson.country);
-
-<<<<<<< HEAD
+   
 
 
-=======
-    formData.append(
-      "deliveryPrice",
-      (formDataJson.deliveryPrice * 100).toString()
-    );
->>>>>>> 2873ed88deadcb02478cd3e21ddc449eeb3b584b
     formData.append(
       "estimatedDeliveryTime",
       formDataJson.estimatedDeliveryTime.toString()
