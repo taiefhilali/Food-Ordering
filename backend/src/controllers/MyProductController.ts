@@ -17,23 +17,23 @@ exports.getAllProducts = async (req:Request, res:Response) => {
 };
 
 // Create a new product
-exports.createProduct = async (req:Request, res:Response) => {
-  const product = new Product({
-    name: req.body.name,
-    description: req.body.description,
-    price: req.body.price,
-    category: req.body.category,
-    restaurant: req.body.restaurant,
-    quantity: req.body.quantity
-  });
-
-  try {
-    const newProduct = await product.save();
-    res.status(201).json(newProduct);
-  } catch (error) {
-    res.status(400).json({ message: (error as Error).message });
-  }
-};
+exports.createMyProduct = async (req: Request, res: Response) => {
+    try {
+      
+      
+      const imageUrl = await uploadimage(req.file as Express.Multer.File);
+      const product = new Product(req.body);
+      Product.imageUrl = imageUrl;
+  
+      // Save the restaurant to the database
+      await product.save();
+  
+      res.status(201).json({ message: "product created successfully", product });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Something went wrong!" });
+    }
+  };
 
 // Get a product by ID
 exports.getProductById = async (req:Request, res:Response) => {
@@ -67,3 +67,10 @@ exports.deleteProduct = async (req:Request, res:Response) => {
     res.status(500).json({ message: (error as Error).message });
   }
 };
+const uploadimage = async (file: Express.Multer.File) => {
+    const image = file;
+    const base64Image = Buffer.from(image.buffer).toString("base64");
+    const dataURL = `data:${image.mimetype};base64,${base64Image}`;
+    const uploadResponse = await cloudinary.v2.uploader.upload(dataURL);
+    return uploadResponse.url;
+  }

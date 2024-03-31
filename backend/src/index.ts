@@ -25,7 +25,7 @@ app.use(cors());
 app.use("/api/my/user",myUserRoute);
 app.use("/api/my/restaurant",myRestaurantRoute);
 app.use("/api/restaurant",RestaurantRoute);
-app.use('/api/products', ProductRoutes);
+app.use('/api/my/products', ProductRoutes);
 
 
 
