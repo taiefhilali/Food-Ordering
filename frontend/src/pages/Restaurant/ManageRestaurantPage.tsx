@@ -10,7 +10,7 @@ export default function ManageRestaurantPage() {
   
   const { createRestaurant, isLoading: isCreateLoading } = useCreateMyRestaurant();
   const { restaurant } = useGetMyRestaurant();
-  const { updateRestaurant, isLoading: isUpdateloading } = useUpdateRestaurant();
+  // const { updateRestaurant, isLoading: isUpdateloading } = useUpdateRestaurant();
   const isEditing = !!restaurant;
 
   const handleSave = (restaurantFormData: FormData) => {

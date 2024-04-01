@@ -21,6 +21,7 @@ import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import Displayrestaurants from './pages/Restaurant/Displayrestaurants'
 import DetailsSection from './forms/manage-restaurant-form/DetailsSection'
+import DisplayProductsPage from './pages/Products/DisplayProducts'; // Import the DisplayProductsPage component
 
 const AppRoutes = () => {
   return (
@@ -45,7 +46,11 @@ const AppRoutes = () => {
 
         }
       />
-     
+      <Route
+        path="/display-products"
+        element={<DisplayProductsPage />} // Use DisplayProductsPage component as the element
+      />
+
       <Route
         path="/forgot-password"
         element={
