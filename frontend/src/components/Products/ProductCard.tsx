@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../../assets/css/ProductMenu.css'; // Import CSS file
 
 type Product = {
@@ -16,26 +16,20 @@ type ProductCardProps = {
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const handleCardClick = () => {
-    setIsExpanded(!isExpanded);
-  };
-
+  
   return (
-    <div className={`product-card ${isExpanded ? 'expanded' : ''}`} onClick={handleCardClick}>
-    <div className="image-container">
-      <img src={product.imageUrl} alt={product.name} className="product-image" />
+    <div className="box">
+      <div className="quantity-corner">{product.quantity}</div> {/* Quantity corner */}
+      <div className="box-img">
+        <img src={product.imageUrl} alt={product.name} />
+      </div>
+      <div className="product-info">
+        <h2 className="product-name">{product.name}</h2>
+        <h3 className="product-description">{product.description}</h3>
+        <span className="product-price">${product.price}</span>
+      </div>
+      <i className="bx bx-cart-alt"></i>
     </div>
-    <div className="details-container">
-      <h3 className="product-name">{product.name}</h3>
-      <p className="product-description">{product.description}</p>
-      <p className="product-price" style={{ color: 'green' }}>Price: ${product.price}</p>
-      <p className="product-category">Category: {product.category}</p>
-      <p className="product-quantity">Quantity: {product.quantity}</p>
-    </div>
-  </div>
-);
+  );
 };
-
 export default ProductCard;
