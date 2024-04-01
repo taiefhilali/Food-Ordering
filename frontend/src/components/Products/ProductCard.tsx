@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import '../../assets/css/ProductMenu.css'; // Import CSS file
 
 type Product = {
   _id: string;
@@ -7,7 +8,7 @@ type Product = {
   price: number;
   category: string;
   quantity: number;
-  imageUrl: string; // Add imageUrl field to the Product type
+  imageUrl: string;
 };
 
 type ProductCardProps = {
@@ -15,20 +16,26 @@ type ProductCardProps = {
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleCardClick = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
-    <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px', margin: '8px', width: '200px', height: '200px', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.3s', transformOrigin: 'center center', position: 'absolute', top: 0, left: 0 }}>
-        <img src={product.imageUrl} alt={product.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }} />
-      </div>
-      <div style={{ position: 'absolute', bottom: 0, left: 0, background: 'rgba(255, 255, 255, 0.8)', width: '100%', padding: '8px', boxSizing: 'border-box', textAlign: 'center', backdropFilter: 'blur(5px)' }}>
-        <h3>{product.name}</h3>
-        <p>{product.description}</p>
-        <p>Price: ${product.price}</p>
-        <p>Category: {product.category}</p>
-        <p>Quantity: {product.quantity}</p>
-      </div>
+    <div className={`product-card ${isExpanded ? 'expanded' : ''}`} onClick={handleCardClick}>
+    <div className="image-container">
+      <img src={product.imageUrl} alt={product.name} className="product-image" />
     </div>
-  );
+    <div className="details-container">
+      <h3 className="product-name">{product.name}</h3>
+      <p className="product-description">{product.description}</p>
+      <p className="product-price" style={{ color: 'green' }}>Price: ${product.price}</p>
+      <p className="product-category">Category: {product.category}</p>
+      <p className="product-quantity">Quantity: {product.quantity}</p>
+    </div>
+  </div>
+);
 };
 
 export default ProductCard;
