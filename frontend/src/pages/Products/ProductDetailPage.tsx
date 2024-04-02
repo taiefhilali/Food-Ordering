@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../assets/css/ProductDetails.css'; // Import CSS file
+import '@fortawesome/fontawesome-free/css/all.css';
 
 // Define the type of the product prop
 type Product = {
@@ -22,51 +23,38 @@ type ProductDetailPageProps = {
 // Function component for the ProductDetailPage
 const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
     return (
-        <div className="container mt-5 mb-5">
-            <div className="row d-flex justify-content-center">
-                <div className="col-md-10">
-                    <div className="card">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <div className="images p-3">
-                                    <div className="text-center p-4">
-                                        <img id="main-image" src={product.imageUrl} width="250" alt="Main" />
-                                    </div>
-                                    
-                                </div>
+        <div className="container mx-auto mt-5">
+            <div className="max-w-4xl mx-auto bg-white rounded-md shadow-lg overflow-hidden">
+                <div className="md:flex">
+                    <div className="md:flex-shrink-0">
+                        <img className="h-48 w-full object-cover md:w-48" src={product.imageUrl} alt="Product" />
+                    </div>
+                    <div className="p-8">
+                        <div className="flex items-center justify-between">
+                            <Link to="/" className="text-gray-500 hover:text-gray-700">
+                                <i className="fa fa-long-arrow-left"></i>
+                                <span className="ml-1">Back</span>
+                            </Link>
+                            <i className="fa fa-shopping-cart text-gray-500"></i>
+                        </div>
+                        <div className="mt-4">
+                            <h2 className="text-2xl font-bold text-gray-900">{product.name}</h2>
+                            <div className="flex items-center mt-1">
+                                <span className="text-sm text-gray-600 uppercase">{product.brand}</span>
+                                <span className="mx-2">•</span>
+                                <span className="text-sm text-gray-600 uppercase">{product.category}</span>
                             </div>
-                            <div className="col-md-6">
-                                <div className="product p-4">
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <div className="d-flex align-items-center">
-                                            <i className="fa fa-long-arrow-left"></i>
-                                            <span className="ml-1">Back</span>
-                                        </div>
-                                        <i className="fa fa-shopping-cart text-muted"></i>
-                                    </div>
-                                    <div className="mt-4 mb-3">
-                                        <span className="text-uppercase text-muted brand">{product.brand}</span>
-                                        <h5 className="text-uppercase">{product.name}</h5>
-                                        <div className="price d-flex flex-row align-items-center">
-                                            <span className="act-price">${product.price}</span>
-                                            {/* Additional discount information if needed */}
-                                        </div>
-                                    </div>
-                                    <p className="about">{product.description}</p>
-                                    <div className="sizes mt-5">
-                                        <h6 className="text-uppercase">Size</h6>
-                                        <label className="radio">
-                                            <input type="radio" name="size" value="S" checked />
-                                            <span>S</span>
-                                        </label>
-                                        {/* Additional size options */}
-                                    </div>
-                                    <div className="cart mt-4 align-items-center">
-                                        <button className="btn btn-danger text-uppercase mr-2 px-4">Add to cart</button>
-                                        <i className="fa fa-heart text-muted"></i>
-                                        <i className="fa fa-share-alt text-muted"></i>
-                                    </div>
-                                </div>
+                            <div className="mt-2">
+                                <span className="text-xl font-bold text-gray-900">${product.price}</span>
+                            </div>
+                            <p className="mt-4 text-gray-600">{product.description}</p>
+                            <div className="flex items-center mt-6">
+                                <button className="bg-gray-800 text-black rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-600">
+                                    <i className="fa fa-pen"></i>
+                                </button>
+                                <button className="ml-4 bg-gray-800 text-black rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-600">
+                                    <i className="fa fa-multiply"></i>
+                                </button>
                             </div>
                         </div>
                     </div>

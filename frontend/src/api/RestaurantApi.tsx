@@ -4,16 +4,16 @@ import { useQuery } from "react-query";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URLVITE_API_BASE_URL;
 
-const getUserIdFromSession = () => {
-  // Implement this function to retrieve the user ID from the session
-  // For example, if you are using localStorage:
-  const userInfo = localStorage.getItem("userInfo");
-  if (userInfo) {
-    const userObj = JSON.parse(userInfo);
-    return userObj._id;
-  }
-  return null;
-};
+// const getUserIdFromSession = () => {
+//   // Implement this function to retrieve the user ID from the session
+//   // For example, if you are using localStorage:
+//   const userInfo = localStorage.getItem("userInfo");
+//   if (userInfo) {
+//     const userObj = JSON.parse(userInfo);
+//     return userObj._id;
+//   }
+//   return null;
+// };
 
 export const useGetRestaurant = (restaurantId?: string) => {
   const getRestaurantByIdRequest = async (): Promise<Restaurant> => {

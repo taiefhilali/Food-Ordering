@@ -1,7 +1,6 @@
 "use client"
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useAuth, useSignIn } from '@clerk/clerk-react';
-import type { ReactElement } from 'react'; // Import ReactElement type
 import {  useNavigate } from 'react-router-dom'; // Import useHistory for routing
 import type { FC } from 'react';  // Use FC (FunctionComponent) instead of NextPage
 

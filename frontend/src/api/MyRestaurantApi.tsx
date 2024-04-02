@@ -1,12 +1,9 @@
 import { useClerk } from "@clerk/clerk-react";
-import { useEffect } from "react";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { Restaurant } from "@/types";
 import axios from "axios";
-import { useUser } from '@clerk/clerk-react';
 
-const API_BASE_URL = import.meta.env.BASE_URL;
 
 const getUserIdFromSession = () => {
   // Implement this function to retrieve the user ID from the session

@@ -1,5 +1,3 @@
-// SignIn.jsx
-import React from 'react';
 import { SignIn as ClerkSignIn, WithClerkProp } from '@clerk/clerk-react';
 import ForgotPasswordPage from './forgotPassword';
 import { SignInProps } from '@clerk/types';

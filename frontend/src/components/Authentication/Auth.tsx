@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  {  useEffect } from 'react';
 import { useSession, useUser } from '@clerk/clerk-react';
 
 function Auth() {
@@ -70,9 +70,9 @@ function Auth() {
     const user = session.user;
 
     // Access user properties
-    const userId = user.id;
+    // const userId = user.id;
     const username = user.username;
-    const email = user.emailAddresses[0].emailAddress; // Assuming the user has at least one email address
+    // const email = user.emailAddresses[0].emailAddress; // Assuming the user has at least one email address
 
     // Render user information
     return (

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { SignIn, useClerk } from '@clerk/clerk-react';
+import  { useState } from 'react';
+import { SignIn } from '@clerk/clerk-react';
 import ForgotPasswordPage from './forgotPassword';
 
 const Login = () => {

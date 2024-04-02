@@ -5,10 +5,8 @@ import HomePage from './pages/HomePage'
 import ManageRestaurantPage from './pages/Restaurant/ManageRestaurantPage'
 import ForgotPasswordPage from './components/Authentication/forgotPassword'
 import Dashboard from './components/Dashboard'
-import SidebarLayout from './layouts/SidebarLayout'
 import PageTitle from './components/PageTitle'
 import ECommerce from './pages/Dashboard/ECommerce';
-import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';

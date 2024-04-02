@@ -1,20 +1,17 @@
   
-    import React, { useEffect } from 'react';
-    import { useNavigate } from 'react-router-dom';
     import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from './ui/sheet';
     import { Menu } from 'lucide-react';
     import { Separator } from '@radix-ui/react-separator';
     import { Button } from './ui/button';
-    import { SignInButton, SignOutButton, SignedIn, SignedOut, useClerk } from '@clerk/clerk-react'; // Import useClerk hook
-    import Dashboard from './Dashboard';
+    import { SignInButton, SignOutButton, SignedIn, SignedOut } from '@clerk/clerk-react'; // Import useClerk hook
     
     export default function MobileNav() {
-        const navigate = useNavigate();
-        const clerk = useClerk(); // Use the useClerk hook to get access to the Clerk instance
+        // const navigate = useNavigate();
+        // const clerk = useClerk(); // Use the useClerk hook to get access to the Clerk instance
     
-        function handleSignOut(): void | Promise<any> {
-            throw new Error('Function not implemented.')
-        }
+        // function handleSignOut(): void | Promise<any> {
+        //     throw new Error('Function not implemented.')
+        // }
     
         
         return (
