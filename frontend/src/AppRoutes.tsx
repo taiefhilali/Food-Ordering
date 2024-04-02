@@ -22,6 +22,7 @@ import Buttons from './pages/UiElements/Buttons';
 import Displayrestaurants from './pages/Restaurant/Displayrestaurants'
 import DetailsSection from './forms/manage-restaurant-form/DetailsSection'
 import DisplayProductsPage from './pages/Products/DisplayProducts'; // Import the DisplayProductsPage component
+import ProductDetailContainer from './components/Products/ProductDetailContainer '
 
 const AppRoutes = () => {
   return (
@@ -95,6 +96,15 @@ const AppRoutes = () => {
           </>
         }
       />
+      <Route
+        path="/product/:productId"
+        element={
+          <>
+            <ProductDetailContainer />
+          </>
+        }
+      />
+      
       <Route
         path="/details"
         element={

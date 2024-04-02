@@ -37,7 +37,7 @@
       display: none;
     }
     .home {
-      width: 100%;
+      width: 50%;
       min-height: 100vh;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -99,10 +99,11 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        gap: 20px;
+        gap: 60px;
       }
       
       .box {
+
         width: calc(33.33% - 10px); /* Three cards per row with a 5px gap */
         margin-bottom: 20px; /* Add some bottom margin to create a gap */
         position: relative;
@@ -114,7 +115,7 @@
       
       .box:hover,
       .box.expanded {
-        transform: scale(1.1); /* Make the cards 10% bigger when hovered or expanded */
+        transform: scale(0.56); /* Make the cards 10% bigger when hovered or expanded */
         z-index: 1; /* Ensure expanded card is above other cards */
       }
       
