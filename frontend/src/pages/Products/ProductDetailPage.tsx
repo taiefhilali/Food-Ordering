@@ -12,7 +12,6 @@ type Product = {
     category: string;
     quantity: number;
     imageUrl: string;
-    brand: string; // Add brand to match the ProductDetailPage component
 };
 
 // Define the prop type for the ProductDetailPage component
@@ -40,8 +39,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
                         <div className="mt-4">
                             <h2 className="text-2xl font-bold text-gray-900">{product.name}</h2>
                             <div className="flex items-center mt-1">
-                                <span className="text-sm text-gray-600 uppercase">{product.brand}</span>
-                                <span className="mx-2">•</span>
                                 <span className="text-sm text-gray-600 uppercase">{product.category}</span>
                             </div>
                             <div className="mt-2">

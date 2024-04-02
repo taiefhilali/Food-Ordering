@@ -1,92 +1,145 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import axios from 'axios'; // Import Axios
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb'; // Assuming Breadcrumb is defined in a separate component
+import { Form } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { Separator } from "@/components/ui/separator";
+import LoadingButton from "@/components/LoadingButton";
+import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
+import { Product } from "@/types/product";
+import ImageSection from "../manage-restaurant-form/ImageSection";
 
-// Define the Product interface
-interface Product {
-    productName: string;
-    productDescription: string;
-    productPrice: string;
-    productImage: string;
-}
+const formSchema = z.object({
+  productName: z.string({
+    required_error: "Product name is required",
+  }),
+  description: z.string({
+    required_error: "Description is required",
+  }),
+  price: z.number().min(0, {
+    message: "Price must be greater than or equal to 0",
+  }),
+  category: z.string({
+    required_error: "Category is required",
+  }),
+  quantity: z.number().min(0, {
+    message: "Quantity must be greater than or equal to 0",
+  }),
+  imageFile: z.instanceof(File, { message: "Image is required" }).optional(),
+});
 
-const ProductForm: React.FC = () => {
-    const [formData, setFormData] = useState<Product>({
-        productName: '',
-        productDescription: '',
-        productPrice: '',
-        productImage: ''
-    });
+type ProductFormData = z.infer<typeof formSchema>;
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            // Make POST request using Axios
-            const response = await axios.post(`http://localhost:7000//api/my/products`, formData);
-            console.log(response.data); // Log response data
-            // Optionally, you can handle success or navigate to another page
-        } catch (error) {
-            console.error('Error:', error); // Log any errors
-            // Optionally, you can display an error message to the user
-        }
-    };
-
-    return (
-        <div className="mx-auto max-w-270">
-            <Breadcrumb pageName="Settings" />
-
-            {/* Product Information Form */}
-            <div className="grid grid-cols-5 gap-8">
-                <div className="col-span-5 xl:col-span-3">
-                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                        <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-                            <h3 className="font-medium text-black dark:text-white">
-                                Product Information
-                            </h3>
-                        </div>
-                        <div className="p-7">
-                            <form onSubmit={handleSubmit}>
-                                {/* Product Name */}
-                                <div className="mb-5.5">
-                                    <label htmlFor="productName" className="mb-3 block text-sm font-medium text-black dark:text-white">Product Name</label>
-                                    <input type="text" id="productName" name="productName" value={formData.productName} onChange={handleChange} className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary" />
-                                </div>
-
-                                {/* Product Description */}
-                                <div className="mb-5.5">
-                                    <label htmlFor="productDescription" className="mb-3 block text-sm font-medium text-black dark:text-white">Product Description</label>
-                                    <textarea id="productDescription" name="productDescription" value={formData.productDescription} onChange={handleChange} rows={4} className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"></textarea>
-                                </div>
-
-                                {/* Product Price */}
-                                <div className="mb-5.5">
-                                    <label htmlFor="productPrice" className="mb-3 block text-sm font-medium text-black dark:text-white">Product Price</label>
-                                    <input type="text" id="productPrice" name="productPrice" value={formData.productPrice} onChange={handleChange} className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary" />
-                                </div>
-
-                                {/* Product Image */}
-                                <div className="mb-5.5">
-                                    <label htmlFor="productImage" className="mb-3 block text-sm font-medium text-black dark:text-white">Product Image</label>
-                                    <input type="file" id="productImage" name="productImage" className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary" />
-                                </div>
-
-                                {/* Submit Button */}
-                                <div className="flex justify-end gap-4.5">
-                                    <button type="submit" className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90">
-                                        Add Product
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+type Props = {
+  product?: Product;
+  onSave: (productFormData: FormData) => void;
+  isLoading: boolean;
 };
 
-export default ProductForm;
+const ManageProductForm = ({ onSave, isLoading, product }: Props) => {
+  const form = useForm<ProductFormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      quantity: 0,
+    },
+  });
+
+  useEffect(() => {
+    if (product) {
+      form.reset(product);
+    }
+  }, [form, product]);
+
+  const onSubmit: SubmitHandler<ProductFormData> = (formData) => {
+    console.log("Form submitted with data:", formData);
+    if (!formData) {
+      console.error("Form data is undefined");
+      return;
+    }
+  
+    const formDataJson = new FormData();
+  
+    formDataJson.append("productName", formData.productName);
+    formDataJson.append("description", formData.description);
+    formDataJson.append("price", formData.price.toString());
+    formDataJson.append("category", formData.category);
+    formDataJson.append("quantity", formData.quantity.toString());
+  
+    if (formData.imageFile) {
+      formDataJson.append("imageFile", formData.imageFile as File);
+    }
+  
+    onSave(formDataJson);
+  };
+
+  return (
+    <Form {...form}>
+<form onSubmit={(e) => { e.preventDefault(); }}> {/* Remove any event handlers that prevent default form submission */}
+        <div className="space-y-4">
+          <label htmlFor="productName" className="font-medium">
+            Product Name
+          </label>
+          <input
+            type="text"
+            id="productName"
+            className="input"
+            {...form.register("productName")}
+          />
+          
+        </div>
+        <div className="space-y-4">
+          <label htmlFor="description" className="font-medium">
+            Description
+          </label>
+          <textarea
+            id="description"
+            className="input"
+            {...form.register("description")}
+          />
+        
+        </div>
+        <div className="space-y-4">
+          <label htmlFor="price" className="font-medium">
+            Price
+          </label>
+          <input
+            type="number"
+            id="price"
+            className="input"
+            {...form.register("price")}
+          />
+        
+        </div>
+        <div className="space-y-4">
+          <label htmlFor="category" className="font-medium">
+            Category
+          </label>
+          <input
+            type="text"
+            id="category"
+            className="input"
+            {...form.register("category")}
+          />
+          
+        </div>
+        <div className="space-y-4">
+          <label htmlFor="quantity" className="font-medium">
+            Quantity
+          </label>
+          <input
+            type="number"
+            id="quantity"
+            className="input"
+            {...form.register("quantity")}
+          />
+    
+        </div>
+        <Separator />
+        <ImageSection />
+        {isLoading ? <LoadingButton /> : <Button type="submit">Submit</Button>}
+      </form>
+    </Form>
+  );
+};
+
+export default ManageProductForm;
