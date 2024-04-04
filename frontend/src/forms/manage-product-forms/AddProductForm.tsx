@@ -1,145 +1,130 @@
-import { Form } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
-import { Separator } from "@/components/ui/separator";
-import LoadingButton from "@/components/LoadingButton";
-import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
-import { Product } from "@/types/product";
-import ImageSection from "../manage-restaurant-form/ImageSection";
 
-const formSchema = z.object({
-  productName: z.string({
-    required_error: "Product name is required",
-  }),
-  description: z.string({
-    required_error: "Description is required",
-  }),
-  price: z.number().min(0, {
-    message: "Price must be greater than or equal to 0",
-  }),
-  category: z.string({
-    required_error: "Category is required",
-  }),
-  quantity: z.number().min(0, {
-    message: "Quantity must be greater than or equal to 0",
-  }),
-  imageFile: z.instanceof(File, { message: "Image is required" }).optional(),
-});
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useGetMyRestaurant } from '../../api/MyRestaurantApi';
 
-type ProductFormData = z.infer<typeof formSchema>;
 
-type Props = {
-  product?: Product;
-  onSave: (productFormData: FormData) => void;
-  isLoading: boolean;
+type Restaurant = {
+  _id: string;
+  restaurantName: string;
 };
+const AddProductForm = () => {
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const { restaurant, isLoading } = useGetMyRestaurant();
+  console.log(restaurants);
 
-const ManageProductForm = ({ onSave, isLoading, product }: Props) => {
-  const form = useForm<ProductFormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      quantity: 0,
-    },
-  });
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
   useEffect(() => {
-    if (product) {
-      form.reset(product);
-    }
-  }, [form, product]);
+    const fetchData = async () => {
+      try {
+        const fetchedRestaurant = await restaurant;
+        console.log("Fetched restaurants:", restaurants);
 
-  const onSubmit: SubmitHandler<ProductFormData> = (formData) => {
-    console.log("Form submitted with data:", formData);
-    if (!formData) {
-      console.error("Form data is undefined");
-      return;
+        setRestaurants(fetchedRestaurant);
+      } catch (error) {
+        console.error('Error setting restaurant data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const onSubmit = async (data:any) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("price", data.price);
+    formData.append("category", data.category);
+    formData.append("quantity", data.quantity);
+    formData.append("restaurant", data.restaurant); // Static restaurant ID
+
+    if (data.imageFile) {
+      formData.append("imageFile", data.imageFile[0]);
     }
-  
-    const formDataJson = new FormData();
-  
-    formDataJson.append("productName", formData.productName);
-    formDataJson.append("description", formData.description);
-    formDataJson.append("price", formData.price.toString());
-    formDataJson.append("category", formData.category);
-    formDataJson.append("quantity", formData.quantity.toString());
-  
-    if (formData.imageFile) {
-      formDataJson.append("imageFile", formData.imageFile as File);
+
+    try {
+      const response = await fetch('http://localhost:7000/api/my/products', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add product');
+      }
+
+      const responseData = await response.json();
+      console.log('Product created successfully:', responseData.product);
+    } catch (error) {
+      console.error('Error adding product:', errors.message);
     }
-  
-    onSave(formDataJson);
   };
 
+
+
   return (
-    <Form {...form}>
-<form onSubmit={(e) => { e.preventDefault(); }}> {/* Remove any event handlers that prevent default form submission */}
-        <div className="space-y-4">
-          <label htmlFor="productName" className="font-medium">
-            Product Name
-          </label>
-          <input
-            type="text"
-            id="productName"
-            className="input"
-            {...form.register("productName")}
-          />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {/* Input for Product Name */}
+      <input
+        type="text"
+        placeholder="Product Name"
+        {...register('name', { required: true })}
+      />
+      {errors.name && <span>Name is required</span>}
+
+      {/* Input for Description */}
+      <input
+        type="text"
+        placeholder="Description"
+        {...register('description', { required: true })}
+      />
+      {errors.description && <span>Description is required</span>}
+
+      {/* Input for Price */}
+      <input
+        type="text"
+        placeholder="Price"
+        {...register('price', { required: true })}
+      />
+      {errors.price && <span>Price is required</span>}
+
+      {/* Input for Category */}
+      <input
+        type="text"
+        placeholder="Category"
+        {...register('category', { required: true })}
+      />
+      {errors.category && <span>Category is required</span>}
+
+      {/* Input for Quantity */}
+      <input
+        type="text"
+        placeholder="Quantity"
+        {...register('quantity', { required: true })}
+      />
+      {errors.quantity && <span>Quantity is required</span>}
+      <select {...register('restaurant', { required: true })}>
+        <option value="">Select Restaurant</option>
+        {restaurants && restaurants.map((restaurant) => (
           
-        </div>
-        <div className="space-y-4">
-          <label htmlFor="description" className="font-medium">
-            Description
-          </label>
-          <textarea
-            id="description"
-            className="input"
-            {...form.register("description")}
-          />
-        
-        </div>
-        <div className="space-y-4">
-          <label htmlFor="price" className="font-medium">
-            Price
-          </label>
-          <input
-            type="number"
-            id="price"
-            className="input"
-            {...form.register("price")}
-          />
-        
-        </div>
-        <div className="space-y-4">
-          <label htmlFor="category" className="font-medium">
-            Category
-          </label>
-          <input
-            type="text"
-            id="category"
-            className="input"
-            {...form.register("category")}
-          />
-          
-        </div>
-        <div className="space-y-4">
-          <label htmlFor="quantity" className="font-medium">
-            Quantity
-          </label>
-          <input
-            type="number"
-            id="quantity"
-            className="input"
-            {...form.register("quantity")}
-          />
-    
-        </div>
-        <Separator />
-        <ImageSection />
-        {isLoading ? <LoadingButton /> : <Button type="submit">Submit</Button>}
-      </form>
-    </Form>
+          <option key={restaurant._id} value={restaurant._id}>{restaurant.restaurantName}</option>
+        ))}
+      </select>
+
+      {errors.restaurant && <span>Please select a restaurant</span>}
+      {/* Input for Image File Upload */}
+      <input
+        type="file"
+        onChange={(e) => {
+          // Update the form value for imageFile when a file is selected
+          setValue('imageFile', e.target.files);
+        }}
+      />
+      {errors.imageFile && <span>Image is required</span>}
+
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 
-export default ManageProductForm;
+export default AddProductForm;
