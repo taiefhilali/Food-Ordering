@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProductCard from '../../components/Products/ProductCard';
 import DefaultLayout from '@/layouts/DefaultLayout';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 
 type Product = {
     _id: string;
@@ -49,7 +50,8 @@ const ProductDisplayPage: React.FC = () => {
   return (
     <DefaultLayout>
     <div>
-      <h1>All Products</h1>
+    <Breadcrumb pageName="Display Products" />
+
       {renderProductCards(groupProductsByCategory(products))}
     </div> </DefaultLayout>
   );
