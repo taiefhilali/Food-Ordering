@@ -13,6 +13,7 @@ const upload = multer({
   },
 });
 router.get('/',productController.getAllProducts);
+router.get('/quantity',productController.quantityProduct);
 router.post('/', upload.single("imageFile"), productController.createMyProduct);
 router.get('/:id', productController.getProductById);
 router.put('/:id', productController.updateProduct);

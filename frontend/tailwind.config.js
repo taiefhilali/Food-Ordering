@@ -94,7 +94,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        current: 'currentColor',
+        current: 'gray',
         transparent: 'transparent',
         white: '#FFFFFF',
         black: '#1C2434',

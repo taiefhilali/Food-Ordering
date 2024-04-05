@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Import navigate from react-router-dom
 import axios from 'axios';
 import '../../assets/css/ProductDetails.css'; // Import CSS file
@@ -24,52 +24,53 @@ type ProductDetailPageProps = {
 };
 
 // Function component for the ProductDetailPage
-const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
+const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialProduct }) => {
+    const [product, setProduct] = useState<Product>(initialProduct);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState<Product>({
-        _id: product._id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        category: product.category,
-        quantity: product.quantity,
-        imageUrl: product.imageUrl
+        _id: initialProduct._id,
+        name: initialProduct.name,
+        description: initialProduct.description,
+        price: initialProduct.price,
+        category: initialProduct.category,
+        quantity: initialProduct.quantity,
+        imageUrl: initialProduct.imageUrl
     });
-    const navigate = useNavigate(); // Ensure useNavigate is used within the function component
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setProduct(initialProduct);
+        setFormData(initialProduct);
+    }, [initialProduct]);
 
     const handleDeleteProduct = async () => {
         try {
-            // Send delete request to the API
             await axios.delete(`http://localhost:7000/api/my/products/${product._id}`);
-            // Display success message using SweetAlert
             Swal.fire('Success', 'Product deleted successfully', 'success');
-            // Redirect to the home page after deletion using navigate
             navigate('/display-products');
         } catch (error) {
-            // Display error message using SweetAlert
             Swal.fire('Error', 'Failed to delete product', 'error');
             console.error('Error deleting product:', error);
         }
     };
 
-    // Function to handle form submission for update
     const handleUpdateSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // Send update request to the API
-            await axios.put(`http://localhost:7000/api/my/products/${formData._id}`, formData);
-            // Display success message using SweetAlert
-            Swal.fire('Success', 'Product updated successfully', 'success');
-            // Redirect to the home page or product details page after update using navigate
-            navigate('/display-products');
+            const response = await axios.put(`http://localhost:7000/api/my/products/${formData._id}`, formData);
+            if (response.status === 200) {
+                Swal.fire('Success', 'Product updated successfully', 'success');
+                setProduct(formData);
+                setIsEditing(false);
+            } else {
+                Swal.fire('Error', 'Failed to update product', 'error');
+            }
         } catch (error) {
-            // Display error message using SweetAlert
             Swal.fire('Error', 'Failed to update product', 'error');
             console.error('Error updating product:', error);
         }
     };
 
-    // Function to handle form input change
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -78,9 +79,22 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
         }));
     };
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData(prevState => ({
+                    ...prevState,
+                    imageUrl: reader.result as string
+                }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
     return (
         <DefaultLayout>
-                <Breadcrumb pageName="Product Details" />
+            <Breadcrumb pageName="Product Details" />
 
             <div className="container mx-auto mt-5">
                 <div className="max-w-4xl mx-auto bg-white rounded-md shadow-lg overflow-hidden">
@@ -116,15 +130,39 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
                                 </div>
                                 {/* Update Form */}
                                 {isEditing && (
-                                    <form onSubmit={handleUpdateSubmit}>
-                                        <input type="text" name="name" value={formData.name} onChange={handleInputChange} />
-                                        <input type="text" name="description" value={formData.description} onChange={handleInputChange} />
-                                        <input type="number" name="price" value={formData.price} onChange={handleInputChange} />
-                                        <input type="text" name="category" value={formData.category} onChange={handleInputChange} />
-                                        <input type="number" name="quantity" value={formData.quantity} onChange={handleInputChange} />
-                                        <button type="submit">Update</button>
-                                    </form>
+                                    <div className="mt-4 p-4 bg-gray-100 rounded-md">
+                                        <form onSubmit={handleUpdateSubmit}>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div className="flex flex-col mb-4">
+                                                    <label htmlFor="name" className="text-sm font-semibold text-gray-700 mb-1">Name</label>
+                                                    <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} className="p-2 border rounded-md" />
+                                                </div>
+                                                <div className="flex flex-col mb-4">
+                                                    <label htmlFor="description" className="text-sm font-semibold text-gray-700 mb-1">Description</label>
+                                                    <input type="text" id="description" name="description" value={formData.description} onChange={handleInputChange} className="p-2 border rounded-md" />
+                                                </div>
+                                                <div className="flex flex-col mb-4">
+                                                    <label htmlFor="price" className="text-sm font-semibold text-gray-700 mb-1">Price</label>
+                                                    <input type="number" id="price" name="price" value={formData.price} onChange={handleInputChange} className="p-2 border rounded-md" />
+                                                </div>
+                                                <div className="flex flex-col mb-4">
+                                                    <label htmlFor="category" className="text-sm font-semibold text-gray-700 mb-1">Category</label>
+                                                    <input type="text" id="category" name="category" value={formData.category} onChange={handleInputChange} className="p-2 border rounded-md" />
+                                                </div>
+                                                <div className="flex flex-col mb-4">
+                                                    <label htmlFor="quantity" className="text-sm font-semibold text-gray-700 mb-1">Quantity</label>
+                                                    <input type="number" id="quantity" name="quantity" value={formData.quantity} onChange={handleInputChange} className="p-2 border rounded-md" />
+                                                </div>
+                                                <div className="flex flex-col mb-4">
+                                                    <label htmlFor="image" className="text-sm font-semibold text-gray-700 mb-1">Image</label>
+                                                    <input type="file" id="image" name="imageFile" accept="image/*" onChange={handleImageChange} className="p-2 border rounded-md" />
+                                                </div>
+                                            </div>
+                                            <button type="submit" className="bg-yellow-500 text-black rounded-md p-2 mt-4 focus:outline-none focus:ring-2 focus:ring-yellow-600">Update</button>
+                                        </form>
+                                    </div>
                                 )}
+
                             </div>
                         </div>
                     </div>

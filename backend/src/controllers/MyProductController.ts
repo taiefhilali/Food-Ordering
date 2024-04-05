@@ -67,6 +67,28 @@ exports.deleteProduct = async (req:Request, res:Response) => {
     res.status(500).json({ message: (error as Error).message });
   }
 };
+
+// statistics 
+exports.quantityProduct= async(req:Request,res:Response)=>{
+  
+    try {
+      // Aggregate products based on quantity and sort in descending order
+      const topProducts = await Product.aggregate([
+        {
+          $sort: { quantity: -1 },
+        },
+        {
+          $limit: 5, // Adjust the number based on your requirement
+        },
+      ]);
+  
+      res.json(topProducts);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  };
+
 const uploadimage = async (file: Express.Multer.File) => {
     const image = file;
     const base64Image = Buffer.from(image.buffer).toString("base64");
