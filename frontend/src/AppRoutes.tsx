@@ -21,7 +21,6 @@ import Displayrestaurants from './pages/Restaurant/Displayrestaurants'
 import DetailsSection from './forms/manage-restaurant-form/DetailsSection'
 import DisplayProductsPage from './pages/Products/DisplayProducts'; // Import the DisplayProductsPage component
 import ProductDetailContainer from './components/Products/ProductDetailContainer '
-import AddProductForm from './forms/manage-product-forms/AddProductForm'
 import ManageProductPage from './pages/Products/ManageProductPage'
 
 const AppRoutes = () => {

@@ -212,6 +212,17 @@ const updateMyRestaurant = async (req: Request, res: Response) => {
   }
 }
 
+
+const getCuisinesStat = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findById(req.params.id);
+    res.json(restaurant);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 const uploadimage = async (file: Express.Multer.File) => {
   const image = file;
   const base64Image = Buffer.from(image.buffer).toString("base64");
@@ -219,4 +230,6 @@ const uploadimage = async (file: Express.Multer.File) => {
   const uploadResponse = await cloudinary.v2.uploader.upload(dataURL);
   return uploadResponse.url;
 }
-export default { createMyRestaurant, getMyRestaurant, updateMyRestaurant, getAllRestaurant };
+
+
+export default { createMyRestaurant, getMyRestaurant, updateMyRestaurant, getAllRestaurant,getCuisinesStat };

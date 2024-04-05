@@ -4,8 +4,8 @@ import {  useNavigate } from 'react-router-dom';
 import Auth from './Authentication/Auth';
 
 export default function MainNav() {
-    const navigate = useNavigate();
-    const { signOut } = useClerk();
+    // const navigate = useNavigate();
+    // const { signOut } = useClerk();
 
     // const handleSignOut = async () => {
      

@@ -22,6 +22,7 @@ export type Restaurant = {
   menuItems: MenuItem[];
   imageUrl: string;
   lastUpdated: string;
+  percentage:number[]
 };
 
 export type OrderStatus =

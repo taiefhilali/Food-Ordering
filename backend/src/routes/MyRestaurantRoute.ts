@@ -17,5 +17,6 @@ router.post("/",upload.single("imageFile"), validateMyRestaurantRequest,MyRestau
 router.get("/",MyRestaurantController.getMyRestaurant);
 router.get("/",MyRestaurantController.getAllRestaurant);
 router.put("/",validateMyRestaurantRequest,MyRestaurantController.updateMyRestaurant)
-
+// API endpoint to fetch restaurant data
+router.get('/:id',MyRestaurantController.getCuisinesStat);
 export default router;
