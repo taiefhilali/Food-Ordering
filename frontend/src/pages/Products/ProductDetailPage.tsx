@@ -5,6 +5,7 @@ import '../../assets/css/ProductDetails.css'; // Import CSS file
 import '@fortawesome/fontawesome-free/css/all.css';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Swal from 'sweetalert2';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 
 // Define the type of the product prop
 type Product = {
@@ -79,6 +80,8 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
 
     return (
         <DefaultLayout>
+                <Breadcrumb pageName="Product Details" />
+
             <div className="container mx-auto mt-5">
                 <div className="max-w-4xl mx-auto bg-white rounded-md shadow-lg overflow-hidden">
                     <div className="md:flex">
@@ -87,11 +90,10 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product }) => {
                         </div>
                         <div className="p-8">
                             <div className="flex items-center justify-between">
-                                <Link to="/" className="text-gray-500 hover:text-gray-700">
+                                {/* <Link to="/" className="text-gray-500 hover:text-gray-700">
                                     <i className="fa fa-long-arrow-left"></i>
                                     <span className="ml-1">Back</span>
-                                </Link>
-                                <i className="fa fa-shopping-cart text-gray-500"></i>
+                                </Link> */}
                             </div>
                             <div className="mt-4">
                                 <h2 className="text-2xl font-bold text-gray-900">{product.name}</h2>
