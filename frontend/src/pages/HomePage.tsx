@@ -9,7 +9,7 @@ export default function HomePage() {
                 <h1 className='text-5xl font-bold tracking-tight text-orange-300'> FOLLOW UP</h1>
                 <span className='text-xl'> Food in just a click of a button</span>
             </div>
-            <LoginFormModal></LoginFormModal>
+            <section><LoginFormModal></LoginFormModal></section>
 
             <div className='grid md:grid-cols-2 gap-5'>
                 <img src={Landingimg}></img>
