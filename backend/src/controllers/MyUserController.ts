@@ -72,7 +72,7 @@ const registerUser = async (req: Request, res: Response) => {
       from: 'bobtaief@gmail.com',
       to: email,
       subject: 'Verify Your Email Address',
-      text: `Please click on the following link to verify your email: http://http://localhost:3000/verify/${verificationToken}`
+      text: `Please click on the following link to verify your email: http://http://localhost:3000/authentication/${verificationToken}`
     };
 
     await transporter.sendMail(mailOptions);

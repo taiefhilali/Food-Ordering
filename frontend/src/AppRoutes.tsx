@@ -22,6 +22,7 @@ import DetailsSection from './forms/manage-restaurant-form/DetailsSection'
 import DisplayProductsPage from './pages/Products/DisplayProducts'; // Import the DisplayProductsPage component
 import ProductDetailContainer from './components/Products/ProductDetailContainer '
 import ManageProductPage from './pages/Products/ManageProductPage'
+import AuthPage from './pages/Authentication/AuthPage'
 
 const AppRoutes = () => {
   return (
@@ -36,6 +37,14 @@ const AppRoutes = () => {
         element={
 
           <Dashboard />
+        }
+      />
+      <Route
+        path="/authentication"
+        element={
+          <>
+            <AuthPage />
+          </>
         }
       />
       <Route
