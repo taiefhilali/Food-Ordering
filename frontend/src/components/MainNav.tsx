@@ -2,6 +2,7 @@ import { Button } from './ui/button';
 import { SignInButton, SignedIn, SignedOut, useClerk, UserButton } from "@clerk/clerk-react";
 import {  useNavigate } from 'react-router-dom';
 import Auth from './Authentication/Auth';
+import LoginFormModal from '@/forms/manage-user-form/LoginFormModal';
 
 export default function MainNav() {
     // const navigate = useNavigate();
@@ -16,7 +17,8 @@ export default function MainNav() {
     //     navigate('/');
     // };
 
-    return ( <><Button variant={'ghost'} className='font-bold hover:text-orange-400 hover:bg-white'>
+    return ( <>
+    {/* <Button variant={'ghost'} className='font-bold hover:text-orange-400 hover:bg-white'>
   <div><SignedOut>
                 <SignInButton />
 
@@ -24,11 +26,11 @@ export default function MainNav() {
             <SignedIn>
                 <UserButton/>
             </SignedIn> </div>
-            {/* <SignIn></SignIn> */}
 <Auth></Auth>  
  
-        </Button>
-                       {/* <Link to="/forgot-password">Forgot Your Password ?</Link> */}
+        </Button> */}
+      <LoginFormModal />
+
 </>
     );
 }
