@@ -16,7 +16,7 @@ const upload=multer({
 router.post("/",MyUserController.createCurrentUser);
 // Register endpoint (for user registration)
 router.post('/register', upload.single("imageFile"),MyUserController.registerUser);
-
+router.get("/login",MyUserController.loginUser);
 // Email verification endpoint
 router.get('/verify/:token', async (req, res) => {
   const { token } = req.params;

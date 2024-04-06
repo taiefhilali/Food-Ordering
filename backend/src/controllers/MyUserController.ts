@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/User";
 const nodemailer = require('nodemailer');
 import cloudinary from "cloudinary";
+const bcrypt = require('bcrypt');
 
 
 
@@ -9,6 +10,13 @@ import cloudinary from "cloudinary";
 const generateVerificationToken = () => {
   return Math.random().toString(36).substr(2, 8); // Example: "1a2b3c4d"
 };
+// Generate a salt and hash the password
+const hashPassword = async (password: string): Promise<string> => {
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
+};
+
 
 const createCurrentUser = async (req: Request, res: Response) => {
   try {
@@ -34,17 +42,18 @@ const createCurrentUser = async (req: Request, res: Response) => {
 // Register a new user
 const registerUser = async (req: Request, res: Response) => {
   try {
-    const { email, firstname, lastname } = req.body;
+    const { email, firstname, lastname, password } = req.body;
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
+    const hashedPassword = await hashPassword(password);
 
     const imageUrl = await uploadimage(req.file as Express.Multer.File);
 
     const verificationToken = generateVerificationToken();
-    const newUser = new User({ email, firstname, lastname, imageUrl, verificationToken });
+    const newUser = new User({ email, firstname, lastname, imageUrl, verificationToken,password: hashedPassword  });
     newUser.imageUrl=imageUrl;
     await newUser.save();
 
@@ -63,7 +72,7 @@ const registerUser = async (req: Request, res: Response) => {
       from: 'bobtaief@gmail.com',
       to: email,
       subject: 'Verify Your Email Address',
-      text: `Please click on the following link to verify your email: http://your_frontend_url/verify/${verificationToken}`
+      text: `Please click on the following link to verify your email: http://http://localhost:3000/verify/${verificationToken}`
     };
 
     await transporter.sendMail(mailOptions);
@@ -77,15 +86,32 @@ const registerUser = async (req: Request, res: Response) => {
 
 // Login user
 const loginUser = async (req: Request, res: Response) => {
-  const { email } = req.body;
-  const existingUser = await User.findOne({ email });
+  const { email, password } = req.body;
 
-  if (!existingUser) {
-    return res.status(404).json({ message: 'User not found' });
+  try {
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (!password || !existingUser.password) {
+      return res.status(400).json({ message: 'Invalid request: Missing password' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    res.status(200).json(existingUser.toObject());
+  } catch (error) {
+    console.error('Error logging in:', error);
+    res.status(500).json({ message: 'Error logging in' });
   }
-
-  res.status(200).json(existingUser.toObject());
 };
+
 const uploadimage = async (file: Express.Multer.File) => {
   const image = file;
   const base64Image = Buffer.from(image.buffer).toString("base64");
