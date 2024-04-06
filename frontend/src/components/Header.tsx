@@ -15,7 +15,7 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center py-4">
         {/* Logo or Branding */}
         <Link to="/" className="text-3xl font-bold text-white hover:text-orange-300 transition duration-300">
-          FooDy
+          QuickBite
         </Link>
 
         {/* Hamburger Menu Button (visible on mobile) */}

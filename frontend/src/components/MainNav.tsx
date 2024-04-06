@@ -2,7 +2,7 @@ import { Button } from './ui/button';
 import { SignInButton, SignedIn, SignedOut, useClerk, UserButton } from "@clerk/clerk-react";
 import {  useNavigate } from 'react-router-dom';
 import Auth from './Authentication/Auth';
-import LoginFormModal from '@/forms/manage-user-form/LoginFormModal';
+import AuthPage from '@/pages/Authentication/AuthPage';
 
 export default function MainNav() {
     // const navigate = useNavigate();
@@ -29,7 +29,7 @@ export default function MainNav() {
 <Auth></Auth>  
  
         </Button> */}
-      <LoginFormModal />
+      
 
 </>
     );

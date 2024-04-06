@@ -1,6 +1,7 @@
 import React from 'react'
 import Landingimg from "../assets/landing.png"
 import appDownloadImg from "../assets/appDownload.png"
+import LoginFormModal from '@/forms/manage-user-form/LoginFormModal'
 export default function HomePage() {
     return (
         <div className='flex flex-col gap-12'>
@@ -8,6 +9,8 @@ export default function HomePage() {
                 <h1 className='text-5xl font-bold tracking-tight text-orange-300'> FOLLOW UP</h1>
                 <span className='text-xl'> Food in just a click of a button</span>
             </div>
+            <LoginFormModal></LoginFormModal>
+
             <div className='grid md:grid-cols-2 gap-5'>
                 <img src={Landingimg}></img>
                 <div className='flex flex-col items-center justify-center gap-4 text-center'>
@@ -16,6 +19,7 @@ export default function HomePage() {
                     <img src={appDownloadImg}></img>
                 </div>
             </div>
+
         </div>
     )
 }
