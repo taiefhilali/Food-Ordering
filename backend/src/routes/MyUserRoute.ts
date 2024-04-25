@@ -33,5 +33,6 @@ router.get('/verify/:token', async (req, res) => {
 
   res.status(200).json({ message: 'Email verified successfully' });
 });
+router.get("/all",MyUserController.getUser);
 
 export default router;

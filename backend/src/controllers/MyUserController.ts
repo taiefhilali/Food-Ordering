@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, response } from "express";
 import User from "../models/User";
 const nodemailer = require('nodemailer');
 import cloudinary from "cloudinary";
@@ -20,7 +20,7 @@ const hashPassword = async (password: string): Promise<string> => {
 
 const createCurrentUser = async (req: Request, res: Response) => {
   try {
-    const id = req.body.id; 
+    const id = req.body.id;
     const existingUser = await User.findOne({ id });
 
     if (existingUser) {
@@ -53,8 +53,8 @@ const registerUser = async (req: Request, res: Response) => {
     const imageUrl = await uploadimage(req.file as Express.Multer.File);
 
     const verificationToken = generateVerificationToken();
-    const newUser = new User({ email, firstname, lastname, imageUrl, verificationToken,password: hashedPassword  });
-    newUser.imageUrl=imageUrl;
+    const newUser = new User({ email, firstname, lastname, imageUrl, verificationToken, password: hashedPassword });
+    newUser.imageUrl = imageUrl;
     await newUser.save();
 
     // Send verification email
@@ -120,4 +120,48 @@ const uploadimage = async (file: Express.Multer.File) => {
   return uploadResponse.url;
 }
 
-export default {createCurrentUser, registerUser, loginUser ,};
+const getUser = async (req: Request, res: Response) => {
+
+
+  const userId = req.params.id;
+
+  try {
+    const user = await User.findById({ _id: userId }, { password: 0, __v: 0, createdAt: 0, updatedAt: 0 });
+    response.status(200).json(user);
+
+  } catch (error) {
+    res.status(500).json({ messge: 'error retreiving user', error });
+  }
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+
+  const userId = req.params.id;
+
+  try {
+    await User.findByIdAndDelete(userId);
+    response.status(200).json({ status: true, message: 'User Deleted Successfully !' });
+
+  } catch (error) {
+    res.status(500).json({ messge: 'error deleting user', error });
+  }
+};
+
+const UpdateUser = async (req: Request, res: Response) => {
+
+  const userId = req.params.id;
+
+  try {
+    await User.findByIdAndUpdate(userId, {
+      $set: req.body
+    }, { new: true });
+    response.status(200).json({ status: true, message: 'User Updated Successfully !' });
+
+  } catch (error) {
+    res.status(500).json({ messge: 'error deleting user', error });
+  }
+};
+
+
+
+export default { createCurrentUser, registerUser, loginUser, getUser, deleteUser, UpdateUser};
