@@ -22,7 +22,7 @@ cloudinary.config({
 const admin= require('firebase-admin');
 const serviceAccount = require('../firebaseprivkey.json');
 admin.initializeApp({
-    Credential : admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount)
 })
 
 

@@ -1,11 +1,10 @@
 
 
-const User = require('../models/User');
+import User from '../models/User';
 const CryptoTs = require('crypto-ts');
 const jwt = require('jsonwebtoken');
 const admin = require('firebase-admin');
 import { Request, Response } from "express";
-
 
 
 
@@ -35,11 +34,10 @@ const createUser = async (req: Request, res: Response) => {
                     email: user.email,
                     uid: userRecord.uid,
                     password: CryptoTs.AES.encrypt(user.password, process.env.JWT_SECRET).toString(),
-                    userType: 'Client',
+                    userType: 'Client'
                 });
-
-                // Save the new user document to the database
-                await newUser.save();
+                
+                await newUser.save(); // Save the new user document to the database
 
                 // Return a success response
                 return res.status(201).json({ message: 'User created successfully' });
@@ -55,7 +53,6 @@ const createUser = async (req: Request, res: Response) => {
         }
     }
 };
-
 
 
 const loginUser= async (req: Request, res: Response) => {
@@ -86,7 +83,7 @@ const loginUser= async (req: Request, res: Response) => {
 
               },process.env.JWT_SECRET,{expiresIn:'21days'});
             
-               const { email, password ,...others} = existingUser._doc;
+               const { email, password ,...others} = existingUser;
                res.status(200).json({...others,userToken});
             } catch (error) {
             console.error('Error logging in:', error);
