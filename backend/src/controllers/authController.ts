@@ -9,41 +9,54 @@ import { Request, Response } from "express";
 
 
 
-const createUser= async (req: Request, res: Response) => {
-        const user = req.body;
+const createUser = async (req: Request, res: Response) => {
+    const user = req.body;
 
     try {
+        // Check if the user already exists
         await admin.auth().getUserByEmail(user.email);
-        res.status(400).json({ message: 'Email already registered' });
+        // If user exists, return a 400 response
+        return res.status(400).json({ message: 'Email already registered' });
     } catch (error: any) {
+        // Handle the error if the user does not exist
         if (error.code === 'auth/user-not-found') {
             try {
-                const userResponse = await admin.auth().createUser({
+                // Create a new user using Firebase Admin SDK
+                const userRecord = await admin.auth().createUser({
                     email: user.email,
                     emailVerified: false,
                     password: user.password,
                     disabled: false
                 });
 
+                // Create a new user document in your database (e.g., MongoDB)
                 const newUser = new User({
                     username: user.username,
                     email: user.email,
-                    uid: userResponse.uid,
+                    uid: userRecord.uid,
                     password: CryptoTs.AES.encrypt(user.password, process.env.JWT_SECRET).toString(),
                     userType: 'Client',
                 });
 
+                // Save the new user document to the database
                 await newUser.save();
-                res.status(201).json({ message: 'User created successfully' });
-            } catch (error: any) {
-                res.status(500).json({ status: false, error: "Error creating a user" });
+
+                // Return a success response
+                return res.status(201).json({ message: 'User created successfully' });
+            } catch (createUserError: any) {
+                // Handle errors that occur during user creation
+                console.error('Error creating user:', createUserError);
+                return res.status(500).json({ status: false, error: 'Error creating a user' });
             }
         } else {
-            res.status(500).json({ status: false, error: "Unknown error occurred" });
+            // Handle other errors
+            console.error('Unknown error:', error);
+            return res.status(500).json({ status: false, error: 'Unknown error occurred' });
         }
     }
+};
 
-}; 
+
 
 const loginUser= async (req: Request, res: Response) => {
 

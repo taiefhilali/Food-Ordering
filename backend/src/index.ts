@@ -30,7 +30,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/auth",authRoute);
+app.use("/api/my/auth",authRoute);
 app.use("/api/my/user",myUserRoute);
 app.use("/api/my/restaurant",myRestaurantRoute);
 app.use("/api/restaurant",RestaurantRoute);
