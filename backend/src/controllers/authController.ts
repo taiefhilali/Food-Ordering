@@ -70,9 +70,9 @@ const loginUser= async (req: Request, res: Response) => {
             }
             const decryptedpassword =  CryptoTs.AES.decrypt(existingUser.password,process.env.SECRET);
             const decypted= decryptedpassword.toString( CryptoTs.enc.Utf8);
-            const isPasswordValid = await CryptoTs.compare( { password : req.body.password}, existingUser.password);
+            // const isPasswordValid = await CryptoTs.compare( { password : req.body.password}, existingUser.password);
 
-            if (!isPasswordValid && !decypted) {
+            if ( !decypted) {
                 return res.status(401).json({ message: 'Invalid credentials' });
             }
             
