@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
         unique: true
 
     },
+    username: { type: String },
+    uid: { type: String, required: true, unique: true },
+   
+    userType: { type: String, required: true, default:"Client", enum : ['Admin','Client','Vendor']},
 
     firstname: {
         type: String,
@@ -21,6 +25,8 @@ const userSchema = new mongoose.Schema({
 
     imageUrl: {
         type: String,
+        required: true,
+        default:"https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg"
     },
     isVerified: {
         type: Boolean,
@@ -29,10 +35,10 @@ const userSchema = new mongoose.Schema({
     verificationToken: {
         type: String
     },
-    password : {
+    password: {
         type: String,
-        required:true
+        required: true
     },
-});
+},{timestamps: true});
 const User = mongoose.model("User", userSchema);
 export default User;
