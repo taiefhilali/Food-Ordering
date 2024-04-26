@@ -26,13 +26,18 @@ const restaurantSchema = new mongoose.Schema({
     imageUrl:{type:String,required:true},
     lastUpdated:{
         type:Date,required:true 
-    }
+    },
+    isAvailable: { type:Boolean, default:true},
+    foods:[{ type:String, required:true}],
+    pickup:{ type:Boolean, required:true ,default:true},
+    rating:{ type:Number, min:1, max:5 },
+    ratingCount:{ type:String}
 
 
 
 
 
-});
+}, {timestamps:true});
 
 const Restaurant=mongoose.model("Restaurant",restaurantSchema);
 export default Restaurant;
