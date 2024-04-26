@@ -32,7 +32,7 @@ const verifyUserType = (
 ) => {
     // Access decoded user object from the request
     const decodedUser = (req as any).user;
-
+    verifyToken(req, res, () => {
     if (decodedUser && (decodedUser.userType === "Client" || decodedUser.userType === "Admin" || decodedUser.userType === "Vendor")) {
         next();
     } else {
@@ -40,6 +40,7 @@ const verifyUserType = (
             message: 'Invalid user type'
         });
     }
+    });
 };
 
 
