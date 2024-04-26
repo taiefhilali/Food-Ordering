@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { now } from "mongoose";
 
 
 
@@ -19,13 +19,15 @@ const restaurantSchema = new mongoose.Schema({
         required: true },
     estimatedDeliveryTime: {
         type: Number,
-         required: true
+        //  required: true
     },
-    cuisines:[{ type:String, required:true}],
+    cuisines:[{ type:String,
+        //  required:true
+        }],
     menuItems:[menuItemSchema],
-    imageUrl:{type:String,required:true},
+    imageUrl:{type:String,required:true,default:"https://d326fntlu7tb1e.cloudfront.net/uploads/5c2a9ca8-eb07-400b-b8a6-2acfab2a9ee2-image001.webp"},
     lastUpdated:{
-        type:Date,required:true 
+        type:Date,default:now()
     },
     isAvailable: { type:Boolean, default:true},
     foods:[{ type:String, required:true}],

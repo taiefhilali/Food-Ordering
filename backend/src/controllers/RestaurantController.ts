@@ -61,15 +61,15 @@ const deleteResataurant = async (req: Request, res: Response) => {
 
 const getRestaurant = async (req: Request, res: Response) => {
 
-  const restaurantId = req.params;
+  const restaurantId = req.params.id;
   try {
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
       return res.status(404).json({ status: true, message: "Restaurant not found " });
 
     }
-    res.status(200).json({ status: true, message: "Restaurant successfully retreived" });
-
+    res.status(200).json(restaurant);
+  
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: false, message: 'Error retreiving restaurant ' });
