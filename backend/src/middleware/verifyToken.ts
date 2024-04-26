@@ -1,36 +1,27 @@
-import { validateMyRestaurantRequest } from './validation';
 import { NextFunction, Request, Response } from 'express';
-const jwt = require('jsonwebtoken');
+import * as jwt from 'jsonwebtoken';
 
-type UserType = {
 
-    id: string;
-    username: string;
-    email: string;
-};
-const verifyToken = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-
+const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
-
 
     if (authHeader) {
         const token = authHeader.split(' ')[1];
-        jwt.verify(token, process.env.JWT_SECRET, async (err: any, user: any) => {
+
+        jwt.verify(token, process.env.JWT_SECRET as string, (err: jwt.VerifyErrors | null, decoded: any) => {
             if (err) {
-                return res.status(403).json({
-                    message: 'Invalid token'
-                });
+                return res.status(403).json({ message: 'Invalid token' });
             }
-            req.body = user;
+
+            // Attach the decoded user object to the request object
+            (req as any).user = decoded;
             next();
         });
+    } else {
+        // If no authorization header is present
+        return res.status(401).json({ message: 'Unauthorized' });
     }
-}
-
+};
 
 const verifyUserType = (
     req: Request,
@@ -40,7 +31,7 @@ const verifyUserType = (
 
     verifyToken(req, res, () => {
 
-        if (req.body.UserType === "Client" || req.body.UserType === "Admin" || req.body.UserType === "Vendor") {
+        if ((req as any).user.UserType === "Client" || (req as any).user.UserType === "Admin" || (req as any).user.UserType === "Vendor") {
             next();
 
         } else (
@@ -59,7 +50,7 @@ const verifyVendor = (
 
     verifyToken(req, res, () => {
 
-        if ( req.body.UserType === "Admin" || req.body.UserType === "Vendor") {
+        if ( (req as any).user .UserType === "Admin" || (req as any).user.UserType === "Vendor") {
             next();
 
         } else (
@@ -78,7 +69,7 @@ const verifyAdmin = (
 
     verifyToken(req, res, () => {
 
-        if ( req.body.UserType === "Admin") {
+        if ( (req as any).user.UserType === "Admin") {
             next();
 
         } else (

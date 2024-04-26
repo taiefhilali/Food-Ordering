@@ -2,21 +2,23 @@ import express from "express";
 import MyUserController from "../controllers/MyUserController";
 import User from "../models/User";
 import multer from "multer"
+const {  verifyUserType } = require('../middleware/verifyToken')
 
-const router=express.Router();
-const storage=multer.memoryStorage();
-const upload=multer({
-    storage:storage,
-    limits:{
-        fileSize: 5 * 1024 * 1024, //5MB
-    }
+
+const router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, //5MB
+  }
 })
 
 
-router.post("/",MyUserController.createCurrentUser);
+router.post("/", MyUserController.createCurrentUser);
 // Register endpoint (for user registration)
-router.post('/register', upload.single("imageFile"),MyUserController.registerUser);
-router.post("/login",MyUserController.loginUser);
+router.post('/register', upload.single("imageFile"), MyUserController.registerUser);
+router.post("/login", MyUserController.loginUser);
 // Email verification endpoint
 router.get('/verify/:token', async (req, res) => {
   const { token } = req.params;
@@ -33,6 +35,10 @@ router.get('/verify/:token', async (req, res) => {
 
   res.status(200).json({ message: 'Email verified successfully' });
 });
-router.get("/all",MyUserController.getUser);
+router.get("/:id", MyUserController.getUser);
+router.delete("/delete/:id", MyUserController.deleteUser);
+router.put("/update/:id", MyUserController.updateUser);
+
+
 
 export default router;

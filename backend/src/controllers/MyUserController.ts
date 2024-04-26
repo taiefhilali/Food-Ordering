@@ -120,48 +120,43 @@ const uploadimage = async (file: Express.Multer.File) => {
   return uploadResponse.url;
 }
 
+
 const getUser = async (req: Request, res: Response) => {
-
-
-  const userId = req.params.id;
+  const userId = req.params.id; // Get the user ID from the request parameters
 
   try {
-    const user = await User.findById({ _id: userId }, { password: 0, __v: 0, createdAt: 0, updatedAt: 0 });
-    response.status(200).json(user);
-
+    const user = await User.findById(userId, { password: 0, __v: 0, createdAt: 0, updatedAt: 0 });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ messge: 'error retreiving user', error });
+    res.status(500).json({ message: 'Error retrieving user', error });
   }
 };
 
 const deleteUser = async (req: Request, res: Response) => {
-
-  const userId = req.params.id;
+  const userId = req.params.id; // Get the user ID from the request parameters
 
   try {
     await User.findByIdAndDelete(userId);
-    response.status(200).json({ status: true, message: 'User Deleted Successfully !' });
-
+    res.status(200).json({ status: true, message: 'User Deleted Successfully !' });
   } catch (error) {
-    res.status(500).json({ messge: 'error deleting user', error });
+    res.status(500).json({ message: 'Error deleting user', error });
   }
 };
 
-const UpdateUser = async (req: Request, res: Response) => {
-
-  const userId = req.params.id;
+const updateUser = async (req: Request, res: Response) => {
+  const userId = req.params.id; // Get the user ID from the request parameters
 
   try {
-    await User.findByIdAndUpdate(userId, {
-      $set: req.body
-    }, { new: true });
-    response.status(200).json({ status: true, message: 'User Updated Successfully !' });
-
+    await User.findByIdAndUpdate(userId, { $set: req.body }, { new: true });
+    res.status(200).json({ status: true, message: 'User Updated Successfully !' });
   } catch (error) {
-    res.status(500).json({ messge: 'error deleting user', error });
+    res.status(500).json({ message: 'Error updating user', error });
   }
 };
 
 
 
-export default { createCurrentUser, registerUser, loginUser, getUser, deleteUser, UpdateUser};
+export default { createCurrentUser, registerUser, loginUser, getUser, deleteUser,updateUser};
