@@ -20,7 +20,7 @@ const addrestaurant = async (req: Request, res: Response) => {
 
 const serviceAvailability = async (req: Request, res: Response) => {
 
-  const restaurantId = req.params;
+  const restaurantId = req.params.id;
   try {
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
@@ -41,16 +41,16 @@ const serviceAvailability = async (req: Request, res: Response) => {
 
 const deleteResataurant = async (req: Request, res: Response) => {
 
-  const restaurantId = req.params;
+  const restaurantId = req.params.id;
   try {
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
       return res.status(404).json({ status: true, message: "Restaurant not found " });
-
     }
     await Restaurant.findByIdAndDelete(restaurantId);
-    await restaurant.save();
+    // No need to save the restaurant after deletion, as findByIdAndDelete handles it internally
     res.status(200).json({ status: true, message: "Restaurant successfully deleted" });
+    
 
   } catch (error) {
     console.log(error);
