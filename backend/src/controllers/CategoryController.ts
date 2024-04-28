@@ -68,7 +68,7 @@ const deleteCategory = async (req: Request, res: Response) => {
 const getAllCategories = async (req: Request, res: Response) => {
 
     try {
-        const categories = await Category.findAll({}, { __v: 0 });
+        const categories = await Category.find({}, { __v: 0 });
 
         res.status(200).json(categories);
 
