@@ -11,7 +11,7 @@ const {
 const {verifyToken, verifyAdmin} = require('../middleware/verifyToken')
 
 // Route to create a new category
-router.post('/',verifyToken,verifyAdmin, createCategory);
+router.post('/', createCategory);
 
 // Route to update a category by ID
 router.put('/:id',verifyToken,verifyAdmin, updateCategory);
