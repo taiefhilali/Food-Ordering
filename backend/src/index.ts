@@ -9,6 +9,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(()=> cons
 import RestaurantRoute from "./routes/RestaurantRoute";
 import ProductRoutes from "./routes/MyProductRoute";
 import authRoute from "./routes/authRoute";
+import categoriesRoute from "./routes/CategoriesRoute";
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -35,6 +36,7 @@ app.use("/api/my/user",myUserRoute);
 app.use("/api/my/restaurant",myRestaurantRoute);
 app.use("/api/restaurant",RestaurantRoute);
 app.use('/api/my/products', ProductRoutes);
+app.use('/api/my/categories', categoriesRoute);
 
 
 
