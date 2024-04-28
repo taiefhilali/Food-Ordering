@@ -9,58 +9,100 @@ const AddFood = async (req: Request, res: Response) => {
     const newFood = new Foods(req.body);
     try {
         await newFood.save();
-        res.status(201).json({ status: true, message: "Food created successfully" });
+        res.status(201).json({ status: true, message: "Food item added successfully" });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ status: false, message: 'Error creating Food' });
+        res.status(500).json({ status: false, message: 'Error:! Food item coud not be saved successfully' });
 
     }
 };
 
-const updateCategory = async (req: Request, res: Response) => {
 
-    const id = req.params.id;
-    const { title, value, imageUrl } = req.body;
+
+const getFoodById = async (req: Request, res: Response) => {
+
+    const foodId = req.params.id;
+    try {
+        const food = await Foods.findById(foodId);
+        if (!food) {
+            return res.status(404).json({ status: true, message: "food item  not found " });
+        }
+        res.status(200).json(food);
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ status: false, message: 'Error retreiving food item ' });
+
+    }
+};
+
+
+
+
+const getFoodByRestaurant = async (req: Request, res: Response) => {
+
+    const restaurantId = req.params.restaurantId;
+    try {
+        const foods = await Foods.find({ restauran: restaurantId });
+        if (!foods || foods.length === 0) {
+            return res.status(404).json({ status: true, message: " No Food items found " });
+        }
+        res.status(200).json(foods);
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ status: false, message: 'Error retreiving food item by restaurant ' });
+
+    }
+};
+
+
+
+const updateFood = async (req: Request, res: Response) => {
+
+    const foodId = req.params.id;
 
     try {
-        const updatedCategory = await Category.findByIdAndUpdate(
-            id, {
-            title: title,
-            value: value,
-            imageUrl: imageUrl
-        }, { new: true }
+        const updatedFoods = await Foods.findByIdAndUpdate(
+            foodId, req.body,
+            {
+                new: true,
+                runValidators: true
+            }
         );
 
-        if (!updatedCategory) {
-            res.status(404).json({ status: false, message: "Category not found " });
+        if (!updatedFoods) {
+            res.status(404).json({ status: false, message: "Food item not found " });
 
         }
 
-        res.status(200).json({ Category: updateCategory, status: true, message: "Category updated successfully" });
+        res.status(200).json({ Foods: updatedFoods, status: true, message: "Food item updated successfully" });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ status: false, message: 'Error updating Category' });
+        res.status(500).json({ status: false, message: 'Error updating Food item' });
 
     }
 };
 
 
-const deleteCategory = async (req: Request, res: Response) => {
+const deleteFoods = async (req: Request, res: Response) => {
 
-    const id = req.params.id;
+    const foodId = req.params.id;
     try {
-        const category = await Category.findById(id);
-        if (!category) {
-            return res.status(404).json({ status: true, message: "Category not found " });
+        const food = await Foods.findById(foodId);
+        if (!food) {
+            return res.status(404).json({ status: true, message: "food item not found " });
         }
-        await Category.findByIdAndDelete(id);
+        await Foods.findByIdAndDelete(foodId);
         // No need to save the restaurant after deletion, as findByIdAndDelete handles it internally
-        res.status(200).json({ status: true, message: "Category successfully deleted" });
+        res.status(200).json({ status: true, message: "Food item successfully deleted" });
 
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ status: false, message: 'Error deleting Category ' });
+        res.status(500).json({ status: false, message: 'Error deleting Food item ' });
 
     }
 };
@@ -79,29 +121,28 @@ const getAllCategories = async (req: Request, res: Response) => {
     }
 }
 
-const patchCategoryImage = async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const imageUrl = req.body;
+const foodAvailability = async (req: Request, res: Response) => {
+    const foodId = req.params.id;
+
     try {
-        const existingcategory = await Category.findById(id);
-        const updatedCategory = new Category({
+        const food = await Foods.findById(foodId);
+        if (!food) {
+            return res.status(404).json({ status: true, message: "food item not found " });
+        }
 
-            title: existingcategory.title,
-            value: existingcategory.value,
-            imageUrl: imageUrl
-        });
 
-        await updatedCategory.save();
-        res.status(200).json({ status: true, message: "Category image updated successfully" });
+        food.isAvailable = !food.isAvailable;
+        await food.save();
+        res.status(200).json({ status: true, message: "Food item is Available" });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ status: false, message: 'Error updating category image ' });
+        res.status(500).json({ status: false, message: 'Error of availability   ' });
 
     }
 }
 
-const getRandomCategories = async (req: Request, res: Response) => {
+const addFoodTag = async (req: Request, res: Response) => {
 
     try {
         let categories = await Category.aggregate([
@@ -124,5 +165,5 @@ const getRandomCategories = async (req: Request, res: Response) => {
 
 
 module.exports = {
-    AddFood, updateCategory, deleteCategory, getAllCategories, patchCategoryImage,getRandomCategories
+    AddFood, getFoodById, getFoodByRestaurant, deleteFoods, foodAvailability, updateFood,getAllCategories, patchCategoryImage, getRandomCategories
 }
