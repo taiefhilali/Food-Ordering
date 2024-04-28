@@ -7,7 +7,7 @@ const categorySchema = new mongoose.Schema({
   imageUrl: { type: String, required: true }, // Change the type to String
 
 
-},{timestamps:true});
+},{timestamps:false});
 
 
 module.exports = mongoose.model('Categories', categorySchema);
