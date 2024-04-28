@@ -108,17 +108,6 @@ const deleteFoods = async (req: Request, res: Response) => {
 };
 
 
-    try {
-        const categories = await Category.find({}, { __v: 0 });
-
-        res.status(200).json(categories);
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ status: false, message: 'Error retreiving categories ' });
-
-    }
-
 
 const foodAvailability = async (req: Request, res: Response) => {
     const foodId = req.params.id;
