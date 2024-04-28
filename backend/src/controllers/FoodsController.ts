@@ -107,7 +107,6 @@ const deleteFoods = async (req: Request, res: Response) => {
     }
 };
 
-const getAllCategories = async (req: Request, res: Response) => {
 
     try {
         const categories = await Category.find({}, { __v: 0 });
@@ -119,7 +118,7 @@ const getAllCategories = async (req: Request, res: Response) => {
         res.status(500).json({ status: false, message: 'Error retreiving categories ' });
 
     }
-}
+
 
 const foodAvailability = async (req: Request, res: Response) => {
     const foodId = req.params.id;
@@ -143,27 +142,95 @@ const foodAvailability = async (req: Request, res: Response) => {
 }
 
 const addFoodTag = async (req: Request, res: Response) => {
+    const foodId = req.params.id;
+    const { tag } = req.body;
+
 
     try {
-        let categories = await Category.aggregate([
-            { $match: { value: { $ne: 'more' } } },
-            { $sample: { size: 7 } }
-        ]);
 
-        const moreCategory = await Category.findOne({ value: "more" });
-        if (!moreCategory) {
-            categories.push(moreCategory);
+        const food = await Foods.findById(foodId);
+        if (!food) {
+            return res.status(404).json({ status: true, message: "food item not found " });
+        }
+        if (food.foodTags.includes(tag)) {
+            return res.status(404).json({ status: true, message: "tag already exists " });
+
 
         }
-        res.status(200).json(categories);
+
+        food.foodTags.push(tag);
+        await food.save();
+        res.status(200).json({ status: true, message: "tag added successfully" });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ status: false, message: 'Error getting random categories ' });
+        res.status(500).json({ status: false, message: 'Error getting food tag ' });
 
     }
 }
 
+const getRandomFoodByRating = async (req: Request, res: Response) => {
+    try {
+        let randomfoods = await Foods.aggregate([
+            { $match: { ratingCount: req.params.ratingCount } },
+            { $sample: { size: 5 } },
+            { $project: { _id: 0 } }
+        ]);
+
+
+        res.status(200).json(randomfoods);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ status: false, message: 'Error getting random food items by rating count ' });
+
+    }
+}
+
+const addFoodType = async (req: Request, res: Response) => {
+
+    const foodId = req.params.id;
+    const { foodTags } = req.body.foodTags
+    try {
+        const food = await Foods.findById(foodId);
+        if (!food) {
+            return res.status(404).json({ status: true, message: "food type not found " });
+        }
+
+        if (food.foodType.includes(foodTags)) {
+            return res.status(400).json({ status: true, message: "food type already exists  " });
+
+        }
+        food.foodType.push(foodTags);
+        await food.save();
+        res.status(200).json({ status: true, message: " Type added successfully" });
+    } catch (error) {
+        res.status(500).json({ status: false, message: 'Error aading  Food type ' });
+
+    }
+}
+
+const getRandomByCategory = async (req: Request, res: Response) => {
+
+
+    const { category } = req.params;
+    try {
+        let food = await Foods.aggregate([
+            { $match: { category: category } },
+            { $sample: { size: 10 } },
+        ]);
+
+        if (!food || food.length === 0) {
+
+            food = await Foods.aggregate([
+                { $sample: { size: 10 } }
+            ]);
+        }
+        res.status(200).json(food);
+    } catch (error) {
+        res.status(500).json({ status: false, message: 'Error getting random foodd  by category ' });
+
+    }
+}
 
 module.exports = {
-    AddFood, getFoodById, getFoodByRestaurant, deleteFoods, foodAvailability, updateFood,getAllCategories, patchCategoryImage, getRandomCategories
+    AddFood, getFoodById, getFoodByRestaurant, deleteFoods, foodAvailability, updateFood, addFoodTag, getRandomFoodByRating, addFoodType,getRandomByCategory
 }
