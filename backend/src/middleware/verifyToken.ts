@@ -72,7 +72,7 @@ const verifyAdmin = (
 
     verifyToken(req, res, () => {
 
-        if ( (req as any).user.UserType === "Admin") {
+        if ( (req as any).user.userType === "Admin") {
             next();
 
         } else (

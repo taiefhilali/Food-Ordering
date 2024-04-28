@@ -1,4 +1,4 @@
-const Category = require('../models/Categories')
+const Category = require('../models/Category')
 import { Request, Response, response } from "express"
 import { title } from "process";
 
