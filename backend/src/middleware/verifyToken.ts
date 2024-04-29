@@ -53,7 +53,7 @@ const verifyVendor = (
 
     verifyToken(req, res, () => {
 
-        if ( (req as any).user .UserType === "Admin" || (req as any).user.UserType === "Vendor") {
+        if ( (req as any).user .userType === "Admin" || (req as any).user.userType === "Vendor") {
             next();
 
         } else (

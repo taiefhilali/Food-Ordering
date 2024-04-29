@@ -44,7 +44,7 @@ const getFoodByRestaurant = async (req: Request, res: Response) => {
 
     const restaurantId = req.params.restaurantId;
     try {
-        const foods = await Foods.find({ restauran: restaurantId });
+        const foods = await Foods.find({ restaurant: restaurantId });
         if (!foods || foods.length === 0) {
             return res.status(404).json({ status: true, message: " No Food items found " });
         }
@@ -159,8 +159,10 @@ const addFoodTag = async (req: Request, res: Response) => {
 
 const getRandomFoodByRating = async (req: Request, res: Response) => {
     try {
+              // Parse the rating parameter to a number
+              const rating = parseFloat(req.params.rating);
         let randomfoods = await Foods.aggregate([
-            { $match: { ratingCount: req.params.ratingCount } },
+            { $match: { rating: rating } },
             { $sample: { size: 5 } },
             { $project: { _id: 0 } }
         ]);
@@ -177,7 +179,7 @@ const getRandomFoodByRating = async (req: Request, res: Response) => {
 const addFoodType = async (req: Request, res: Response) => {
 
     const foodId = req.params.id;
-    const { foodTags } = req.body.foodTags
+    const { foodTags } = req.body;
     try {
         const food = await Foods.findById(foodId);
         if (!food) {
