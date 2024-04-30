@@ -59,7 +59,7 @@ const loginUser= async (req: Request, res: Response) => {
 
         try {
 
-            const existingUser = await User.findOne({ email : req.body.email},{__v:0,updatedAt:0,createdAt:0,email:0});
+            const existingUser = await User.findOne({ email : req.body.email},{__v:0,updatedAt:0,createdAt:0});
 
             if (!existingUser) {
                 return res.status(404).json({ message: 'User not found' });

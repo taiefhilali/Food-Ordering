@@ -21,12 +21,17 @@ const userSchema = new mongoose.Schema({
     lastname: {
         type: String,
     },
-
+    // profile: {
+    //     type: String,
+    //     required: true,
+    //     default:"https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg"
+    // },
 
     imageUrl: {
         type: String,
         required: true,
         default:"https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg"
+
     },
     isVerified: {
         type: Boolean,

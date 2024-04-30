@@ -25,37 +25,32 @@ const addPrductToCart = async (req: Request, res: Response) => {
                 quantity: req.body.quantity,
             });
             await newCart.save();
-            count= await Cart.countDocuments({ userId });
+            count = await Cart.countDocuments({ userId });
         }
         res.status(200).json({ status: true, count: count });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ status: false, message: 'Error creating Category' });
+        res.status(500).json({ status: false, message: 'Error adding Product to cart ' });
 
     }
 };
 
 const removePrductFromCart = async (req: Request, res: Response) => {
 
-    const id = req.params.id;
-    const { title, value, imageUrl } = req.body;
+    const itemId = req.params.productId;
+    const userId = (req as any).user.id;
 
     try {
-        const updatedCategory = await Category.findByIdAndUpdate(
-            id, {
-            title: title,
-            value: value,
-            imageUrl: imageUrl
-        }, { new: true }
-        );
+        const cartItem = await Cart.findById(itemId);
 
-        if (!updatedCategory) {
-            res.status(404).json({ status: false, message: "Category not found " });
+        if (!cartItem) {
+            res.status(404).json({ status: false, message: "cartItem not found " });
 
         }
 
-        res.status(200).json({ Category: updateCategory, status: true, message: "Category updated successfully" });
+        await Cart.findByIdAndDelete({ _id: itemId })
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ status: false, message: 'Error updating Category' });
