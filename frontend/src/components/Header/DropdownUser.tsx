@@ -12,11 +12,21 @@ const DropdownUser = () => {
   useEffect(() => {
     // Retrieve user details from local storage
     const storedUserDetails = localStorage.getItem('registeredUser');
+    // const loggedin=localStorage.getItem('loggedInUser');
     if (storedUserDetails) {
       setUserDetails(JSON.parse(storedUserDetails));
     }
+    // if (loggedin) {
+    //   setUserDetails(JSON.parse(loggedin));
+    // }
   }, []);
 
+
+  const handleLogout = () => {
+    // Perform logout logic here
+    // For example: Clear user details from local storage and redirect to login page
+    window.location.href = '/authentication'; // Redirect to login page
+  };
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!dropdown.current) return;
@@ -47,7 +57,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {`${userDetails.firstname} ${userDetails.lastname}`}
+          {`${userDetails.firstname} ${userDetails.lastname}`}
           </span>
           <span className="block text-xs">Vendor</span>
         </span>
@@ -102,8 +112,12 @@ const DropdownUser = () => {
           </li>
           {/* Other List Items */}
         </ul>
-        {/* Logout Button */}
-      </div>
+        <button
+          onClick={handleLogout}
+          className="text-sm font-medium text-red-500 hover:text-red-600 py-3 px-6 duration-300 ease-in-out transition-colors"
+        >
+          Logout
+        </button>      </div>
     </div>
   );
 };

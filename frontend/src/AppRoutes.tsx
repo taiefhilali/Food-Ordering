@@ -23,7 +23,7 @@ import DisplayProductsPage from './pages/Products/DisplayProducts'; // Import th
 import ProductDetailContainer from './components/Products/ProductDetailContainer '
 import ManageProductPage from './pages/Products/ManageProductPage'
 import AuthPage from './pages/Authentication/AuthPage'
-
+import RegisterForm from './forms/manage-user-form/RegisterForm'
 const AppRoutes = () => {
   return (
     <Routes>
@@ -188,6 +188,15 @@ const AppRoutes = () => {
           <>
             <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
             <SignIn />
+          </>
+        }
+      />
+       <Route
+        path="/register"
+        element={
+          <>
+            <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+            <RegisterForm />
           </>
         }
       />

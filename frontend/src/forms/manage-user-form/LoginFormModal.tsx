@@ -6,6 +6,8 @@ import { TERipple } from "tw-elements-react";
 import { Button } from '@mui/material';
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import Auth from '@/components/Authentication/Auth';
+import { Navigation } from 'lucide-react';
+import RegistrationForm from './RegisterForm'; // Import the registration form
 
 const LoginFormModal = () => {
 
@@ -17,7 +19,16 @@ const LoginFormModal = () => {
         email: '',
         password: '',
     });
+    const [showRegisterModal, setShowRegisterModal] = useState(false);
     const navigate = useNavigate();
+
+    const handleOpenRegisterModal = () => {
+        setShowRegisterModal(true);
+    };
+
+    const handleCloseRegisterModal = () => {
+        setShowRegisterModal(false);
+    };
     const handleSignIn = () => {
         // Redirect to the dashboard after signing in
         window.location.href = '/dashboards';
@@ -48,14 +59,16 @@ const LoginFormModal = () => {
         setErrors(updatedErrors);
         return isValid;
     };
-
+    const handleRegister = async () => {
+        window.location.href = '/register'
+    }
     const handleLogin = async () => {
         if (!validateForm()) {
             return;
         }
 
         try {
-            const response = await axios.post('http://localhost:7000/api/my/user/login', {
+            const response = await axios.post('http://localhost:7000/api/my/auth/login', {
                 email,
                 password,
             });
@@ -151,19 +164,40 @@ const LoginFormModal = () => {
                                 </div>
 
                                 <TERipple rippleColor="light" className="w-full">
-                                    <button
-                                        type="button"
-                                        onClick={handleLogin}
-                                        className="inline-block w-full rounded bg-orange-300 y px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                                        style={{ borderRadius: "1.5rem" }} // Adjust button border radius
-                                    >
-                                        Log in
-                                    </button>
+                                    <div className="flex gap-4"> {/* Adjust the gap as needed */}
+                                        <button
+                                            type="button"
+                                            onClick={handleLogin}
+                                            className="inline-block w-full rounded bg-orange-300 y px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                                            style={{ borderRadius: "1.5rem" }} // Adjust button border radius
+                                        >
+                                            Log in
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onClick={handleOpenRegisterModal}
+                                            className="inline-block w-full rounded bg-orange-300 y px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                                            style={{ borderRadius: "1.5rem" }} // Adjust button border radius
+                                        >
+                                            Register
+                                        </button>
+                                    </div>
                                 </TERipple>
                             </form>
-
+                            {showRegisterModal && ( <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="fixed inset-0 bg-black opacity-50"></div>
+                    <div className="bg-white p-8 rounded shadow-lg z-50">
+                        <button className="absolute top-0 right-0 p-3" onClick={handleCloseRegisterModal}>
+                            {/* Add close icon here */}
+                            Close
+                        </button>
+                        <RegistrationForm />
+                    </div>
+                </div>
+            )}
                             <div className="my-6 flex items-center justify-center border-t border-neutral-300">
-                                <p className="mx-4 text-sm font-semibold text-center text-neutral-500">OR</p>
+                                <p className="mx-4 text-sm font-semibold text-center text-neutral-500"> Or Use Clerk Authentication</p>
                             </div>
 
                             {/* Social login buttons */}
@@ -178,14 +212,15 @@ const LoginFormModal = () => {
         Continue with Clerk Authentication
       </Button> */}
 
-                                <Button onClick={handleSignIn} className="finline-block w-full rounded bg-orange-300 y px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                                <Button className="finline-block w-full rounded bg-orange-300 y px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+                                    {/* <h6> Sign In with Clerk</h6 > */}
                                     <div>
                                         <SignedOut >
                                             <SignInButton />
 
                                         </SignedOut>
                                         <SignedIn>
-                                            {/* <UserButton /> */}
+                                            <UserButton />
                                         </SignedIn> </div>
                                     <Auth></Auth>
 

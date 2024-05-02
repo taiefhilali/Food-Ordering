@@ -16,7 +16,7 @@ interface Product {
 const getUserIdFromSession = () => {
   // Implement this function to retrieve the user ID from the session
   // For example, if you are using localStorage:
-  const userInfo = localStorage.getItem("userInfo");
+  const userInfo = localStorage.getItem("registeredUser");
   if (userInfo) {
     const userObj = JSON.parse(userInfo);
     return userObj._id;
