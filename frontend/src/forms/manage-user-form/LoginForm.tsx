@@ -11,7 +11,12 @@ const LoginForm = () => {
         email: email,
         password: password,
       });
-
+      const { userToken } = response.data;
+      console.log('====================================');
+      console.log(response.data);
+      console.log('====================================');
+      // Store the token in localStorage
+      localStorage.setItem('token', userToken);
       console.log('User logged in successfully:', response.data);
 
       // Save user data to localStorage upon successful login
