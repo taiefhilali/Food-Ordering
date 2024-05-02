@@ -24,6 +24,7 @@ import ProductDetailContainer from './components/Products/ProductDetailContainer
 import ManageProductPage from './pages/Products/ManageProductPage'
 import AuthPage from './pages/Authentication/AuthPage'
 import RegisterForm from './forms/manage-user-form/RegisterForm'
+import CategoryComponent from './components/Categories/CategoryComponent'
 const AppRoutes = () => {
   return (
     <Routes>
@@ -156,6 +157,15 @@ const AppRoutes = () => {
           </>
         }
       />
+       <Route
+        path="/categories"
+        element={
+          <>
+            <CategoryComponent />
+          </>
+        }
+      />
+      
       <Route
         path="/chart"
         element={
