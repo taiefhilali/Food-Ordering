@@ -1,7 +1,4 @@
-import  { useState } from 'react';
-import styled from 'styled-components';
-import RegistrationForm from '../../forms/manage-user-form/RegisterForm';
-import LoginForm from '../../forms/manage-user-form/LoginForm';
+
 import LoginFormModal from '@/forms/manage-user-form/LoginFormModal';
 
 const AuthPage = () => {

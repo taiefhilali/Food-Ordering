@@ -6,7 +6,7 @@ const {
     deleteCategory,
     getAllCategories,
     patchCategoryImage,
-    getRandomCategories
+    getRandomCategories,getDistinctCategories
 } = require('../controllers/categoryController');
 const {verifyToken, verifyAdmin} = require('../middleware/verifyToken')
 
@@ -27,5 +27,7 @@ router.post('/image/:id',verifyToken,verifyAdmin, patchCategoryImage);
 
 // Route to get random categories
 router.get('/random',getRandomCategories);
+router.get('/categories', getDistinctCategories);
+
 
 export default router;

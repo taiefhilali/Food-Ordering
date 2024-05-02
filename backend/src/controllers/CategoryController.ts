@@ -121,8 +121,16 @@ const getRandomCategories = async (req: Request, res: Response) => {
 
     }
 }
-
-
+const getDistinctCategories = async (req: Request, res: Response) => {
+    try {
+      // Fetch distinct category titles from the database
+      const distinctCategories = await Category.distinct('title');
+      res.json(distinctCategories); // Send distinct category titles as JSON response
+    } catch (error) {
+      console.error('Error fetching distinct categories:', error);
+      res.status(500).json({ error: 'Server error' });
+    }
+  };
 module.exports = {
-    createCategory, updateCategory, deleteCategory, getAllCategories, patchCategoryImage,getRandomCategories
+    createCategory,getDistinctCategories, updateCategory, deleteCategory, getAllCategories, patchCategoryImage,getRandomCategories
 }

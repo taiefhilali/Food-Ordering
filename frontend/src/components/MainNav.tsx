@@ -1,8 +1,5 @@
 import { Button } from './ui/button';
-import { SignInButton, SignedIn, SignedOut, useClerk, UserButton } from "@clerk/clerk-react";
-import Auth from './Authentication/Auth';
-import AuthPage from '@/pages/Authentication/AuthPage';
-import LoginFormModal from '@/forms/manage-user-form/LoginFormModal';
+
 import { useNavigate } from 'react-router-dom';
 
 export default function MainNav() {

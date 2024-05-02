@@ -67,7 +67,7 @@ const RegistrationForm: React.FC = () => {
       formDataWithImage.append('firstname', firstname);
       formDataWithImage.append('lastname', lastname);
       formDataWithImage.append('password', password);
-      formDataWithImage.append('imageFile', imageFile!);
+      formDataWithImage.append('image', imageFile!);
 
       const response = await fetch('http://localhost:7000/api/my/user/register', {
         method: 'POST',
