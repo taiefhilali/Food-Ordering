@@ -78,7 +78,7 @@ const LoginFormModal = () => {
             localStorage.setItem('loggedInUser', JSON.stringify({ email }));
 
             setShowModal(false);
-            navigate('/dashboards');
+            navigate('/display-products');
 
             Swal.fire({
                 icon: 'success',

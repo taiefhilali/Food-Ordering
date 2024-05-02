@@ -87,13 +87,12 @@ const RegistrationForm: React.FC = () => {
                 title: 'Registration Successful!',
                 text: 'Please verify your email address.',
                 showCancelButton: true,
-                
                 // confirmButtonText: 'Go to Email Verification',
             }).then((result) => {
-                // if (result.isConfirmed) {
+                if (result.isConfirmed) {
                     // Redirect to email verification page
                     window.location.href = '/authetication';
-                // }
+                }
             });
         } catch (error) {
             console.error('Error registering user:', error);
