@@ -12,13 +12,13 @@ const DropdownUser = () => {
   useEffect(() => {
     // Retrieve user details from local storage
     const storedUserDetails = localStorage.getItem('registeredUser');
-    // const loggedin=localStorage.getItem('loggedInUser');
+    const loggedin=localStorage.getItem('loggedInUser');
     if (storedUserDetails) {
       setUserDetails(JSON.parse(storedUserDetails));
     }
-    // if (loggedin) {
-    //   setUserDetails(JSON.parse(loggedin));
-    // }
+    if (loggedin) {
+      setUserDetails(JSON.parse(loggedin));
+    }
   }, []);
 
 
@@ -57,7 +57,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-          {`${userDetails.firstname} ${userDetails.lastname}`}
+          {`${userDetails.firstname } ${userDetails.lastname}`}
           </span>
           <span className="block text-xs">Vendor</span>
         </span>

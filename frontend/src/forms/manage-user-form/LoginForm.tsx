@@ -7,26 +7,29 @@ const LoginForm = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:7000/api/my/user/login', {
+      const response = await axios.post('http://localhost:7000/api/my/auth/login', {
         email: email,
         password: password,
       });
-      const { userToken } = response.data;
-      console.log('====================================');
-      console.log(response.data);
-      console.log('====================================');
-      // Store the token in localStorage
-      localStorage.setItem('token', userToken);
-      console.log('User logged in successfully:', response.data);
-
-      // Save user data to localStorage upon successful login
-      localStorage.setItem('loggedInUser', JSON.stringify({ email: email, password: password }));
-
-      // Optionally, you can redirect the user to another page upon successful login
+      if (response && response.data) {
+        const userToken = response.data.userToken;
+        console.log('User token:', userToken);
+        // Store the token in localStorage
+        localStorage.setItem('userToken', userToken);
+  
+        // Save user email to localStorage upon successful login
+        localStorage.setItem('loggedInUser', JSON.stringify({ email: email }));
+        
+        console.log('User logged in successfully:', response.data);
+        // Optionally, you can redirect the user to another page upon successful login
+      } else {
+        console.log('Empty response data');
+      }
     } catch (error) {
-      console.log('Error logging in');
+      console.log('Error logging in:', error);
     }
   };
+  
 
   return (
     <div>

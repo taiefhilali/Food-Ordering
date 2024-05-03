@@ -3,7 +3,6 @@ import User from "../models/User";
 const nodemailer = require('nodemailer');
 import cloudinary from "cloudinary";
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 
 
@@ -86,66 +85,32 @@ const registerUser = async (req: Request, res: Response) => {
 };
 
 // Login user
-// const loginUser = async (req: Request, res: Response) => {
-//   const { email, password } = req.body;
-
-//   try {
-//     const existingUser = await User.findOne({ email });
-
-//     if (!existingUser) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     if (!password || !existingUser.password) {
-//       return res.status(400).json({ message: 'Invalid request: Missing password' });
-//     }
-
-//     const isPasswordValid = await bcrypt.compare(password, existingUser.password);
-
-//     if (!isPasswordValid) {
-//       return res.status(401).json({ message: 'Invalid credentials' });
-//     }
-
-//     res.status(200).json(existingUser.toObject());
-//   } catch (error) {
-//     console.error('Error logging in:', error);
-//     res.status(500).json({ message: 'Error logging in' });
-//   }
-// };
-
 const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
   try {
-      const existingUser = await User.findOne({ email: req.body.email }, { __v: 0, updatedAt: 0, createdAt: 0 });
+    const existingUser = await User.findOne({ email });
 
-      if (!existingUser) {
-          return res.status(404).json({ message: 'User not found' });
-      }
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-      if (!existingUser.password) {
-          return res.status(400).json({ message: 'Invalid request: Missing password' });
-      }
-      const decryptedPassword = bcrypt.AES.decrypt(existingUser.password, process.env.SECRET);
-      const decrypted = decryptedPassword.toString(bcrypt.enc.Utf8);
+    if (!password || !existingUser.password) {
+      return res.status(400).json({ message: 'Invalid request: Missing password' });
+    }
 
-      if (!decrypted) {
-          return res.status(401).json({ message: 'Invalid credentials' });
-      }
+    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
 
-      const userToken = jwt.sign({
-          id: existingUser._id,
-          userType: existingUser.userType,
-          email: existingUser.email
-      }, process.env.JWT_SECRET, { expiresIn: '21days' });
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
 
-      // Send the token back to the frontend
-      const { email, password, ...others } = existingUser;
-      res.status(200).json({ ...others, userToken });
+    res.status(200).json(existingUser.toObject());
   } catch (error) {
-      console.error('Error logging in:', error);
-      res.status(500).json({ message: 'Error logging in' });
+    console.error('Error logging in:', error);
+    res.status(500).json({ message: 'Error logging in' });
   }
 };
-
 
 const uploadimage = async (file: Express.Multer.File) => {
   const image = file;
