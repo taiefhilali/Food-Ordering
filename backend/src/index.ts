@@ -11,6 +11,7 @@ import ProductRoutes from "./routes/MyProductRoute";
 import authRoute from "./routes/authRoute";
 import categoriesRoute from "./routes/CategoriesRoute";
 import foodRoute from "./routes/FoodRoute";
+import TableRoute from "./routes/TableRoute";
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -39,6 +40,7 @@ app.use("/api/restaurant",RestaurantRoute);
 app.use('/api/my/products', ProductRoutes);
 app.use('/api/my/categories', categoriesRoute);
 app.use('/api/my/foods', foodRoute);
+app.use('/api/my/table', TableRoute);
 
 
 

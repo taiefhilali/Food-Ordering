@@ -1,9 +1,9 @@
 import express from "express";
-import {generateCode,processCode} from "../controllers/TableController";
+import tableController from "../controllers/TableController";
 const router=express.Router();
 
-router.get('/generate-qr-code', generateCode);
-router.post('/process-qr-code',processCode);
+router.get('/generate-qr-code',tableController.generateCode);
+router.post('/process-qr-code',tableController.processCode);
 
 
 export default router;

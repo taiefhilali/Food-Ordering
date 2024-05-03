@@ -1,9 +1,5 @@
-import Restaurant from "../models/Restaurant";
 import { Request, Response } from "express";
-import cloudinary from "cloudinary";
-import mongoose from "mongoose";
-const Product = require('../models/product');
-import { Error } from 'mongoose'; // Import the Error type from mongoose
+import Restaurant from "../models/Restaurant";
 const qr = require('qrcode'); // Import the qrcode package
 
 // Endpoint to generate QR code
@@ -26,8 +22,18 @@ const generateCode = async (req: Request, res: Response) => {
 // Endpoint to process scanned QR code
 const processCode = async (req: Request, res: Response) => {
     const { tableNumber, restaurantId } = req.body;
-    // Process scanned data (e.g., update database)
-    // Placeholder response
-    res.status(200).json({ message: 'Scanned QR code processed successfully', tableNumber, restaurantId });
-}
-module.exports = {generateCode,processCode};
+    try {
+     
+        await Restaurant.findOneAndUpdate(
+            { _id: restaurantId },
+            { $set: { tableNumber: tableNumber } }
+        );
+        // Placeholder response
+        res.status(200).json({ message: 'Scanned QR code processed successfully', tableNumber, restaurantId });
+    } catch (error) {
+        console.error('Error processing QR code:', error);
+        res.status(500).json({ error: 'An error occurred while processing the QR code' });
+    }
+};
+
+export default {generateCode,processCode};
