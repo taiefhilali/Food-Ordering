@@ -6,7 +6,8 @@ const {
     fetchUserCart,
     clearUserCart,
     getCartCount,
-    decrementProductQty
+    decrementProductQty,
+    getAllCarts
 } = require('../controllers/CartController');
 const { verifyToken, verifyUserType } = require('../middleware/verifyToken')
 
@@ -17,7 +18,7 @@ router.delete('/delete/:id', verifyToken, verifyUserType,removePrductFromCart);
 router.get('/', verifyToken, verifyUserType,fetchUserCart);
 router.get('/count', verifyToken, verifyUserType,getCartCount);
 router.delete('/count/:id', verifyToken, verifyUserType,clearUserCart);
-
+router.get('/carts',getAllCarts);
 
 
 

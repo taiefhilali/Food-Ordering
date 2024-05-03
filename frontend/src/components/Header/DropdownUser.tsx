@@ -12,13 +12,13 @@ const DropdownUser = () => {
   useEffect(() => {
     // Retrieve user details from local storage
     const storedUserDetails = localStorage.getItem('registeredUser');
-    const loggedin=localStorage.getItem('loggedInUser');
+    // const loggedin=localStorage.getItem('loggedInUser');
     if (storedUserDetails) {
       setUserDetails(JSON.parse(storedUserDetails));
     }
-    if (loggedin) {
-      setUserDetails(JSON.parse(loggedin));
-    }
+    // if (loggedin) {
+    //   setUserDetails(JSON.parse(loggedin));
+    // }
   }, []);
 
 

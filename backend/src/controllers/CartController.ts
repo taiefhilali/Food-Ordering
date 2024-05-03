@@ -76,6 +76,17 @@ const removePrductFromCart = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+const getAllCarts = async () => {
+    try {
+      // Fetch all carts from the database
+      const carts = await Cart.find();
+      return carts;
+    } catch (error) {
+      // Handle errors
+      console.error('Error fetching carts:', error);
+      throw error;
+    }
+  };
 const fetchUserCart = async (req: Request, res: Response) => {
     const userId = (req as any).user.id;
 
@@ -175,5 +186,5 @@ const decrementProductQty = async (req: Request, res: Response) => {
 
 
 module.exports = {
-    addPrductToCart, getCartCount, removePrductFromCart, fetchUserCart, clearUserCart, decrementProductQty
+    addPrductToCart, getAllCarts,getCartCount, removePrductFromCart, fetchUserCart, clearUserCart, decrementProductQty
 }
