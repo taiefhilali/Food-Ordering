@@ -2,7 +2,14 @@ const Cart = require('../models/Cart')
 import { Request, Response, response } from "express"
 import { title } from "process";
 
-
+interface CartItem {
+    productId: string;
+    additives: string[];
+    instructions: string;
+    totalPrice: number;
+    quantity: number;
+    // Add more properties if needed
+  }
 
 const addPrductToCart = async (req: Request, res: Response) => {
     const userId = (req as any).user.id;
@@ -38,99 +45,126 @@ const addPrductToCart = async (req: Request, res: Response) => {
 
 const removePrductFromCart = async (req: Request, res: Response) => {
 
-    const itemId = req.params.productId;
+    const userId = (req as any).user.id;
+
+  try {
+    const { id } = req.params;
+
+    // Find the user's cart
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+
+    // Find the index of the product in the cart
+    const productIndex = cart.products.findIndex((item: CartItem) => item.productId === id);
+
+    if (productIndex === -1) {
+      return res.status(404).json({ error: 'Product not found in cart' });
+    }
+
+    // Remove the product from the cart
+    cart.products.splice(productIndex, 1);
+
+    // Save the updated cart
+    await cart.save();
+
+    res.status(200).json({ message: 'Product removed from cart successfully' });
+  } catch (error) {
+    console.error('Error removing product from cart:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+const fetchUserCart = async (req: Request, res: Response) => {
     const userId = (req as any).user.id;
 
     try {
-        const cartItem = await Cart.findById(itemId);
-
-        if (!cartItem) {
-            res.status(404).json({ status: false, message: "cartItem not found " });
-
+        // Find the user's cart
+        const cart = await Cart.findOne({ userId });
+    
+        if (!cart) {
+          return res.status(404).json({ error: 'Cart not found' });
         }
-
-        await Cart.findByIdAndDelete({ _id: itemId })
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ status: false, message: 'Error updating Category' });
-
-    }
-};
-const fetchUserCart = async (req: Request, res: Response) => {
-
-    try {
-        const categories = await Category.find({}, { __v: 0 });
-
-        res.status(200).json(categories);
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ status: false, message: 'Error retreiving categories ' });
-
-    }
+    
+        res.status(200).json(cart);
+      } catch (error) {
+        console.error('Error fetching user cart:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
 }
 
 const clearUserCart = async (req: Request, res: Response) => {
 
-    const id = req.params.id;
+    const userId = (req as any).user.id;
     try {
-        const category = await Category.findById(id);
-        if (!category) {
-            return res.status(404).json({ status: true, message: "Category not found " });
-        }
-        await Category.findByIdAndDelete(id);
-        // No need to save the restaurant after deletion, as findByIdAndDelete handles it internally
-        res.status(200).json({ status: true, message: "Category successfully deleted" });
-
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ status: false, message: 'Error deleting Category ' });
-
-    }
+        // Find and delete the user's cart
+        await Cart.findOneAndDelete({ userId });
+    
+        res.status(200).json({ message: 'Cart cleared successfully' });
+      } catch (error) {
+        console.error('Error clearing user cart:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
 };
 
 const getCartCount = async (req: Request, res: Response) => {
 
-    const id = req.params.id;
+    const userId = (req as any).user.id;
     try {
-        const category = await Category.findById(id);
-        if (!category) {
-            return res.status(404).json({ status: true, message: "Category not found " });
+        // Find the user's cart
+        const cart = await Cart.findOne({ userId });
+    
+        if (!cart) {
+          return res.status(404).json({ error: 'Cart not found' });
         }
-        await Category.findByIdAndDelete(id);
-        // No need to save the restaurant after deletion, as findByIdAndDelete handles it internally
-        res.status(200).json({ status: true, message: "Category successfully deleted" });
-
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ status: false, message: 'Error deleting Category ' });
-
-    }
+    
+        const count = cart.products.reduce((acc: number, curr: { quantity: number }) => acc + curr.quantity, 0);
+    
+        res.status(200).json({ count });
+      } catch (error) {
+        console.error('Error getting cart count:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
 };
 
 
 const decrementProductQty = async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const imageUrl = req.body;
+    const userId = (req as any).user.id;
+
     try {
-        const existingcategory = await Category.findById(id);
-        const updatedCategory = new Category({
-
-            title: existingcategory.title,
-            value: existingcategory.value,
-            imageUrl: imageUrl
-        });
-
-        await updatedCategory.save();
-        res.status(200).json({ status: true, message: "Category image updated successfully" });
-
+      // Get product ID from request body
+      const { productId } = req.body;
+  
+      // Find the user's cart
+      const cart = await Cart.findOne({ userId });
+  
+      if (!cart) {
+        return res.status(404).json({ error: 'Cart not found' });
+      }
+  
+      // Find the index of the product in the cart
+      const productIndex = cart.products.findIndex((item: CartItem) => item.productId === productId);
+  
+      if (productIndex === -1) {
+        return res.status(404).json({ error: 'Product not found in cart' });
+      }
+  
+      // Decrement the quantity of the product
+      if (cart.products[productIndex].quantity > 1) {
+        cart.products[productIndex].quantity -= 1;
+      } else {
+        // Remove the product if the quantity is 1
+        cart.products.splice(productIndex, 1);
+      }
+  
+      // Save the updated cart
+      await cart.save();
+  
+      res.status(200).json({ message: 'Product quantity decremented successfully' });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ status: false, message: 'Error updating category image ' });
-
+      console.error('Error decrementing product quantity:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
 }
 

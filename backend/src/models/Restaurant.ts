@@ -33,7 +33,7 @@ const restaurantSchema = new mongoose.Schema({
     foods:[{ type:String, required:true}],
     pickup:{ type:Boolean, required:true ,default:true},
     rating:{ type:Number, min:1, max:5 },
-    ratingCount:{ type:String}
+    ratingCount:{ type:Number,default: 0 }
 
 
 

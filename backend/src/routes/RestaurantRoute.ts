@@ -18,5 +18,6 @@ router.delete("/:id",verifyToken,verifyUserType, RestaurantController.deleteResa
 
 // Route to get details of a restaurant
 router.get("/:id",verifyToken,verifyUserType, RestaurantController.getRestaurant);
+router.post('/restaurants/:id/ratings',RestaurantController.addratingtorestaurant)
 
 export default router;

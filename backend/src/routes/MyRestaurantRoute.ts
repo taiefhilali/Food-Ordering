@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer"
 import MyRestaurantController from "../controllers/MyRestaurantController";
+
 import {validateMyRestaurantRequest} from "../middleware/validation"
 const router=express.Router();
 const storage=multer.memoryStorage();
@@ -15,7 +16,7 @@ const upload=multer({
 // /api/my/restaurant
 router.post("/",upload.single("imageFile"), validateMyRestaurantRequest,MyRestaurantController.createMyRestaurant);
 router.get("/",MyRestaurantController.getMyRestaurant);
-router.get("/",MyRestaurantController.getAllRestaurant);
+router.get("/restaurants",MyRestaurantController.getAllRestaurant);
 router.put("/",validateMyRestaurantRequest,MyRestaurantController.updateMyRestaurant)
 // API endpoint to fetch restaurant data
 router.get('/:id',MyRestaurantController.getCuisinesStat);

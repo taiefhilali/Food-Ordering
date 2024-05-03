@@ -1,5 +1,6 @@
 import { Request, Response, response } from "express"
 import Restaurant from "../models/Restaurant";
+import mongoose from "mongoose";
 
 
 
@@ -16,8 +17,41 @@ const addrestaurant = async (req: Request, res: Response) => {
 
   }
 };
+const addratingtorestaurant = async (req: Request, res: Response) => {
+  const { id } = req.params; // Extract the restaurant ID from the request parameters
+  const { rating } = req.body; // Extract the submitted rating from the request body
 
+  // Validate if the id parameter is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: 'Invalid restaurant ID' });
+  }
 
+  try {
+    // Find the restaurant by ID
+    const restaurant = await Restaurant.findById(id);
+
+    if (!restaurant) {
+      return res.status(404).json({ error: 'Restaurant not found' });
+    }
+
+    // Check if restaurant.rating is not undefined before updating
+    if (restaurant.rating !== undefined && restaurant.ratingCount !== null) {
+      const currentRating = restaurant.rating || 0; // Provide a default value if restaurant.rating is undefined
+      restaurant.rating = (currentRating * restaurant.ratingCount + rating) / (restaurant.ratingCount + 1);
+      restaurant.ratingCount += 1;
+    } else {
+      console.error('Error: restaurant.rating is undefined or restaurant.ratingCount is null');
+    }
+
+    // Save the updated restaurant data
+    await restaurant.save();
+
+    return res.status(200).json({ message: 'Rating submitted successfully', restaurant });
+  } catch (error) {
+    console.error('Error submitting rating:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
 const serviceAvailability = async (req: Request, res: Response) => {
 
   const restaurantId = req.params.id;
@@ -50,7 +84,7 @@ const deleteResataurant = async (req: Request, res: Response) => {
     await Restaurant.findByIdAndDelete(restaurantId);
     // No need to save the restaurant after deletion, as findByIdAndDelete handles it internally
     res.status(200).json({ status: true, message: "Restaurant successfully deleted" });
-    
+
 
   } catch (error) {
     console.log(error);
@@ -69,7 +103,7 @@ const getRestaurant = async (req: Request, res: Response) => {
 
     }
     res.status(200).json(restaurant);
-  
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: false, message: 'Error retreiving restaurant ' });
@@ -221,5 +255,5 @@ const searchRestaurant = async (req: Request, res: Response) => {
 // }
 
 export default {
-  searchRestaurant,addrestaurant, serviceAvailability, deleteResataurant, getRestaurant
+  searchRestaurant, addrestaurant, addratingtorestaurant, serviceAvailability, deleteResataurant, getRestaurant
 };
