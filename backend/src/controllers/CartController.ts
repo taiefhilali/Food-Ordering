@@ -81,13 +81,16 @@ const fetchUserCart = async (req: Request, res: Response) => {
 
     try {
         // Find the user's cart
-        const cart = await Cart.findOne({ userId });
+        const cart = await Cart.findOne({ userId }).populate({
+            path:"ProductId",
+            select:"title imageUrl restaurant rating ratingCount"
+        });
     
         if (!cart) {
           return res.status(404).json({ error: 'Cart not found' });
         }
     
-        res.status(200).json(cart);
+        res.status(200).json({statue:true,cart:cart});
       } catch (error) {
         console.error('Error fetching user cart:', error);
         res.status(500).json({ error: 'Internal server error' });
