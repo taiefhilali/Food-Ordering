@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {
-    addPrductToCart,
+    addProductToCart,
     removePrductFromCart,
     fetchUserCart,
     clearUserCart,
@@ -12,7 +12,7 @@ const {
 const { verifyToken, verifyUserType } = require('../middleware/verifyToken')
 
 
-router.post('/', verifyToken, verifyUserType,addPrductToCart);
+router.post('/', verifyToken, verifyUserType,addProductToCart);
 router.post('/decrement', verifyToken, verifyUserType,decrementProductQty);
 router.delete('/delete/:id', verifyToken, verifyUserType,removePrductFromCart);
 router.get('/', verifyToken, verifyUserType,fetchUserCart);

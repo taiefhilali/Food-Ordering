@@ -1,46 +1,109 @@
+import { Product } from './../../../frontend/src/types/product';
 const Cart = require('../models/Cart')
 import { Request, Response, response } from "express"
 import { title } from "process";
+import Cart, { CartItem } from '../models/Cart'; // Adjust the import based on your file structure
 
-interface CartItem {
-    productId: string;
-    additives: string[];
-    instructions: string;
-    totalPrice: number;
-    quantity: number;
-    // Add more properties if needed
-  }
+// interface CartItem {
+//     productId: string;
+//     additives: string[];
+//     instructions: string;
+//     totalPrice: number;
+//     quantity: number;
+//   }
 
-const addPrductToCart = async (req: Request, res: Response) => {
-    const userId = (req as any).user.id;
-    const { productId, totalPrice, quantity } = req.body;
-    let count;
-    try {
-        const existingProduct = await Cart.findOne({ userId, productId })
-        count = await Cart.countDocuments({ userId });
-        if (existingProduct) {
-            existingProduct.totalPrice += totalPrice;
-            existingProduct.quantity += 1;
-            await existingProduct.save();
-        } else {
-            const newCart = new Cart({
-                userId: userId,
-                productId: req.body.productId,
-                additives: req.body.additives,
-                instructions: req.body.instructions,
-                totalPrice: req.body.totalPrice,
-                quantity: req.body.quantity,
-            });
-            await newCart.save();
-            count = await Cart.countDocuments({ userId });
-        }
-        res.status(200).json({ status: true, count: count });
+//   const addProductToCart = async (req: Request, res: Response) => {
+//     const userId = (req as any).user.id;
+//     const { productId, totalPrice, quantity } = req.body;
+//     let count;
 
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ status: false, message: 'Error adding Product to cart ' });
+//     try {
+//         console.log('Received request body:', req.body);
 
+//         const existingProduct = await Cart.findOne({ userId, productId });
+//         count = await Cart.countDocuments({ userId });
+
+//         if (existingProduct) {
+//             existingProduct.totalPrice += totalPrice;
+//             existingProduct.quantity += 1;
+//             await existingProduct.save();
+//             console.log('Existing product updated:', existingProduct);
+//         } else {
+//             const newCart = new Cart({
+//                 userId: userId,
+//                 productId: productId, // Ensure that productId is being assigned correctly here
+//                 additives: req.body.additives,
+//                 instruction: req.body.instructions,
+//                 totalPrice: req.body.totalPrice,
+//                 quantity: req.body.quantity,
+//             });
+//             await newCart.save();
+//             console.log('New product added to cart:', newCart);
+//             count = await Cart.countDocuments({ userId });
+//         }
+
+//         res.status(200).json({ status: true, count: count });
+
+//     } catch (error) {
+//         console.error('Error adding product to cart:', error);
+//         res.status(500).json({ status: false, message: 'Error adding Product to cart ' });
+//     }
+// };
+
+const addProductToCart = async (req: Request, res: Response) => {
+  const userId = (req as any).user.id;
+  const { productId, totalPrice, quantity, additives, instruction } = req.body;
+
+  try {
+    console.log('Received request body:', req.body);
+
+    // Find the user's cart
+    let userCart = await Cart.findOne({ userId });
+
+    if (userCart) {
+      // Check if the product already exists in the cart
+      const existingProductIndex = userCart.items.findIndex((item: CartItem) => item.productId.toString() === productId);
+
+      if (existingProductIndex > -1) {
+        // If the product exists, update its quantity and total price
+        userCart.items[existingProductIndex].quantity += quantity;
+        userCart.items[existingProductIndex].totalPrice += totalPrice;
+      } else {
+        // If the product doesn't exist, add it to the cart
+        userCart.items.push({
+          productId,
+          additives,
+          instruction,
+          quantity,
+          totalPrice,
+          imageUrl: req.body.imageUrl, // Assuming the imageUrl is provided in the request body
+        });
+      }
+    } else {
+      // If the user doesn't have a cart yet, create one
+      userCart = new Cart({
+        userId,
+        items: [{
+          productId,
+          additives,
+          instruction,
+          quantity,
+          totalPrice,
+          imageUrl: req.body.imageUrl,
+        }],
+      });
     }
+
+    await userCart.save();
+    console.log('Cart updated:', userCart);
+
+    const itemCount = userCart.items.length;
+
+    res.status(200).json({ status: true, count: itemCount });
+  } catch (error) {
+    console.error('Error adding product to cart:', error);
+    res.status(500).json({ status: false, message: 'Error adding product to cart' });
+  }
 };
 
 const removePrductFromCart = async (req: Request, res: Response) => {
@@ -91,9 +154,8 @@ const fetchUserCart = async (req: Request, res: Response) => {
     const userId = (req as any).user.id;
 
     try {
-        // Find the user's cart
         const cart = await Cart.findOne({ userId }).populate({
-            path:"ProductId",
+            path:"productId",
             select:"title imageUrl restaurant rating ratingCount"
         });
     
@@ -186,5 +248,5 @@ const decrementProductQty = async (req: Request, res: Response) => {
 
 
 module.exports = {
-    addPrductToCart, getAllCarts,getCartCount, removePrductFromCart, fetchUserCart, clearUserCart, decrementProductQty
+  addProductToCart, getAllCarts,getCartCount, removePrductFromCart, fetchUserCart, clearUserCart, decrementProductQty
 }
