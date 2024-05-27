@@ -1,5 +1,6 @@
-const express = require('express');
+import express, { Request, Response } from 'express';
 const router = express.Router();
+
 const {
     addProductToCart,
     removePrductFromCart,
@@ -7,7 +8,8 @@ const {
     clearUserCart,
     getCartCount,
     decrementProductQty,
-    getAllCarts
+    getAllCarts,
+    updateCartItemQuantity
 } = require('../controllers/CartController');
 const { verifyToken, verifyUserType } = require('../middleware/verifyToken')
 
@@ -18,8 +20,8 @@ router.delete('/delete/:id', verifyToken, verifyUserType,removePrductFromCart);
 router.get('/', verifyToken, verifyUserType,fetchUserCart);
 router.get('/count', verifyToken, verifyUserType,getCartCount);
 router.delete('/count/:id', verifyToken, verifyUserType,clearUserCart);
-router.get('/carts',getAllCarts);
-
+router.get('/carts',verifyToken, verifyUserType,getAllCarts);
+router.patch('/my/cart/:itemId', verifyToken, verifyUserType, updateCartItemQuantity);
 
 
 export default router;
