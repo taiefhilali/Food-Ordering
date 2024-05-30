@@ -9,7 +9,7 @@ const {
     getCartCount,
     decrementProductQty,
     getAllCarts,
-    updateCartItemQuantity
+    updateCartItemQuantity,payment
 } = require('../controllers/CartController');
 const { verifyToken, verifyUserType } = require('../middleware/verifyToken')
 
@@ -23,5 +23,8 @@ router.delete('/count/:id', verifyToken, verifyUserType,clearUserCart);
 router.get('/carts',verifyToken, verifyUserType,getAllCarts);
 router.patch('/my/cart/:itemId', verifyToken, verifyUserType, updateCartItemQuantity);
 
+// payment with stripe
+
+router.post('/payments', verifyToken, verifyUserType, payment);
 
 export default router;

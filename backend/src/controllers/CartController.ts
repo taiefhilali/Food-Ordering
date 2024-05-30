@@ -3,6 +3,7 @@ const Cart = require('../models/Cart')
 import { Request, Response, response } from "express"
 import mongoose from 'mongoose';
 import { title } from "process";
+import { stripe } from '..';
 interface CartItem {
   productId: string;
   additives: string[]; // Adjust the type as per your actual data structure
@@ -17,43 +18,43 @@ const addProductToCart = async (req: Request, res: Response) => {
   const { productId, totalPrice, quantity, additives, instruction } = req.body;
 
   try {
-      console.log('Received request body:', req.body);
+    console.log('Received request body:', req.body);
 
-      // Find an existing cart item by userId, productId, and additives
-      let existingProduct = await Cart.findOne({ 
-          userId, 
-          productId, 
-          additives 
+    // Find an existing cart item by userId, productId, and additives
+    let existingProduct = await Cart.findOne({
+      userId,
+      productId,
+      additives
+    });
+
+    if (existingProduct) {
+      // Update existing product in the cart
+      existingProduct.totalPrice += parseFloat(totalPrice);
+      existingProduct.quantity += parseInt(quantity, 10);
+      existingProduct.instruction = instruction || existingProduct.instruction;
+
+      await existingProduct.save();
+      console.log('Existing product updated:', existingProduct);
+    } else {
+      const newCart = new Cart({
+        userId: userId,
+        productId: productId,
+        additives: additives || [],
+        instruction: instruction || '',
+        totalPrice: parseFloat(totalPrice),
+        quantity: parseInt(quantity, 10),
       });
+      await newCart.save();
+      console.log('New product added to cart:', newCart);
+    }
 
-      if (existingProduct) {
-          // Update existing product in the cart
-          existingProduct.totalPrice += parseFloat(totalPrice);
-          existingProduct.quantity += parseInt(quantity, 10);
-          existingProduct.instruction = instruction || existingProduct.instruction;
+    const count = await Cart.countDocuments({ userId });
 
-          await existingProduct.save();
-          console.log('Existing product updated:', existingProduct);
-      } else {
-          const newCart = new Cart({
-              userId: userId,
-              productId: productId,
-              additives: additives || [],
-              instruction: instruction || '',
-              totalPrice: parseFloat(totalPrice),
-              quantity: parseInt(quantity, 10),
-          });
-          await newCart.save();
-          console.log('New product added to cart:', newCart);
-      }
-
-      const count = await Cart.countDocuments({ userId });
-
-      res.status(200).json({ status: true, count: count });
+    res.status(200).json({ status: true, count: count });
 
   } catch (error) {
-      console.error('Error adding product to cart:', error);
-      res.status(500).json({ status: false, message: 'Error adding Product to cart ' });
+    console.error('Error adding product to cart:', error);
+    res.status(500).json({ status: false, message: 'Error adding Product to cart ' });
   }
 };
 
@@ -155,7 +156,7 @@ const addProductToCart = async (req: Request, res: Response) => {
 
 const removePrductFromCart = async (req: Request, res: Response) => {
 
-    const userId = (req as any).user.id;
+  const userId = (req as any).user.id;
 
   try {
     const { id } = req.params;
@@ -197,59 +198,59 @@ const getAllCarts = async (req: Request, res: Response) => {
     console.error('Error fetching cart items:', error);
     res.status(500).json({ status: false, message: 'Error fetching cart items' });
   }
-  };
+};
 const fetchUserCart = async (req: Request, res: Response) => {
-    const userId = (req as any).user.id;
+  const userId = (req as any).user.id;
 
-    try {
-        const cart = await Cart.findOne({ userId }).populate({
-            path:"productId",
-            select:"title imageUrl restaurant rating ratingCount"
-        });
-    
-        if (!cart) {
-          return res.status(404).json({ error: 'Cart not found' });
-        }
-    
-        res.status(200).json({statue:true,cart:cart});
-      } catch (error) {
-        console.error('Error fetching user cart:', error);
-        res.status(500).json({ error: 'Internal server error' });
-      }
+  try {
+    const cart = await Cart.findOne({ userId }).populate({
+      path: "productId",
+      select: "title imageUrl restaurant rating ratingCount"
+    });
+
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+
+    res.status(200).json({ statue: true, cart: cart });
+  } catch (error) {
+    console.error('Error fetching user cart:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 }
 
 const clearUserCart = async (req: Request, res: Response) => {
 
-    const userId = (req as any).user.id;
-    try {
-        // Find and delete the user's cart
-        await Cart.findOneAndDelete({ userId });
-    
-        res.status(200).json({ message: 'Cart cleared successfully' });
-      } catch (error) {
-        console.error('Error clearing user cart:', error);
-        res.status(500).json({ error: 'Internal server error' });
-      }
+  const userId = (req as any).user.id;
+  try {
+    // Find and delete the user's cart
+    await Cart.findOneAndDelete({ userId });
+
+    res.status(200).json({ message: 'Cart cleared successfully' });
+  } catch (error) {
+    console.error('Error clearing user cart:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 const getCartCount = async (req: Request, res: Response) => {
 
-    const userId = (req as any).user.id;
-    try {
-        // Find the user's cart
-        const cart = await Cart.findOne({ userId });
-    
-        if (!cart) {
-          return res.status(404).json({ error: 'Cart not found' });
-        }
-    
-        const count = cart.products.reduce((acc: number, curr: { quantity: number }) => acc + curr.quantity, 0);
-    
-        res.status(200).json({ count });
-      } catch (error) {
-        console.error('Error getting cart count:', error);
-        res.status(500).json({ error: 'Internal server error' });
-      }
+  const userId = (req as any).user.id;
+  try {
+    // Find the user's cart
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+
+    const count = cart.products.reduce((acc: number, curr: { quantity: number }) => acc + curr.quantity, 0);
+
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error('Error getting cart count:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 
@@ -259,21 +260,21 @@ const getCartCount = async (req: Request, res: Response) => {
 //     try {
 //       // Get product ID from request body
 //       const { productId } = req.body;
-  
+
 //       // Find the user's cart
 //       const cart = await Cart.findOne({ userId });
-  
+
 //       if (!cart) {
 //         return res.status(404).json({ error: 'Cart not found' });
 //       }
-  
+
 //       // Find the index of the product in the cart
 //       const productIndex = cart.products.findIndex((item: CartItem) => item.productId === productId);
-  
+
 //       if (productIndex === -1) {
 //         return res.status(404).json({ error: 'Product not found in cart' });
 //       }
-  
+
 //       // Decrement the quantity of the product
 //       if (cart.products[productIndex].quantity > 1) {
 //         cart.products[productIndex].quantity -= 1;
@@ -281,10 +282,10 @@ const getCartCount = async (req: Request, res: Response) => {
 //         // Remove the product if the quantity is 1
 //         cart.products.splice(productIndex, 1);
 //       }
-  
+
 //       // Save the updated cart
 //       await cart.save();
-  
+
 //       res.status(200).json({ message: 'Product quantity decremented successfully' });
 //     } catch (error) {
 //       console.error('Error decrementing product quantity:', error);
@@ -293,42 +294,42 @@ const getCartCount = async (req: Request, res: Response) => {
 // }
 
 const decrementProductQty = async (req: Request, res: Response) => {
-    const userId = (req as any).user.id;
+  const userId = (req as any).user.id;
 
-    try {
-        // Get product ID from request body
-        const { productId } = req.body;
+  try {
+    // Get product ID from request body
+    const { productId } = req.body;
 
-        // Find the user's cart
-        const cart = await Cart.findOne({ userId });
+    // Find the user's cart
+    const cart = await Cart.findOne({ userId });
 
-        if (!cart) {
-            return res.status(404).json({ error: 'Cart not found' });
-        }
-
-        // Find the index of the product in the cart
-        const productIndex = cart.products.findIndex((item: CartItem) => item.productId.toString() === productId);
-
-        if (productIndex === -1) {
-            return res.status(404).json({ error: 'Product not found in cart' });
-        }
-
-        // Decrement the quantity of the product
-        if (cart.products[productIndex].quantity > 1) {
-            cart.products[productIndex].quantity -= 1;
-        } else {
-            // Remove the product if the quantity is 1
-            cart.products.splice(productIndex, 1);
-        }
-
-        // Save the updated cart
-        await cart.save();
-
-        res.status(200).json({ message: 'Product quantity decremented successfully' });
-    } catch (error) {
-        console.error('Error decrementing product quantity:', error);
-        res.status(500).json({ error: 'Internal server error' });
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
     }
+
+    // Find the index of the product in the cart
+    const productIndex = cart.products.findIndex((item: CartItem) => item.productId.toString() === productId);
+
+    if (productIndex === -1) {
+      return res.status(404).json({ error: 'Product not found in cart' });
+    }
+
+    // Decrement the quantity of the product
+    if (cart.products[productIndex].quantity > 1) {
+      cart.products[productIndex].quantity -= 1;
+    } else {
+      // Remove the product if the quantity is 1
+      cart.products.splice(productIndex, 1);
+    }
+
+    // Save the updated cart
+    await cart.save();
+
+    res.status(200).json({ message: 'Product quantity decremented successfully' });
+  } catch (error) {
+    console.error('Error decrementing product quantity:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 const updateCartItemQuantity = async (req: Request, res: Response) => {
@@ -364,8 +365,29 @@ const updateCartItemQuantity = async (req: Request, res: Response) => {
   }
 };
 
+const payment = async (req: Request, res: Response) => {
+
+  try {
+    //get amount
+    const { totalPrice } = req.body;
+    //validation
+if(!totalPrice){
+  return res.status(404).json({ status: false, message: 'Invalid amount' });
+}
+    const { client_secret } = await stripe.paymentIntents.create({
+      amount: Number(totalPrice),
+      currency: 'usd'
+    })
+    res.status(200).json({ status: true, message: 'Payment completed successfully' });
+
+  } catch (error) {
+    console.error(' Payment Error :', error);
+    res.status(500).json({ status: false, message: 'Error in payment    ' });
+  }
+};
+
 
 
 module.exports = {
-  addProductToCart, getAllCarts,getCartCount, removePrductFromCart, fetchUserCart, clearUserCart, decrementProductQty,updateCartItemQuantity
+  addProductToCart, payment, getAllCarts, getCartCount, removePrductFromCart, fetchUserCart, clearUserCart, decrementProductQty, updateCartItemQuantity
 }
