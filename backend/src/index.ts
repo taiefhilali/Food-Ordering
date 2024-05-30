@@ -13,7 +13,10 @@ import categoriesRoute from "./routes/CategoriesRoute";
 import foodRoute from "./routes/FoodRoute";
 import TableRoute from "./routes/TableRoute";
 import CartRoute from "./routes/CartRoute";
+import Stripe from 'stripe';
 
+
+//cloudinary configuration
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key:process.env.CLOUDINARY_API_KEY,
@@ -23,6 +26,12 @@ cloudinary.config({
 
 })
 
+
+// stripe configuration 
+const stripe = new Stripe('sk_test_51PM7rN03qVjqSurgaFDcUo3Y1GrtFJoYzoiHZZRIWvNhaIec7DrXqNPLFuori2tTwAjBPEQwHF4UOuLBIptnxx4m00OwswBdhb');
+
+
+//firebase configuration
 const admin= require('firebase-admin');
 const serviceAccount = require('../firebaseprivkey.json');
 admin.initializeApp({
