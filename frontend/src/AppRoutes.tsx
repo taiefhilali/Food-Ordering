@@ -25,6 +25,7 @@ import ManageProductPage from './pages/Products/ManageProductPage'
 import AuthPage from './pages/Authentication/AuthPage'
 import RegisterForm from './forms/manage-user-form/RegisterForm'
 import CategoryComponent from './components/Categories/CategoryComponent'
+import ProductTable from './pages/Products/ProductTable'
 const AppRoutes = () => {
   return (
     <Routes>
@@ -56,11 +57,20 @@ const AppRoutes = () => {
 
         }
       />
+      //vendor
       <Route
         path="/display-products"
         element={<DisplayProductsPage />} // Use DisplayProductsPage component as the element
       />
+//Admin
+      <Route
+        path="/adminproducts"
+        element={
 
+          <ProductTable />
+
+        }
+      />
       <Route
         path="/forgot-password"
         element={
@@ -113,7 +123,7 @@ const AppRoutes = () => {
           </>
         }
       />
-      
+
       <Route
         path="/details"
         element={
@@ -153,11 +163,11 @@ const AppRoutes = () => {
         path="/add-product"
         element={
           <>
-            < ManageProductPage/>
+            < ManageProductPage />
           </>
         }
       />
-       <Route
+      <Route
         path="/categories"
         element={
           <>
@@ -165,7 +175,7 @@ const AppRoutes = () => {
           </>
         }
       />
-      
+
       <Route
         path="/chart"
         element={
@@ -201,7 +211,7 @@ const AppRoutes = () => {
           </>
         }
       />
-       <Route
+      <Route
         path="/register"
         element={
           <>

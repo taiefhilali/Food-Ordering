@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from '../../components/Products/ProductCard';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import '../../assets/css/ProductMenu.css'; // Import your CSS file
 
 type Product = {
-    _id: string;
-    name: string;
-    description: string;
-    price: number;
-    category: string;
-    quantity: number;
-    imageUrl: string; // Add imageUrl field to the Product type
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  quantity: number;
+  imageUrl: string;
+};
 
-  };
 const ProductDisplayPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -36,9 +37,9 @@ const ProductDisplayPage: React.FC = () => {
 
   const renderProductCards = (groupedProducts: { [category: string]: Product[] }) => {
     return Object.keys(groupedProducts).map(category => (
-      <div key={category}>
-        <h2>{category}</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <div key={category} className="category-section">
+        <h2 className="category-title">{category}</h2>
+        <div className="product-grid">
           {groupedProducts[category].map(product => (
             <ProductCard key={product._id} product={product} />
           ))}
@@ -49,11 +50,11 @@ const ProductDisplayPage: React.FC = () => {
 
   return (
     <DefaultLayout>
-    <div>
-    <Breadcrumb pageName="Display Products" />
-
-      {renderProductCards(groupProductsByCategory(products))}
-    </div> </DefaultLayout>
+      <Breadcrumb pageName="Display Products" />
+      <div className="product-display-page">
+        {renderProductCards(groupProductsByCategory(products))}
+      </div>
+    </DefaultLayout>
   );
 };
 
