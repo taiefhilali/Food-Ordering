@@ -22,11 +22,17 @@ import DetailsSection from './forms/manage-restaurant-form/DetailsSection'
 import DisplayProductsPage from './pages/Products/DisplayProducts'; // Import the DisplayProductsPage component
 import ProductDetailContainer from './components/Products/ProductDetailContainer '
 import ManageProductPage from './pages/Products/ManageProductPage'
-import AuthPage from './pages/Authentication/AuthPage'
 import RegisterForm from './forms/manage-user-form/RegisterForm'
 import CategoryComponent from './components/Categories/CategoryComponent'
 import ProductTable from './pages/Products/ProductTable'
+import LoginFormModal from './forms/manage-user-form/LoginFormModal'
+import { useState } from 'react'
 const AppRoutes = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <Routes>
 
@@ -45,7 +51,8 @@ const AppRoutes = () => {
         path="/authentication"
         element={
           <>
-            <AuthPage />
+            <LoginFormModal closeModal={closeModal} />
+
           </>
         }
       />
@@ -211,15 +218,17 @@ const AppRoutes = () => {
           </>
         }
       />
+
       <Route
         path="/register"
         element={
           <>
-            <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-            <RegisterForm />
+            <RegisterForm closeModal={closeModal} />
+
           </>
         }
       />
+
       <Route
         path="/auth/signup"
         element={
