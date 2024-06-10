@@ -6,13 +6,13 @@ import mongoose from "mongoose";
 
 const getMyRestaurant = async (req: Request, res: Response) => {
   try {
-    const { email } = req.query; // Access email from query parameters
+    const userId = (req as any).user.id;
 
-    if (!email) {
-      return res.status(400).json({ message: "Email is required" });
+    if (!userId) {
+      return res.status(400).json({ message: "try to check your log in " });
     }
 
-    const restaurants = await Restaurant.find({ email: email });
+    const restaurants = await Restaurant.find({ user: userId });
 
     if (restaurants.length === 0) {
       return res.status(404).json({ message: "Restaurant not found" });

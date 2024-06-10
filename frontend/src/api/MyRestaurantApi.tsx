@@ -59,12 +59,12 @@ const getUserIdFromSession = () => {
 export const useGetMyRestaurant = () => {
   const fetchData = async () => {
     try {
-      const userId = getUserIdFromSession();
+      const userId = localStorage.getItem('userId');
 
       if (!userId) {
-        console.error("User is not authenticated");
-        return;
+        throw new Error('No token found');
       }
+    
 
       const response = await axios.get('http://localhost:7000/api/my/restaurant', {
         params: { userId }
@@ -93,33 +93,32 @@ export const useGetMyRestaurant = () => {
 };
 
 export const useCreateMyRestaurant = () => {
-  const { session } = useClerk();
-
-  const createMyRestaurantRequest = async (
-    restaurantFormData: FormData
-  ): Promise<Restaurant> => {
+  const createMyRestaurantRequest = async (restaurantFormData: FormData): Promise<Restaurant> => {
     try {
-      if (!session) {
-        throw new Error("User is not authenticated");
+      // Get the token from local storage
+      const token = localStorage.getItem('userToken');
+
+      if (!token) {
+        throw new Error('No token found');
       }
 
-      const accessToken = session.getToken;
-
-      const response = await fetch(`http://localhost:7000/api/my/restaurant`, {
-        method: "POST",
+      const response = await fetch('http://localhost:7000/api/my/restaurant', {
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
         },
         body: restaurantFormData,
       });
 
+      console.log('Response:', response);
+
       if (!response.ok) {
-        throw new Error("Failed to create restaurant");
+        throw new Error('Failed to create restaurant');
       }
 
       return response.json();
     } catch (error) {
-      console.error("Error creating restaurant:", error);
+      console.error('Error creating restaurant:', error);
       throw error;
     }
   };
@@ -129,21 +128,71 @@ export const useCreateMyRestaurant = () => {
     isLoading,
     isSuccess,
     error,
-  } = useMutation(createMyRestaurantRequest);
-
-  if (isSuccess) {
-    toast.success("Restaurant created!");
-  }
-
-  if (error) {
-    toast.error("Unable to create restaurant");
-  }
+  } = useMutation(createMyRestaurantRequest, {
+    onSuccess: () => {
+      toast.success('Restaurant created!');
+    },
+    onError: () => {
+      toast.error('Unable to create restaurant');
+    },
+  });
 
   return { createRestaurant, isLoading, isSuccess, error };
 };
+// export const useCreateMyRestaurant = () => {
+//   const { session } = useClerk();
+
+//   const createMyRestaurantRequest = async (
+//     restaurantFormData: FormData
+//   ): Promise<Restaurant> => {
+//     try {
+//       if (!session) {
+//         throw new Error("User is not authenticated");
+//       }
+
+//       const accessToken = session.getToken;
+
+//       const response = await fetch(`http://localhost:7000/api/my/restaurant`, {
+//         method: "POST",
+//         headers: {
+//           Authorization: `Bearer ${accessToken}`,
+//         },
+//         body: restaurantFormData,
+//       });
+//       console.log('=============response data add=======================');
+//       console.log('User logged in successfully:', response.data);
+//       console.log('====================================');
+//       if (!response.ok) {
+//         throw new Error("Failed to create restaurant");
+//       }
+
+//       return response.json();
+//     } catch (error) {
+//       console.error("Error creating restaurant:", error);
+//       throw error;
+//     }
+//   };
+
+//   const {
+//     mutate: createRestaurant,
+//     isLoading,
+//     isSuccess,
+//     error,
+//   } = useMutation(createMyRestaurantRequest);
+
+//   if (isSuccess) {
+//     toast.success("Restaurant created!");
+//   }
+
+//   if (error) {
+//     toast.error("Unable to create restaurant");
+//   }
+
+//   return { createRestaurant, isLoading, isSuccess, error };
+// };
 
 
-export const useUpdateRestaurant=()=>{
+export const useUpdateRestaurant = () => {
   const { session } = useClerk();
   const updateMyRestaurantRequest = async (
     restaurantFormData: FormData
@@ -162,20 +211,20 @@ export const useUpdateRestaurant=()=>{
         },
         body: restaurantFormData,
       });
-console.log( response)
-      if (!response.ok) { 
+      console.log(response)
+      if (!response.ok) {
         throw new Error("Failed to update restaurant");
       }
 
       return response.json();
-     
+
     } catch (error) {
       console.error("Error update restaurant:", error);
       throw error;
     }
   };
   const {
-    mutate:updateRestaurant,
+    mutate: updateRestaurant,
     isLoading,
     isSuccess,
     error,

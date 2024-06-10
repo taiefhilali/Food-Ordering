@@ -16,7 +16,7 @@ const { verifyToken, verifyUserType } = require('../middleware/verifyToken')
 
 // /api/my/restaurant,
 router.post("/",upload.single("imageFile"),verifyToken,verifyUserType,validateMyRestaurantRequest,MyRestaurantController.createMyRestaurant);
-router.get("/",MyRestaurantController.getMyRestaurant);
+router.get("/",verifyToken,verifyUserType,MyRestaurantController.getMyRestaurant);
 router.get("/restaurants",MyRestaurantController.getAllRestaurant);
 router.put("/",validateMyRestaurantRequest,MyRestaurantController.updateMyRestaurant)
 // API endpoint to fetch restaurant data

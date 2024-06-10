@@ -321,49 +321,39 @@ import Button from '@mui/material/Button';
 
 
 
-const getUserIdFromSession = () => {
-  // Implement this function to retrieve the user ID from the session
-  // For example, if you are using localStorage:
-  const userInfo = localStorage.getItem("userInfo");
-  if (userInfo) {
-    const userObj = JSON.parse(userInfo);
-    return userObj._id;
-  }
-  return null;
-};
-
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null); // Specify the type for error state
 
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const loggedInUser = localStorage.getItem('loggedInUser');
-        if (!loggedInUser) {
-          console.error('No logged in user found in localStorage');
-          return;
+        const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem('userToken');
+
+        if (!userId || !token) {
+          throw new Error('No userId or token found');
         }
-    
-        const user = JSON.parse(loggedInUser);
-        const email = user?.email;
-    
-        if (!email) {
-          console.error('No email found for the logged in user');
-          return;
+
+        const response = await axios.get('http://localhost:7000/api/my/restaurant', {
+          params: { userId },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.data) {
+          throw new Error("Failed to get restaurant");
         }
-    
-        const response = await axios.get(`http://localhost:7000/api/my/restaurant?email=${email}`);
-        if (response && response.data) {
-          console.log('Restaurants:', response.data);
-        setRestaurants(response.data);
-      } else {
-        console.log('No restaurants found');
+
+        const fetchedRestaurants: Restaurant[] = response.data;
+        setRestaurants(fetchedRestaurants); // Set fetched restaurants into state
+
+      } catch (error) {
+        console.error("Error fetching restaurant data:", error);
+        setError("error"); // Set error state to display in UI
       }
-    } catch (error) {
-      console.error('Error fetching restaurants:', error);
-    }
-  };
+    };
 
     fetchRestaurants();
   }, []);
