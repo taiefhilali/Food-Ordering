@@ -75,16 +75,16 @@ const LoginFormModal = () => {
 
             console.log('User logged in successfully:', response.data);
             const userToken = response.data.userToken;
-                        const userId = response.data._id;  // Access the user ID directly
-            
-                        if (!userId) {
-                            console.error('User ID is not found in the response data');
-                            return;
-                        }
-            
-                        // Store the token and userId in localStorage
-                        localStorage.setItem('userToken', userToken);
-                        localStorage.setItem('userId', userId);
+            const userId = response.data._id;  // Access the user ID directly
+
+            if (!userId) {
+                console.error('User ID is not found in the response data');
+                return;
+            }
+
+            // Store the token and userId in localStorage
+            localStorage.setItem('userToken', userToken);
+            localStorage.setItem('userId', userId);
             localStorage.setItem('loggedInUser', JSON.stringify({ email }));
 
             setShowModal(false);
@@ -110,35 +110,35 @@ const LoginFormModal = () => {
     // const handleLogin = async () => {
     //     try {
     //         console.log('Attempting to log in');  // Log before request
-    
+
     //         const response = await axios.post('http://localhost:7000/api/my/auth/login', {
     //             email: email,
     //             password: password,
     //         });
-    
+
     //         console.log('Response received from login endpoint');  // Log after request
-    
+
     //         if (response && response.data) {
     //             console.log('Response Data:', response.data);  // Log entire response data for debugging
-    
+
     //             const userToken = response.data.userToken;
     //             const userId = response.data._id;  // Access the user ID directly
-    
+
     //             if (!userId) {
     //                 console.error('User ID is not found in the response data');
     //                 return;
     //             }
-    
+
     //             // Store the token and userId in localStorage
     //             localStorage.setItem('userToken', userToken);
     //             localStorage.setItem('userId', userId);
-    
+
     //             console.log('User token:', userToken);
     //             console.log('User ID:', userId);
-    
+
     //             // Save user email and userId to localStorage upon successful login
     //             localStorage.setItem('loggedInUser', JSON.stringify({ email: email, userId: userId }));
-    
+
     //             console.log('User logged in successfully:', response.data);
     //         } else {
     //             console.log('Empty response data');
@@ -234,17 +234,17 @@ const LoginFormModal = () => {
                                     </div>
                                 </TERipple>
                             </form>
-                            {showRegisterModal && ( <div className="fixed inset-0 flex items-center justify-center z-50">
-                    <div className="fixed inset-0 bg-black opacity-50"></div>
-                    <div className="bg-white p-8 rounded shadow-lg z-50">
-                        <button className="absolute top-0 right-0 p-3" onClick={handleCloseRegisterModal}>
-                            {/* Add close icon here */}
-                            Close
-                        </button>
-                        <RegistrationForm />
-                    </div>
-                </div>
-            )}
+                            {showRegisterModal && (<div className="fixed inset-0 flex items-center justify-center z-50">
+                                <div className="fixed inset-0 bg-black opacity-50"></div>
+                                <div className="bg-white p-8 rounded shadow-lg z-50">
+                                    <button className="absolute top-0 right-0 p-3" onClick={handleCloseRegisterModal}>
+                                        {/* Add close icon here */}
+                                        Close
+                                    </button>
+                                    <RegistrationForm />
+                                </div>
+                            </div>
+                            )}
                             <div className="my-6 flex items-center justify-center border-t border-neutral-300">
                                 <p className="mx-4 text-sm font-semibold text-center text-neutral-500"> Or Use Clerk Authentication</p>
                             </div>

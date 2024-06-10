@@ -1,24 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UserOne from '../../images/user/userr.png';
-
+interface UserDetails {
+  email: string;
+  // Add other fields as per your user details structure
+}
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [userDetails, setUserDetails] = useState({});
+  const [userDetails, setUserDetails] = useState<UserDetails>({ email: '' });
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
 
   useEffect(() => {
-    // Retrieve user details from local storage
-    const storedUserDetails = localStorage.getItem('registeredUser');
-    // const loggedin=localStorage.getItem('loggedInUser');
+    const storedUserDetails = localStorage.getItem('loggedInUser');
+
     if (storedUserDetails) {
-      setUserDetails(JSON.parse(storedUserDetails));
+      const parsedUserDetails = JSON.parse(storedUserDetails);
+      const { email, ...rest } = parsedUserDetails;
+      const modifiedEmail = email.split('@')[0]; // Get everything before the '@' symbol
+
+      setUserDetails({ email: modifiedEmail, ...rest });
     }
-    // if (loggedin) {
-    //   setUserDetails(JSON.parse(loggedin));
-    // }
   }, []);
 
 
@@ -57,7 +60,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-          {`${userDetails.firstname } ${userDetails.lastname}`}
+          <p>{userDetails.email}</p>
           </span>
           <span className="block text-xs">Vendor</span>
         </span>

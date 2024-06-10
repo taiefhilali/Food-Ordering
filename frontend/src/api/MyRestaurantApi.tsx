@@ -5,55 +5,6 @@ import { Restaurant } from "@/types";
 import axios from "axios";
 
 
-const getUserIdFromSession = () => {
-  // Implement this function to retrieve the user ID from the session
-  // For example, if you are using localStorage:
-  const userInfo = localStorage.getItem("userInfo");
-  if (userInfo) {
-    const userObj = JSON.parse(userInfo);
-    return userObj._id;
-  }
-  return null;
-};
-// export const useGetMyRestaurant = () => {
-//   const { session } = useClerk();
-
-//   const getMyRestaurantRequest = async (): Promise<Restaurant> => {
-//      if (!session) {
-//         throw new Error("User is not authenticated");
-//       }
-//     const accessToken = session.getToken;
-//     console.log(accessToken)
-//     if (!accessToken) {
-//       throw new Error("User email not available");
-//     }
-
-//     const response = await fetch(`http://localhost:7000/api/my/restaurant`, {
-//       method: "GET",
-//       headers: {
-//         Authorization: `Bearer ${accessToken}`,
-//       },
-//     });
-
-//     if (!response.ok) {
-//       throw new Error("Failed to get restaurant");
-//     }
-//     return response.json();
-//   };
-
-//   const { data: restaurant, isLoading } = useQuery(
-//     "fetchMyRestaurant",
-//     getMyRestaurantRequest
-//   );
-
-//   return { restaurant, isLoading };
-// };
-
-
-
-
-
-
 
 
 export const useGetMyRestaurant = () => {
@@ -64,7 +15,7 @@ export const useGetMyRestaurant = () => {
       if (!userId) {
         throw new Error('No token found');
       }
-    
+
 
       const response = await axios.get('http://localhost:7000/api/my/restaurant', {
         params: { userId }
