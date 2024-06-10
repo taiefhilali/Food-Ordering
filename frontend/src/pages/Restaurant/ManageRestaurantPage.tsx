@@ -2,7 +2,6 @@
 
 import { useCreateMyRestaurant, useGetMyRestaurant, useUpdateRestaurant } from "@/api/MyRestaurantApi";
 
-import Sidebar from "@/components/Sidebar ";
 import ManageRestaurantForm from "@/forms/manage-restaurant-form/ManageRestaurantForm";
 import DefaultLayout from "@/layouts/DefaultLayout";
 

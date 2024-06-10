@@ -319,7 +319,6 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 
-const BASE_URL = import.meta.env.BASE_URL;
 
 
 const getUserIdFromSession = () => {
@@ -339,20 +338,32 @@ const RestaurantList = () => {
 
   useEffect(() => {
     const fetchRestaurants = async () => {
-      const userid=getUserIdFromSession();
       try {
-        const response = await axios.get(`http://localhost:7000/api/my/restaurant`, {
-          params: {
-            userId: userid // Replace with actual user ID
-          }
-        });
-
+        const loggedInUser = localStorage.getItem('loggedInUser');
+        if (!loggedInUser) {
+          console.error('No logged in user found in localStorage');
+          return;
+        }
+    
+        const user = JSON.parse(loggedInUser);
+        const email = user?.email;
+    
+        if (!email) {
+          console.error('No email found for the logged in user');
+          return;
+        }
+    
+        const response = await axios.get(`http://localhost:7000/api/my/restaurant?email=${email}`);
+        if (response && response.data) {
+          console.log('Restaurants:', response.data);
         setRestaurants(response.data);
-        console.log(response.data)
-      } catch (error) {
-        console.error('Error fetching restaurants:', error);
+      } else {
+        console.log('No restaurants found');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching restaurants:', error);
+    }
+  };
 
     fetchRestaurants();
   }, []);

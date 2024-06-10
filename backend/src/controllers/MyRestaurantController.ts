@@ -6,9 +6,13 @@ import mongoose from "mongoose";
 
 const getMyRestaurant = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.query; // Access userId from query parameters
+    const { email } = req.query; // Access email from query parameters
 
-    const restaurants = await Restaurant.find({ user: userId });
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const restaurants = await Restaurant.find({ email: email });
 
     if (restaurants.length === 0) {
       return res.status(404).json({ message: "Restaurant not found" });
@@ -20,6 +24,7 @@ const getMyRestaurant = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error fetching restaurant" });
   }
 };
+
 
 const getAllRestaurant = async (req: Request, res: Response) => {
   try {
@@ -152,8 +157,10 @@ const getAllRestaurant = async (req: Request, res: Response) => {
 
 const createMyRestaurant = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body;
-
+    const userId = (req as any).user.id;
+    console.log('====================================');
+    console.log(userId);
+    console.log('====================================');
     const existingRestaurant = await Restaurant.findOne({ user: userId });
 
     if (existingRestaurant) {
@@ -232,4 +239,4 @@ const uploadimage = async (file: Express.Multer.File) => {
 }
 
 
-export default { createMyRestaurant, getMyRestaurant, updateMyRestaurant, getAllRestaurant,getCuisinesStat };
+export default { createMyRestaurant, getMyRestaurant, updateMyRestaurant, getAllRestaurant, getCuisinesStat };
