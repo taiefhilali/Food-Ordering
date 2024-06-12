@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 type LoginFormProps = {
   closeModal: () => void;
@@ -8,6 +9,7 @@ type LoginFormProps = {
 const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -40,6 +42,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
         localStorage.setItem('loggedInUser', JSON.stringify({ email: email, userId: userId }));
 
         console.log('User logged in successfully:', response.data);
+        navigate('/dashboards');
 
         closeModal(); // Call closeModal when login is successful
       } else {

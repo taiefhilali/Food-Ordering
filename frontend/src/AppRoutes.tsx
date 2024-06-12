@@ -33,6 +33,7 @@ const AppRoutes = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
   return (
     <Routes>
 
