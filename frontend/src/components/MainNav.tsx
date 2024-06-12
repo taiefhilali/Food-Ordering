@@ -15,7 +15,9 @@ export default function MainNav() {
     const handleRedirectToAuth = () => {
         navigate('/authentication');
       };
-
+      const openModal = () => {
+        setIsModalOpen(true);
+      };
     // const navigate = useNavigate();
     // const { signOut } = useClerk();
 
@@ -32,7 +34,7 @@ export default function MainNav() {
     <div>
       <Button
         variant="ghost"
-        onClick={handleRedirectToAuth}
+        onClick={openModal}
         className="mt-6 border-slate-400 text-white font-semibold py-2 rounded hover:bg-orange-300"
       >
         Login

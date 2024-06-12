@@ -42,7 +42,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
         localStorage.setItem('loggedInUser', JSON.stringify({ email: email, userId: userId }));
 
         console.log('User logged in successfully:', response.data);
-        navigate('/dashboards');
+        navigate('/settings');
 
         closeModal(); // Call closeModal when login is successful
       } else {

@@ -28,7 +28,7 @@ const DropdownUser = () => {
   const handleLogout = () => {
     // Perform logout logic here
     // For example: Clear user details from local storage and redirect to login page
-    window.location.href = '/authentication'; // Redirect to login page
+    window.location.href = '/'; // Redirect to login page
   };
   useEffect(() => {
     const clickHandler = ({ target }) => {
