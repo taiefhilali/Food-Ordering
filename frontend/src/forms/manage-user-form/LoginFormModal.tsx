@@ -288,6 +288,7 @@
 import React, { useState } from 'react';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+import RiveAnimation from '../../components/RiveAnimation';
 
 type LoginFormModalProps = {
   closeModal: () => void;
@@ -310,7 +311,8 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
           </button>
         </div>
         <div className="mt-4">
-          <div className="flex justify-center mb-6">
+          <RiveAnimation />
+          <div className="flex justify-center mb-6 mt-4">
             <button
               className={`mr-4 px-4 py-2 rounded ${
                 activeTab === 'login' ? 'bg-orange-500 text-white' : 'text-gray-600 hover:text-gray-800'
@@ -339,5 +341,3 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
 };
 
 export default LoginFormModal;
-
-
