@@ -33,7 +33,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
           console.error('User ID is not found in the response data');
           return;
         }
+        const {  firstname, lastname } = response.data;
 
+        // Store token and user info in local storage
+        localStorage.setItem('firstname', firstname);
+        localStorage.setItem('lastname', lastname);
         localStorage.setItem('userToken', userToken);
         localStorage.setItem('userId', userId);
         localStorage.setItem('loggedInUser', JSON.stringify({ email: email, userId: userId }));

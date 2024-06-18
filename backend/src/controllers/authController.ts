@@ -36,7 +36,7 @@ const createUser = async (req: Request, res: Response) => {
                     password: CryptoTs.AES.encrypt(user.password, process.env.JWT_SECRET).toString(),
                     userType: 'Client'
                 });
-                
+
                 await newUser.save(); // Save the new user document to the database
 
                 // Return a success response
@@ -57,7 +57,10 @@ const createUser = async (req: Request, res: Response) => {
 
 const loguser = async (req: Request, res: Response) => {
     try {
-        const existingUser = await User.findOne({ email: req.body.email }, { __v: 0, updatedAt: 0, createdAt: 0 });
+        const existingUser = await User.findOne(
+            { email: req.body.email },
+            { __v: 0, updatedAt: 0, createdAt: 0 }
+        );
 
         if (!existingUser) {
             return res.status(404).json({ message: 'User not found' });
@@ -80,8 +83,14 @@ const loguser = async (req: Request, res: Response) => {
             email: existingUser.email
         }, process.env.JWT_SECRET, { expiresIn: '50days' });
 
-        const { email, password, ...others } = existingUser.toObject();  // Convert Mongoose document to plain object
-        res.status(200).json({ ...others, userToken });
+        // Extract firstname and lastname from the existingUser object
+        const { email, password, firstname, lastname, ...others } = existingUser.toObject();
+        console.log('Existing User:', existingUser);
+
+
+        // Construct the response object with firstname, lastname, and userToken
+        res.status(200).json({ firstname, lastname, ...others, userToken });
+
         console.log('=============token=======================');
         console.log(userToken);
         console.log('================token====================');
@@ -92,43 +101,43 @@ const loguser = async (req: Request, res: Response) => {
 };
 
 
- const loginUser= async (req: Request, res: Response) => {
+const loginUser = async (req: Request, res: Response) => {
 
-        try {
+    try {
 
-            const existingUser = await User.findOne({ email : req.body.email},{__v:0,updatedAt:0,createdAt:0});
+        const existingUser = await User.findOne({ email: req.body.email }, { __v: 0, updatedAt: 0, createdAt: 0 });
 
-            if (!existingUser) {
-                return res.status(404).json({ message: 'User not found' });
-            }
-
-            if (!existingUser.password) {
-                return res.status(400).json({ message: 'Invalid request: Missing password' });
-            }
-            const decryptedpassword =  CryptoTs.AES.decrypt(existingUser.password,process.env.SECRET);
-            const decypted= decryptedpassword.toString( CryptoTs.enc.Utf8);
-            // const isPasswordValid = await CryptoTs.compare( { password : req.body.password}, existingUser.password);
-
-            if ( !decypted) {
-                return res.status(401).json({ message: 'Invalid credentials' });
-            }
-            
-            const userToken=jwt.sign({
-                id: existingUser._id,
-                userType: existingUser.userType,
-                email: existingUser.email
-
-              },process.env.JWT_SECRET,{expiresIn:'50days'});
-            
-               const { email, password ,...others} = existingUser;
-               res.status(200).json({...others,userToken});
-               console.log('====================================');
-               console.log(userToken);
-               console.log('====================================');
-            } catch (error) {
-            console.error('Error logging in:', error);
-            res.status(500).json({ message: 'Error logging in' });
+        if (!existingUser) {
+            return res.status(404).json({ message: 'User not found' });
         }
-   }
 
-    export default { createUser,loginUser,loguser};
+        if (!existingUser.password) {
+            return res.status(400).json({ message: 'Invalid request: Missing password' });
+        }
+        const decryptedpassword = CryptoTs.AES.decrypt(existingUser.password, process.env.SECRET);
+        const decypted = decryptedpassword.toString(CryptoTs.enc.Utf8);
+        // const isPasswordValid = await CryptoTs.compare( { password : req.body.password}, existingUser.password);
+
+        if (!decypted) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        const userToken = jwt.sign({
+            id: existingUser._id,
+            userType: existingUser.userType,
+            email: existingUser.email
+
+        }, process.env.JWT_SECRET, { expiresIn: '50days' });
+
+        const { email, password, ...others } = existingUser;
+        res.status(200).json({ ...others, userToken });
+        console.log('====================================');
+        console.log(userToken);
+        console.log('====================================');
+    } catch (error) {
+        console.error('Error logging in:', error);
+        res.status(500).json({ message: 'Error logging in' });
+    }
+}
+
+export default { createUser, loginUser, loguser };
