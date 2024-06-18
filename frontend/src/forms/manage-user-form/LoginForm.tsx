@@ -76,18 +76,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="block w-full px-4 py-2 border rounded mb-4"
+        className="block w-full px-4 py-2 border rounded-full mb-4"
       />
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="block w-full px-4 py-2 border rounded mb-4"
+        className="block w-full px-4 py-2 border rounded-full mb-4"
       />
       <button
         onClick={handleLogin}
-        className="bg-orange-500 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded"
+        className="bg-slate-500 border-b-meta-7 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full"
       >
         Login
       </button>

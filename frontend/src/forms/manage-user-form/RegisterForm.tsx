@@ -155,90 +155,99 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
   };
   
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-          Email
-        </label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Email"
-          className="block w-full px-4 py-2 border rounded"
-          required
-        />
-        {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstname">
-          First Name
-        </label>
-        <input
-          type="text"
-          name="firstname"
-          value={formData.firstname}
-          onChange={handleChange}
-          placeholder="First Name"
-          className="block w-full px-4 py-2 border rounded"
-          required
-        />
-        {errors.firstname && <p className="text-red-500 text-xs italic">{errors.firstname}</p>}
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastname">
-          Last Name
-        </label>
-        <input
-          type="text"
-          name="lastname"
-          value={formData.lastname}
-          onChange={handleChange}
-          placeholder="Last Name"
-          className="block w-full px-4 py-2 border rounded"
-          required
-        />
-        {errors.lastname && <p className="text-red-500 text-xs italic">{errors.lastname}</p>}
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-          Password
-        </label>
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          placeholder="Password"
-          className="block w-full px-4 py-2 border rounded"
-          required
-        />
-        {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="imageFile">
-          Profile Image
-        </label>
-        <input
-          type="file"
-          name="imageFile"
-          onChange={handleChange}
-          accept="image/*"
-          className="block w-full px-4 py-2 border rounded"
-          required
-        />
-        {errors.imageFile && <p className="text-red-500 text-xs italic">{errors.imageFile}</p>}
-      </div>
-      <div className="flex items-center justify-between">
-        <button
-          type="submit"
-          className="bg-orange-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Register
-        </button>
-      </div>
-    </form>
+<form onSubmit={handleSubmit} className="flex flex-col items-center">
+  <div className="mb-4 w-full max-w-md flex flex-wrap">
+    <div className="w-full md:w-1/2 md:pr-2">
+      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstname">
+      </label>
+      <input
+        type="text"
+        name="firstname"
+        value={formData.firstname}
+        onChange={handleChange}
+        placeholder="First Name"
+        className="block w-full px-2 py-2 border rounded-full"
+        required
+      />
+      {errors.firstname && <p className="text-red-500 text-xs italic">{errors.firstname}</p>}
+    </div>
+    <div className="w-full md:w-1/2 md:pl-2">
+      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastname">
+      </label>
+      <input
+        type="text"
+        name="lastname"
+        value={formData.lastname}
+        onChange={handleChange}
+        placeholder="Last Name"
+        className="block w-full px-3 py-2 border rounded-full"
+        required
+      />
+      {errors.lastname && <p className="text-red-500 text-xs italic">{errors.lastname}</p>}
+    </div>
+  </div>
+  
+  <div className="mb-4 w-full max-w-md flex flex-wrap">
+  <div className="w-full md:w-1/2 md:pr-2">
+
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+      
+    </label>
+    <input
+      type="email"
+      name="email"
+      value={formData.email}
+      onChange={handleChange}
+      placeholder="Email"
+      className="block w-full px-3 py-2 border rounded-full"
+      required
+    />
+    {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
+  </div>
+
+  <div className="w-full md:w-1/2 md:pl-2">
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+  
+    </label>
+    <input
+      type="password"
+      name="password"
+      value={formData.password}
+      onChange={handleChange}
+      placeholder="Password"
+      className="block w-full px-3 py-2 border rounded-full"
+      required
+    />
+    {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+  </div>
+  </div>
+
+  <div className="mb-4 w-full max-w-md">
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="imageFile">
+      Profile Image
+    </label>
+    <input
+      type="file"
+      name="imageFile"
+      onChange={handleChange}
+      accept="image/*"
+      className="block w-full px-3 py-2 border rounded-full"
+      required
+    />
+    {errors.imageFile && <p className="text-red-500 text-xs italic">{errors.imageFile}</p>}
+  </div>
+
+  <div className="w-full max-w-md">
+    <button
+      type="submit"
+      className="bg-slate-500 border-b-meta-7 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full"
+    >
+      Register
+    </button>
+  </div>
+</form>
+
+  
   );
 };
 
