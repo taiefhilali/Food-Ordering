@@ -18,6 +18,11 @@ const LoginPage: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  const showUserTypeSelection = () => {
+    // Define your logic here to show the user type selection
+    console.log('Showing user type selection...');
+  };
+
   return (
     <div>
       <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => openModal('login')}>
@@ -44,7 +49,7 @@ const LoginPage: React.FC = () => {
         </div>
         <div className="modal-body p-4">
           {activeTab === 'login' && <LoginForm closeModal={closeModal} />}
-          {activeTab === 'register' && <RegisterForm closeModal={closeModal} />}
+          {activeTab === 'register' && <RegisterForm closeModal={closeModal} showUserTypeSelection={showUserTypeSelection} />} {/* Pass showUserTypeSelection prop */}
         </div>
       </Modal>
     </div>

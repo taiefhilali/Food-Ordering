@@ -3,7 +3,6 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import DiprellaLogo from '../../assets/quick.png'; // Replace with actual logo path
 import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa'; // Import social icons as needed
-import Swal from 'sweetalert2';
 
 type LoginFormModalProps = {
   closeModal: () => void;
@@ -11,6 +10,7 @@ type LoginFormModalProps = {
 
 const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
   const [activeTab, setActiveTab] = useState('login');
+  const [showUserTypeSelector, setShowUserTypeSelector] = useState(false);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -19,6 +19,10 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
   const handleSocialLogin = (provider: string) => {
     // Handle social login based on provider (e.g., Facebook, Google, Twitter)
     console.log(`Logging in with ${provider}`);
+  };
+
+  const handleUserTypeSelection = () => {
+    setShowUserTypeSelector(true);
   };
 
   return (
@@ -97,8 +101,34 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
         {/* Form content based on activeTab */}
         <div className="px-4 flex flex-col space-y-4">
           {activeTab === 'login' && <LoginForm closeModal={closeModal} />}
-          {activeTab === 'register' && <RegisterForm closeModal={closeModal} />}
+          {activeTab === 'register' && (
+            <RegisterForm
+              closeModal={closeModal}
+              showUserTypeSelection={handleUserTypeSelection} // Pass the function to show user type selection
+            />
+          )}
         </div>
+
+        {/* User type selection */}
+        {showUserTypeSelector && (
+          <div className="px-4 mt-4 flex flex-col items-center">
+            <h2 className="text-lg font-bold mb-2">Select Your User Type</h2>
+            <div className="flex justify-center space-x-4">
+              <button
+                className="bg-blue-800 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                onClick={() => console.log('Admin selected')}
+              >
+                Admin
+              </button>
+              <button
+                className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded"
+                onClick={() => console.log('Vendor selected')}
+              >
+                Vendor
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

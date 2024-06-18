@@ -15,10 +15,10 @@ const upload = multer({
 })
 
 
-router.post("/", MyUserController.createCurrentUser);
+router.post("/", MyUserController.registerUser);
 // Register endpoint (for user registration)
-router.post('/register', upload.single("imageFile"), MyUserController.registerUser);
-router.post("/login", MyUserController.loginUser);
+router.post('/register',verifyToken, verifyUserType, upload.single("imageFile"), MyUserController.registerUser);
+router.post("/login", verifyToken, verifyUserType, MyUserController.loginUser);
 // Email verification endpoint
 router.get('/verify/:token', async (req, res) => {
   const { token } = req.params;

@@ -5,7 +5,7 @@ const CryptoTs = require('crypto-ts');
 const jwt = require('jsonwebtoken');
 const admin = require('firebase-admin');
 import { Request, Response } from "express";
-
+import bcrypt from 'bcryptjs';
 
 
 const createUser = async (req: Request, res: Response) => {
@@ -36,7 +36,7 @@ const createUser = async (req: Request, res: Response) => {
                     password: CryptoTs.AES.encrypt(user.password, process.env.JWT_SECRET).toString(),
                     userType: 'Client'
                 });
-
+                
                 await newUser.save(); // Save the new user document to the database
 
                 // Return a success response
@@ -55,89 +55,82 @@ const createUser = async (req: Request, res: Response) => {
 };
 
 
+
 const loguser = async (req: Request, res: Response) => {
     try {
-        const existingUser = await User.findOne(
-            { email: req.body.email },
-            { __v: 0, updatedAt: 0, createdAt: 0 }
-        );
-
-        if (!existingUser) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        if (!existingUser.password) {
-            return res.status(400).json({ message: 'Invalid request: Missing password' });
-        }
-
-        const decryptedpassword = CryptoTs.AES.decrypt(existingUser.password, process.env.SECRET);
-        const decrypted = decryptedpassword.toString(CryptoTs.enc.Utf8);
-
-        if (req.body.password !== decrypted) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        const userToken = jwt.sign({
-            id: existingUser._id,
-            userType: existingUser.userType,
-            email: existingUser.email
-        }, process.env.JWT_SECRET, { expiresIn: '50days' });
-
-        // Extract firstname and lastname from the existingUser object
-        const { email, password, firstname, lastname, ...others } = existingUser.toObject();
-        console.log('Existing User:', existingUser);
-
-
-        // Construct the response object with firstname, lastname, and userToken
-        res.status(200).json({ firstname, lastname, ...others, userToken });
-
-        console.log('=============token=======================');
-        console.log(userToken);
-        console.log('================token====================');
+      const { email, password } = req.body;
+  
+      // Find the user by email
+      const existingUser = await User.findOne({ email });
+  
+      if (!existingUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      if (!existingUser.password) {
+        return res.status(400).json({ message: 'Invalid request: Missing password' });
+      }
+  
+      // Compare the provided password with the hashed password using bcrypt
+      const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+  
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+  
+      // Generate JWT token
+      const userToken = jwt.sign({
+        id: existingUser._id,
+        userType: existingUser.userType,
+        email: existingUser.email
+      }, process.env.JWT_SECRET || 'defaultsecret', { expiresIn: '50 days' });
+  
+      // Send back the user data excluding the password and including the token
+      const { password: _, ...userWithoutPassword } = existingUser.toObject();
+      res.status(200).json({ ...userWithoutPassword, userToken });
     } catch (error) {
-        console.error('Error logging in:', error);
-        res.status(500).json({ message: 'Error logging in' });
+      console.error('Error logging in:', error);
+      res.status(500).json({ message: 'Error logging in' });
     }
-};
+  };
+  
+ const loginUser= async (req: Request, res: Response) => {
 
+        try {
 
-const loginUser = async (req: Request, res: Response) => {
+            const existingUser = await User.findOne({ email : req.body.email},{__v:0,updatedAt:0,createdAt:0});
 
-    try {
+            if (!existingUser) {
+                return res.status(404).json({ message: 'User not found' });
+            }
 
-        const existingUser = await User.findOne({ email: req.body.email }, { __v: 0, updatedAt: 0, createdAt: 0 });
+            if (!existingUser.password) {
+                return res.status(400).json({ message: 'Invalid request: Missing password' });
+            }
+            const decryptedpassword =  CryptoTs.AES.decrypt(existingUser.password,process.env.SECRET);
+            const decypted= decryptedpassword.toString( CryptoTs.enc.Utf8);
+            // const isPasswordValid = await CryptoTs.compare( { password : req.body.password}, existingUser.password);
 
-        if (!existingUser) {
-            return res.status(404).json({ message: 'User not found' });
+            if ( !decypted) {
+                return res.status(401).json({ message: 'Invalid credentials' });
+            }
+            
+            const userToken=jwt.sign({
+                id: existingUser._id,
+                userType: existingUser.userType,
+                email: existingUser.email
+
+              },process.env.JWT_SECRET,{expiresIn:'50days'});
+            
+               const { email, password ,...others} = existingUser;
+               res.status(200).json({...others,userToken});
+               console.log('====================================');
+               console.log(userToken);
+               console.log('====================================');
+            } catch (error) {
+            console.error('Error logging in:', error);
+            res.status(500).json({ message: 'Error logging in' });
         }
+   }
 
-        if (!existingUser.password) {
-            return res.status(400).json({ message: 'Invalid request: Missing password' });
-        }
-        const decryptedpassword = CryptoTs.AES.decrypt(existingUser.password, process.env.SECRET);
-        const decypted = decryptedpassword.toString(CryptoTs.enc.Utf8);
-        // const isPasswordValid = await CryptoTs.compare( { password : req.body.password}, existingUser.password);
-
-        if (!decypted) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        const userToken = jwt.sign({
-            id: existingUser._id,
-            userType: existingUser.userType,
-            email: existingUser.email
-
-        }, process.env.JWT_SECRET, { expiresIn: '50days' });
-
-        const { email, password, ...others } = existingUser;
-        res.status(200).json({ ...others, userToken });
-        console.log('====================================');
-        console.log(userToken);
-        console.log('====================================');
-    } catch (error) {
-        console.error('Error logging in:', error);
-        res.status(500).json({ message: 'Error logging in' });
-    }
-}
-
-export default { createUser, loginUser, loguser };
+    export default { createUser,loginUser,loguser};

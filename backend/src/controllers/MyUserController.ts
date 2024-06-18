@@ -3,41 +3,30 @@ import User from "../models/User";
 const nodemailer = require('nodemailer');
 import cloudinary from "cloudinary";
 const bcrypt = require('bcrypt');
+import CryptoTs from 'crypto-ts';
 
 
+
+
+
+// Function to encrypt password using crypto-ts
+
+const encryptPassword = (password: string): string => {
+  const secret = process.env.SECRET || 'quickbite2023'; // Provide a default value or handle the undefined case
+  return CryptoTs.AES.encrypt(password, secret).toString();
+};
 
 // Function to generate a random verification token
 const generateVerificationToken = () => {
   return Math.random().toString(36).substr(2, 8); // Example: "1a2b3c4d"
 };
-// Generate a salt and hash the password
+
+// Function to hash the password using bcrypt
 const hashPassword = async (password: string): Promise<string> => {
-  const saltRounds = 10;
+  const saltRounds = 10; // Number of salt rounds
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   return hashedPassword;
 };
-
-
-const createCurrentUser = async (req: Request, res: Response) => {
-  try {
-    const id = req.body.id;
-    const existingUser = await User.findOne({ id });
-
-    if (existingUser) {
-      return res.status(200).send();
-    }
-
-    const newUser = new User(req.body);
-
-    await newUser.save();
-
-    res.status(201).json(newUser.toObject());
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Error creating user' });
-  }
-};
-
 
 // Register a new user
 const registerUser = async (req: Request, res: Response) => {
@@ -48,13 +37,17 @@ const registerUser = async (req: Request, res: Response) => {
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
+
+    // Hash the password
     const hashedPassword = await hashPassword(password);
 
-    const imageUrl = await uploadimage(req.file as Express.Multer.File);
+    // Example of uploading an image using an upload function
+    const imageUrl = await uploadimage(req.file as Express.Multer.File); // Assuming you have an upload function defined
 
     const verificationToken = generateVerificationToken();
     const newUser = new User({ email, firstname, lastname, imageUrl, verificationToken, password: hashedPassword });
-    newUser.imageUrl = imageUrl;
+
+    // Save user to database
     await newUser.save();
 
     // Send verification email
@@ -62,10 +55,9 @@ const registerUser = async (req: Request, res: Response) => {
       service: 'Gmail',
       auth: {
         user: 'bobtaief@gmail.com',
-        pass: 'transformice'
+        pass: 'hcdz tdlj wywv dfxj'
       }
     });
-    
 
     const mailOptions = {
       from: 'bobtaief@gmail.com',
@@ -73,7 +65,6 @@ const registerUser = async (req: Request, res: Response) => {
       subject: 'Verify Your Email Address',
       text: `Please click on the following link to verify your email: http://localhost:3000/${verificationToken}`
     };
-    
 
     await transporter.sendMail(mailOptions);
 
@@ -159,4 +150,4 @@ const updateUser = async (req: Request, res: Response) => {
 
 
 
-export default { createCurrentUser, registerUser, loginUser, getUser, deleteUser,updateUser};
+export default { registerUser, loginUser, getUser, deleteUser,updateUser};

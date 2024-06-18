@@ -4,9 +4,10 @@ import Swal from 'sweetalert2';
 
 interface RegisterFormProps {
   closeModal: () => void;
+  showUserTypeSelection: () => void; // Function to show user type selection
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSelection }) => {
   const [formData, setFormData] = useState({
     email: '',
     firstname: '',
@@ -124,10 +125,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
     } else {
       data.append('imageFile', ''); // or handle the error
     }
-  
+    const token = localStorage.getItem('userToken');
+
+
     try {
       const response = await axios.post('http://localhost:7000/api/my/user/register', data, {
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
@@ -137,6 +141,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
         localStorage.setItem('firstname', firstname);
         localStorage.setItem('lastname', lastname);
         
+        // Trigger the function to show user type selection
+        showUserTypeSelection();
+
         Swal.fire({
           icon: 'success',
           title: 'Registration Successful!',
@@ -161,8 +168,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
     <form onSubmit={handleSubmit} className="flex flex-col items-center">
       <div className="mb-4 w-full max-w-md flex flex-wrap">
         <div className="w-full md:w-1/2 md:pr-2">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstname">
-          </label>
           <input
             type="text"
             name="firstname"
@@ -175,8 +180,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
           {errors.firstname && <p className="text-red-500 text-xs italic">{errors.firstname}</p>}
         </div>
         <div className="w-full md:w-1/2 md:pl-2">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastname">
-          </label>
+
           <input
             type="text"
             name="lastname"
@@ -192,9 +196,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
       
       <div className="mb-4 w-full max-w-md flex flex-wrap">
         <div className="w-full md:w-1/2 md:pr-2">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            
-          </label>
           <input
             type="email"
             name="email"
@@ -208,9 +209,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
         </div>
   
         <div className="w-full md:w-1/2 md:pl-2">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-            
-          </label>
           <input
             type="password"
             name="password"

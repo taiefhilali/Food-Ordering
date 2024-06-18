@@ -15,11 +15,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
   const handleLogin = async () => {
     try {
       console.log('Attempting to log in');
+      const token = localStorage.getItem('userToken');
 
       const response = await axios.post('http://localhost:7000/api/my/auth/log', {
         email: email,
         password: password,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
       });
+      
 
       console.log('Response received from login endpoint');
 
