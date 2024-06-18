@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 type LoginFormProps = {
   closeModal: () => void;
@@ -35,21 +36,36 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
 
         localStorage.setItem('userToken', userToken);
         localStorage.setItem('userId', userId);
-
-        console.log('User token:', userToken);
-        console.log('User ID:', userId);
-
         localStorage.setItem('loggedInUser', JSON.stringify({ email: email, userId: userId }));
 
         console.log('User logged in successfully:', response.data);
-        navigate('/settings');
 
-        closeModal(); // Call closeModal when login is successful
+        // Show success message using SweetAlert
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful!',
+          text: 'You have successfully logged in.',
+        }).then(() => {
+          navigate('/settings');
+          closeModal(); // Call closeModal when login is successful
+        });
       } else {
         console.log('Empty response data');
+        // Show error message using SweetAlert
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'Invalid email or password. Please try again.',
+        });
       }
     } catch (error) {
       console.log('Error logging in:', error);
+      // Show error message using SweetAlert
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: 'Error logging in. Please try again later.',
+      });
     }
   };
 

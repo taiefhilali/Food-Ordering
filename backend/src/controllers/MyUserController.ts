@@ -59,21 +59,21 @@ const registerUser = async (req: Request, res: Response) => {
 
     // Send verification email
     const transporter = nodemailer.createTransport({
-      // Configure your SMTP settings here
-      // Example using Gmail:
       service: 'Gmail',
       auth: {
         user: 'bobtaief@gmail.com',
-        pass: 'zjlu tmcb qkky rvrq'
+        pass: 'transformice'
       }
     });
+    
 
     const mailOptions = {
       from: 'bobtaief@gmail.com',
       to: email,
       subject: 'Verify Your Email Address',
-      text: `Please click on the following link to verify your email: http://http://localhost:3000/authentication/${verificationToken}`
+      text: `Please click on the following link to verify your email: http://localhost:3000/${verificationToken}`
     };
+    
 
     await transporter.sendMail(mailOptions);
 

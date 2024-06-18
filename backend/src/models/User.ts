@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
 
     },
     username: { type: String },
-    uid: { type: String, required: true, unique: true },
+    uid: { type: String, unique: true },
 
     userType: { type: String, required: true, default: "Client", enum: ['Admin', 'Client', 'Vendor'] },
     phoneNumber: {
