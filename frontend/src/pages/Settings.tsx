@@ -1,14 +1,70 @@
+
+// export default Settings;
+import React, { useState, useEffect } from 'react';
+import DefaultLayout from '../layouts/DefaultLayout';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import userThree from '../images/user/user-03.png';
-import DefaultLayout from '../layouts/DefaultLayout';
+import axios from 'axios'; // Import axios for making HTTP requests
 
 const Settings = () => {
+  // State to store user data
+  const [user, setUser] = useState({
+    firstname: '',
+    lastname: '',
+    phoneNumber: '',
+  });
+  // Function to fetch user data
+  const fetchUserData = async () => {
+    try {
+      const userId = localStorage.getItem('userId');
+      const token = localStorage.getItem('userToken');
+
+      if (!userId || !token) {
+        throw new Error('No userId or token found');
+      }
+
+      console.log('userId:', userId); // Log userId for debugging
+      console.log('token:', token);   // Log token for debugging
+
+      const url = `http://localhost:7000/api/my/user/${userId}`;
+      console.log('Request URL:', url); // Log request URL for debugging
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const { firstname, lastname, phoneNumber } = response.data;
+
+      setUser({
+        ...response.data,
+        firstname,
+        lastname,
+        phoneNumber,
+      });
+
+      console.log('====================================');
+      console.log(response.data);
+      console.log('====================================');
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+
+  // Fetch user data when the component mounts
+  useEffect(() => {
+    fetchUserData();
+  }, []); // Empty dependency array ensures the effect runs only once on mount
+
   return (
     <DefaultLayout>
+
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Settings" />
 
-        <div className="grid grid-cols-5 gap-8">
+        {user && (<div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
@@ -58,7 +114,7 @@ const Settings = () => {
                           name="fullName"
                           id="fullName"
                           placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          defaultValue={user.firstname + " " + user.lastname}
                         />
                       </div>
                     </div>
@@ -76,9 +132,10 @@ const Settings = () => {
                         name="phoneNumber"
                         id="phoneNumber"
                         placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
+                        defaultValue={user.phoneNumber}
                       />
                     </div>
+
                   </div>
 
                   <div className="mb-5.5">
@@ -120,7 +177,7 @@ const Settings = () => {
                         name="emailAddress"
                         id="emailAddress"
                         placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        defaultValue={user.email}
                       />
                     </div>
                   </div>
@@ -138,17 +195,15 @@ const Settings = () => {
                       name="Username"
                       id="Username"
                       placeholder="devidjhon24"
-                      defaultValue="devidjhon24"
+                      value={user.username} // Use value instead of defaultValue to reflect changes dynamically
+                      readOnly // Make the input read-only if you don't want it to be editable
                     />
                   </div>
 
+
                   <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
-                    >
-                      BIO
-                    </label>
+
+
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
                         <svg
@@ -181,14 +236,6 @@ const Settings = () => {
                         </svg>
                       </span>
 
-                      <textarea
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        name="bio"
-                        id="bio"
-                        rows={6}
-                        placeholder="Write your bio here"
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
-                      ></textarea>
                     </div>
                   </div>
 
@@ -208,7 +255,9 @@ const Settings = () => {
                   </div>
                 </form>
               </div>
+
             </div>
+
           </div>
           <div className="col-span-5 xl:col-span-2">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -303,7 +352,7 @@ const Settings = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>)}
       </div>
     </DefaultLayout>
   );

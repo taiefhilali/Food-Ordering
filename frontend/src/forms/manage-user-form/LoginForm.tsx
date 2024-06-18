@@ -15,7 +15,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
     try {
       console.log('Attempting to log in');
 
-      const response = await axios.post('http://localhost:7000/api/my/auth/login', {
+      const response = await axios.post('http://localhost:7000/api/my/auth/log', {
         email: email,
         password: password,
       });

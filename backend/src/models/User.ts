@@ -11,9 +11,12 @@ const userSchema = new mongoose.Schema({
     },
     username: { type: String },
     uid: { type: String, required: true, unique: true },
-   
-    userType: { type: String, required: true, default:"Client", enum : ['Admin','Client','Vendor']},
 
+    userType: { type: String, required: true, default: "Client", enum: ['Admin', 'Client', 'Vendor'] },
+    phoneNumber: {
+        type: Number,
+        default:+21697009028
+    },
     firstname: {
         type: String,
     },
@@ -30,7 +33,7 @@ const userSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: true,
-        default:"https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg"
+        default: "https://t3.ftcdn.net/jpg/05/87/76/66/360_F_587766653_PkBNyGx7mQh9l1XXPtCAq1lBgOsLl6xH.jpg"
 
     },
     isVerified: {
@@ -44,6 +47,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-},{timestamps: true});
+}, { timestamps: true });
 const User = mongoose.model("User", userSchema);
 export default User;
