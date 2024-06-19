@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 
 interface RegisterFormProps {
   closeModal: () => void;
-  showUserTypeSelection: () => void; // Function to show user type selection
+  showUserTypeSelection: () => void;
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSelection }) => {
@@ -13,6 +13,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
     firstname: '',
     lastname: '',
     password: '',
+    username: '', // Added username field
     imageFile: null as File | null,
   });
 
@@ -21,6 +22,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
     firstname: '',
     lastname: '',
     password: '',
+    username: '', // Added username error field
     imageFile: '',
   });
 
@@ -67,11 +69,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
     return '';
   };
 
+  const validateUsername = (username: string) => {
+    if (username.length > 3) {
+      return 'Username must be at least 3 characters long.';
+    }
+    return '';
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
-    const { email, firstname, lastname, password, imageFile } = formData;
-  
+
+    const { email, firstname, lastname, password, username, imageFile } = formData;
+
     // Validation
     let formIsValid = true;
     const errors = {
@@ -79,68 +88,75 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
       firstname: '',
       lastname: '',
       password: '',
+      username: '',
       imageFile: '',
     };
-  
+
     if (!validateEmail(email)) {
       formIsValid = false;
       errors.email = 'Invalid email format.';
     }
-  
+
     if (!firstname) {
       formIsValid = false;
       errors.firstname = 'First name is required.';
     }
-  
+
     if (!lastname) {
       formIsValid = false;
       errors.lastname = 'Last name is required.';
     }
-  
+
     if (!validatePassword(password)) {
       formIsValid = false;
       errors.password = 'Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one number.';
     }
-  
+
+    if (!validateUsername(username)) {
+      formIsValid = false;
+      errors.username = 'Username must be at least 3 characters long.';
+    }
+
     const imageError = validateImageFile(imageFile);
     if (imageError) {
       formIsValid = false;
       errors.imageFile = imageError;
     }
-  
+
     setErrors(errors);
-  
+
     if (!formIsValid) {
       return;
     }
-  
+
     // Create FormData object to send as multipart/form-data
     const data = new FormData();
     data.append('email', email);
     data.append('firstname', firstname);
     data.append('lastname', lastname);
     data.append('password', password);
+    data.append('username', username);
     if (imageFile) {
       data.append('imageFile', imageFile);
     } else {
       data.append('imageFile', ''); // or handle the error
     }
-    const token = localStorage.getItem('userToken');
 
+    const token = localStorage.getItem('userToken');
 
     try {
       const response = await axios.post('http://localhost:7000/api/my/user/register', data, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
-  
+
       if (response.status === 201) {
         // Save firstname and lastname in localStorage
         localStorage.setItem('firstname', firstname);
         localStorage.setItem('lastname', lastname);
-        
+
         // Trigger the function to show user type selection
         showUserTypeSelection();
 
@@ -163,7 +179,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
       });
     }
   };
-  
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center">
       <div className="mb-4 w-full max-w-md flex flex-wrap">
@@ -180,7 +196,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
           {errors.firstname && <p className="text-red-500 text-xs italic">{errors.firstname}</p>}
         </div>
         <div className="w-full md:w-1/2 md:pl-2">
-
           <input
             type="text"
             name="lastname"
@@ -193,7 +208,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
           {errors.lastname && <p className="text-red-500 text-xs italic">{errors.lastname}</p>}
         </div>
       </div>
-      
+
       <div className="mb-4 w-full max-w-md flex flex-wrap">
         <div className="w-full md:w-1/2 md:pr-2">
           <input
@@ -207,21 +222,21 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
           />
           {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
         </div>
-  
+
         <div className="w-full md:w-1/2 md:pl-2">
           <input
-            type="password"
-            name="password"
-            value={formData.password}
+            type="text"
+            name="username"
+            value={formData.username}
             onChange={handleChange}
-            placeholder="Password"
+            placeholder="Username"
             className="block w-full px-3 py-2 border rounded-full"
             required
           />
-          {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+          {errors.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
         </div>
       </div>
-  
+
       <div className="mb-4 w-full max-w-md">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="imageFile">
           Profile Image
@@ -236,7 +251,20 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
         />
         {errors.imageFile && <p className="text-red-500 text-xs italic">{errors.imageFile}</p>}
       </div>
-  
+
+      <div className="mb-4 w-full max-w-md">
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Password"
+          className="block w-full px-3 py-2 border rounded-full"
+          required
+        />
+        {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+      </div>
+
       <div className="w-full max-w-md">
         <button
           type="submit"

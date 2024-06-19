@@ -5,7 +5,7 @@ const CryptoTs = require('crypto-ts');
 const jwt = require('jsonwebtoken');
 const admin = require('firebase-admin');
 import { Request, Response } from "express";
-import bcrypt from 'bcryptjs';
+const bcrypt = require('bcrypt');
 
 
 const createUser = async (req: Request, res: Response) => {
@@ -32,7 +32,6 @@ const createUser = async (req: Request, res: Response) => {
                 const newUser = new User({
                     username: user.username,
                     email: user.email,
-                    uid: userRecord.uid,
                     password: CryptoTs.AES.encrypt(user.password, process.env.JWT_SECRET).toString(),
                     userType: 'Client'
                 });

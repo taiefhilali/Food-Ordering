@@ -12,6 +12,7 @@ const Settings = () => {
     firstname: '',
     lastname: '',
     phoneNumber: '',
+    email:'',username:''
   });
   // Function to fetch user data
   const fetchUserData = async () => {
@@ -35,13 +36,10 @@ const Settings = () => {
         },
       });
 
-      const { firstname, lastname, phoneNumber } = response.data;
 
       setUser({
         ...response.data,
-        firstname,
-        lastname,
-        phoneNumber,
+       
       });
 
       console.log('====================================');
@@ -113,8 +111,9 @@ const Settings = () => {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue={user.firstname + " " + user.lastname}
+                          placeholder="Full Name"
+                          value={`${user.firstname} ${user.lastname}`}
+                          readOnly
                         />
                       </div>
                     </div>

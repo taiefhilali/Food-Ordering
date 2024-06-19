@@ -9,8 +9,7 @@ const userSchema = new mongoose.Schema({
         unique: true
 
     },
-    username: { type: String },
-    uid: { type: String, unique: true },
+    username: { type: String, required: true, unique: true },
 
     userType: { type: String, required: true, default: "Client", enum: ['Admin', 'Client', 'Vendor'] },
     phoneNumber: {
