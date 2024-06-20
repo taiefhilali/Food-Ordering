@@ -21,35 +21,55 @@ const RestaurantTable = () => {
           throw new Error('No userId or token found');
         }
 
-        console.log('userId:', userId); // Log userId for debugging
-        console.log('token:', token);   // Log token for debugging
-
-        const response = await axios.get('http://localhost:7000/api/my/restaurant', {
-          params: { userId },
+        const response = await axios.get('http://localhost:7000/api/my/restaurant/restaurants', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        console.log('Request headers:', {
-          Authorization: `Bearer ${token}`,
-        }); // Log headers for debugging
-
         if (!response.data) {
-          throw new Error("Failed to get restaurant");
+          throw new Error("Failed to get restaurants");
         }
 
         const fetchedRestaurants: Restaurant[] = response.data;
-        setRestaurants(fetchedRestaurants); // Set fetched restaurants into state
-
+        setRestaurants(fetchedRestaurants);
       } catch (error) {
-        console.error("Error fetching restaurant data:", error);
-        setError("Failed to fetch restaurant data. Please check the console for more details."); // Set detailed error message
+        console.error("Error fetching restaurants:", error);
+        setError("Failed to fetch restaurants data. Please check the console for more details.");
       }
     };
 
     fetchRestaurants();
   }, []);
+
+  const toggleApproval = async (id: string) => {
+    try {
+      const token = localStorage.getItem('userToken');
+
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const response = await axios.patch(`http://localhost:7000/api/my/restaurant/${id}/toggle-approval`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.data) {
+        throw new Error("Failed to toggle approval status");
+      }
+
+      // Update restaurants state after toggle
+      const updatedRestaurants = restaurants.map((restaurant) =>
+        restaurant._id === id ? { ...restaurant, isApproved: !restaurant.isApproved } : restaurant
+      );
+      setRestaurants(updatedRestaurants);
+    } catch (error) {
+      console.error("Error toggling approval status:", error);
+      setError("Failed to toggle approval status. Please check the console for more details.");
+    }
+  };
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -57,13 +77,11 @@ const RestaurantTable = () => {
 
   return (
     <DefaultLayout>
-            <Breadcrumb pageName="Display Restaurants" />
-
+      <Breadcrumb pageName="Display Restaurants" />
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
           Restaurant Details
         </h4>
-
         <div className="flex flex-col">
           <div className="grid grid-cols-3 rounded-sm bg-gray-200 dark:bg-meta-4 sm:grid-cols-5">
             <div className="p-2.5 xl:p-5">
@@ -116,15 +134,15 @@ const RestaurantTable = () => {
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+                <Button
+                  variant="contained"
+                  color={restaurant.isApproved ? "secondary" : "primary"}
+                  onClick={() => toggleApproval(restaurant._id)}
+                >
+                  {restaurant.isApproved ? "Unapprove" : "Approve"}
+                </Button>
                 <Link to={`/manage-restaurant/${restaurant._id}`}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<EditIcon />} // Use EditIcon without custom color
-                    style={{ color: '#808080', backgroundColor: 'transparent' }} // Customize text color and remove background color
-                  >
-                    Update
-                  </Button>
+                 
                 </Link>
               </div>
             </div>
@@ -134,5 +152,6 @@ const RestaurantTable = () => {
     </DefaultLayout>
   );
 };
+
 
 export default RestaurantTable;

@@ -22,7 +22,9 @@ export type Restaurant = {
   menuItems: MenuItem[];
   imageUrl: string;
   lastUpdated: string;
-  percentage:number[]
+  percentage: number[],
+  isApproved: boolean
+
 };
 
 export type OrderStatus =

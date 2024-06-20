@@ -19,6 +19,8 @@ router.post("/",upload.single("imageFile"),verifyToken,verifyVendor,validateMyRe
 router.get("/",verifyToken,verifyVendor,MyRestaurantController.getMyRestaurant);
 router.get("/restaurants",MyRestaurantController.getAllRestaurant);
 router.put("/",validateMyRestaurantRequest,MyRestaurantController.updateMyRestaurant)
+// Route to toggle restaurant approval status
+router.patch('/:id/toggle-approval', MyRestaurantController.toggleRestaurantApproval);
 // API endpoint to fetch restaurant data
 router.get('/:id',MyRestaurantController.getCuisinesStat);
 export default router;

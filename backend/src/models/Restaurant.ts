@@ -33,7 +33,8 @@ const restaurantSchema = new mongoose.Schema({
     foods:[{ type:String, required:true}],
     pickup:{ type:Boolean, required:true ,default:true},
     rating:{ type:Number, min:1, max:5 },
-    ratingCount:{ type:Number,default: 0 }
+    ratingCount:{ type:Number,default: 0 },
+    isApproved: { type:Boolean}, // Add this line to define the isApproved property
 
 
 

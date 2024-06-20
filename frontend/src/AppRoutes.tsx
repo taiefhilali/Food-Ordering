@@ -231,7 +231,9 @@ const AppRoutes = () => {
         path="/manage-categories"
         element={
           <>
-            <AddCategoryForm />
+            <AddCategoryForm fetchCategories={function (): void {
+              throw new Error('Function not implemented.')
+            } } />
           </>
         }
       />

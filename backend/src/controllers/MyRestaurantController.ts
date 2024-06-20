@@ -14,9 +14,9 @@ const getMyRestaurant = async (req: Request, res: Response) => {
 
     const restaurants = await Restaurant.find({ user: userId });
 
-    if (restaurants.length === 0) {
-      return res.status(404).json({ message: "Restaurant not found" });
-    }
+    // if (restaurants.length === 0) {
+    //   return res.status(404).json({ message: "Restaurant not found" });
+    // }
 
     res.json(restaurants);
   } catch (error) {
@@ -25,6 +25,24 @@ const getMyRestaurant = async (req: Request, res: Response) => {
   }
 };
 
+// Toggle restaurant approval status
+const toggleRestaurantApproval = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const restaurant = await Restaurant.findById(id);
+    if (!restaurant) {
+      return res.status(404).json({ message: "Restaurant not found" });
+    }
+
+    restaurant.isApproved = !restaurant.isApproved;
+    await restaurant.save();
+
+    res.status(200).json({ message: "Restaurant approval status updated", restaurant });
+  } catch (error) {
+    console.error("Error toggling restaurant approval status:", error);
+    res.status(500).json({ message: "Error toggling restaurant approval status" });
+  }
+};
 
 const getAllRestaurant = async (req: Request, res: Response) => {
   try {
@@ -239,4 +257,4 @@ const uploadimage = async (file: Express.Multer.File) => {
 }
 
 
-export default { createMyRestaurant, getMyRestaurant, updateMyRestaurant, getAllRestaurant, getCuisinesStat };
+export default { createMyRestaurant, getMyRestaurant, updateMyRestaurant, getAllRestaurant, getCuisinesStat,toggleRestaurantApproval };
