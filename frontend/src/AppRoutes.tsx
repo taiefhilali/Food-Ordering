@@ -28,6 +28,7 @@ import ProductTable from './pages/Products/ProductTable'
 import LoginFormModal from './forms/manage-user-form/LoginFormModal'
 import { useState } from 'react'
 import UnauthorizedPage from './components/UnauthorizedPage'
+import AddCategoryForm from './forms/manage-category-form/AddCategoryForm'
 const AppRoutes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,7 +65,7 @@ const AppRoutes = () => {
 
       //vendor
  
-          <Route
+          {/* <Route
             path="/manage-restaurant"
             element={<ManageRestaurantPage />}
           />
@@ -72,9 +73,9 @@ const AppRoutes = () => {
             path="/display-products"
             element={<DisplayProductsPage />}
           />
-       
+        */}
   
-      {/* {userType === "Vendor" ? (
+      {userType === "Vendor" ? (
         <>
           <Route
             path="/manage-restaurant"
@@ -90,7 +91,7 @@ const AppRoutes = () => {
           path="*"
           element={<UnauthorizedPage />}
         />
-      )} */}
+      )}
 //Admin
       <Route
         path="/adminproducts"
@@ -204,7 +205,22 @@ const AppRoutes = () => {
           </>
         }
       />
-
+ <Route
+        path="/categories"
+        element={
+          <>
+            <CategoryComponent />
+          </>
+        }
+      />
+ <Route
+        path="/manage-categories"
+        element={
+          <>
+            <AddCategoryForm />
+          </>
+        }
+      />
       <Route
         path="/chart"
         element={

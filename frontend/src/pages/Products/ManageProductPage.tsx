@@ -11,14 +11,7 @@ export default function ManageProductPage() {
   const { createProduct, isLoading: isCreateLoading } = useCreateProduct();
   const { products } = useGetMyProducts();
   // const { updateRestaurant, isLoading: isUpdateloading } = useUpdateRestaurant();
-  const isEditing = !!products;
 
-  const handleSave = (restaurantFormData: FormData) => {
-    // Implement your logic here to handle the form data submission
-    console.log('Form Data:', restaurantFormData);
-
-    // You can make an API request, update the state, or perform any necessary actions.
-  };
 
   return (  
   <DefaultLayout>

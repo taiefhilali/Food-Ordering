@@ -12,6 +12,7 @@ type Restaurant = {
 };
 const AddProductForm = () => {
    const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { restaurant, isLoading } = useGetMyRestaurant();
   // console.log(restaurants);
 
