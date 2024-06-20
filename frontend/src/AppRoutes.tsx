@@ -30,6 +30,7 @@ import { useState } from 'react'
 import UnauthorizedPage from './components/UnauthorizedPage'
 import AddCategoryForm from './forms/manage-category-form/AddCategoryForm'
 import OrdersList from './pages/Orders/OrdersDisplay'
+import RestaurantTable from './pages/Restaurant/RestaurantTable'
 const AppRoutes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -103,6 +104,14 @@ const AppRoutes = () => {
         element={
 
           <ProductTable />
+
+        }
+      />
+           <Route
+        path="/adminrestaurants"
+        element={
+
+          <RestaurantTable />
 
         }
       />
