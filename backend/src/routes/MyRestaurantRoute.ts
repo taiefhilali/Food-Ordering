@@ -11,12 +11,12 @@ const upload=multer({
         fileSize: 5 * 1024 * 1024, //5MB
     }
 })
-const { verifyToken, verifyUserType } = require('../middleware/verifyToken')
+const { verifyToken, verifyVendor } = require('../middleware/verifyToken')
 
 
 // /api/my/restaurant,
-router.post("/",upload.single("imageFile"),verifyToken,verifyUserType,validateMyRestaurantRequest,MyRestaurantController.createMyRestaurant);
-router.get("/",verifyToken,verifyUserType,MyRestaurantController.getMyRestaurant);
+router.post("/",upload.single("imageFile"),verifyToken,verifyVendor,validateMyRestaurantRequest,MyRestaurantController.createMyRestaurant);
+router.get("/",verifyToken,verifyVendor,MyRestaurantController.getMyRestaurant);
 router.get("/restaurants",MyRestaurantController.getAllRestaurant);
 router.put("/",validateMyRestaurantRequest,MyRestaurantController.updateMyRestaurant)
 // API endpoint to fetch restaurant data

@@ -27,6 +27,7 @@ import CategoryComponent from './components/Categories/CategoryComponent'
 import ProductTable from './pages/Products/ProductTable'
 import LoginFormModal from './forms/manage-user-form/LoginFormModal'
 import { useState } from 'react'
+import UnauthorizedPage from './components/UnauthorizedPage'
 const AppRoutes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,6 +35,8 @@ const AppRoutes = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const userType = localStorage.getItem('userType');
+
 
   return (
     <Routes>
@@ -58,19 +61,36 @@ const AppRoutes = () => {
           </>
         }
       />
-      <Route
-        path="/manage-restaurant"
-        element={
 
-          <ManageRestaurantPage />
-
-        }
-      />
       //vendor
-      <Route
-        path="/display-products"
-        element={<DisplayProductsPage />} // Use DisplayProductsPage component as the element
-      />
+ 
+          <Route
+            path="/manage-restaurant"
+            element={<ManageRestaurantPage />}
+          />
+          <Route
+            path="/display-products"
+            element={<DisplayProductsPage />}
+          />
+       
+  
+      {/* {userType === "Vendor" ? (
+        <>
+          <Route
+            path="/manage-restaurant"
+            element={<ManageRestaurantPage />}
+          />
+          <Route
+            path="/display-products"
+            element={<DisplayProductsPage />}
+          />
+        </>
+      ) : (
+        <Route
+          path="*"
+          element={<UnauthorizedPage />}
+        />
+      )} */}
 //Admin
       <Route
         path="/adminproducts"

@@ -163,9 +163,9 @@ const createMyRestaurant = async (req: Request, res: Response) => {
     console.log('====================================');
     const existingRestaurant = await Restaurant.findOne({ user: userId });
 
-    if (existingRestaurant) {
-      return res.status(409).json({ message: "User Restaurant already exists" });
-    }
+    // if (existingRestaurant) {
+    //   return res.status(409).json({ message: "User Restaurant already exists" });
+    // }
 
     // const image = req.file as Express.Multer.File;
     // const base64Image = Buffer.from(image.buffer).toString("base64");

@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
 import { Restaurant } from "@/types";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 
 
@@ -64,7 +65,8 @@ export const useCreateMyRestaurant = () => {
       console.log('Response:', response);
 
       if (!response.ok) {
-        throw new Error('Failed to create restaurant');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to create restaurant');
       }
 
       return response.json();
@@ -81,10 +83,18 @@ export const useCreateMyRestaurant = () => {
     error,
   } = useMutation(createMyRestaurantRequest, {
     onSuccess: () => {
-      toast.success('Restaurant created!');
+      Swal.fire({
+        icon: 'success',
+        title: 'Restaurant Created',
+        text: 'Your restaurant has been created successfully!',
+      });
     },
-    onError: () => {
-      toast.error('Unable to create restaurant');
+    onError: (error: any) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: `Unable to create restaurant: ${error.message}`,
+      });
     },
   });
 

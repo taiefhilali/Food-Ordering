@@ -20,12 +20,19 @@ const RestaurantList = () => {
           throw new Error('No userId or token found');
         }
 
+        console.log('userId:', userId); // Log userId for debugging
+        console.log('token:', token);   // Log token for debugging
+
         const response = await axios.get('http://localhost:7000/api/my/restaurant', {
           params: { userId },
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        console.log('Request headers:', {
+          Authorization: `Bearer ${token}`,
+        }); // Log headers for debugging
 
         if (!response.data) {
           throw new Error("Failed to get restaurant");
@@ -36,7 +43,7 @@ const RestaurantList = () => {
 
       } catch (error) {
         console.error("Error fetching restaurant data:", error);
-        setError("error"); // Set error state to display in UI
+        setError("Failed to fetch restaurant data. Please check the console for more details."); // Set detailed error message
       }
     };
 
@@ -102,7 +109,7 @@ const RestaurantList = () => {
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <p className="text-meta-10">{restaurant.lastUpdated}%</p>
+                <p className="text-meta-10">{restaurant.lastUpdated}</p>
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
