@@ -5,6 +5,7 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit'; // Import Edit icon from Material-UI
+import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -56,6 +57,8 @@ const RestaurantList = () => {
 
   return (
     <DefaultLayout>
+            <Breadcrumb pageName="Display Restaurants" />
+
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
           Restaurant Details

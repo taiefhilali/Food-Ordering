@@ -29,6 +29,7 @@ import LoginFormModal from './forms/manage-user-form/LoginFormModal'
 import { useState } from 'react'
 import UnauthorizedPage from './components/UnauthorizedPage'
 import AddCategoryForm from './forms/manage-category-form/AddCategoryForm'
+import OrdersList from './pages/Orders/OrdersDisplay'
 const AppRoutes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -84,6 +85,10 @@ const AppRoutes = () => {
           <Route
             path="/display-products"
             element={<DisplayProductsPage />}
+          />
+            <Route
+            path="/display-orders"
+            element={<OrdersList />}
           />
         </>
       ) : (
