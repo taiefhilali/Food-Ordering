@@ -28,6 +28,7 @@ import ProductTable from './pages/Products/ProductTable'
 import LoginFormModal from './forms/manage-user-form/LoginFormModal'
 import { useState } from 'react'
 const AppRoutes = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Function to close the modal
   const closeModal = () => {

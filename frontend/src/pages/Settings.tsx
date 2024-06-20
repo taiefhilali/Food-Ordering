@@ -36,7 +36,17 @@ const Settings = () => {
         },
       });
 
+      const userData = response.data;
 
+      // Store relevant user data in localStorage
+      localStorage.setItem('userType', userData.userType);
+      localStorage.setItem('firstname', userData.firstname);
+      localStorage.setItem('lastname', userData.lastname);
+      localStorage.setItem('email', userData.email);
+      localStorage.setItem('username', userData.username);
+      localStorage.setItem('phoneNumber', userData.phoneNumber);
+      localStorage.setItem('imageUrl', userData.imageUrl);
+  
       setUser({
         ...response.data,
        
