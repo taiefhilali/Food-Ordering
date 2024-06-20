@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 interface RegisterFormProps {
   closeModal: () => void;
-  showUserTypeSelection: () => void;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSelection }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
   const [formData, setFormData] = useState({
     email: '',
     firstname: '',
     lastname: '',
     password: '',
-    username: '', // Added username field
+    username: '',
     imageFile: null as File | null,
   });
 
@@ -22,14 +21,23 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
     firstname: '',
     lastname: '',
     password: '',
-    username: '', // Added username error field
+    username: '',
     imageFile: '',
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [userType, setUserType] = useState('');
+
+  useEffect(() => {
+    // Additional logic can be added here if needed
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
-    if (e.target.type === 'file') {
+    if (name === 'userType') {
+      setUserType(value);
+    } else if (e.target.type === 'file') {
       const file = (e.target as HTMLInputElement).files?.[0];
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -81,7 +89,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
 
     const { email, firstname, lastname, password, username, imageFile } = formData;
 
-    // Validation
     let formIsValid = true;
     const errors = {
       email: '',
@@ -109,7 +116,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
 
     if (!validatePassword(password)) {
       formIsValid = false;
-      errors.password = 'Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one number.';
+      errors.password =
+        'Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one number.';
     }
 
     if (!validateUsername(username)) {
@@ -129,17 +137,17 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
       return;
     }
 
-    // Create FormData object to send as multipart/form-data
+    setIsSubmitting(true);
+
     const data = new FormData();
     data.append('email', email);
     data.append('firstname', firstname);
     data.append('lastname', lastname);
     data.append('password', password);
     data.append('username', username);
+    data.append('userType', userType); // Add userType to formData
     if (imageFile) {
       data.append('imageFile', imageFile);
-    } else {
-      data.append('imageFile', ''); // or handle the error
     }
 
     const token = localStorage.getItem('userToken');
@@ -153,12 +161,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
       });
 
       if (response.status === 201) {
-        // Save firstname and lastname in localStorage
         localStorage.setItem('firstname', firstname);
         localStorage.setItem('lastname', lastname);
-
-        // Trigger the function to show user type selection
-        showUserTypeSelection();
 
         Swal.fire({
           icon: 'success',
@@ -177,6 +181,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
         title: 'Registration Failed',
         text: 'Error registering user. Please try again.',
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -193,7 +199,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
             className="block w-full px-2 py-2 border rounded-full"
             required
           />
-          {errors.firstname && <p className="text-red-500 text-xs italic">{errors.firstname}</p>}
+          {errors.firstname && (
+            <p className="text-red-500 text-xs italic">{errors.firstname}</p>
+          )}
         </div>
         <div className="w-full md:w-1/2 md:pl-2">
           <input
@@ -205,7 +213,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
             className="block w-full px-3 py-2 border rounded-full"
             required
           />
-          {errors.lastname && <p className="text-red-500 text-xs italic">{errors.lastname}</p>}
+          {errors.lastname && (
+            <p className="text-red-500 text-xs italic">{errors.lastname}</p>
+          )}
         </div>
       </div>
 
@@ -220,7 +230,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
             className="block w-full px-3 py-2 border rounded-full"
             required
           />
-          {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-xs italic">{errors.email}</p>
+          )}
         </div>
 
         <div className="w-full md:w-1/2 md:pl-2">
@@ -233,10 +245,25 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
             className="block w-full px-3 py-2 border rounded-full"
             required
           />
-          {errors.username && <p className="text-red-500 text-xs italic">{errors.username}</p>}
+          {errors.username && (
+            <p className="text-red-500 text-xs italic">{errors.username}</p>
+          )}
         </div>
       </div>
-
+      <div className="mb-4 w-full max-w-md">
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Password"
+          className="block w-full px-3 py-2 border rounded-full"
+          required
+        />
+        {errors.password && (
+          <p className="text-red-500 text-xs italic">{errors.password}</p>
+        )}
+      </div>
       <div className="mb-4 w-full max-w-md">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="imageFile">
           Profile Image
@@ -249,32 +276,39 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal, showUserTypeSel
           className="block w-full px-3 py-2 border rounded-full"
           required
         />
-        {errors.imageFile && <p className="text-red-500 text-xs italic">{errors.imageFile}</p>}
+        {errors.imageFile && (
+          <p className="text-red-500 text-xs italic">{errors.imageFile}</p>
+        )}
       </div>
 
       <div className="mb-4 w-full max-w-md">
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="userType">
+          User Type
+        </label>
+        <select
+          name="userType"
+          value={userType}
           onChange={handleChange}
-          placeholder="Password"
           className="block w-full px-3 py-2 border rounded-full"
           required
-        />
-        {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+        >
+          <option value="">Select User Type</option>
+          <option value="Vendor">Vendor</option>
+          <option value="Admin">Admin</option>
+        </select>
       </div>
 
       <div className="w-full max-w-md">
         <button
           type="submit"
           className="bg-slate-500 border-b-meta-7 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full"
+          disabled={isSubmitting}
         >
-          Register
+          {isSubmitting ? 'Registering...' : 'Register'}
         </button>
       </div>
     </form>
   );
 };
 
-export default RegisterForm;
+export default RegisterForm 

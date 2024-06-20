@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import DiprellaLogo from '../../assets/quick.png'; // Replace with actual logo path
-import { FaFacebook, FaGoogle, FaTwitter } from 'react-icons/fa'; // Import social icons as needed
 
 type LoginFormModalProps = {
   closeModal: () => void;
@@ -10,20 +9,17 @@ type LoginFormModalProps = {
 
 const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
   const [activeTab, setActiveTab] = useState('login');
-  const [showUserTypeSelector, setShowUserTypeSelector] = useState(false);
+  // const [showUserTypeSelector, setShowUserTypeSelector] = useState(false);
+  // const [selectedUserType, setSelectedUserType] = useState('');
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
 
-  const handleSocialLogin = (provider: string) => {
-    // Handle social login based on provider (e.g., Facebook, Google, Twitter)
-    console.log(`Logging in with ${provider}`);
-  };
-
-  const handleUserTypeSelection = () => {
-    setShowUserTypeSelector(true);
-  };
+  // const handleUserTypeSelection = (userType: string) => {
+  //   setSelectedUserType(userType);
+  //   setShowUserTypeSelector(false);
+  // };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -46,36 +42,6 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
         <div className="flex flex-col items-center mt-4 mb-6">
           <img src={DiprellaLogo} alt="Diprella Logo" className="h-16 mb-2" />
           <h2 className="text-2xl font-bold">Login to Your Account</h2>
-        </div>
-
-        {/* Social login buttons */}
-        <div className="flex justify-center space-x-4 mb-4">
-          <button
-            className="bg-blue-800 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center"
-            onClick={() => handleSocialLogin('facebook')}
-          >
-            <FaFacebook className="mr-2" /> Facebook
-          </button>
-          <button
-            className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded flex items-center"
-            onClick={() => handleSocialLogin('google')}
-          >
-            <FaGoogle className="mr-2" /> Google
-          </button>
-          <button
-            className="bg-blue-400 hover:bg-blue-300 text-white px-4 py-2 rounded flex items-center"
-            onClick={() => handleSocialLogin('twitter')}
-          >
-            <FaTwitter className="mr-2" /> Twitter
-          </button>
-        </div>
-
-        {/* New Here? Sign up message */}
-        <div className="flex justify-center mb-4">
-          <div className="text-center">
-            <p className="text-sm">New Here?</p>
-            <p className="text-xs">Register and discover a great amount of new opportunities!</p>
-          </div>
         </div>
 
         {/* Tabs */}
@@ -104,31 +70,14 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
           {activeTab === 'register' && (
             <RegisterForm
               closeModal={closeModal}
-              showUserTypeSelection={handleUserTypeSelection} // Pass the function to show user type selection
+              // showUserTypeSelection={() => setShowUserTypeSelector(true)} // Show user type selection
             />
           )}
         </div>
 
         {/* User type selection */}
-        {showUserTypeSelector && (
-          <div className="px-4 mt-4 flex flex-col items-center">
-            <h2 className="text-lg font-bold mb-2">Select Your User Type</h2>
-            <div className="flex justify-center space-x-4">
-              <button
-                className="bg-blue-800 hover:bg-blue-700 text-white px-4 py-2 rounded"
-                onClick={() => console.log('Admin selected')}
-              >
-                Admin
-              </button>
-              <button
-                className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded"
-                onClick={() => console.log('Vendor selected')}
-              >
-                Vendor
-              </button>
-            </div>
-          </div>
-        )}
+      
+   
       </div>
     </div>
   );

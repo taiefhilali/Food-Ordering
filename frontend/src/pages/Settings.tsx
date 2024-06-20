@@ -130,7 +130,7 @@ const Settings = () => {
                         type="text"
                         name="phoneNumber"
                         id="phoneNumber"
-                        placeholder="+990 3343 7865"
+                        placeholder="+216"
                         defaultValue={user.phoneNumber}
                       />
                     </div>

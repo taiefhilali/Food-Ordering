@@ -29,7 +29,7 @@ const hashPassword = async (password: string): Promise<string> => {
 };
 const registerUser = async (req: Request, res: Response) => {
   try {
-    const { username, email, firstname, lastname, password } = req.body;
+    const { username, email, firstname, lastname, password, userType } = req.body;
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
 
     if (existingUser) {
@@ -50,7 +50,8 @@ const registerUser = async (req: Request, res: Response) => {
       lastname,
       imageUrl,
       verificationToken,
-      password: hashedPassword
+      password: hashedPassword,
+      userType, // Include userType in the user object
     });
 
     // Save user to database

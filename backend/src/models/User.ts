@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     },
     username: { type: String, required: true, unique: true },
 
-    userType: { type: String, required: true, default: "Client", enum: ['Admin', 'Client', 'Vendor'] },
+    userType: { type: String, required: true, enum: ['Admin', 'Client', 'Vendor'] },
     phoneNumber: {
         type: Number,
         default:+21697009028
