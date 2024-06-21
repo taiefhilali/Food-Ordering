@@ -36,9 +36,9 @@ router.get('/verify/:token', async (req, res) => {
   res.status(200).json({ message: 'Email verified successfully' });
 });
 router.get("/:id",verifyToken,verifyVendor, MyUserController.getUser);
-router.delete("/delete/:id",verifyVendor, MyUserController.deleteUser);
-router.put("/update/:id",verifyVendor, MyUserController.updateUser);
-
+router.delete("/delete/:id",verifyToken,verifyVendor, MyUserController.deleteUser);
+router.put("/update/:id",verifyToken,verifyVendor, MyUserController.updateUser);
+router.post('/uploadProfilePicture/:userId', verifyToken,verifyVendor,upload.single('File'),MyUserController.uploadProfilePicture);
 
 
 export default router;

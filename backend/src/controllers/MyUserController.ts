@@ -8,6 +8,7 @@ import CryptoTs from 'crypto-ts';
 
 
 
+const MAX_FILENAME_LENGTH = 100; // Example: Maximum filename length allowed
 
 // Function to encrypt password using crypto-ts
 
@@ -198,6 +199,29 @@ const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+const uploadProfilePicture = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
 
+    const fileName = req.file.originalname.substring(0, MAX_FILENAME_LENGTH);
+    if (fileName.length > MAX_FILENAME_LENGTH) {
+      return res.status(400).json({ message: 'Filename exceeds maximum length' });
+    }
 
-export default { registerUser, loginUser, getUser, deleteUser,updateUser};
+    // Upload file to Cloudinary or other storage service
+    const result = await cloudinary.v2.uploader.upload(req.file.buffer.toString('base64'), { public_id: fileName });
+
+    // Update user's imageUrl in database
+    const userId = req.params.userId;
+    // Replace with your actual database update logic
+    // Example: const user = await User.findByIdAndUpdate(userId, { imageUrl: result.secure_url }, { new: true });
+
+    res.status(200).json({ imageUrl: result.secure_url });
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    res.status(500).json({ message: 'Error uploading profile picture', error });
+  }
+};
+export default { registerUser, loginUser, getUser, deleteUser,updateUser,uploadProfilePicture};
