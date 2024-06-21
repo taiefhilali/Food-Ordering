@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
   restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
   quantity: { type: Number, required: true },
   imageUrl:{type:String},
+  isApproved: { type: Boolean, default: false },
 
 
 });

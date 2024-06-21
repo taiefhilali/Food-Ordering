@@ -96,3 +96,21 @@ const uploadimage = async (file: Express.Multer.File) => {
     const uploadResponse = await cloudinary.v2.uploader.upload(dataURL);
     return uploadResponse.url;
   }
+// Toggle product approval status
+exports.toggleProductApproval = async(req:Request,res:Response) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    product.isApproved = !product.isApproved;
+    await product.save();
+
+    res.status(200).json(product);
+  } catch (error) {
+    console.error("Error toggling product approval status:", error);
+    res.status(500).json({ message: "Error toggling product approval status" });
+  }
+};

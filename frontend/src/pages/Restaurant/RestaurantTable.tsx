@@ -4,8 +4,9 @@ import { Restaurant } from '@/types';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import EditIcon from '@mui/icons-material/Edit'; // Import Edit icon from Material-UI
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
+import { CheckCircleIcon } from 'lucide-react';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const RestaurantTable = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -101,7 +102,7 @@ const RestaurantTable = () => {
             </div>
             <div className="hidden p-2.5 text-center sm:block xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Actions
+                Approving
               </h5>
             </div>
           </div>
@@ -133,13 +134,23 @@ const RestaurantTable = () => {
                 <p className="text-meta-10">{restaurant.lastUpdated}</p>
               </div>
 
-              <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
+              <div className="flex items-center justify-center p-2.5 sm:flex xl:p-5">
                 <Button
                   variant="contained"
-                  color={restaurant.isApproved ? "secondary" : "primary"}
+                  color="primary"
                   onClick={() => toggleApproval(restaurant._id)}
+                  style={{
+                    backgroundColor: restaurant.isApproved ? 'rgba(0, 128, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)',
+                    color: 'white',
+                    minWidth: '30px',
+                    height: '3 0px',
+                    borderRadius: '20%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
                 >
-                  {restaurant.isApproved ? "Unapprove" : "Approve"}
+                  {restaurant.isApproved ? <CheckCircleIcon /> : <CancelIcon />}
                 </Button>
                 <Link to={`/manage-restaurant/${restaurant._id}`}>
                  
