@@ -1010,7 +1010,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <NavLink
                   to="/settings"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydarkduration-300 ease-in-out over:bg-orange-400 hover:text-orange-400 ${pathname.includes('settings') &&
-                    'bg-graydark dark:bg-meta-4'
+                    'bg-white dark:bg-meta-4'
                     }`}
                 >
                   <svg

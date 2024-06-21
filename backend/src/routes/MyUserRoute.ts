@@ -2,7 +2,7 @@ import express from "express";
 import MyUserController from "../controllers/MyUserController";
 import User from "../models/User";
 import multer from "multer"
-const { verifyToken, verifyUserType } = require('../middleware/verifyToken')
+const { verifyToken, verifyUserType,verifyVendor } = require('../middleware/verifyToken')
 
 
 const router = express.Router();
@@ -35,9 +35,9 @@ router.get('/verify/:token', async (req, res) => {
 
   res.status(200).json({ message: 'Email verified successfully' });
 });
-router.get("/:id",verifyToken,verifyUserType, MyUserController.getUser);
-router.delete("/delete/:id",verifyUserType, MyUserController.deleteUser);
-router.put("/update/:id",verifyUserType, MyUserController.updateUser);
+router.get("/:id",verifyToken,verifyVendor, MyUserController.getUser);
+router.delete("/delete/:id",verifyVendor, MyUserController.deleteUser);
+router.put("/update/:id",verifyVendor, MyUserController.updateUser);
 
 
 

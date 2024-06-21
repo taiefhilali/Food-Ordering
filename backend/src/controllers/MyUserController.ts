@@ -175,6 +175,18 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+
+const deleteProfilePicture = async (req: Request, res: Response) => {
+  const userId = req.params.id; // Get the user ID from the request parameters
+
+  try {
+    await User.findByIdAndDelete(userId);
+    res.status(200).json({ status: true, message: 'User Deleted Successfully !' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting user', error });
+  }
+};
+
 const updateUser = async (req: Request, res: Response) => {
   const userId = req.params.id; // Get the user ID from the request parameters
 
