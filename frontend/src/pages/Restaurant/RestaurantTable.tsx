@@ -3,10 +3,7 @@ import axios from 'axios';
 import { Restaurant } from '@/types';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import { Link } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
-import { CheckCircleIcon } from 'lucide-react';
-import CancelIcon from '@mui/icons-material/Cancel';
 
 const RestaurantTable = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -72,6 +69,9 @@ const RestaurantTable = () => {
     }
   };
 
+
+
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -97,12 +97,16 @@ const RestaurantTable = () => {
             </div>
             <div className="hidden p-2.5 text-center sm:block xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Last Updated
-              </h5>
+              rating              </h5>
             </div>
             <div className="hidden p-2.5 text-center sm:block xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
                 Approving
+              </h5>
+            </div>
+            <div className="hidden p-2.5 text-center sm:block xl:p-5">
+              <h5 className="text-sm font-medium uppercase xsm:text-base">
+                Remove
               </h5>
             </div>
           </div>
@@ -131,11 +135,19 @@ const RestaurantTable = () => {
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <p className="text-meta-10">{restaurant.lastUpdated}</p>
+                <p className="text-meta-10">{restaurant.ratingCount}</p>
               </div>
 
               <div className="flex items-center justify-center p-2.5 sm:flex xl:p-5">
-                <Button
+              <label className="switch">
+                    <input
+                      type="checkbox"
+                      checked={restaurant.isApproved}
+                      onChange={() => toggleApproval(restaurant._id)}
+                    />
+                    <span className="slider round"></span>
+                  </label>
+                {/* <Button
                   variant="contained"
                   color="primary"
                   onClick={() => toggleApproval(restaurant._id)}
@@ -149,9 +161,9 @@ const RestaurantTable = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
-                >
+                > 
                   {restaurant.isApproved ? <CheckCircleIcon /> : <CancelIcon />}
-                </Button>
+                </Button>*/}
                 <Link to={`/manage-restaurant/${restaurant._id}`}>
                  
                 </Link>

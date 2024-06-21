@@ -3,6 +3,7 @@ import '../../assets/css/ProductTable.css'; // Import your CSS file
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 type Product = {
   _id: string;
@@ -63,10 +64,44 @@ const ProductTable: React.FC = () => {
     }
   };
   
-  const handleDelete = (productId: string) => {
-    const updatedProducts = products.filter(product => product._id !== productId);
-    setProducts(updatedProducts);
-    // Here you would typically make an API call to delete the product
+  const handleDelete = async (productId: string) => {
+    try {
+      const token = localStorage.getItem('userToken');
+      
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f2ab48',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`http://localhost:7000/api/my/products/${productId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const updatedProducts = products.filter(product => product._id !== productId);
+        setProducts(updatedProducts);
+
+        Swal.fire(
+          'Deleted!',
+          'Your product has been deleted.',
+          'success'
+        );
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      Swal.fire('Error!', 'There was an error deleting your product.', 'error');
+    }
   };
 
   return (
