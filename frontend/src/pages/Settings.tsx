@@ -12,7 +12,10 @@ const Settings = () => {
     firstname: '',
     lastname: '',
     phoneNumber: '',
-    email:'',username:''
+    email:'',
+    username:'', 
+    imageUrl: '', // Add imageUrl to user state
+
   });
   // Function to fetch user data
   const fetchUserData = async () => {
@@ -279,7 +282,7 @@ const Settings = () => {
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
-                      <img src={userThree} alt="User" />
+                      <img src={user.imageUrl} alt="User" />
                     </div>
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
