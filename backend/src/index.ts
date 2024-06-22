@@ -14,6 +14,9 @@ import foodRoute from "./routes/FoodRoute";
 import TableRoute from "./routes/TableRoute";
 import CartRoute from "./routes/CartRoute";
 import Stripe from 'stripe';
+const socketIo = require('socket.io');
+const http = require('http');
+import { Server as SocketIOServer, Socket } from 'socket.io'; // Import Socket and Server from socket.io
 
 
 //cloudinary configuration
@@ -25,6 +28,8 @@ cloudinary.config({
 
 
 })
+
+
 
 
 // stripe configuration 
@@ -40,8 +45,16 @@ admin.initializeApp({
 
 
 const app = express();
-app.use(express.json());
-app.use(cors());
+const server = http.createServer(app);
+const io = require('socket.io')(server, {
+    cors: {
+      origin: 'http://localhost:3000', // Replace with your frontend URL during development
+      methods: ['GET', 'POST'],
+      allowedHeaders: ['Authorization'],
+      credentials: true,
+    },
+  });app.use(express.json());
+// Configure CORS to allow requests from localhost:3000
 
 app.use("/api/my/auth",authRoute);
 app.use("/api/my/user",myUserRoute);
@@ -54,6 +67,44 @@ app.use('/api/my/table', TableRoute);
 app.use('/api/my/cart', CartRoute);
 
 
+// Socket.io connection
+io.on('connection', (socket: Socket) => { // Explicitly type Socket
+    console.log('New client connected');
+    // Socket.io event handling
+
+    
+    socket.on('newProductAdded', (data) => {
+      console.log('New product added:', data);
+      // Handle the event
+    });
+  
+    socket.on('disconnect', () => {
+      console.log('Client disconnected');
+    });
+  });
+  
+    // // Example: Notify clients when a new product is added
+    // socket.on('productAdded', (product) => {
+    //   console.log('Product added:', product);
+    //   socket.broadcast.emit('newProduct', product);
+    // });
+    // // Example: Handle event when a client sends a message
+    // socket.on('message', (message: string) => {
+    //     console.log(`Received message: ${message}`);
+    //     io.emit('message', `Server received: ${message}`);
+    //   });
+    
+    // // Example: Notify clients when a product is deleted
+    // socket.on('productDeleted', (productId) => {
+    //   console.log('Product deleted:', productId);
+    //   socket.broadcast.emit('deletedProduct', productId);
+    // });
+  
+
+  const PORT = 8000;
+server.listen(PORT, () => {
+  console.log(`Socket.IO server listening on port ${PORT}`);
+});
 
 app.listen(7000, () => {
     console.log("server runing on 7000");

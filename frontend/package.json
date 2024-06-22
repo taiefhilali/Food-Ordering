@@ -51,6 +51,7 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.22.1",
     "react-toastify": "^10.0.4",
+    "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.8",
     "sweetalert2": "^11.12.0",
     "sweetalert2-react-content": "^5.0.7",

@@ -68,7 +68,7 @@ const AppRoutes = () => {
 
       //vendor
  
-          {/* <Route
+          <Route
             path="/manage-restaurant"
             element={<ManageRestaurantPage />}
           />
@@ -76,9 +76,9 @@ const AppRoutes = () => {
             path="/display-products"
             element={<DisplayProductsPage />}
           />
-        */}
+       
   
-      {userType === "Vendor" ? (
+      {/* {userType === "Vendor" ? (
         <>
           <Route
             path="/manage-restaurant"
@@ -98,7 +98,7 @@ const AppRoutes = () => {
           path="*"
           element={<UnauthorizedPage />}
         />
-      )}
+      )} */}
 //Admin
       <Route
         path="/adminproducts"

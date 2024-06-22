@@ -3,7 +3,6 @@
 import { useCreateProduct, useGetMyProducts } from "@/api/MyProductApi";
 import ManageProductForm from "@/forms/manage-product-forms/AddProductForm";
 
-import ManageRestaurantForm from "@/forms/manage-restaurant-form/ManageRestaurantForm";
 import DefaultLayout from "@/layouts/DefaultLayout";
 
 export default function ManageProductPage() {

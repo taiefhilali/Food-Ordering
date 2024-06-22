@@ -157,6 +157,8 @@ import Swal from 'sweetalert2';
 import { HiOutlineCurrencyDollar, HiOutlineInformationCircle, HiOutlineMenu, HiOutlineViewGrid, HiOutlinePhotograph } from 'react-icons/hi';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import { useGetMyRestaurant } from '../../api/MyRestaurantApi';
+import io from 'socket.io-client'; // Import socket.io-client
+import axios from 'axios';
 
 type Restaurant = {
   _id: string;
@@ -165,24 +167,44 @@ type Restaurant = {
 
 const AddProductForm = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { restaurant, isLoading } = useGetMyRestaurant();
+  const { restaurant } = useGetMyRestaurant();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
-
+  const userToken = localStorage.getItem('userToken');
+  console.log('User token:', userToken);
+  
+  const socket = io('http://localhost:8000', {
+    extraHeaders: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedRestaurant = await restaurant;
-        setRestaurants(fetchedRestaurant);
+        const token = localStorage.getItem('userToken');
+        if (!token) {
+          throw new Error('No token found');
+        }
+        const userId = localStorage.getItem('userId');
+
+        const response = await axios.get('http://localhost:7000/api/my/restaurant', {
+          params: { userId },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setRestaurants(response.data);
       } catch (error) {
-        console.error('Error setting restaurant data:', error);
+        console.error('Error fetching restaurants:', error);
+        // Handle error as needed (e.g., show error message)
       }
     };
 
     fetchData();
   }, []);
-
+  // WebSocket initialization
+ 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
     const formData = new FormData();
@@ -198,9 +220,17 @@ const AddProductForm = () => {
     }
 
     try {
+      const token = localStorage.getItem('userToken');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
       const response = await fetch('http://localhost:7000/api/my/products', {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!response.ok) {
@@ -214,6 +244,10 @@ const AddProductForm = () => {
         title: 'Product Added',
         text: 'Product has been added successfully!',
       });
+      // Emit a WebSocket event to notify the server about the new product
+     
+           socket.emit('newProductAdded', responseData.product);
+
     } catch (error) {
       console.error('Error adding product:');
     }
@@ -304,12 +338,11 @@ const AddProductForm = () => {
                     className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent dark:bg-gray-800 dark:text-white"
                   >
                     <option value="">Select Restaurant</option>
-                    {restaurants &&
-                      restaurants.map((restaurant) => (
-                        <option key={restaurant._id} value={restaurant._id}>
-                          {restaurant.restaurantName}
-                        </option>
-                      ))}
+                    {restaurants.map((restaurant) => (
+                      <option key={restaurant._id} value={restaurant._id}>
+                        {restaurant.restaurantName}
+                      </option>
+                    ))}
                   </select>
                   {errors.restaurant && (
                     <span className="absolute top-full left-1/2 transform -translate-x-1/2 text-red-500 text-sm">
@@ -317,7 +350,6 @@ const AddProductForm = () => {
                     </span>
                   )}
                 </div>
-
 
 
               </div>

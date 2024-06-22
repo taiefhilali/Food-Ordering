@@ -14,7 +14,7 @@ export type MenuItem = {
 };
 
 export type Restaurant = {
-  : number;
+  
   _id: string;
   user: string;
   restaurantName: string;
@@ -24,8 +24,8 @@ export type Restaurant = {
   imageUrl: string;
   lastUpdated: string;
   percentage: number[],
-  isApproved: boolean
-
+  isApproved: boolean,
+ratingCount: number,
 };
 
 export type OrderStatus =
