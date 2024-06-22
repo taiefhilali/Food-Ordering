@@ -46,6 +46,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    blocked: { type: Boolean, default: false }, // Example field for blocked status
+
 }, { timestamps: true });
 const User = mongoose.model("User", userSchema);
 export default User;

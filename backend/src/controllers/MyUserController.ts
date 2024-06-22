@@ -239,6 +239,22 @@ const getAllUsers = async (req: Request, res: Response) => {
     }
   }
 };
+const blockUser= async (req: Request, res: Response) => {
+  const  id = req.params.id;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { blocked: true },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'User blocked successfully' });
+  } catch (error) {
+    console.error('Error blocking user:', error);
+    res.status(500).json({ message: 'Error blocking user' });
+  }
+};
 
-
-export default { registerUser, loginUser, getUser, deleteUser,updateUser,uploadProfilePicture,getAllUsers};
+export default { registerUser, loginUser, getUser, deleteUser,updateUser,uploadProfilePicture,getAllUsers,blockUser};

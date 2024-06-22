@@ -16,7 +16,7 @@ const upload = multer({
 
 
 router.post("/", MyUserController.registerUser);
-router.get('/users',MyUserController.getAllUsers);
+router.get('/users',verifyToken,verifyVendor,MyUserController.getAllUsers);
 
 // Register endpoint (for user registration)
 router.post('/register',verifyToken, verifyUserType, upload.single("imageFile"), MyUserController.registerUser);
@@ -37,9 +37,10 @@ router.get('/verify/:token', async (req, res) => {
 
   res.status(200).json({ message: 'Email verified successfully' });
 });
+
 router.get("/:id",verifyToken,verifyVendor, MyUserController.getUser);
 router.delete("/delete/:id",verifyToken,verifyVendor, MyUserController.deleteUser);
 router.put("/update/:id",verifyToken,verifyVendor, MyUserController.updateUser);
 router.post('/uploadProfilePicture/:userId', verifyToken,verifyVendor,upload.single('File'),MyUserController.uploadProfilePicture);
-
+router.put('/block/:id',verifyToken,verifyVendor,MyUserController.blockUser);
 export default router;
