@@ -31,6 +31,7 @@ import UnauthorizedPage from './components/UnauthorizedPage'
 import AddCategoryForm from './forms/manage-category-form/AddCategoryForm'
 import OrdersList from './pages/Orders/OrdersDisplay'
 import RestaurantTable from './pages/Restaurant/RestaurantTable'
+import UsersDisplay from './components/Authentication/usersDisplay'
 const AppRoutes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -208,6 +209,14 @@ const AppRoutes = () => {
         element={
           <>
             < ManageProductPage />
+          </>
+        }
+      />
+      <Route
+        path="/allusers"
+        element={
+          <>
+            <UsersDisplay />
           </>
         }
       />

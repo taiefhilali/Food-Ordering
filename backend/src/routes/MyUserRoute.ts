@@ -2,7 +2,7 @@ import express from "express";
 import MyUserController from "../controllers/MyUserController";
 import User from "../models/User";
 import multer from "multer"
-const { verifyToken, verifyUserType,verifyVendor } = require('../middleware/verifyToken')
+const { verifyToken, verifyUserType,verifyVendor,verifyAdmin } = require('../middleware/verifyToken')
 
 
 const router = express.Router();
@@ -16,6 +16,8 @@ const upload = multer({
 
 
 router.post("/", MyUserController.registerUser);
+router.get('/users',MyUserController.getAllUsers);
+
 // Register endpoint (for user registration)
 router.post('/register',verifyToken, verifyUserType, upload.single("imageFile"), MyUserController.registerUser);
 router.post("/login", verifyToken, verifyUserType, MyUserController.loginUser);
@@ -39,6 +41,5 @@ router.get("/:id",verifyToken,verifyVendor, MyUserController.getUser);
 router.delete("/delete/:id",verifyToken,verifyVendor, MyUserController.deleteUser);
 router.put("/update/:id",verifyToken,verifyVendor, MyUserController.updateUser);
 router.post('/uploadProfilePicture/:userId', verifyToken,verifyVendor,upload.single('File'),MyUserController.uploadProfilePicture);
-
 
 export default router;

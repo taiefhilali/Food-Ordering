@@ -224,4 +224,21 @@ const uploadProfilePicture = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error uploading profile picture', error });
   }
 };
-export default { registerUser, loginUser, getUser, deleteUser,updateUser,uploadProfilePicture};
+// Controller to fetch all users
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await User.find(); // Exclude sensitive fields
+    
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error retrieving users:', error);
+    if (error instanceof Error) {
+      res.status(500).json({ message: 'Error retrieving users', error: error.message });
+    } else {
+      res.status(500).json({ message: 'Error retrieving users', error: String(error) });
+    }
+  }
+};
+
+
+export default { registerUser, loginUser, getUser, deleteUser,updateUser,uploadProfilePicture,getAllUsers};

@@ -1,0 +1,100 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .user-table-container {
+    display: flex;
+    justify-content: center;
+    background-color: #f4faff;
+    padding: 20px;
+  }
+  
+  .user-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .user-card {
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  
+  .user-card:hover {
+    transform: translateY(-10px);
+  }
+  
+  .user-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .user-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+  }
+  
+  .user-info {
+    margin-bottom: 16px;
+  }
+  
+  .user-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #171f46;
+  }
+  
+  .user-email {
+    font-size: 14px;
+    color: #64748b;
+  }
+  
+  .user-card-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .user-card-actions button {
+    background-color: transparent;
+    border: none;
+    color: #f2ab48;
+    font-size: 20px;
+    cursor: pointer;
+    size: 10;
+  }
+  
+  .user-card-actions button:hover {
+    color: #e0a32e;
+  }
+  
+  .user-type-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 12px;
+    background-color: #f2ab48;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
