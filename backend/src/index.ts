@@ -83,25 +83,49 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
     // Socket.io event handling
 
     
- 
-    socket.on('newProductAdded', async (data) => {
-        console.log('New product added:', data);
-    
-        try {
-          // Save notification to MongoDB
-          const notificationData = new Notification({
-            event: 'newProductAdded',
-            data: data,
-            timestamp: new Date(),
-          });
-    
-          const savedNotification = await notificationData.save();
-          console.log('Notification saved to MongoDB:', savedNotification);
-        } catch (error) {
-          console.error('Error saving notification to MongoDB:', error);
-        }
+    //add product notification
+    socket.on('newProductAdded', (data) => {
+      console.log('New product added:', data);
+      // Handle the event
+    });
+  //add restaurant notifications
+
+  socket.on('newRestaurantAdded', async (data) => {
+    console.log('New restaurant added:', data);
+
+    try {
+      // Save notification to MongoDB
+      const notificationData = new Notification({
+        event: 'newRestaurantAdded',
+        data: data,
+        timestamp: new Date(),
       });
-  
+
+      const savedNotification = await notificationData.save();
+      console.log('Notification saved to MongoDB:', savedNotification);
+    } catch (error) {
+      console.error('Error saving notification to MongoDB:', error);
+    }
+  });
+  //add user notifications
+
+  socket.on('newUserAdded', async (data) => {
+    console.log('New restaurant added:', data);
+
+    try {
+      // Save notification to MongoDB
+      const notificationData = new Notification({
+        event: 'newUserAdded',
+        data: data,
+        timestamp: new Date(),
+      });
+
+      const savedNotification = await notificationData.save();
+      console.log('Notification saved to MongoDB:', savedNotification);
+    } catch (error) {
+      console.error('Error saving notification to MongoDB:', error);
+    }
+  });
     socket.on('disconnect', () => {
       console.log('Client disconnected');
     });

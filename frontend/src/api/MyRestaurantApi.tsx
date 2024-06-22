@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Restaurant } from "@/types";
 import axios from "axios";
 import Swal from "sweetalert2";
+import io from 'socket.io-client'; // Import socket.io-client
 
 
 
@@ -45,6 +46,14 @@ export const useGetMyRestaurant = () => {
 };
 
 export const useCreateMyRestaurant = () => {
+  const userToken = localStorage.getItem('userToken');
+  console.log('User token:', userToken);
+
+  const socket = io('http://localhost:8000', {
+    extraHeaders: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
   const createMyRestaurantRequest = async (restaurantFormData: FormData): Promise<Restaurant> => {
     try {
       // Get the token from local storage
@@ -69,7 +78,12 @@ export const useCreateMyRestaurant = () => {
         throw new Error(errorData.message || 'Failed to create restaurant');
       }
 
-      return response.json();
+      const responseData = await response.json();
+
+      // Emit WebSocket event
+      socket.emit('newRestaurantAdded', responseData.restaurant);
+
+      return responseData.restaurant;
     } catch (error) {
       console.error('Error creating restaurant:', error);
       throw error;

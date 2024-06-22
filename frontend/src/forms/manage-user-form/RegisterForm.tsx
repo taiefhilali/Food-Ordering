@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { io } from 'socket.io-client';
 
 interface RegisterFormProps {
   closeModal: () => void;
@@ -27,7 +28,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userType, setUserType] = useState('');
+  const userToken = localStorage.getItem('userToken');
+  console.log('User token:', userToken);
 
+  const socket = io('http://localhost:8000', {
+    extraHeaders: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
   useEffect(() => {
     // Additional logic can be added here if needed
   }, []);
@@ -163,7 +171,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
       if (response.status === 201) {
         localStorage.setItem('firstname', firstname);
         localStorage.setItem('lastname', lastname);
-
+        // Emit WebSocket event
+        socket.emit('newUserAdded', {
+          email,
+          firstname,
+          lastname,
+          username,
+          // Add any other relevant data you want to emit
+        });
         Swal.fire({
           icon: 'success',
           title: 'Registration Successful!',
