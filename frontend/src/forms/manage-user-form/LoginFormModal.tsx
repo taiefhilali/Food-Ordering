@@ -27,7 +27,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
       <div className="absolute inset-0 bg-black opacity-50"></div>
 
       {/* Modal container */}
-      <div className="bg-slate-200 text-black p-8 rounded shadow-lg z-50 w-full max-w-xl">
+      <div className="bg-white text-black p-8 rounded shadow-lg z-50 w-full max-w-xl">
         {/* Close button */}
         <div className="flex justify-end">
           <button

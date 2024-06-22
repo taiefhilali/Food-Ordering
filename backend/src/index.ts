@@ -59,11 +59,10 @@ app.use(express.json());
 
 // Configure CORS to allow requests from localhost:3000
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:3000', // Replace with your frontend URL during development
     methods: ['GET', 'POST'],
-    credentials: true ,
-    allowedHeaders: ['Authorization'], // Allow Authorization header
-    // You may need this if you're dealing with cookies or sessions
+    allowedHeaders: ['Authorization', 'Content-Type'],
+    credentials: true,
   }));
 
 app.use("/api/my/auth",authRoute);
