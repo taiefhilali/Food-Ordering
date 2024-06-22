@@ -17,6 +17,7 @@ import Stripe from 'stripe';
 const socketIo = require('socket.io');
 const http = require('http');
 import { Server as SocketIOServer, Socket } from 'socket.io'; // Import Socket and Server from socket.io
+import Notification, { NotificationDocument } from './models/Notification'; // Import Notification model
 
 
 //cloudinary configuration
@@ -47,14 +48,23 @@ admin.initializeApp({
 const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
-    cors: {
-      origin: 'http://localhost:3000', // Replace with your frontend URL during development
-      methods: ['GET', 'POST'],
-      allowedHeaders: ['Authorization'],
-      credentials: true,
-    },
-  });app.use(express.json());
+  cors: {
+    origin: 'http://localhost:3000', // Replace with your frontend URL during development
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Authorization'],
+    credentials: true,
+  },
+});
+app.use(express.json());
+
 // Configure CORS to allow requests from localhost:3000
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true ,
+    allowedHeaders: ['Authorization'], // Allow Authorization header
+    // You may need this if you're dealing with cookies or sessions
+  }));
 
 app.use("/api/my/auth",authRoute);
 app.use("/api/my/user",myUserRoute);
@@ -73,10 +83,24 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
     // Socket.io event handling
 
     
-    socket.on('newProductAdded', (data) => {
-      console.log('New product added:', data);
-      // Handle the event
-    });
+ 
+    socket.on('newProductAdded', async (data) => {
+        console.log('New product added:', data);
+    
+        try {
+          // Save notification to MongoDB
+          const notificationData = new Notification({
+            event: 'newProductAdded',
+            data: data,
+            timestamp: new Date(),
+          });
+    
+          const savedNotification = await notificationData.save();
+          console.log('Notification saved to MongoDB:', savedNotification);
+        } catch (error) {
+          console.error('Error saving notification to MongoDB:', error);
+        }
+      });
   
     socket.on('disconnect', () => {
       console.log('Client disconnected');
