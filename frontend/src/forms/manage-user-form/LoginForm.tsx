@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import ForgotPasswordPage from '@/components/Authentication/forgotPassword';
 
 type LoginFormProps = {
   closeModal: () => void;
@@ -10,6 +11,7 @@ type LoginFormProps = {
 const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showForgotPassword, setShowForgotPassword] = useState(false); // State to manage showing ForgotPasswordPage
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -25,7 +27,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
           'Authorization': `Bearer ${token}`
         },
       });
-      
 
       console.log('Response received from login endpoint');
 
@@ -39,10 +40,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
           console.error('User ID is not found in the response data');
           return;
         }
-        const {  firstname, lastname } = response.data;
-console.log('================usernamme====================');
-console.log(response.data);
-console.log('====================================');
+        const { firstname, lastname } = response.data;
+        console.log('================usernamme====================');
+        console.log(response.data);
+        console.log('====================================');
         // Store token and user info in local storage
         localStorage.setItem('firstname', firstname);
         localStorage.setItem('lastname', lastname);
@@ -81,28 +82,43 @@ console.log('====================================');
     }
   };
 
+  const toggleForgotPassword = () => {
+    setShowForgotPassword(!showForgotPassword); // Toggle the state to show/hide ForgotPasswordPage
+  };
+
   return (
     <div>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="block w-full px-4 py-2 border rounded-full mb-4"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="block w-full px-4 py-2 border rounded-full mb-4"
-      />
-      <button
-        onClick={handleLogin}
-        className="bg-white text-orange-500' : 'text-orange-500 hover:text-orange-300 font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full"
-      >
-        Login
-      </button>
+      {showForgotPassword ? (
+        <ForgotPasswordPage /> // Render ForgotPasswordPage if showForgotPassword is true
+      ) : (
+        <>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="block w-full px-4 py-2 border rounded-full mb-4"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="block w-full px-4 py-2 border rounded-full mb-4"
+          />
+          <div className="mt-4 text-right text-sm">
+            <Link to="#" onClick={toggleForgotPassword} className="text-orange-500">
+              Forgot Password?
+            </Link>
+          </div>
+          <button
+            onClick={handleLogin}
+            className="bg-white text-orange-500 hover:text-orange-300 font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full"
+          >
+            Login
+          </button>
+        </>
+      )}
     </div>
   );
 };

@@ -38,7 +38,7 @@ const DisplayCategories: React.FC<DisplayCategoriesProps> = ({ categories, fetch
                         <td>{category.title}</td>
                         <td>{category.value}</td>
                         <td>
-                            <button onClick={() => handleDelete(category._id)}>Delete</button>
+                            <button onClick={() => handleDelete(category._id)}>X</button>
                         </td>
                     </tr>
                 ))}

@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const admin = require('firebase-admin');
 import { Request, Response } from "express";
 const bcrypt = require('bcrypt');
+import nodemailer from 'nodemailer';
 
 
 const createUser = async (req: Request, res: Response) => {
@@ -131,5 +132,92 @@ const loguser = async (req: Request, res: Response) => {
             res.status(500).json({ message: 'Error logging in' });
         }
    }
+// Function to generate JWT token for password reset
+const generateResetToken = (email: string) => {
+  return jwt.sign(
+    { email },
+    process.env.JWT_RESET_SECRET || 'defaultresetsecret',
+    { expiresIn: '30m' } // Token expires in 30 minutes
+  );
+};
 
-    export default { createUser,loginUser,loguser};
+// Controller function for handling forgot password
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    // Find the user by email
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Generate JWT token (for password reset link)
+    const resetToken = generateResetToken(existingUser.email);
+
+    // Send email using nodemailer
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: 'bobtaief@gmail.com', // Your Gmail address
+        pass: 'dcun dfvd lfse rgih', // Your Gmail password or app-specific password
+      },
+    });
+    
+
+    // Email content
+    const mailOptions = {
+      from: 'bobtaief@gmail.com',
+      to: email,
+      subject: 'Password Reset Request',
+      html: `<p>You are receiving this email because you (or someone else) has requested the reset of the password for your account.</p>
+            <p>Please click on the following link, or paste this into your browser to complete the process:</p>
+            <p><a href="http://localhost:3000/reset-password/${resetToken}</a></p>
+            <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>`,
+    };
+
+    // Send email
+    await transporter.sendMail(mailOptions);
+
+    // For demonstration, we'll just return the reset token as JSON
+    res.status(200).json({ resetToken });
+  } catch (error) {
+    console.error('Error sending password reset:', error);
+    res.status(500).json({ message: 'Error sending password reset' });
+  }
+};
+
+// Controller function for handling reset password with token input
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { email, token, newPassword } = req.body;
+
+    // Find the user by email
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Verify if the provided token matches the stored reset token
+    const decoded = jwt.verify(token, process.env.JWT_RESET_SECRET || 'defaultresetsecret');
+    if (decoded.email !== email) {
+      return res.status(400).json({ message: 'Invalid or expired token' });
+    }
+
+    // Update user's password (assuming you have a method in your User model to update password)
+    existingUser.password = newPassword; // Update the password as per your model's implementation
+    await existingUser.save();
+
+    // Optionally, you may want to invalidate the reset token after successful use
+
+    // Return success response
+    res.status(200).json({ message: 'Password reset successful' });
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).json({ message: 'Error resetting password' });
+  }}
+    export default { createUser,loginUser,loguser,forgotPassword,resetPassword}

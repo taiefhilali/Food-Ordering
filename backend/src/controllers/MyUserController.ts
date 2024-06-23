@@ -57,8 +57,23 @@ const registerUser = async (req: Request, res: Response) => {
 
     // Save user to database
     await newUser.save();
+    // Send verification email
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'bobtaief@gmail.com',
+        pass: 'hcdz tdlj wywv dfxj'
+      }
+    });
 
-    // Send verification email (your existing code remains unchanged here)
+    const mailOptions = {
+      from: 'bobtaief@gmail.com',
+      to: email,
+      subject: 'Verify Your Email Address',
+      text: `Please click on the following link to verify your email: http://localhost:3000/${verificationToken}`
+    };
+
+    await transporter.sendMail(mailOptions);
 
     res.status(201).json(newUser.toObject());
   } catch (error) {
@@ -66,7 +81,7 @@ const registerUser = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error registering user' });
   }
 };
-
+ 
 // Register a new user
 // const registerUser = async (req: Request, res: Response) => {
 //   try {

@@ -270,7 +270,7 @@ const UserProfile = () => {
                         Cancel
                       </button>
                       <button
-                        className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                        className="flex justify-center rounded bg-orange-500 py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                         type="submit"
                       >
                         Save
