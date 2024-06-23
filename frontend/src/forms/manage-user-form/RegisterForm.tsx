@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { io } from 'socket.io-client';
+import '../../assets/css/loginmodal.css'; // Replace with actual path to your CSS file
 
 interface RegisterFormProps {
   closeModal: () => void;
@@ -296,22 +297,42 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
         )}
       </div>
 
-      <div className="mb-4 w-full max-w-md">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="userType">
-          User Type
-        </label>
-        <select
-          name="userType"
-          value={userType}
-          onChange={handleChange}
-          className="block w-full px-3 py-2 border rounded-full"
-          required
-        >
-          <option value="">Select User Type</option>
-          <option value="Vendor">Vendor</option>
-          <option value="Admin">Admin</option>
-        </select>
-      </div>
+      <div >
+  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="userType">
+    
+  </label>
+  <div className="mb-4 w-full max-w-md">
+
+  <div >
+    <label className="inline-flex items-center">
+      <input
+        type="radio"
+        name="userType"
+        value="Vendor"
+        checked={userType === "Vendor"}
+        onChange={handleChange}
+        className="form-radio"
+        required
+      />
+      <span className="ml-2">Vendor</span>
+    </label>
+    <label className="inline-flex items-center ml-4">
+      <input 
+        type="radio"
+        name="userType"
+        value="Admin"
+        checked={userType === "Admin"}
+        onChange={handleChange}
+        className="form-radio"
+        required
+      />
+      <span className="ml-2">Admin</span>
+    </label>
+  </div>
+</div>
+
+</div>
+
 
       <div className="w-full max-w-md">
         <button

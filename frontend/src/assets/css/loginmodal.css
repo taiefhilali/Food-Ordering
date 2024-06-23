@@ -1,0 +1,4 @@
+.form-radio:checked {
+  border-color: #ff6e00;
+  background-color: #ff6e00;
+}

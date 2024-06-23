@@ -99,7 +99,7 @@ console.log('====================================');
       />
       <button
         onClick={handleLogin}
-        className="bg-slate-500 border-b-meta-7 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full"
+        className="bg-white text-orange-500' : 'text-orange-500 hover:text-orange-300 font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full"
       >
         Login
       </button>
