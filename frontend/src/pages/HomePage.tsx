@@ -1,27 +1,34 @@
-import React from 'react'
-import Landingimg from "../assets/landing.png"
-import appDownloadImg from "../assets/appDownload.png"
-import LoginFormModal from '@/forms/manage-user-form/LoginFormModal'
+
+import '../assets/css/header.css'
 export default function HomePage() {
     return (
-        
+
         <div className='flex flex-col gap-12'>
-                        {/* <section><LoginFormModal></LoginFormModal></section> */}
+            {/* <section><LoginFormModal></LoginFormModal></section> */}
+            <div className='bg-white rounded-lg shadow-md py-20 flex flex-col gap-2 text-center -mt-16'>
+                <h1 className='text-5xl font-bold tracking-tight text-orange-500'> Order Your Favourite Food Here</h1>
 
-            <div className='bg-white rounded-lg shadow-md py-8 flex flex-col gap-5 text-center -mt-16'>
-                <h1 className='text-5xl font-bold tracking-tight text-orange-300'> FOLLOW UP</h1>
-                <span className='text-xl'> Food in just a click of a button</span>
-            </div>
+                <div className="header-contents">
 
-            <div className='grid md:grid-cols-2 gap-5'>
-                <img src={Landingimg}></img>
-                <div className='flex flex-col items-center justify-center gap-4 text-center'>
-                    <span className='font-bold text-3xl tracking-tighter'> Order takeaway even faster!</span>
-                    <span> Download QuickBite App for faster ordering and personalised recommandations</span>
-                    <img src={appDownloadImg}></img>
-                </div>
-            </div>
+                    <p>
+                        Choose from a diverse menu featuring a delectable array of dishes
+                        crafted with the finest ingredients and culinary expertise. Our
+                        mission is to satisfy your cravings and elevate your dining
+                        experience, one delicious meal at a time.
+                    </p>
 
+                    <div className="menu-button-container">
+                        <a href="#explore-menu" className="menu-button-link">
+                            <button className="menu-button">View Menu</button>
+                        </a>
+                    </div>
+
+
+                </div> </div>
         </div>
+
+
+
+
     )
 }
