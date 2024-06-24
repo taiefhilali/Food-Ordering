@@ -54,45 +54,85 @@ const createUser = async (req: Request, res: Response) => {
     }
 };
 
-
-
+// Controller function for user login
 const loguser = async (req: Request, res: Response) => {
-    try {
-      const { email, password } = req.body;
-  
-      // Find the user by email
-      const existingUser = await User.findOne({ email });
-  
-      if (!existingUser) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      if (!existingUser.password) {
-        return res.status(400).json({ message: 'Invalid request: Missing password' });
-      }
-  
-      // Compare the provided password with the hashed password using bcrypt
-      const isPasswordValid = await bcrypt.compare(password, existingUser.password);
-  
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-  
-      // Generate JWT token
-      const userToken = jwt.sign({
-        id: existingUser._id,
-        userType: existingUser.userType,
-        email: existingUser.email
-      }, process.env.JWT_SECRET || 'defaultsecret', { expiresIn: '50 days' });
-  
-      // Send back the user data excluding the password and including the token
-      const { password: _, ...userWithoutPassword } = existingUser.toObject();
-      res.status(200).json({ ...userWithoutPassword, userToken });
-    } catch (error) {
-      console.error('Error logging in:', error);
-      res.status(500).json({ message: 'Error logging in' });
+  try {
+    const { email, password } = req.body;
+
+    // Find the user by email
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  };
+
+    if (!existingUser.password) {
+      return res.status(400).json({ message: 'Invalid request: Missing password' });
+    }
+
+    // Compare the provided password with the hashed password using bcrypt
+    console.log("Stored hashed password:", existingUser.password);
+    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+    console.log("Password valid:", isPasswordValid);
+    
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Generate JWT token
+    const userToken = jwt.sign({
+      id: existingUser._id,
+      userType: existingUser.userType,
+      email: existingUser.email
+    }, process.env.JWT_SECRET || 'defaultsecret', { expiresIn: '50 days' });
+
+    // Send back the user data excluding the password and including the token
+    const { password: _, ...userWithoutPassword } = existingUser.toObject();
+    res.status(200).json({ ...userWithoutPassword, userToken });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    res.status(500).json({ message: 'Error logging in' });
+  }
+};
+
+// const loguser = async (req: Request, res: Response) => {
+//     try {
+//       const { email, password } = req.body;
+  
+//       // Find the user by email
+//       const existingUser = await User.findOne({ email });
+  
+//       if (!existingUser) {
+//         return res.status(404).json({ message: 'User not found' });
+//       }
+  
+//       if (!existingUser.password) {
+//         return res.status(400).json({ message: 'Invalid request: Missing password' });
+//       }
+  
+//       // Compare the provided password with the hashed password using bcrypt
+//       const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+  
+//       if (!isPasswordValid) {
+//         return res.status(401).json({ message: 'Invalid credentials' });
+//       }
+  
+//       // Generate JWT token
+//       const userToken = jwt.sign({
+//         id: existingUser._id,
+//         userType: existingUser.userType,
+//         email: existingUser.email
+//       }, process.env.JWT_SECRET || 'defaultsecret', { expiresIn: '50 days' });
+  
+//       // Send back the user data excluding the password and including the token
+//       const { password: _, ...userWithoutPassword } = existingUser.toObject();
+//       res.status(200).json({ ...userWithoutPassword, userToken });
+//     } catch (error) {
+//       console.error('Error logging in:', error);
+//       res.status(500).json({ message: 'Error logging in' });
+//     }
+//   };
   
  const loginUser= async (req: Request, res: Response) => {
 
@@ -208,16 +248,19 @@ export const resetPassword = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Invalid or expired token' });
     }
 
-    // Update user's password (assuming you have a method in your User model to update password)
-    existingUser.password = newPassword; // Update the password as per your model's implementation
+    // Hash the new password before saving
+    console.log("Encrypting new password:", newPassword);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    console.log("Hashed new password:", hashedPassword);
+    existingUser.password = hashedPassword;
     await existingUser.save();
-
-    // Optionally, you may want to invalidate the reset token after successful use
+    
 
     // Return success response
     res.status(200).json({ message: 'Password reset successful' });
   } catch (error) {
     console.error('Error resetting password:', error);
     res.status(500).json({ message: 'Error resetting password' });
-  }}
+  }
+};
     export default { createUser,loginUser,loguser,forgotPassword,resetPassword}
