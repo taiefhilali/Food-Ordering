@@ -18,6 +18,9 @@ const socketIo = require('socket.io');
 const http = require('http');
 import { Server as SocketIOServer, Socket } from 'socket.io'; // Import Socket and Server from socket.io
 import Notification, { NotificationDocument } from './models/Notification'; // Import Notification model
+import passport from 'passport';
+const Strategy = require('passport-facebook').Strategy;
+import User from "./models/User";
 
 
 //cloudinary configuration
@@ -74,6 +77,15 @@ app.use('/api/my/categories', categoriesRoute);
 app.use('/api/my/foods', foodRoute);
 app.use('/api/my/table', TableRoute);
 app.use('/api/my/cart', CartRoute);
+
+// Initialize Passport
+app.use(passport.initialize());
+
+// Initialize Facebook authentication strategy
+
+
+//facebook end.
+
 
 
 // Socket.io connection

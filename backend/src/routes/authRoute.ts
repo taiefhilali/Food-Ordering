@@ -12,4 +12,5 @@ router.post("/log",verifyToken, verifyUserType ,authController.loguser);
 router.post('/forgot-password',verifyToken, verifyVendor,authController.forgotPassword);
 router.post('/reset-password',verifyToken, verifyVendor,authController.resetPassword);
 
+// Endpoint to authenticate with Facebook
 export default router;

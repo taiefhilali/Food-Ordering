@@ -9,6 +9,7 @@ const bcrypt = require('bcrypt');
 import nodemailer from 'nodemailer';
 
 
+
 const createUser = async (req: Request, res: Response) => {
     const user = req.body;
 
@@ -263,4 +264,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error resetting password' });
   }
 };
+
+
+
     export default { createUser,loginUser,loguser,forgotPassword,resetPassword}

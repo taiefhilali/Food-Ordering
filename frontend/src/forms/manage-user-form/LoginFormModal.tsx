@@ -3,6 +3,7 @@ import Lottie from 'react-lottie';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import heroAnimation from '../../assets/heroAnimation1.json'; // Replace with actual path to Lottie JSON file
+import axios from 'axios';
 
 type LoginFormModalProps = {
   closeModal: () => void;
@@ -22,6 +23,18 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice',
     },
+  };
+
+  const handleFacebookLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost:3000/facebook/token');
+      const { token } = response.data;
+      localStorage.setItem('token', token); // Store token in localStorage
+      // Optionally, redirect or update state upon successful login
+    } catch (error) {
+      console.error('Facebook login error:', error);
+      // Handle error (e.g., show error message to the user)
+    }
   };
 
   return (
@@ -73,12 +86,15 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
             </button>
           </div>
 
-          {/* Form content based on activeTab */}
+          {/* OAuth Buttons */}
           <div className="px-4 flex flex-col space-y-4">
+            <button className="w-full px-4 py-2 text-white bg-blue-600 rounded" onClick={handleFacebookLogin}>
+              Login with Facebook
+            </button>
+
+            {/* Form content based on activeTab */}
             {activeTab === 'login' && <LoginForm closeModal={closeModal} />}
-            {activeTab === 'register' && (
-              <RegisterForm closeModal={closeModal} />
-            )}
+            {activeTab === 'register' && <RegisterForm closeModal={closeModal} />}
           </div>
         </div>
       </div>
