@@ -6,7 +6,7 @@ import passport from "passport";
 const { verifyToken, verifyUserType,verifyVendor } = require('../middleware/verifyToken')
 
 const router=express.Router();
-const CLIENT_URL = "http://localhost:3000/";
+const CLIENT_URL = "http://localhost:3000";
 
 router.post('/register',verifyToken, verifyUserType ,authController.createUser);
 router.post("/login",authController.loginUser);

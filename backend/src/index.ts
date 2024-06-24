@@ -19,11 +19,17 @@ const http = require('http');
 import { Server as SocketIOServer, Socket } from 'socket.io'; // Import Socket and Server from socket.io
 import Notification, { NotificationDocument } from './models/Notification'; // Import Notification model
 import passport from 'passport';
-import User from "./models/User";
-const cookieSession = require("cookie-session");
+import User, { IUser } from './models/User';
+const session = require('express-session');
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import crypto from 'crypto'; // Import crypto module
 
+const generateRandomString = (length: number) => {
+  return crypto.randomBytes(Math.ceil(length / 2))
+    .toString('hex'); // convert to hexadecimal format
+};
 
+const SESSION_SECRET = generateRandomString(32);
 //cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -58,9 +64,16 @@ const io = require('socket.io')(server, {
   },
 });
 app.use(express.json());
-app.use(
-  cookieSession({ name: "session", keys: ["lama"], maxAge: 24 * 60 * 60 * 100 })
-);
+app.use(session({
+  secret: SESSION_SECRET, // Replace with your own secret key
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    secure: false, // Set to true if using HTTPS
+    httpOnly: true,
+  },
+}));
 
 // Configure CORS to allow requests from localhost:3000
 app.use(cors({
@@ -89,52 +102,56 @@ app.use(passport.session());
 passport.use(new GoogleStrategy({
   clientID: '146053191863-ho5vnnb06id57h1s7vm090n2m27ud3gu.apps.googleusercontent.com',
   clientSecret: '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',
-  callbackURL: 'http://localhost:3000/auth/google/callback',
+  callbackURL: 'http://localhost:7000/auth/google/callback',
 },
-async function (accessToken, refreshToken, profile, cb) {
-  try {
-    console.log('Google profile:', profile); // Check profile data received
+  async function (accessToken, refreshToken, profile, cb) {
+    try {
+      console.log('Google profile:', profile); // Check profile data received
 
-    // Check if user already exists in database based on Google ID
-    let user = await User.findOne({ googleId: profile.id });
+      // Check if user already exists in database based on Google ID
+      let user = await User.findOne({ googleId: profile.id });
 
-    if (user) {
-      // If user exists, return that user
-      return cb(null, user);
-    } else {
-      // If user does not exist, create new user in database
-      const newUser = new User({
-        email: profile.emails && profile.emails[0] ? profile.emails[0].value : '',
-        username: profile.displayName,
-        userType: 'Client',
-        imageUrl: profile.photos && profile.photos[0] ? profile.photos[0].value : '',
-        googleId: profile.id,
-        // Add other necessary fields
-      });
+      if (user) {
+        // If user exists, return that user
+        return cb(null, user);
+      } else {
+        // If user does not exist, create new user in database
+        const newUser = new User({
+          email: profile.emails && profile.emails[0] ? profile.emails[0].value : '',
+          username: profile.displayName,
+          userType: 'Client',
+          imageUrl: profile.photos && profile.photos[0] ? profile.photos[0].value : '',
+          googleId: profile.id, // Set googleId from Google profile
+          // Add other necessary fields
+        });
 
-      // Save new user to database
-      user = await newUser.save();
-      console.log('New user saved:', user); // Log the saved user
+        // Save new user to database
+        user = await newUser.save();
+        console.log('New user saved:', user); // Log the saved user
 
-      return cb(null, user);
+        return cb(null, user);
+      }
+    } catch (err) {
+      console.error('Error in Google OAuth callback:', err);
+      return cb(err);
     }
-  } catch (err) {
-    console.error('Error in Google OAuth callback:', err);
-    return cb(err);
-  }}));
-
-// Serialize user into the session
-passport.serializeUser((user: any, done) => {
-  done(null, user.id); // Store user id in session
-});
-
-// Deserialize user from the session
-// passport.deserializeUser((id: string, done) => {
-//   User.findById(id, (err, user) => {
-//     done(err, user); // Retrieve user from MongoDB by id
-//   });
-// });
-
+  }));
+  // Serialize user into the session
+ 
+  passport.serializeUser((user, done) => {
+    done(null,( user as IUser)._id); // Store user _id in session
+  });
+  
+  passport.deserializeUser((id: string, done: (err: Error | null, user: IUser | null) => void) => {
+    User.findById(id)
+      .then((user: IUser | null) => {
+        done(null, user); // Retrieve user from MongoDB by id
+      })
+      .catch((err: Error) => {
+        done(err, null); // Handle error if user retrieval fails
+      });
+  });
+  
 // Routes
 app.get('/', (req, res) => {
   res.send('Hello World!');

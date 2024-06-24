@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
@@ -13,6 +13,38 @@ type LoginFormModalProps = {
 
 const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
   const [activeTab, setActiveTab] = useState('login');
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUser = () => {
+      const token = localStorage.getItem('userToken');
+
+      if ( !token) {
+        console.error('No userId or token found');
+        return;
+      }
+
+      fetch("http://localhost:7000/auth/login/success", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) return response.json();
+          throw new Error("authentication has been failed!");
+        })
+        .then((resObject) => {
+          setUser(resObject.user);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getUser();
+  }, []);
   const google = () => {
     window.open("http://localhost:7000/auth/google", "_self");
   };
@@ -38,17 +70,17 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
     },
   };
 
-  const handleFacebookLogin = async () => {
-    try {
-      const response = await axios.post('http://localhost:3000/facebook/token');
-      const { token } = response.data;
-      localStorage.setItem('token', token); // Store token in localStorage
-      // Optionally, redirect or update state upon successful login
-    } catch (error) {
-      console.error('Facebook login error:', error);
-      // Handle error (e.g., show error message to the user)
-    }
-  };
+  // const handleFacebookLogin = async () => {
+  //   try {
+  //     const response = await axios.post('http://localhost:3000/facebook/token');
+  //     const { token } = response.data;
+  //     localStorage.setItem('token', token); // Store token in localStorage
+  //     // Optionally, redirect or update state upon successful login
+  //   } catch (error) {
+  //     console.error('Facebook login error:', error);
+  //     // Handle error (e.g., show error message to the user)
+  //   }
+  // };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -60,8 +92,8 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
         {/* Animation section */}
         <div className="flex-shrink-0 w-1/2 rounded-lg overflow-hidden">
           <Lottie options={defaultOptions} height="100%" width="100%" />
-        </div>
-        <div className="wrapper">
+        </div >
+        <div className="wrapper" >
         <div className="left">
           <div className="loginButton google" onClick={google}>
             <img src={Google} alt="" className="icon" />
@@ -118,9 +150,9 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
 
           {/* OAuth Buttons */}
           <div className="px-4 flex flex-col space-y-4">
-            <button className="w-full px-4 py-2 text-white bg-blue-600 rounded" onClick={handleFacebookLogin}>
+            {/* <button className="w-full px-4 py-2 text-white bg-blue-600 rounded" onClick={handleFacebookLogin}>
               Login with Facebook
-            </button>
+            </button> */}
 
             {/* Form content based on activeTab */}
             {activeTab === 'login' && <LoginForm closeModal={closeModal} />}
