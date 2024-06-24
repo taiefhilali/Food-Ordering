@@ -4,13 +4,26 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import heroAnimation from '../../assets/heroAnimation1.json'; // Replace with actual path to Lottie JSON file
 import axios from 'axios';
-
+import Google from "../../assets/img/Google.png";
+// import Facebook from "../img/facebook.png";
+// import Github from "../img/github.png";
 type LoginFormModalProps = {
   closeModal: () => void;
 };
 
 const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
   const [activeTab, setActiveTab] = useState('login');
+  const google = () => {
+    window.open("http://localhost:7000/auth/google", "_self");
+  };
+
+  // const github = () => {
+  //   window.open("http://localhost:5000/auth/github", "_self");
+  // };
+
+  // const facebook = () => {
+  //   window.open("http://localhost:5000/auth/facebook", "_self");
+  // };
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -40,7 +53,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Semi-transparent overlay */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="absolute inset-0 bg-black opacity-50"></div> 
 
       {/* Modal container */}
       <div className="bg-white text-black p-8 rounded shadow-lg z-50 flex w-full max-w-3xl border-2 border-t-slate-300">
@@ -48,6 +61,23 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
         <div className="flex-shrink-0 w-1/2 rounded-lg overflow-hidden">
           <Lottie options={defaultOptions} height="100%" width="100%" />
         </div>
+        <div className="wrapper">
+        <div className="left">
+          <div className="loginButton google" onClick={google}>
+            <img src={Google} alt="" className="icon" />
+            Google
+          </div>
+          {/* <div className="loginButton facebook" onClick={facebook}>
+            <img src={Facebook} alt="" className="icon" />
+            Facebook
+          </div>
+          <div className="loginButton github" onClick={github}>
+            <img src={Github} alt="" className="icon" />
+            Github
+          </div> */}
+        </div>
+    
+      </div>
 
         {/* Content section */}
         <div className="flex-grow px-4">
