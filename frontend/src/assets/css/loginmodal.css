@@ -2,3 +2,11 @@
   border-color: #ff6e00;
   background-color: #ff6e00;
 }
+
+.custom-sign-in-button {
+  background-color: #ee6a2e; /* Custom background color */
+  padding: 10px 20px; /* Custom padding */
+  color: white; /* Custom text color */
+  border: none; /* Remove default border */
+  /* Add more custom styles as needed */
+}

@@ -7,6 +7,7 @@ import Google from "../../assets/img/Google.png";
 import Facebook from "../../assets/img/Facebook.png";
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+import '../../assets/css/loginmodal.css'// Import Clerk's default CSS
 
 type LoginFormModalProps = {
   closeModal: () => void;
@@ -98,13 +99,15 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
             <h2 className="text-2xl font-bold">Login to Your Account</h2>
           </div>
           <div className="flex justify-center mb-6 space-x-4">
-            <SignInButton />
+            <SignInButton>
+              <button className='custom-sign-in-button'>Sign in with Clerk</button>
+            </SignInButton>
             <UserButton />
             <div className="loginButton google flex items-center space-x-2" onClick={google}>
               <img src={Google} alt="" className="icon" style={{ height: '40px', width: '40px' }} />
             </div>
             <div className="loginButton facebook flex items-center space-x-2" onClick={facebook}>
-              <img src={Facebook} alt="" className="icon"  style={{ height: '40px', width: '40px' }} />
+              <img src={Facebook} alt="" className="icon" style={{ height: '40px', width: '40px' }} />
             </div>
           </div>
           <div className="flex items-center my-4">
