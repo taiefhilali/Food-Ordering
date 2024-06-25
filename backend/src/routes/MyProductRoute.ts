@@ -15,10 +15,12 @@ const upload = multer({
 });
 router.get('/',productController.getAllProducts);
 router.get('/quantity',productController.quantityProduct);
-router.post('/', upload.single("imageFile"), productController.createMyProduct);
+router.get('/all',verifyToken,verifyVendor,productController.productsByUserId);
+router.post('/', upload.single("imageFile"), verifyToken,verifyVendor,productController.createMyProduct);
 router.get('/:id', productController.getProductById);
 router.put('/:id', productController.updateProduct);
 router.delete('/:id', verifyToken, verifyVendor,productController.deleteProduct);
 router.patch('/:id/toggle-approval', verifyToken,verifyAdmin, productController.toggleProductApproval);
+
 
 export default router;

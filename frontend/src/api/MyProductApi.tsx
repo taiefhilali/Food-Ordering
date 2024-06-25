@@ -63,22 +63,20 @@ export const useGetMyProducts = () => {
 
 // Hook for creating a new product
 export const useCreateProduct = () => {
-  const { session } = useClerk();
-
   const createProductRequest = async (productFormData: FormData): Promise<Product> => {
     try {
-      if (!session) {
-        throw new Error("User is not authenticated");
-      }
+      const token = localStorage.getItem('userToken');
 
-      const accessToken = session.getToken();
-
-      const response = await axios.post(`http://localhost:7000/api/my/products`, productFormData, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post(
+        `http://localhost:7000/api/my/products`,
+        productFormData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
 
       if (!response.data) {
         throw new Error("Failed to create product");
@@ -91,12 +89,7 @@ export const useCreateProduct = () => {
     }
   };
 
-  const {
-    mutate: createProduct,
-    isLoading,
-    isSuccess,
-    error,
-  } = useMutation(createProductRequest);
+  const { mutate: createProduct, isLoading, isSuccess, error } = useMutation(createProductRequest);
 
   if (isSuccess) {
     toast.success("Product created!");

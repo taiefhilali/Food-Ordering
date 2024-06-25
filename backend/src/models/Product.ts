@@ -9,6 +9,10 @@ const productSchema = new mongoose.Schema({
   quantity: { type: Number, required: true },
   imageUrl:{type:String},
   isApproved: { type: Boolean, default: false },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User" // Reference to the User model
+},
 
 
 });

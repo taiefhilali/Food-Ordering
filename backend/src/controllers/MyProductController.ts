@@ -17,23 +17,34 @@ exports.getAllProducts = async (req:Request, res:Response) => {
 };
 
 // Create a new product
+
+// Create a new product
 exports.createMyProduct = async (req: Request, res: Response) => {
-    try {
-      
-      
-      const imageUrl = await uploadimage(req.file as Express.Multer.File);
-      const product = new Product(req.body);
-      product.imageUrl = imageUrl;
-  
-      // Save the restaurant to the database
-      await product.save();
-  
-      res.status(201).json({ message: "product created successfully", product });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Something went wrong!" });
-    }
-  };
+  try {
+    // Extract userId from authenticated user data
+    const userId = (req as any).user.id;
+
+    // Upload image to Cloudinary
+    const imageUrl = await uploadimage(req.file as Express.Multer.File);
+
+    // Create new Product instance
+    const product = new Product({
+      ...req.body, // Assuming req.body contains other product data
+      imageUrl: imageUrl,
+      user: new mongoose.Types.ObjectId(userId), // Assign userId to the user field
+    });
+
+    // Save the product to the database
+    await product.save();
+
+    // Send success response
+    res.status(201).json({ message: "Product created successfully", product });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something went wrong!" });
+  }
+};
+
 
 // Get a product by ID
 exports.getProductById = async (req:Request, res:Response) => {
@@ -114,3 +125,20 @@ exports.toggleProductApproval = async(req:Request,res:Response) => {
     res.status(500).json({ message: "Error toggling product approval status" });
   }
 };
+
+// GET /api/my/products?userId=:userId
+exports.productsByUserId =async (req:Request,res:Response) => {
+  const userId = (req as any).user.id;
+  try {
+    // Fetch products from MongoDB based on userId
+    const products = await Product.find({ userId: userId });
+
+    res.json(products);
+    console.log('====================================');
+    console.log(products);
+    console.log('====================================');
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    res.status(500).json({ error: 'Failed to fetch products' });
+  }
+}
