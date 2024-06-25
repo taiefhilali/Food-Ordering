@@ -22,7 +22,10 @@ import passport from 'passport';
 import User, { IUser } from './models/User';
 const session = require('express-session');
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+const FacebookStrategy = require('passport-facebook').Strategy;
+
 import crypto from 'crypto'; // Import crypto module
+import { Request, Response, NextFunction } from 'express'; // Import Request, Response, and NextFunction types
 
 const generateRandomString = (length: number) => {
   return crypto.randomBytes(Math.ceil(length / 2))
@@ -119,7 +122,7 @@ passport.use(new GoogleStrategy({
         const newUser = new User({
           email: profile.emails && profile.emails[0] ? profile.emails[0].value : '',
           username: profile.displayName,
-          userType: 'Client',
+          userType: 'Vendor',
           imageUrl: profile.photos && profile.photos[0] ? profile.photos[0].value : '',
           googleId: profile.id, // Set googleId from Google profile
           // Add other necessary fields
@@ -164,17 +167,34 @@ app.get('/auth/google',
 // Google authentication callback route
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect to profile or home page
-    res.redirect('/profile');
+  (req: Request, res: Response) => {
+    console.log('Google OAuth callback:', req.user); // Log user data
+    const userId = (req as any).user._id;
+    const token = (req as any).user.token; // Assuming you generate a token for the user
+    console.log('====================================');
+    console.log(token +' '+ userId);
+    console.log('====================================');
+    res.redirect(`http://localhost:3000/settings?userId=${userId}&token=${token}`);
   });
-
+  app.get('/api/my/user/:id', async (req: Request, res: Response) => {
+    try {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+      res.json(user);
+    } catch (error) {
+      res.status(500).send('Server error');
+    }
+  });
+  
 // Example profile route (protected route)
 app.get('/profile', (req, res) => {
   if (req.isAuthenticated()) {
-    res.send(`Welcome ${(req as any).user.username}`);
+
+    res.redirect('http://localhost:3000/settings'); // Redirect to your frontend settings page
   } else {
-    res.redirect('/login');
+    res.redirect('/login'); // Redirect to login if user is not authenticated
   }
 });
 
@@ -184,10 +204,52 @@ app.get('/logout', (req, res) => {
 });
 
 
-//facebook end.
+//google end.
 
 
+//facebook begin
+passport.use(new FacebookStrategy({
+  clientID: process.env.FACEBOOK_APP_ID,
+  clientSecret:process.env.FACEBOOK_APP_SECRET ,
+  callbackURL: "http://localhost:7000/auth/facebook/callback"
+},
+async function (accessToken: string, refreshToken: string, profile: any, cb: (error: any, user?: any) => void) {    try {
+      console.log('Facebook profile:', profile); // Check profile data received
 
+      // Check if user already exists in database based on Google ID
+      let user = await User.findOne({ facebookId: profile.id });
+
+      if (user) {
+        // If user exists, return that user
+        return cb(null, user);
+      } else {
+        // If user does not exist, create new user in database
+        const newUser = new User({
+          email: profile.emails && profile.emails[0] ? profile.emails[0].value : '',
+          username: profile.displayName,
+          userType: 'Vendor',
+          imageUrl: profile.photos && profile.photos[0] ? profile.photos[0].value : '',
+          googleId: profile.id, // Set googleId from Google profile
+          // Add other necessary fields
+        });
+
+        // Save new user to database
+        user = await newUser.save();
+        console.log('New user saved:', user); // Log the saved user
+
+        return cb(null, user);
+      }
+    } catch (err) {
+      console.error('Error in facebook OAuth callback:', err);
+      return cb(err);
+    }
+  }));
+
+
+  // Google authentication route
+app.get('/auth/facebook',
+passport.authenticate('facebook', { scope: ['profile', 'email'] }));
+//facebook end
 // Socket.io connection
 io.on('connection', (socket: Socket) => { // Explicitly type Socket
   console.log('New client connected');
@@ -268,3 +330,6 @@ server.listen(PORT, () => {
 app.listen(7000, () => {
   console.log("server runing on 7000");
 });
+
+
+

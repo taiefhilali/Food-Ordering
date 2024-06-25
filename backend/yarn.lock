@@ -2183,6 +2183,13 @@ passport-google-oauth20@^2.0.0:
   dependencies:
     passport-oauth2 "1.x.x"
 
+passport-microsoft@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/passport-microsoft/-/passport-microsoft-2.1.0.tgz"
+  integrity sha512-7bOcjEmZCHg5qD55iHaMD/mgBxPtXLbqAwmKox5IsqOSEU50WJk5nQKK4lxKdBHLZ0hf+gzrFgDsTybJP18/JA==
+  dependencies:
+    passport-oauth2 "1.8.0"
+
 passport-oauth@1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/passport-oauth/-/passport-oauth-1.0.0.tgz"
@@ -2200,7 +2207,7 @@ passport-oauth1@1.x.x:
     passport-strategy "1.x.x"
     utils-merge "1.x.x"
 
-passport-oauth2@1.x.x:
+passport-oauth2@1.8.0, passport-oauth2@1.x.x:
   version "1.8.0"
   resolved "https://registry.npmjs.org/passport-oauth2/-/passport-oauth2-1.8.0.tgz"
   integrity sha512-cjsQbOrXIDE4P8nNb3FQRCCmJJ/utnFKEz2NX209f7KOHPoX18gF7gBzBbLLsj2/je4KrgiwLLGjf0lm9rtTBA==

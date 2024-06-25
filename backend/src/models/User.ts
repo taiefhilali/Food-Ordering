@@ -72,6 +72,7 @@ interface IUser extends Document {
   password: string;
   blocked?: boolean;
   googleId?: string;
+  facebookId?: string;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -120,6 +121,10 @@ const userSchema = new mongoose.Schema<IUser>({
     default: false,
   },
   googleId: {
+    type: String,
+    unique: true,
+  },
+  facebookId: {
     type: String,
     unique: true,
   },

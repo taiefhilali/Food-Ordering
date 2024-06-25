@@ -26,13 +26,51 @@ import RegisterForm from './forms/manage-user-form/RegisterForm'
 import CategoryComponent from './components/Categories/CategoryComponent'
 import ProductTable from './pages/Products/ProductTable'
 import LoginFormModal from './forms/manage-user-form/LoginFormModal'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import UnauthorizedPage from './components/UnauthorizedPage'
 import AddCategoryForm from './forms/manage-category-form/AddCategoryForm'
 import OrdersList from './pages/Orders/OrdersDisplay'
 import RestaurantTable from './pages/Restaurant/RestaurantTable'
 import UsersDisplay from './components/Authentication/usersDisplay'
+import { BrowserRouter as Router } from 'react-router-dom';
+import UserDisplayTest from './pages/Users/userDisplayTest'
+
 const AppRoutes = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUser = () => {
+      const token = localStorage.getItem('userToken');
+
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+
+      fetch("http://localhost:7000/api/my/auth/login/success", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) return response.json();
+          throw new Error("Authentication has failed!");
+        })
+        .then((resObject) => {
+          setUser(resObject.user);
+          console.log(user,'userr');
+
+        }
+      )
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    getUser();
+  }, []);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Function to close the modal
@@ -43,6 +81,9 @@ const AppRoutes = () => {
 
 
   return (
+
+<>
+
     <Routes>
 
 
@@ -302,6 +343,7 @@ const AppRoutes = () => {
         }
       />
     </Routes>
+    </>
   )
 }
 

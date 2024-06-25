@@ -43,4 +43,5 @@ router.delete("/delete/:id",verifyToken,verifyVendor, MyUserController.deleteUse
 router.put("/update/:id",verifyToken,verifyVendor, MyUserController.updateUser);
 router.post('/uploadProfilePicture/:userId', verifyToken,verifyVendor,upload.single('File'),MyUserController.uploadProfilePicture);
 router.put('/block/:id',verifyToken,verifyVendor,MyUserController.blockUser);
+
 export default router;
