@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
@@ -6,12 +6,15 @@ import heroAnimation from '../../assets/heroAnimation1.json'; // Replace with ac
 import Google from "../../assets/img/Google.png";
 import Facebook from "../../assets/img/Facebook.png";
 // import Github from "../img/github.png";
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/clerk-react";
+
 type LoginFormModalProps = {
   closeModal: () => void;
 };
 
 const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
   const [activeTab, setActiveTab] = useState('login');
+  const { user } = useUser();
 
   const google = () => {
     window.open("http://localhost:7000/auth/google", "_self");
@@ -38,17 +41,46 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
     },
   };
 
-  // const handleFacebookLogin = async () => {
-  //   try {
-  //     const response = await axios.post('http://localhost:3000/facebook/token');
-  //     const { token } = response.data;
-  //     localStorage.setItem('token', token); // Store token in localStorage
-  //     // Optionally, redirect or update state upon successful login
-  //   } catch (error) {
-  //     console.error('Facebook login error:', error);
-  //     // Handle error (e.g., show error message to the user)
-  //   }
-  // };
+
+  useEffect(() => {
+    const handleSignIn = async () => {
+      try {
+        if (user) {
+          const userId = user.id; // This is the Clerk user ID
+          const email = user.emailAddresses[0].emailAddress// User's email address
+          const token = user.publicMetadata.token; // Assuming you have a token in user metadata
+          const userType='Vendor';
+          const username=user.username;
+
+          // Send user data to backend
+          const response = await fetch('http://localhost:7000/api/my/auth/clerk-user', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId,
+              email,
+              token,
+              userType,
+              username
+            }),
+          });
+
+          if (response.ok) {
+            console.log('User data sent to backend successfully');
+          } else {
+            console.error('Failed to send user data to backend');
+          }
+        }
+      } catch (error) {
+        console.error('Error handling sign in:', error);
+      }
+    };
+
+    handleSignIn();
+  }, [user]);
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -81,6 +113,11 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
   
         {/* OAuth Buttons */}
         <div className="flex justify-center mb-6 space-x-4">
+           {/* Clerk Sign In Button */}
+            <SignInButton />
+              
+              {/* Clerk User Button */}
+              <UserButton />
           <div className="loginButton google flex items-center space-x-2" onClick={google}>
           <img src={Google} alt="" className="icon" style={{ height: '40px', width: '40px' }} />
           </div>
