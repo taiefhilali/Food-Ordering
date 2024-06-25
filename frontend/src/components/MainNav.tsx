@@ -1,12 +1,12 @@
 // import LoginFormModal from '@/forms/manage-user-form/LoginFormModal';
 // import { Button } from './ui/button';
 
-// import { useNavigate } from 'react-router-dom';
+// import { igate } from 'react-router-dom';
 // import { useState } from 'react';
 
 // export default function MainNav() {
 
-//     const navigate = useNavigate();
+//     const navigate = igate();
 //     const [isModalOpen, setIsModalOpen] = useState(false);
 
 //     const closeModal = () => {
@@ -18,7 +18,7 @@
 //       const openModal = () => {
 //         setIsModalOpen(true);
 //       };
-//     // const navigate = useNavigate();
+//     // const navigate = igate();
 //     // const { signOut } = useClerk();
 
 //     // const handleSignOut = async () => {
