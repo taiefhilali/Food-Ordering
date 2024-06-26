@@ -107,7 +107,7 @@ const Header = (props: {
     </div>
   </div>
 </header>
-<div className="flex justify-end mt-7"> {/* Adjust margin-top to move the entire search component down */}
+<div className="flex justify-start ml-3 mt-10"> {/* Adjust margin-top to move the entire search component down */}
   <form onSubmit={handleSearch} className="relative">
     <div className="relative">
       <button type="submit" className="absolute left-0 top-1/2 -translate-y-1/2">
