@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import { Product } from '@/types/product';
+import Breadcrumb from '../Breadcrumbs/Breadcrumb';
 
 const StockComponent = () => {
     const [productId, setProductId] = useState('');
@@ -54,9 +55,10 @@ const StockComponent = () => {
 
     return (
         <DefaultLayout>
+            <Breadcrumb pageName='Revenus calculation'/>
         <div className="flex justify-center items-center h-full">
             <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
-                <h2 className="text-2xl font-semibold mb-4">Sell Product</h2>
+                <h2 className="text-2xl font-semibold mb-4">Selled Product of the day</h2>
                 <select
                     value={productId}
                     onChange={(e) => setProductId(e.target.value)}
