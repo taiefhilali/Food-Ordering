@@ -15,6 +15,7 @@ const productSchema = new mongoose.Schema({
   },
   soldQuantity: { type: Number, default: 0 }, // Track the quantity sold
   revenue: { type: Number, default: 0 }, // Track the revenue generated
+  createdAt: { type: Date, default: Date.now },
 
 
 });

@@ -44,9 +44,9 @@ const StockComponent = () => {
         } catch (error) {
             console.error('Error selling product:', error);
             // Log the error response to get more details
-            if (error.response) {
-                console.error('Error response:', error.response.data);
-                setSellMessage(`Failed to sell product: ${error.response.data.message}`);
+            if (error) {
+                console.error('Error response:');
+                setSellMessage(`Failed to sell product: ${error}`);
             } else {
                 setSellMessage('Failed to sell product: An unknown error occurred.');
             }

@@ -35,6 +35,7 @@ import UsersDisplay from './components/Authentication/usersDisplay'
 import { BrowserRouter as Router } from 'react-router-dom';
 import UserDisplayTest from './pages/Users/userDisplayTest'
 import StockComponent from './components/Products/StockComponent'
+import RevenueByDateComponent from './components/Products/RevenueByDateComponent'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -243,6 +244,15 @@ const AppRoutes = () => {
           <>
             <PageTitle title="Settings | TailAdmin - Tailwind CSS Admin Dashboard Template" />
             <Settings />
+          </>
+        }
+      />
+         <Route
+        path="/revenueChart"
+        element={
+          <>
+            <PageTitle title="Settings | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+            <RevenueByDateComponent />
           </>
         }
       />

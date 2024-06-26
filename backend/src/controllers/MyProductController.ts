@@ -204,3 +204,30 @@ exports.calculateRestaurantRevenue = async (req:Request,res:Response)  => {
     return res.status(500).json({ message: 'Failed to calculate restaurant revenue' });
   }
 };
+exports.revenuStatistics=async (req:Request,res:Response) => {
+  try {
+    const revenueData = await Product.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          totalRevenue: { $sum: { $multiply: ['$price', '$soldQuantity'] } },
+        },
+      },
+    ]);
+    
+
+    if (!revenueData || revenueData.length === 0) {
+      return res.status(404).json({ message: 'No revenue data found' });
+    }
+
+    const formattedData = revenueData.map((item: { _id: any; totalRevenue: any; }) => ({
+      date: item._id,
+      totalRevenue: item.totalRevenue
+    }));
+
+    res.status(200).json(formattedData);
+  } catch (error) {
+    console.error('Error fetching revenue data:', error);
+    res.status(500).json({ message: 'Failed to fetch revenue data' });
+  }
+};
