@@ -129,9 +129,10 @@ exports.toggleProductApproval = async(req:Request,res:Response) => {
 // GET /api/my/products?userId=:userId
 exports.productsByUserId =async (req:Request,res:Response) => {
   const userId = (req as any).user.id;
+  console.log('============userid========================',userId);
   try {
     // Fetch products from MongoDB based on userId
-    const products = await Product.find({ userId: userId });
+    const products = await Product.find({ user: userId });
 
     res.json(products);
     console.log('====================================');
@@ -142,3 +143,4 @@ exports.productsByUserId =async (req:Request,res:Response) => {
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 }
+

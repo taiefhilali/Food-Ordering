@@ -21,7 +21,13 @@ const ProductDetailContainer = () => {
     useEffect(() => {
         const fetchProductById = async () => {
             try {
-                const response = await axios.get(`http://localhost:7000/api/my/products/${productId}`);
+                const token = localStorage.getItem('userToken');
+                const response = await axios.get(`http://localhost:7000/api/my/products/${productId}`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      'Content-Type': 'multipart/form-data',
+                    },
+                  });
                 console.log(response.data,"datadetails")
                 setProduct(response.data);
             } catch (error) {

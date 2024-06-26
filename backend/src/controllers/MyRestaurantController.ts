@@ -17,7 +17,6 @@ const getMyRestaurant = async (req: Request, res: Response) => {
     // if (restaurants.length === 0) {
     //   return res.status(404).json({ message: "Restaurant not found" });
     // }
-
     res.json(restaurants);
   } catch (error) {
     console.error("Error fetching restaurant:", error);

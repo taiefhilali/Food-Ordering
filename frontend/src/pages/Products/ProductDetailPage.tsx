@@ -45,7 +45,14 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
 
     const handleDeleteProduct = async () => {
         try {
-            await axios.delete(`http://localhost:7000/api/my/products/${product._id}`);
+            const token = localStorage.getItem('userToken');
+
+            await axios.delete(`http://localhost:7000/api/my/products/${product._id}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'multipart/form-data',
+                },
+              });
             Swal.fire('Success', 'Product deleted successfully', 'success');
             navigate('/display-products');
         } catch (error) {
@@ -57,7 +64,14 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
     const handleUpdateSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:7000/api/my/products/${formData._id}`, formData);
+            const token = localStorage.getItem('userToken');
+
+            const response = await axios.put(`http://localhost:7000/api/my/products/${formData._id}`, formData, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'multipart/form-data',
+                },
+              });
             if (response.status === 200) {
                 Swal.fire('Success', 'Product updated successfully', 'success');
                 setProduct(formData);

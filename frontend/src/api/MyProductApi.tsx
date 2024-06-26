@@ -112,11 +112,11 @@ export const useUpdateProduct = () => {
         throw new Error("User is not authenticated");
       }
 
-      const accessToken = session.getToken();
-
+      // const accessToken = session.getToken();
+      const token = localStorage.getItem('userToken');
       const response = await axios.put(`http://localhost:7000/api/my/products`, productFormData, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
