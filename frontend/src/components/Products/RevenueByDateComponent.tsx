@@ -54,7 +54,7 @@ const ApexChart = () => {
           },
         },
         xaxis: {
-          type: 'datetime', // Ensure correct type for date formatting
+          type: '', // Ensure correct type for date formatting
           categories: revenueData.map(data => new Date(data.date).getTime()),
           labels: {
             formatter: function(val) {
@@ -68,14 +68,11 @@ const ApexChart = () => {
   
 
   return (
-    <DefaultLayout>
-      <Breadcrumb pageName='Statistics'/>
       <div>
         <div id="chart">
           <Chart options={chartData.options} series={chartData.series} type="line" height={350} />
         </div>
       </div>
-    </DefaultLayout>
   );
 };
 
