@@ -49,10 +49,10 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
 
             await axios.delete(`http://localhost:7000/api/my/products/${product._id}`, {
                 headers: {
-                  Authorization: `Bearer ${token}`,
-                  'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
                 },
-              });
+            });
             Swal.fire('Success', 'Product deleted successfully', 'success');
             navigate('/display-products');
         } catch (error) {
@@ -68,10 +68,10 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
 
             const response = await axios.put(`http://localhost:7000/api/my/products/${formData._id}`, formData, {
                 headers: {
-                  Authorization: `Bearer ${token}`,
-                  'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
                 },
-              });
+            });
             if (response.status === 200) {
                 Swal.fire('Success', 'Product updated successfully', 'success');
                 setProduct(formData);
@@ -111,10 +111,10 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
             <Breadcrumb pageName="Product Details" />
 
             <div className="container mx-auto mt-5">
-                <div className="max-w-4xl mx-auto bg-white rounded-md shadow-lg overflow-hidden">
-                    <div className="md:flex">
+                <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
+                    <div className="md:flex" style={{ marginTop: '2cm', marginBottom: '1cm' }}>
                         <div className="md:flex-shrink-0">
-                            <img className="h-48 w-full object-cover md:w-48" src={product.imageUrl} alt="Product" />
+                            <img className="h-48 w-full object-cover md:w-48 rounded-full" src={product.imageUrl} alt="Product" />
                         </div>
                         <div className="p-8">
                             <div className="flex items-center justify-between">
@@ -172,7 +172,9 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
                                                     <input type="file" id="image" name="imageFile" accept="image/*" onChange={handleImageChange} className="p-2 border rounded-md" />
                                                 </div>
                                             </div>
-                                            <button type="submit" className="bg-yellow-500 text-black rounded-md p-2 mt-4 focus:outline-none focus:ring-2 focus:ring-yellow-600">Update</button>
+                                            <button type="submit" className="bg-white border-2 border-orange-500 text-black rounded-md py-3 px-6 mt-4 focus:outline-none focus:ring-2 focus:ring-yellow-600 flex items-center justify-center">
+                                                <span className="font-bold">Save</span>
+                                            </button>
                                         </form>
                                     </div>
                                 )}
@@ -185,5 +187,4 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
         </DefaultLayout>
     );
 };
-
 export default ProductDetailPage;
