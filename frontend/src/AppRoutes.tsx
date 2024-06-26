@@ -34,6 +34,7 @@ import RestaurantTable from './pages/Restaurant/RestaurantTable'
 import UsersDisplay from './components/Authentication/usersDisplay'
 import { BrowserRouter as Router } from 'react-router-dom';
 import UserDisplayTest from './pages/Users/userDisplayTest'
+import StockComponent from './components/Products/StockComponent'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -250,6 +251,14 @@ const AppRoutes = () => {
         element={
           <>
             < ManageProductPage />
+          </>
+        }
+      />
+         <Route
+        path="/stock"
+        element={
+          <>
+            < StockComponent />
           </>
         }
       />

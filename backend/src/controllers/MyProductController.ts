@@ -155,3 +155,52 @@ exports.searchProductByName=async (req:Request,res:Response) => {
     res.status(500).json({ error: 'Failed to search products' });
   }
 }
+
+// Function to sell a product
+// Function to sell a product
+exports.sellProduct = async (req:Request,res:Response)  => {
+  const { productId, quantitySold } = req.body;
+
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Check if quantitySold is valid
+    if (quantitySold <= 0) {
+      return res.status(400).json({ message: 'Quantity sold must be greater than zero' });
+    }
+
+    // Call the sell method defined in the schema
+    await product.sell(quantitySold);
+
+    // Optionally, respond with updated product data or success message
+    return res.status(200).json({ message: `Sold ${quantitySold} units of ${product.name}` });
+  } catch (error) {
+    console.error('Error selling product:');
+    return res.status(500).json({ message: 'Failed to sell product' });
+  }
+};
+
+// Function to calculate total revenue for a restaurant
+exports.calculateRestaurantRevenue = async (req:Request,res:Response)  => {
+  const { restaurantId } = req.params;
+
+  try {
+    // Aggregate total revenue across all products of the restaurant
+    const totalRevenue = await Product.aggregate([
+      { $match: { restaurant: new mongoose.Types.ObjectId(restaurantId) } },
+      { $group: { _id: null, totalRevenue: { $sum: { $multiply: ['$price', '$soldQuantity'] } } } }
+    ]);
+
+    if (totalRevenue.length === 0) {
+      return res.status(404).json({ message: 'No products found for this restaurant' });
+    }
+
+    return res.status(200).json({ totalRevenue: totalRevenue[0].totalRevenue });
+  } catch (error) {
+    console.error('Error calculating restaurant revenue:');
+    return res.status(500).json({ message: 'Failed to calculate restaurant revenue' });
+  }
+};

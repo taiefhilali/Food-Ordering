@@ -92,7 +92,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       </div>
       {/* <!-- SIDEBAR HEADER --> */}
 
-      <div className="no-scrollbar mt-0 flex flex-col overflow-y-auto duration-300 ease-linear" style={{ marginTop: '-3cm' }}>
+      <div className="no-scrollbar mt-0 flex flex-col overflow-y-auto duration-300 ease-linear" style={{ marginTop: '-2cm' }}>
         {/* <!-- Sidebar Menu --> */}
         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
           {/* <!-- Menu Group --> */}
