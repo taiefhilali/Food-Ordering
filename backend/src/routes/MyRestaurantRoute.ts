@@ -17,6 +17,7 @@ const { verifyToken, verifyVendor } = require('../middleware/verifyToken')
 // /api/my/restaurant,
 router.post("/",upload.single("imageFile"),verifyToken,verifyVendor,validateMyRestaurantRequest,MyRestaurantController.createMyRestaurant);
 router.get("/",verifyToken,verifyVendor,MyRestaurantController.getMyRestaurant);
+router.get("/allmyrestaurants",verifyToken,verifyVendor,MyRestaurantController.getAllRestaurantbyUser);
 router.get("/restaurants",MyRestaurantController.getAllRestaurant);
 router.put("/",validateMyRestaurantRequest,MyRestaurantController.updateMyRestaurant)
 // Route to toggle restaurant approval status
