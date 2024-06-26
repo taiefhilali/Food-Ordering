@@ -56,8 +56,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div className="product-card">
 
-      <div className="bg-white border border-slate-400 transition transform duration-700 hover:shadow-xl hover:scale-105 p-4 rounded-lg relative">
-        <span className="bg-white-100 border border-slate-400 rounded-full text-orange-500 text-sm poppins px-4 py-1 inline-block mb-4 ">{product.quantity} </span>
+      <div className="bg-white border border-whiter transition transform duration-700 hover:shadow-xl hover:scale-105 p-4 rounded-lg relative">
+        <span className="bg-white-100 border border-orange-400 rounded-full text-orange-500 text-sm poppins px-4 py-1 inline-block mb-4 ">{product.quantity} </span>
         <Link to={`/product/${product._id}`}>
           <div className="relative" style={{ paddingTop: '66.36%' }}>
             <img

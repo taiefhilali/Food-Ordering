@@ -144,3 +144,14 @@ exports.productsByUserId =async (req:Request,res:Response) => {
   }
 }
 
+exports.searchProductByName=async (req:Request,res:Response) => {
+  const productName = req.query.name;
+
+  try {
+    const products = await Product.find({ name: { $regex: productName, $options: 'i' } }); // Case-insensitive search
+    res.json(products);
+  } catch (error) {
+    console.error('Error searching products:', error);
+    res.status(500).json({ error: 'Failed to search products' });
+  }
+}

@@ -16,6 +16,7 @@ const upload = multer({
 router.get('/',productController.getAllProducts);
 router.get('/quantity',productController.quantityProduct);
 router.get('/all',verifyToken,verifyVendor,productController.productsByUserId);
+router.get('/search',productController.searchProductByName);
 router.post('/', upload.single("imageFile"), verifyToken,verifyVendor,productController.createMyProduct);
 router.get('/:id', productController.getProductById);
 router.put('/:id', productController.updateProduct);
