@@ -221,6 +221,8 @@ const AddProductForm = () => {
 
     try {
       const token = localStorage.getItem('userToken');
+      // const userId = localStorage.getItem('userToken');
+
       if (!token) {
         throw new Error('No token found');
       }
@@ -246,7 +248,7 @@ const AddProductForm = () => {
       });
       // Emit a WebSocket event to notify the server about the new product
      
-           socket.emit('newProductAdded', responseData.product);
+           socket.emit('newProductAdded',responseData.product);
 
     } catch (error) {
       console.error('Error adding product:');

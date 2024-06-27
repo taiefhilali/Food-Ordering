@@ -13,6 +13,7 @@ import categoriesRoute from "./routes/CategoriesRoute";
 import foodRoute from "./routes/FoodRoute";
 import TableRoute from "./routes/TableRoute";
 import CartRoute from "./routes/CartRoute";
+import NotifRoute from "./routes/NotificationRoute";
 import Stripe from 'stripe';
 const socketIo = require('socket.io');
 const http = require('http');
@@ -95,6 +96,7 @@ app.use('/api/my/categories', categoriesRoute);
 app.use('/api/my/foods', foodRoute);
 app.use('/api/my/table', TableRoute);
 app.use('/api/my/cart', CartRoute);
+app.use('/api/my/notifications', NotifRoute);
 
 // Initialize Passport
 app.use(passport.initialize());
@@ -259,15 +261,16 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
   //add product notification
   socket.on('newProductAdded', async (data) => {
     console.log('New product added:', data);
-
+  
     try {
       // Save notification to MongoDB
       const notificationData = new Notification({
         event: 'newProductAdded',
         data: data,
         timestamp: new Date(),
+          user: data.user // Assuming userId is passed with data
       });
-
+  
       const savedNotification = await notificationData.save();
       console.log('Notification saved to MongoDB:', savedNotification);
     } catch (error) {

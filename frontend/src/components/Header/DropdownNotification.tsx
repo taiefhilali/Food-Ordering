@@ -1,35 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
+import axios from 'axios'; // Import Axios
+import { log } from 'console';
 
 // Define Notification interface
 interface Notification {
   event: string;
   data: any; // Adjust data type as per your application
   timestamp: Date;
+  user:string; //
+
 }
+const userToken = localStorage.getItem('userToken');
 
 // Replace with your server's URL
-const socket = io('http://localhost:8000');
-
-const DropdownNotification = () => {
+const socket = io('http://localhost:8000', {
+  extraHeaders: {
+    Authorization: `Bearer ${userToken}`,
+  },
+});
+const DropdownNotification: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [loading, setLoading] = useState(true); // State to manage loading state
   const [notifying, setNotifying] = useState(true);
-  const [notifications, setNotifications] = useState<Notification[]>([]); // Ensure notifications are typed correctly
 
-  const trigger = useRef<any>(null);
-  const dropdown = useRef<any>(null);
+  const trigger = useRef<HTMLAnchorElement>(null);
+  const dropdown = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
-      if (!dropdownOpen || dropdown.current.contains(target) || trigger.current.contains(target))
+      if (!dropdownOpen || dropdown.current.contains(target) || (trigger.current && trigger.current.contains(target)))
         return;
       setDropdownOpen(false);
     };
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
-  });
+  }, [dropdownOpen]);
 
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
@@ -38,27 +47,55 @@ const DropdownNotification = () => {
     };
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
-  });
+  }, [dropdownOpen]);
 
   useEffect(() => {
+    // Fetch notifications based on user ID using Axios
+    const fetchNotifications = async () => {
+      try {
+        const userToken = localStorage.getItem('userToken');
+
+        const userId = localStorage.getItem('userId');
+
+        if (!userId) {
+          throw new Error('No token found');
+        }
+
+        const response = await axios.get('http://localhost:7000/api/my/notifications/all', {
+          params: { userId },
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+
+        setNotifications(response.data);
+       
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchNotifications(); // Call the fetch function on component mount
+
     // Listen for socket events
     socket.on('newProductAdded', (data) => {
       console.log('New product added:', data);
       setNotifications((prevNotifications) => [
         ...prevNotifications,
-        { event: 'newProductAdded', data, timestamp: new Date() },
+        { event: 'newProductAdded', data, timestamp: new Date(),user:data.user },
       ]);
-      setNotifying(true); // Optionally manage notifying state
     });
 
     // Clean up socket listeners
     return () => {
       socket.off('newProductAdded');
     };
-  }, []); // Ensure dependency array is empty to run effect only once
-console.log('====================================');
-console.log(notifications);
-console.log('====================================');
+  }, []);
+  console.log('===========notificationss=========================');
+  console.log(notifications);
+  console.log('====================================');
   return (
     <li className="relative">
       <Link
@@ -71,9 +108,8 @@ console.log('====================================');
         className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
       >
         <span
-          className={`absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1 ${
-            notifying === false ? 'hidden' : 'inline'
-          }`}
+          className={`absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1 ${notifying === false ? 'hidden' : 'inline'
+            }`}
         >
           <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
         </span>
@@ -97,9 +133,8 @@ console.log('====================================');
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80 ${
-          dropdownOpen === true ? 'block' : 'hidden'
-        }`}
+        className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80 ${dropdownOpen === true ? 'block' : 'hidden'
+          }`}
       >
         <div className="px-4.5 py-3">
           <h5 className="text-sm font-medium text-bodydark2">Notifications</h5>
@@ -116,7 +151,7 @@ console.log('====================================');
                   <span className="text-black dark:text-white">
                     {notification.event}
                   </span>{' '}
-                  {notification.data.firstname} {/* Adjust as per your data structure */}
+                  {notification.data.name} {/* Adjust as per your data structure */}
                 </p>
                 <p className="text-xs">
                   {new Date(notification.timestamp).toLocaleDateString()}
