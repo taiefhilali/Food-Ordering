@@ -159,15 +159,14 @@ const ProductDisplayPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   // const [menuTab, setMenuTab] = useState<string>('Electronics');
-
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('userToken');
-
+  
     if (!userId || !token) {
       throw new Error('No userId or token found');
     }
-
+  
     const fetchProducts = async () => {
       setLoading(true);
       try {
@@ -177,17 +176,25 @@ const ProductDisplayPage: React.FC = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setProducts(response.data);
+  
+        // Sort products by createdAt timestamp in descending order (newest first)
+        const sortedProducts = response.data.sort((a, b) => {
+          const dateA = new Date(a.createdAt);
+          const dateB = new Date(b.createdAt);
+          return dateB.getTime() - dateA.getTime();
+        });
+  
+        setProducts(sortedProducts);
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchProducts();
   }, []);
-
+  
   // const handleMenuTabs = (category: string) => {
   //   setMenuTab(category);
   // };
