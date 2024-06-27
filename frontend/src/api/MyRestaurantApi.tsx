@@ -12,6 +12,8 @@ import io from 'socket.io-client'; // Import socket.io-client
 export const useGetMyRestaurant = () => {
   const fetchData = async () => {
     try {
+      const userToken = localStorage.getItem('userToken');
+
       const userId = localStorage.getItem('userId');
 
       if (!userId) {
@@ -20,7 +22,11 @@ export const useGetMyRestaurant = () => {
 
 
       const response = await axios.get('http://localhost:7000/api/my/restaurant', {
-        params: { userId }
+        params: { userId },
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+
       });
 
       if (!response.data) {

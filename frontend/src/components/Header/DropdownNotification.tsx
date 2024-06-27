@@ -1,9 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import io from 'socket.io-client';
+
+// Define Notification interface
+interface Notification {
+  event: string;
+  data: any; // Adjust data type as per your application
+  timestamp: Date;
+}
+
+// Replace with your server's URL
+const socket = io('http://localhost:8000');
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
+  const [notifications, setNotifications] = useState<Notification[]>([]); // Ensure notifications are typed correctly
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -11,11 +23,7 @@ const DropdownNotification = () => {
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
-      if (
-        !dropdownOpen ||
-        dropdown.current.contains(target) ||
-        trigger.current.contains(target)
-      )
+      if (!dropdownOpen || dropdown.current.contains(target) || trigger.current.contains(target))
         return;
       setDropdownOpen(false);
     };
@@ -23,7 +31,6 @@ const DropdownNotification = () => {
     return () => document.removeEventListener('click', clickHandler);
   });
 
-  // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!dropdownOpen || keyCode !== 27) return;
@@ -33,12 +40,31 @@ const DropdownNotification = () => {
     return () => document.removeEventListener('keydown', keyHandler);
   });
 
+  useEffect(() => {
+    // Listen for socket events
+    socket.on('newProductAdded', (data) => {
+      console.log('New product added:', data);
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        { event: 'newProductAdded', data, timestamp: new Date() },
+      ]);
+      setNotifying(true); // Optionally manage notifying state
+    });
+
+    // Clean up socket listeners
+    return () => {
+      socket.off('newProductAdded');
+    };
+  }, []); // Ensure dependency array is empty to run effect only once
+console.log('====================================');
+console.log(notifications);
+console.log('====================================');
   return (
     <li className="relative">
       <Link
         ref={trigger}
         onClick={() => {
-          setNotifying(false);
+          setNotifying(false); // Optionally manage notifying state
           setDropdownOpen(!dropdownOpen);
         }}
         to="#"
@@ -76,73 +102,28 @@ const DropdownNotification = () => {
         }`}
       >
         <div className="px-4.5 py-3">
-          <h5 className="text-sm font-medium text-bodydark2">Notification</h5>
+          <h5 className="text-sm font-medium text-bodydark2">Notifications</h5>
         </div>
 
         <ul className="flex h-auto flex-col overflow-y-auto">
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              to="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  Edit your information in a swipe
-                </span>{' '}
-                Sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim.
-              </p>
-
-              <p className="text-xs">12 May, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              to="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  It is a long established fact
-                </span>{' '}
-                that a reader will be distracted by the readable.
-              </p>
-
-              <p className="text-xs">24 Feb, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              to="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  There are many variations
-                </span>{' '}
-                of passages of Lorem Ipsum available, but the majority have
-                suffered
-              </p>
-
-              <p className="text-xs">04 Jan, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              to="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  There are many variations
-                </span>{' '}
-                of passages of Lorem Ipsum available, but the majority have
-                suffered
-              </p>
-
-              <p className="text-xs">01 Dec, 2024</p>
-            </Link>
-          </li>
+          {notifications.map((notification, index) => (
+            <li key={index}>
+              <Link
+                className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                to="#"
+              >
+                <p className="text-sm">
+                  <span className="text-black dark:text-white">
+                    {notification.event}
+                  </span>{' '}
+                  {notification.data.firstname} {/* Adjust as per your data structure */}
+                </p>
+                <p className="text-xs">
+                  {new Date(notification.timestamp).toLocaleDateString()}
+                </p>
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </li>

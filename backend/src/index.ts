@@ -257,9 +257,22 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
 
 
   //add product notification
-  socket.on('newProductAdded', (data) => {
+  socket.on('newProductAdded', async (data) => {
     console.log('New product added:', data);
-    // Handle the event
+
+    try {
+      // Save notification to MongoDB
+      const notificationData = new Notification({
+        event: 'newProductAdded',
+        data: data,
+        timestamp: new Date(),
+      });
+
+      const savedNotification = await notificationData.save();
+      console.log('Notification saved to MongoDB:', savedNotification);
+    } catch (error) {
+      console.error('Error saving notification to MongoDB:', error);
+    }
   });
   //add restaurant notifications
 

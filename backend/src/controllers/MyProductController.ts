@@ -133,7 +133,7 @@ exports.productsByUserId =async (req:Request,res:Response) => {
   try {
     // Fetch products from MongoDB based on userId
     const products = await Product.find({ user: userId });
-
+    
     res.json(products);
     console.log('====================================');
     console.log(products);
