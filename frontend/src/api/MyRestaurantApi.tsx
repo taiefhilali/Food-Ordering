@@ -56,6 +56,8 @@ export const useCreateMyRestaurant = () => {
   console.log('User token:', userToken);
 
   const socket = io('http://localhost:8000', {
+    multiplex:false,
+    transports: ['websocket', 'polling', 'flashsocket'],
     extraHeaders: {
       Authorization: `Bearer ${userToken}`,
     },

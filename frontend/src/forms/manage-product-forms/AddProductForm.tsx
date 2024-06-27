@@ -173,12 +173,15 @@ const AddProductForm = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const userToken = localStorage.getItem('userToken');
   console.log('User token:', userToken);
-  
-  const socket = io('http://localhost:8000', {
-    extraHeaders: {
-      Authorization: `Bearer ${userToken}`,
-    },
-  });
+  const socket = io("http://localhost:8000", { transports: ["websocket"] });
+
+  // const socket = io('http://localhost:8000', {
+  //   multiplex:false,
+  //   transports: ['websocket', 'polling', 'flashsocket'],
+  //   extraHeaders: {
+  //     Authorization: `Bearer ${userToken}`,
+  //   },
+  // });
   useEffect(() => {
     const fetchData = async () => {
       try {

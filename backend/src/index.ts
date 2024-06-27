@@ -257,26 +257,48 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
   console.log('New client connected');
   // Socket.io event handling
 
-
-  //add product notification
+  // Example: Handle 'newProductAdded' event
   socket.on('newProductAdded', async (data) => {
     console.log('New product added:', data);
   
     try {
-      // Save notification to MongoDB
-      const notificationData = new Notification({
+      // Save notification to MongoDB or any other backend logic
+      const notificationData = {
         event: 'newProductAdded',
         data: data,
         timestamp: new Date(),
-          user: data.user // Assuming userId is passed with data
-      });
+        user: data.user // Assuming userId is passed with data
+      };
   
-      const savedNotification = await notificationData.save();
-      console.log('Notification saved to MongoDB:', savedNotification);
+      // Example: Emitting 'messages' event with updated data
+      io.emit('messages', notificationData); // Broadcast to all connected clients
+      
+      // Optionally save to database or perform additional server-side logic
+      // const savedNotification = await Notification.create(notificationData);
+      // console.log('Notification saved to MongoDB:', savedNotification);
     } catch (error) {
-      console.error('Error saving notification to MongoDB:', error);
+      console.error('Error handling newProductAdded:', error);
     }
   });
+  // //add product notification
+  // socket.on('newProductAdded', async (data) => {
+  //   console.log('New product added:', data);
+  
+  //   try {
+  //     // Save notification to MongoDB
+  //     const notificationData = new Notification({
+  //       event: 'newProductAdded',
+  //       data: data,
+  //       timestamp: new Date(),
+  //         user: data.user // Assuming userId is passed with data
+  //     });
+  
+  //     const savedNotification = await notificationData.save();
+  //     console.log('Notification saved to MongoDB:', savedNotification);
+  //   } catch (error) {
+  //     console.error('Error saving notification to MongoDB:', error);
+  //   }
+  // });
   //add restaurant notifications
 
   socket.on('newRestaurantAdded', async (data) => {

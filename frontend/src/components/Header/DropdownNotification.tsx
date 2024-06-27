@@ -1,17 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
-import axios from 'axios'; // Import Axios
-import { log } from 'console';
+import axios from 'axios';
 
 // Define Notification interface
 interface Notification {
   event: string;
   data: any; // Adjust data type as per your application
   timestamp: Date;
-  user:string; //
-
+  user: string;
 }
+
 const userToken = localStorage.getItem('userToken');
 
 // Replace with your server's URL
@@ -20,6 +19,7 @@ const socket = io('http://localhost:8000', {
     Authorization: `Bearer ${userToken}`,
   },
 });
+
 const DropdownNotification: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -32,8 +32,7 @@ const DropdownNotification: React.FC = () => {
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
-      if (!dropdownOpen || dropdown.current.contains(target) || (trigger.current && trigger.current.contains(target)))
-        return;
+      if (!dropdownOpen || dropdown.current.contains(target) || (trigger.current && trigger.current.contains(target))) return;
       setDropdownOpen(false);
     };
     document.addEventListener('click', clickHandler);
@@ -54,48 +53,43 @@ const DropdownNotification: React.FC = () => {
     const fetchNotifications = async () => {
       try {
         const userToken = localStorage.getItem('userToken');
-
         const userId = localStorage.getItem('userId');
-
+  
         if (!userId) {
-          throw new Error('No token found');
+          throw new Error('No userId found');
         }
-
+  
         const response = await axios.get('http://localhost:7000/api/my/notifications/all', {
           params: { userId },
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
         });
-
+  
         setNotifications(response.data);
-       
         setLoading(false);
       } catch (error) {
         console.error('Error fetching notifications:', error);
         setLoading(false);
       }
     };
-
+  
     fetchNotifications(); // Call the fetch function on component mount
-
+  
     // Listen for socket events
-    socket.on('newProductAdded', (data) => {
-      console.log('New product added:', data);
+    socket.on('messages', (notificationData: Notification) => {
+      console.log('New message received:', notificationData);
       setNotifications((prevNotifications) => [
         ...prevNotifications,
-        { event: 'newProductAdded', data, timestamp: new Date(),user:data.user },
+        { event: notificationData.event, data: notificationData.data, timestamp: notificationData.timestamp, user: notificationData.user },
       ]);
     });
-
+  
     // Clean up socket listeners
     return () => {
-      socket.off('newProductAdded');
+      socket.off('messages');
     };
-  }, []);
-  console.log('===========notificationss=========================');
-  console.log(notifications);
-  console.log('====================================');
+  }, []); // Empty dependency array ensures this effect runs only once
   return (
     <li className="relative">
       <Link
