@@ -54,18 +54,18 @@ const DropdownNotification: React.FC = () => {
       try {
         const userToken = localStorage.getItem('userToken');
         const userId = localStorage.getItem('userId');
-  
+
         if (!userId) {
           throw new Error('No userId found');
         }
-  
+
         const response = await axios.get('http://localhost:7000/api/my/notifications/all', {
           params: { userId },
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
         });
-  
+
         setNotifications(response.data);
         setLoading(false);
       } catch (error) {
@@ -73,9 +73,9 @@ const DropdownNotification: React.FC = () => {
         setLoading(false);
       }
     };
-  
+
     fetchNotifications(); // Call the fetch function on component mount
-  
+
     // Listen for socket events
     socket.on('messages', (notificationData: Notification) => {
       console.log('New message received:', notificationData);
@@ -84,7 +84,7 @@ const DropdownNotification: React.FC = () => {
         { event: notificationData.event, data: notificationData.data, timestamp: notificationData.timestamp, user: notificationData.user },
       ]);
     });
-  
+
     // Clean up socket listeners
     return () => {
       socket.off('messages');
@@ -136,24 +136,30 @@ const DropdownNotification: React.FC = () => {
 
         <ul className="flex h-auto flex-col overflow-y-auto">
           {notifications.map((notification, index) => (
-            <li key={index}>
+            <li key={index} className="relative">
               <Link
                 className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                 to="#"
               >
-                <p className="text-sm">
-                  <span className="text-black dark:text-white">
-                    {'🍴'+ notification.event}
-                  </span>{' '}
-                  {notification.data.name} {/* Adjust as per your data structure */}
-                </p>
-                <p className="text-xs">
+                <div className="flex justify-items-start items-start ">
+                <div  className="text-orange-500 dark:text-white font-extrabold text-base text-center"> {'🍴'+ ' '+ ' '+notification.data.name}</div>
+                  <span className="text-black dark:text-white font-extralight text-base">
+                    {'is added successfully   '}
+                  </span>
+                  <img
+                    src={notification.data.imageUrl}
+                    alt={notification.data.name}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                </div>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
                   {new Date(notification.timestamp).toLocaleDateString()}
                 </p>
               </Link>
             </li>
           ))}
         </ul>
+
       </div>
     </li>
   );
