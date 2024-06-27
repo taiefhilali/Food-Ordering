@@ -263,19 +263,18 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
   
     try {
       // Save notification to MongoDB or any other backend logic
-      const notificationData = {
-        event: 'newProductAdded',
-        data: data,
-        timestamp: new Date(),
-        user: data.user // Assuming userId is passed with data
-      };
-  
+      const notificationData = new Notification({
+              event: 'newProductAdded',
+              data: data,
+              timestamp: new Date(),
+                user: data.user // Assuming userId is passed with data
+            });
+            const savedNotification = await notificationData.save();
+
       // Example: Emitting 'messages' event with updated data
       io.emit('messages', notificationData); // Broadcast to all connected clients
       
-      // Optionally save to database or perform additional server-side logic
-      // const savedNotification = await Notification.create(notificationData);
-      // console.log('Notification saved to MongoDB:', savedNotification);
+      
     } catch (error) {
       console.error('Error handling newProductAdded:', error);
     }

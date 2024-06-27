@@ -143,7 +143,7 @@ const DropdownNotification: React.FC = () => {
               >
                 <p className="text-sm">
                   <span className="text-black dark:text-white">
-                    {notification.event}
+                    {'🍴'+ notification.event}
                   </span>{' '}
                   {notification.data.name} {/* Adjust as per your data structure */}
                 </p>
