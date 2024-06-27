@@ -10,7 +10,7 @@ type Product = {
   name: string;
   description: string;
   price: number;
-  category: string;
+  dishType: string;
   quantity: number;
   imageUrl: string;
   enabled: boolean;
@@ -115,7 +115,7 @@ const ProductTable: React.FC = () => {
               <th>Name</th>
               <th>Description</th>
               <th>Price</th>
-              <th>Category</th>
+              <th>DishType</th>
               <th>Quantity</th>
               <th>Approved</th>
               <th>Remove</th>
@@ -132,7 +132,7 @@ const ProductTable: React.FC = () => {
                 <td>{product.name}</td>
                 <td>{product.description}</td>
                 <td>${product.price.toFixed(2)}</td>
-                <td>{product.category}</td>
+                <td>{product.dishType}</td>
                 <td>{product.quantity}</td>
                 <td>
                   <label className="switch">

@@ -9,7 +9,7 @@ type Product = {
     name: string;
     description: string;
     price: number;
-    category: string;
+    dishType: string;
     quantity: number;
     imageUrl: string;
     brand: string; // Add brand to match the ProductDetailPage component

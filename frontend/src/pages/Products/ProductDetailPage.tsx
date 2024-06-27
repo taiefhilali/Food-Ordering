@@ -13,7 +13,7 @@ type Product = {
     name: string;
     description: string;
     price: number;
-    category: string;
+    dishType: string;
     quantity: number;
     imageUrl: string;
 };
@@ -32,7 +32,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
         name: initialProduct.name,
         description: initialProduct.description,
         price: initialProduct.price,
-        category: initialProduct.category,
+        dishType: initialProduct.dishType,
         quantity: initialProduct.quantity,
         imageUrl: initialProduct.imageUrl
     });
@@ -126,7 +126,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
                             <div className="mt-4">
                                 <h2 className="text-2xl font-bold text-gray-900">{product.name}</h2>
                                 <div className="flex items-center mt-1">
-                                    <span className="text-sm text-gray-600 uppercase">{product.category}</span>
+                                    <span className="text-sm text-gray-600 uppercase">{product.dishType}</span>
                                 </div>
                                 <div className="mt-2">
                                     <span className="text-xl font-bold text-gray-900">${product.price}</span>
@@ -160,8 +160,8 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
                                                     <input type="number" id="price" name="price" value={formData.price} onChange={handleInputChange} className="p-2 border rounded-md" />
                                                 </div>
                                                 <div className="flex flex-col mb-4">
-                                                    <label htmlFor="category" className="text-sm font-semibold text-gray-700 mb-1">Category</label>
-                                                    <input type="text" id="category" name="category" value={formData.category} onChange={handleInputChange} className="p-2 border rounded-md" />
+                                                    <label htmlFor="dishType" className="text-sm font-semibold text-gray-700 mb-1">DishType</label>
+                                                    <input type="text" id="dishType" name="dishType" value={formData.dishType} onChange={handleInputChange} className="p-2 border rounded-md" />
                                                 </div>
                                                 <div className="flex flex-col mb-4">
                                                     <label htmlFor="quantity" className="text-sm font-semibold text-gray-700 mb-1">Quantity</label>

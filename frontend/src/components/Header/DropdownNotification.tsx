@@ -65,8 +65,13 @@ const DropdownNotification: React.FC = () => {
             Authorization: `Bearer ${userToken}`,
           },
         });
+        const fetchedNotifications: Notification[] = response.data; // Specify the type of fetchedNotifications
 
-        setNotifications(response.data);
+        fetchedNotifications.sort((a, b) => {
+          const dateA = new Date(a.timestamp);
+          const dateB = new Date(b.timestamp);
+          return dateB.getTime() - dateA.getTime();
+        });
         setLoading(false);
       } catch (error) {
         console.error('Error fetching notifications:', error);
