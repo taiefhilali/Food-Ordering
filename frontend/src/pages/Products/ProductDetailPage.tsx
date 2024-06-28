@@ -6,6 +6,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Swal from 'sweetalert2';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import HTMLContent from '../../components/HTMLContent'; // Adjust the import path accordingly
 
 // Define the type of the product prop
 type Product = {
@@ -131,7 +132,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
                                 <div className="mt-2">
                                     <span className="text-xl font-bold text-gray-900">${product.price}</span>
                                 </div>
-                                <p className="mt-4 text-gray-600">{product.description}</p>
+                                <p className="mt-4 text-gray-600">  <HTMLContent content={product.description}/> </p>
                                 <div className="flex items-center mt-6">
                                     {/* Delete Product Button */}
                                     <button onClick={handleDeleteProduct} className="bg-gray-800 text-black rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-600">

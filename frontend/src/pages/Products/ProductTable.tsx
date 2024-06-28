@@ -4,6 +4,7 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import HTMLContent from '@/components/HTMLContent';
 
 type Product = {
   _id: string;
@@ -130,7 +131,7 @@ const ProductTable: React.FC = () => {
                   </div>
                 </td>
                 <td>{product.name}</td>
-                <td>{product.description}</td>
+                <td> <HTMLContent content={product.description}/></td>
                 <td>${product.price.toFixed(2)}</td>
                 <td>{product.dishType}</td>
                 <td>{product.quantity}</td>
