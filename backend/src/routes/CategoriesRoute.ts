@@ -28,7 +28,7 @@ router.get('/all', verifyToken, verifyVendor, categoriesByUserId);
 router.put('/:id',verifyToken,verifyAdmin, updateCategory);
 
 // Route to delete a category by ID
-router.delete('/:id',verifyToken,verifyAdmin, deleteCategory);
+router.delete('/:id',verifyToken,verifyVendor, deleteCategory);
 
 // Route to get all categories
 router.get('/',getAllCategories);

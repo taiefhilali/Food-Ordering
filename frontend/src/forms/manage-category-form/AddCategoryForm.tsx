@@ -4,7 +4,21 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import Input from '../../components/Inputs/Input';
 import Swal from 'sweetalert2';
+import Lottie from 'react-lottie';
+import categoryAnimationdata from '../../assets/category.json';
 
+const CategoryAnimation = () => {
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: categoryAnimationdata,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice',
+        },
+    };
+
+    return <Lottie options={defaultOptions} height={100} width={100} />;
+};
 interface AddCategoryFormProps {
 }
 interface Category {
@@ -13,11 +27,14 @@ interface Category {
     value: string;
     imageUrl: string;
 }
+
 const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
     const [title, setTitle] = useState('');
     const [value, setValue] = useState('');
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [categories, setCategories] = useState<Category[]>([]);
+
+
     useEffect(() => {
         fetchCategories();
     }, []);
@@ -53,7 +70,10 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
             if (!token) {
                 throw new Error('No token found');
             }
+            const userId = localStorage.getItem('userId');
+
             const response = await axios.post('http://localhost:7000/api/my/categories', formData, {
+                params: { userId },
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -87,6 +107,42 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
             });
         }
     };
+    const handleDelete = async (categoryId: string) => {
+        try {
+            const token = localStorage.getItem('userToken');
+            if (!token) {
+                throw new Error('No token found');
+            }
+            const response = await axios.delete(`http://localhost:7000/api/my/categories/${categoryId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.data.status === true) {
+                // Handle success with Swal
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Category Deleted!',
+                    text: 'The category has been successfully deleted.',
+                });
+
+                // Update categories list
+                fetchCategories();
+            } else {
+                throw new Error('Failed to delete category');
+            }
+        } catch (error) {
+            console.error('Error deleting category:', error);
+
+            // Handle error with Swal
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to delete category. Please try again later.',
+            });
+        }
+    };
 
     return (
         <DefaultLayout>
@@ -94,9 +150,24 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
 
             <div className="max-w-full mx-auto mt-20 flex justify-center">
                 {/* Categories Display */}
-                <div className="flex flex-col items-center gap-4.5 w-1/4">
+                {/* <div className="grid grid-cols-6 gap-3"> */}
+                <div className="flex flex-row items-start gap-4.5 w-1/4">
                     {categories.map((category) => (
                         <div key={category._id} className="flex flex-col items-center">
+                            {/* <div
+                                className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center"
+                                style={{ backgroundImage: `url(${category.imageUrl})`, backgroundSize: 'cover' }}
+                            > */}
+                                {/* Image or initial letter */}
+                            {/* </div>
+                            <p className="mt-2 text-center">{category.title}</p>*/}
+                              <div key={category._id} className="flex flex-col items-center relative">
+                            <button
+                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                onClick={() => handleDelete(category._id)}
+                            >
+                                X
+                            </button>
                             <div
                                 className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center"
                                 style={{ backgroundImage: `url(${category.imageUrl})`, backgroundSize: 'cover' }}
@@ -105,12 +176,17 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
                             </div>
                             <p className="mt-2 text-center">{category.title}</p>
                         </div>
+                        </div> 
                     ))}
                 </div>
-        {/* Form to Add Category */}
-        <div className="max-w-lg mx-auto bg-white shadow-switcher rounded-lg p-9 flex-1 border-orange-500 border-opacity-45 border-2">
+
+                {/* Form to Add Category */}
+                <div className="max-w-115 mx-auto bg-white shadow-switcher mb-15 rounded-lg p-9 flex-1 border-orange-500 border-opacity-45 border-2 mr-6">
                     <div className="p-7 flex justify-center items-center">
                         <form onSubmit={handleSubmit} className="category-form" encType="multipart/form-data">
+                            <div className="mt-0">
+                                <CategoryAnimation />
+                            </div>
                             <div className="mb-5.5">
                                 <Input
                                     placeholder="Enter title"
@@ -130,7 +206,7 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
                                     type="file"
                                     id="imageFile"
                                     placeholder="Select your Category Image"
-                                    accept="image/*"
+                                    // accept="image/*"
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         if (e.target.files && e.target.files.length > 0) {
                                             setImageFile(e.target.files[0]);
@@ -155,3 +231,5 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
 };
 
 export default AddCategoryForm;
+
+
