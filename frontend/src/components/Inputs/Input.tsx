@@ -40,11 +40,11 @@ const InputElement = styled('input')(
 );
 
 const blue = {
-  100: '#DAECFF',
-  200: '#80BFFF',
-  400: '#3399FF',
-  500: '#007FFF',
-  600: '#0072E5',
+  100: '#F3F6F9',
+  200: '#E5EAF2',
+  400: '#DAE2ED',
+  500: '#C7D0DD',
+  600: '#B0B8C4',
 };
 
 const grey = {

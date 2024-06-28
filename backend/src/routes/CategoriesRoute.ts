@@ -1,3 +1,5 @@
+import multer from "multer";
+
 const express = require('express');
 const router = express.Router();
 const {
@@ -6,12 +8,21 @@ const {
     deleteCategory,
     getAllCategories,
     patchCategoryImage,
-    getRandomCategories,getDistinctCategories
+    getRandomCategories,getDistinctCategories,categoriesByUserId
 } = require('../controllers/categoryController');
-const {verifyToken, verifyAdmin} = require('../middleware/verifyToken')
+const {verifyToken, verifyAdmin,verifyVendor} = require('../middleware/verifyToken')
+const storage = multer.memoryStorage();
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB
+  },
+});
 
 // Route to create a new category
-router.post('/', createCategory);
+router.post('/',verifyToken, verifyVendor, upload.single("imageFile"), createCategory);
+router.get('/all', verifyToken, verifyVendor, categoriesByUserId);
 
 // Route to update a category by ID
 router.put('/:id',verifyToken,verifyAdmin, updateCategory);

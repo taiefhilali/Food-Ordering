@@ -1,20 +1,36 @@
 const Category = require('../models/Category')
 import { Request, Response, response } from "express"
+import multer from "multer";
 import { title } from "process";
+import cloudinary from "cloudinary";
+import mongoose from "mongoose";
 
+// Multer setup for image upload
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-
+// Controller function to create a category with image upload
 const createCategory = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
 
-    const newCategory = new Category(req.body);
-    try {
-        await newCategory.save();
-        res.status(201).json({ status: true, message: "Category created successfully" });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ status: false, message: 'Error creating Category' });
+    const imageUrl = await uploadimage(req.file as Express.Multer.File);
 
-    }
+
+    const newCategory = new Category({
+      title: req.body.title,
+      value: req.body.value,
+      imageUrl: imageUrl,
+      user: new mongoose.Types.ObjectId(userId), // Assign userId to the user field
+
+    });
+
+    await newCategory.save();
+    res.status(201).json({ status: true, message: 'Category created successfully', data: newCategory });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: false, message: 'Error creating Category' });
+  }
 };
 
 const updateCategory = async (req: Request, res: Response) => {
@@ -44,7 +60,13 @@ const updateCategory = async (req: Request, res: Response) => {
     }
 };
 
-
+const uploadimage = async (file: Express.Multer.File) => {
+    const image = file;
+    const base64Image = Buffer.from(image.buffer).toString("base64");
+    const dataURL = `data:${image.mimetype};base64,${base64Image}`;
+    const uploadResponse = await cloudinary.v2.uploader.upload(dataURL);
+    return uploadResponse.url;
+  }
 const deleteCategory = async (req: Request, res: Response) => {
 
     const id = req.params.id;
@@ -131,6 +153,21 @@ const getDistinctCategories = async (req: Request, res: Response) => {
       res.status(500).json({ error: 'Server error' });
     }
   };
+
+  const categoriesByUserId =async (req:Request,res:Response) => {
+    const userId = (req as any).user.id;
+    try {
+      // Fetch products from MongoDB based on userId
+      const categories = await Category.find({ user: userId });
+      
+      res.json(categories);
+      console.log('====================================',categories); 
+
+    } catch (err) {
+      console.error('Error fetching categories:', err);
+      res.status(500).json({ error: 'Failed to fetch categories' });
+    }
+  }
 module.exports = {
-    createCategory,getDistinctCategories, updateCategory, deleteCategory, getAllCategories, patchCategoryImage,getRandomCategories
+    createCategory,getDistinctCategories, updateCategory, deleteCategory, getAllCategories, patchCategoryImage,getRandomCategories,categoriesByUserId
 }
