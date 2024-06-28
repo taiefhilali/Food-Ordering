@@ -1,42 +1,8 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-// import '../../assets/css/ProductMenu.css'; // Import CSS file
 
-// type Product = {
-//   _id: string;
-//   name: string;
-//   description: string;
-//   price: number;
-//   category: string;
-//   quantity: number;
-//   imageUrl: string;
-// };
-
-// type ProductCardProps = {
-//   product: Product;
-// };
-
-// const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-
-//   return (
-//     <div className="box">
-//       <div className="quantity-corner">{product.quantity}</div> {/* Quantity corner */}
-//       <Link to={`/product/${product._id}`} className="box-img"> {/* Wrap image with Link */}
-//         <img src={product.imageUrl} alt={product.name} />
-//       </Link>
-//       <div className="product-info">
-//         <h2 className="product-name">{product.name}</h2>
-//         <h3 className="product-description">{product.description}</h3>
-//         <span className="product-price">${product.price}</span>
-//       </div>
-//       <i className="bx bx-cart-alt"></i>
-//     </div>
-//   );
-// };
-// export default ProductCard;
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../assets/css/ProductMenu.css';
+import HTMLContent from '../../components/HTMLContent'; // Adjust the import path accordingly
 
 type Product = {
   _id: string;
@@ -70,7 +36,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         <div className="flex flex-col items-center my-3 space-y-2">
           <h1 className="text-gray-900 poppins text-lg">{product.name}</h1>
-          <p className="text-gray-500 poppins text-sm text-center">{product.description.slice(0, 50)}</p>
+          <p className="text-gray-500 poppins text-sm text-center">         <HTMLContent content={product.description.slice(0, 50)} />
+          </p>
           <h2 className="text-gray-900 poppins text-2xl font-bold">{product.price} dt</h2>
           <button className="bg-orange-500 text-white px-8 py-2 focus:outline-none poppins rounded-full mt-24 transform transition duration-300 hover:scale-105">Order Now</button>
         </div>

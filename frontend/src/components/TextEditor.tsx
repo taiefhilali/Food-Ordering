@@ -1,10 +1,13 @@
-import React from "react";
-import 'quill/dist/quill.snow.css'
-import ReactQuill from 'react-quill'
+import "quill/dist/quill.snow.css"; // Import Quill styles
+import ReactQuill from "react-quill"; // Import ReactQuill
+import { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
+import { FieldError } from 'react-hook-form'; // Import FieldError type
 
 const TextEditor = () => {
-  
-  var modules = {
+  const { register, setValue, trigger, formState: { errors } } = useFormContext(); // Ensure useFormContext is correctly imported
+
+  const modules = {
     toolbar: [
       [{ size: ["small", false, "large", "huge"] }],
       ["bold", "italic", "underline", "strike", "blockquote"],
@@ -15,40 +18,59 @@ const TextEditor = () => {
         { list: "bullet" },
         { indent: "-1" },
         { indent: "+1" },
-        { align: [] }
+        { align: [] },
       ],
-      [{ "color": ["#000000", "#e60000", "#ff9900", "#ffff00", "#008a00", "#0066cc", "#9933ff", "#ffffff", "#facccc", "#ffebcc", "#ffffcc", "#cce8cc", "#cce0f5", "#ebd6ff", "#bbbbbb", "#f06666", "#ffc266", "#ffff66", "#66b966", "#66a3e0", "#c285ff", "#888888", "#a10000", "#b26b00", "#b2b200", "#006100", "#0047b2", "#6b24b2", "#444444", "#5c0000", "#663d00", "#666600", "#003700", "#002966", "#3d1466", 'custom-color'] }],
-    ]
+      [
+        {
+          color: [
+            "#000000", "#e60000", "#ff9900", "#ffff00", "#008a00", "#0066cc",
+            "#9933ff", "#ffffff", "#facccc", "#ffebcc", "#ffffcc", "#cce8cc",
+            "#cce0f5", "#ebd6ff", "#bbbbbb", "#f06666", "#ffc266", "#ffff66",
+            "#66b966", "#66a3e0", "#c285ff", "#888888", "#a10000", "#b26b00",
+            "#b2b200", "#006100", "#0047b2", "#6b24b2", "#444444", "#5c0000",
+            "#663d00", "#666600", "#003700", "#002966", "#3d1466", 'custom-color'
+          ]
+        }
+      ],
+    ],
   };
 
-  var formats = [
+  const formats = [
     "header", "height", "bold", "italic",
     "underline", "strike", "blockquote",
     "list", "color", "bullet", "indent",
     "link", "image", "align", "size",
   ];
 
-  const handleProcedureContentChange = (content) => {
-    console.log("content---->", content);
+  useEffect(() => {
+    register('description', {
+      required: 'Description is required',
+      validate: (value) => value.trim().length > 0 || 'Description cannot be empty',
+    });
+  }, [register]);
+
+  const handleChange = (content: any) => {
+    setValue('description', content); // Update form state with editor content
+    trigger('description'); // Trigger validation
   };
 
   return (
-    <div >
-      <h1 style={{ textAlign: "center" }}>Text Editor In React JS</h1>
-      <div style={{ display: "grid", justifyContent: "center"}}>
-        <ReactQuill
-          theme="snow"
-          modules={modules}
-          formats={formats}
-          placeholder="write your content ...."
-          onChange={handleProcedureContentChange}
-          style={{ height: "220px" }}
-        >
-        </ReactQuill>
-      </div>
-    </div>
-  );
+    <div>
+      <ReactQuill
+        theme="snow"
+        modules={modules}
+        formats={formats}
+        onChange={handleChange}
+        placeholder="Write your content..."
+        style={{ height: "220px", width: "100%", border: "1px solid #ccc", borderRadius: "5px", padding: "10px" }}
+      />
+  {errors.description && (
+        <span className="text-red-500">
+          {typeof errors.description === 'string' ? errors.description : 'Error: Invalid description'}
+        </span>         )}
 
-}
+         </div>
+  );
+};
 
 export default TextEditor;
