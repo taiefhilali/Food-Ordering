@@ -163,7 +163,7 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
                             <p className="mt-2 text-center">{category.title}</p>*/}
                               <div key={category._id} className="flex flex-col items-center relative">
                             <button
-                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                className="absolute top-1 right-1 bg-red-500 opacity-70 text-white rounded-full w-4 h-4 flex items-center justify-center"
                                 onClick={() => handleDelete(category._id)}
                             >
                                 X
@@ -189,14 +189,14 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
                             </div>
                             <div className="mb-5.5">
                                 <Input
-                                    placeholder="Enter title"
+                                    placeholder="Type Category Title"
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                 />
                             </div>
                             <div className="mb-5.5">
                                 <Input
-                                    placeholder="Enter Value"
+                                    placeholder="Type Category value"
                                     value={value}
                                     onChange={(e) => setValue(e.target.value)}
                                 />
