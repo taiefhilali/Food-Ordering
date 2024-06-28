@@ -14,9 +14,9 @@ const MenuSection = () => {
   return (
     <div className="space-y-2">
       <div>
-        <h2 className="text-2xl font-bold">Menu</h2>
+        <h2 className="text-2xl font-bold">Special Menu of the day</h2>
         <FormDescription>
-          Create your menu and give each item a name and a price
+          Create your special menu of the day and give each item a name and a price
         </FormDescription>
       </div>
       <FormField
