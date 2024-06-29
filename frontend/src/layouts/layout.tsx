@@ -1,7 +1,9 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import LoginFormModal from "@/forms/manage-user-form/LoginFormModal";
+import AboutUs from "@/components/Restaurants/AboutUs";
+import RestaurantDisplayHome from "@/components/Restaurants/RestaurantDisplayHome";
+import HomePage from "@/pages/HomePage";
 
 type Props = {
     children: React.ReactNode;
@@ -16,10 +18,21 @@ const Layout = ({ children = false }: Props) => {
 
             <Hero
             />
-            <div className="container mx-auto flex-1 py-10">{children}</div>
+            <div className="container mx-auto flex-1 py-10"><HomePage />
+            </div>
+            <div className="container mx-auto flex-1 py-10">
+            <AboutUs/>
+            </div>
+
+            <div className="container mx-auto flex-1 py-10">
+                <RestaurantDisplayHome />
+            </div>
+
+          
 
             <Footer></Footer>
-        </div>
+        </div >
+
     );
 };
 

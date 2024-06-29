@@ -96,7 +96,14 @@ const Navbar = ({ setShowLogin }) => {
           onClick={() => setMenu("menu")}
           className={menu === "menu" ? "active" : ""}
         >
-          Menu
+          About
+        </a>
+        <a
+          href="#explore-menu"
+          onClick={() => setMenu("menu")}
+          className={menu === "menu" ? "active" : ""}
+        >
+          Partnerships
         </a>
         <a
           href="#app-download"

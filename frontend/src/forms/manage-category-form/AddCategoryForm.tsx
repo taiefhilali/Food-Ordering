@@ -37,7 +37,7 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
 
     useEffect(() => {
         fetchCategories();
-    }, []);
+      }, []);
 
     const fetchCategories = async () => {
         try {
@@ -128,7 +128,6 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
                 });
 
                 // Update categories list
-                fetchCategories();
             } else {
                 throw new Error('Failed to delete category');
             }
@@ -148,7 +147,7 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
         <DefaultLayout>
             <Breadcrumb pageName="Add Categories" />
 
-            <div className="max-w-full mx-auto mt-20 flex justify-center">
+            <div className="max-w-full mx-auto mt-10 flex justify-center">
                 {/* Categories Display */}
                 {/* <div className="grid grid-cols-6 gap-3"> */}
                 <div className="flex flex-row items-start gap-4.5 w-1/4">
