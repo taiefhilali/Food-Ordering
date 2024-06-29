@@ -1,5 +1,5 @@
 import express from "express";
-import tableController from "../controllers/TableController";
+import tableController from "../controllers/QrCodeController";
 const router=express.Router();
 
 router.get('/generate-qr-code',tableController.generateCode);

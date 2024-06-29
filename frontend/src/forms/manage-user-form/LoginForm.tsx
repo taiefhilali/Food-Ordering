@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ForgotPasswordPage from '@/components/Authentication/forgotPassword';
+import Input from '../../components/Inputs/LoginInput';
+import {  EyeOff, Eye } from 'lucide-react';
 
 type LoginFormProps = {
   closeModal: () => void;
@@ -13,6 +15,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
   const [password, setPassword] = useState('');
   const [showForgotPassword, setShowForgotPassword] = useState(false); // State to manage showing ForgotPasswordPage
   const navigate = useNavigate();
+  const [type, setType] = useState('password');
+
+  const handleToggle = () => {
+    if (type === 'password') {
+      setType('text');
+    } else {
+      setType('password');
+    }
+  };
 
   const handleLogin = async () => {
     try {
@@ -58,6 +69,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
           icon: 'success',
           title: 'Login Successful!',
           text: 'You have successfully logged in.',
+          
         }).then(() => {
           navigate('/settings');
           closeModal(); // Call closeModal when login is successful
@@ -92,20 +104,27 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
         <ForgotPasswordPage /> // Render ForgotPasswordPage if showForgotPassword is true
       ) : (
         <>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="block w-full px-4 py-2 border rounded-full mb-4"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="block w-full px-4 py-2 border rounded-full mb-4"
-          />
+          <div>
+            <Input
+              type="email"
+              placeholder="Type your Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{ marginBottom: '16px' }} // Add your desired gap here
+            />
+            <div className="relative">
+              <Input
+                type={type}
+                placeholder="Type your Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <span className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer" onClick={handleToggle}>
+                {type === 'password' ? <EyeOff size={25} /> : <Eye size={25} />}
+              </span>
+            </div>
+          </div>
+
           <div className="mt-4 text-right text-sm">
             <Link to="#" onClick={toggleForgotPassword} className="text-orange-500">
               Forgot Password?

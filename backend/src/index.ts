@@ -11,7 +11,7 @@ import ProductRoutes from "./routes/MyProductRoute";
 import authRoute from "./routes/authRoute";
 import categoriesRoute from "./routes/CategoriesRoute";
 import foodRoute from "./routes/FoodRoute";
-import TableRoute from "./routes/TableRoute";
+import TableRoute from "./routes/QrCodeRoute";
 import CartRoute from "./routes/CartRoute";
 import NotifRoute from "./routes/NotificationRoute";
 import Stripe from 'stripe';
