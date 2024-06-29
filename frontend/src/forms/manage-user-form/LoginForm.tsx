@@ -70,6 +70,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
           title: 'Login Successful!',
           text: 'You have successfully logged in.',
           
+          buttonsStyling: true,
+          confirmButtonColor:'#ff6411'
         }).then(() => {
           navigate('/settings');
           closeModal(); // Call closeModal when login is successful

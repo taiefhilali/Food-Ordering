@@ -3,6 +3,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { io } from 'socket.io-client';
 import '../../assets/css/loginmodal.css'; // Replace with actual path to your CSS file
+import Input from '../../components/Inputs/RegisterInput';
+import InputImage from '../../components/Inputs/LoginInput';
 
 interface RegisterFormProps {
   closeModal: () => void;
@@ -205,16 +207,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center">
-      <div className="mb-4 w-full max-w-md flex flex-wrap">
+    <form onSubmit={handleSubmit} className="flex flex-col items-center max-w-4xl ">
+      <div className="mb-6 w-full max-w-4xl flex flex-wrap">
         <div className="w-full md:w-1/2 md:pr-2">
-          <input
+          <Input
             type="text"
             name="firstname"
             value={formData.firstname}
             onChange={handleChange}
             placeholder="First Name"
-            className="block w-full px-2 py-2 border rounded-full"
             required
           />
           {errors.firstname && (
@@ -222,13 +223,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
           )}
         </div>
         <div className="w-full md:w-1/2 md:pl-2">
-          <input
+          <Input
             type="text"
             name="lastname"
             value={formData.lastname}
             onChange={handleChange}
             placeholder="Last Name"
-            className="block w-full px-3 py-2 border rounded-full"
             required
           />
           {errors.lastname && (
@@ -239,13 +239,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
 
       <div className="mb-4 w-full max-w-md flex flex-wrap">
         <div className="w-full md:w-1/2 md:pr-2">
-          <input
+          <Input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             placeholder="Email"
-            className="block w-full px-3 py-2 border rounded-full"
             required
           />
           {errors.email && (
@@ -254,13 +253,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
         </div>
 
         <div className="w-full md:w-1/2 md:pl-2">
-          <input
+          <Input
             type="text"
             name="username"
             value={formData.username}
             onChange={handleChange}
             placeholder="Username"
-            className="block w-full px-3 py-2 border rounded-full"
             required
           />
           {errors.username && (
@@ -269,13 +267,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
         </div>
       </div>
       <div className="mb-4 w-full max-w-md">
-        <input
+        <Input
           type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
           placeholder="Password"
-          className="block w-full px-3 py-2 border rounded-full"
+          className="px-15"
+
           required
         />
         {errors.password && (
@@ -284,15 +283,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
       </div>
       <div className="mb-4 w-full max-w-md">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="imageFile">
-          Profile Image
         </label>
-        <input
+        <InputImage
           type="file"
           name="imageFile"
           onChange={handleChange}
           accept="image/*"
-          className="block w-full px-3 py-2 border rounded-full"
           required
+
         />
         {errors.imageFile && (
           <p className="text-red-500 text-xs italic">{errors.imageFile}</p>
