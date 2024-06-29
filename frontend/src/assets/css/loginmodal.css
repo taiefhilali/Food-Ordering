@@ -10,3 +10,8 @@
   border: none; /* Remove default border */
   /* Add more custom styles as needed */
 }
+.animation-container {
+  border-radius: 50px; /* Adjust the radius as needed */
+  overflow: hidden;
+/* Ensure the border radius is applied correctly */
+}

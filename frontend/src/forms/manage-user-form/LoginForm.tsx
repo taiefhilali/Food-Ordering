@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import ForgotPasswordPage from '@/components/Authentication/forgotPassword';
 import Input from '../../components/Inputs/LoginInput';
-import {  EyeOff, Eye } from 'lucide-react';
+import { EyeOff, Eye } from 'lucide-react';
 
 type LoginFormProps = {
   closeModal: () => void;
@@ -69,9 +69,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
           icon: 'success',
           title: 'Login Successful!',
           text: 'You have successfully logged in.',
-          
           buttonsStyling: true,
-          confirmButtonColor:'#ff6411'
+          confirmButtonColor: '#ff6411'
         }).then(() => {
           navigate('/settings');
           closeModal(); // Call closeModal when login is successful
@@ -83,6 +82,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
           icon: 'error',
           title: 'Login Failed',
           text: 'Invalid email or password. Please try again.',
+          confirmButtonColor: '#ff6411'
+          ,
         });
       }
     } catch (error) {
@@ -92,6 +93,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
         icon: 'error',
         title: 'Login Failed',
         text: 'Error logging in. Please try again later.',
+        confirmButtonColor:'#ff6411'
+
       });
     }
   };

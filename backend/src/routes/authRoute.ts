@@ -8,7 +8,7 @@ const { verifyToken, verifyUserType,verifyVendor } = require('../middleware/veri
 const router=express.Router();
 const CLIENT_URL = "http://localhost:3000";
 
-router.post('/register',verifyToken, verifyUserType ,authController.createUser);
+router.post('/register',authController.createUser);
 router.post("/login",authController.loginUser);
 router.post("/log",verifyToken, verifyUserType ,authController.loguser);
 router.post('/forgot-password',verifyToken, verifyVendor,authController.forgotPassword);

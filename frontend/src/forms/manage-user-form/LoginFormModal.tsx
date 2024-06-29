@@ -37,6 +37,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
     rendererSettings: {
       preserveAspectRatio: 'xMidYMid slice',
     },
+    
   };
 
   useEffect(() => {
@@ -82,9 +83,10 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="bg-white text-black p-8 rounded shadow-lg z-50 flex w-full max-w-3xl border-2 border-t-slate-300">
-        <div className="flex-shrink-0 w-1/2 rounded-lg overflow-hidden">
-          <Lottie options={defaultOptions} height="100%" width="100%" />
+      <div className="bg-white text-black p-8 rounded shadow-lg z-50 flex w-full max-w-3xl  border-2 border-opacity-50 border-orange-500 opacity-90">
+        <div className="flex-shrink-0 w-1/2 rounded-sm overflow-hidden">
+          <Lottie options={defaultOptions} height="100%" width="100% " />
+
         </div>
         <div className="flex-grow px-4">
           <div className="flex justify-end">

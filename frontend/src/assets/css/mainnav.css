@@ -1,0 +1,44 @@
+/* navbar.css or mainnav.css */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 16cm; /* Adjust left position */
+    width: 70%;
+    background-color: transparent;
+    z-index: 1000;
+  }
+  
+  .navbar-menu {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-menu a {
+    text-decoration: none;
+    color: black;
+    padding: 15px 20px;
+    display: block;
+  }
+  
+  .navbar-menu .active {
+    border-bottom: 2px solid orange;
+  }
+  
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .navbar-right .button {
+    background-color: slategray;
+    border: none;
+    color: transparent;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
