@@ -144,6 +144,22 @@ exports.productsByUserId =async (req:Request,res:Response) => {
   }
 }
 
+
+exports.productsByRestaurantId = async (req:Request, res:Response) => {
+  const restaurantId = req.params.restaurantId; // Assuming restaurantId is passed as a route parameter
+  try {
+    // Fetch products from MongoDB based on restaurantId
+    const products = await Product.find({ restaurant: restaurantId });
+    
+    res.json(products);
+    console.log('====================================');
+    console.log(products);
+    console.log('====================================');
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    res.status(500).json({ error: 'Failed to fetch products' });
+  }
+};
 exports.searchProductByName=async (req:Request,res:Response) => {
   const productName = req.query.name;
 

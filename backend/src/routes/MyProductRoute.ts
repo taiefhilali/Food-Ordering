@@ -14,20 +14,25 @@ const upload = multer({
   },
 });
 
+
 router.get('/', productController.getAllProducts);
 router.get('/quantity', productController.quantityProduct);
 router.get('/all', verifyToken, verifyVendor, productController.productsByUserId);
 router.get('/search', productController.searchProductByName);
 router.post('/sell', productController.sellProduct);
 router.post('/', upload.single("imageFile"), verifyToken, verifyVendor, productController.createMyProduct);
-router.get('/revenue/:date',productController.revenuStatistics);
+router.get('/revenue/:date', productController.revenuStatistics);
 
 // Define the more specific route before the less specific one
 router.get('/:restaurantId/revenue', productController.calculateRestaurantRevenue);
+
 router.get('/:id', productController.getProductById);
 router.put('/:id', productController.updateProduct);
 router.delete('/:id', verifyToken, verifyVendor, productController.deleteProduct);
 router.patch('/:id/toggle-approval', verifyToken, verifyAdmin, productController.toggleProductApproval);
+router.get('/:restaurantId', productController.productsByRestaurantId);
+
+// Route for fetching products by restaurantId
 export default router;
 
 

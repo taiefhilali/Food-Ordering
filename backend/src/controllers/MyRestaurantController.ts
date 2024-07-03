@@ -273,4 +273,24 @@ const uploadimage = async (file: Express.Multer.File) => {
 }
 
 
-export default { createMyRestaurant, getMyRestaurant, updateMyRestaurant, getAllRestaurantbyUser,getAllRestaurant, getCuisinesStat,toggleRestaurantApproval };
+
+// Endpoint to fetch restaurant details by name
+const getRestaurantbyName=async (req:Request, res:Response) => {
+  const { restaurantName } = req.params;
+
+  try {
+    // Querying by restaurantName instead of _id
+    const restaurant = await Restaurant.findOne({ restaurantName });
+
+    if (!restaurant) {
+      return res.status(404).json({ error: 'Restaurant not found' });
+    }
+
+    res.json(restaurant);
+  } catch (err) {
+    console.error('Error fetching restaurant:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+export default { createMyRestaurant, getMyRestaurant,getRestaurantbyName, updateMyRestaurant, getAllRestaurantbyUser,getAllRestaurant, getCuisinesStat,toggleRestaurantApproval };

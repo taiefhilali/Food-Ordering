@@ -78,7 +78,7 @@ const Header = (props: {
          </Link>
           <div className="p-2">
             <h2 className="text-gray-800 font-semibold text-xs sm:text-sm">{product.name}</h2>
-            <p className="text-gray-600 text-xs">{product.description}</p>
+            <p className="text-gray-600 text-xs">{cription}</p>
             <p className="text-gray-700 text-sm mt-1">{product.price} dt</p>
           </div>
         </div>

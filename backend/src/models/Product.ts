@@ -31,4 +31,5 @@ productSchema.methods.sell = async function(quantitySold: any) {
   this.soldQuantity += quantitySold;
   await this.save();
 };
+
 module.exports = mongoose.model('Product', productSchema);

@@ -20,6 +20,7 @@ router.get("/",verifyToken,verifyVendor,MyRestaurantController.getMyRestaurant);
 router.get("/allmyrestaurants",verifyToken,verifyVendor,MyRestaurantController.getAllRestaurantbyUser);
 router.get("/restaurants",MyRestaurantController.getAllRestaurant);
 router.put("/",validateMyRestaurantRequest,MyRestaurantController.updateMyRestaurant)
+router.get('/:restaurantName',MyRestaurantController.getRestaurantbyName)
 // Route to toggle restaurant approval status
 router.patch('/:id/toggle-approval', MyRestaurantController.toggleRestaurantApproval);
 // API endpoint to fetch restaurant data
