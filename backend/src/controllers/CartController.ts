@@ -63,7 +63,16 @@ export const getCartByUser = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
+export const deleteAllCart = async (req: Request, res: Response) => {
+  try {
+    // Delete all items from the cart collection
+    await Cart.deleteMany({});
+    res.status(204).send(); // Send 204 (No Content) on successful deletion
+  } catch (error) {
+    console.error('Error deleting all cart items:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 // const addProductToCart = async (req: Request, res: Response) => {
 //   const userId = (req as any).user.id;
 //   const { productId, totalPrice, quantity, additives, instruction } = req.body;
@@ -510,38 +519,39 @@ const decrementProductQty = async (req: Request, res: Response) => {
   }
 };
 const incrementProductQty = async (req: Request, res: Response) => {
+try {  
   const userId = (req as any ).user.id; // Assuming you have authentication middleware setting req.user.id
 
-try {
-  const { productId } = req.body;
+    // Extract productId from request parameters
+    const { productId } = req.params;
 
-  // Find the user's cart
-  const cart = await Cart.findOne({ user: userId });
+    // Find the user's cart and increment product quantity
+    const cart = await Cart.findOne({ user: userId });
 
-  if (!cart) {
-    return res.status(404).json({ error: 'Cart not found' });
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+
+    // Find the index of the product in the cart
+    const productIndex = cart.items.findIndex((item) => item.product.toString() === productId);
+
+    if (productIndex === -1) {
+      return res.status(404).json({ error: 'Product not found in cart' });
+    }
+
+    // Increment the quantity of the product
+    cart.items[productIndex].quantity += 1;
+
+    // Save the updated cart
+    await cart.save();
+
+    res.status(200).json({ message: 'Product quantity incremented successfully' });
+  } catch (error) {
+    console.error('Error incrementing product quantity:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
-
-  // Find the index of the product in the cart
-  const productIndex = cart.items.findIndex((item) => item.product.toString() === productId);
-
-  if (productIndex === -1) {
-    return res.status(404).json({ error: 'Product not found in cart' });
-  }
-
-  // Increment the quantity of the product
-  cart.items[productIndex].quantity += 1;
-
-  // Save the updated cart
-  await cart.save();
-
-  res.status(200).json({ message: 'Product quantity incremented successfully' });
-} catch (error) {
-  console.error('Error incrementing product quantity:', error);
-  res.status(500).json({ error: 'Internal server error' });
-}
 }
 
 module.exports = {
-  addProductToCart, payment, getAllCarts, getCartCount, removeProductFromCart, fetchUserCart, clearUserCart, decrementProductQty, updateCartItemQuantity,getCartByUser,incrementProductQty
+  addProductToCart, payment, getAllCarts, getCartCount, removeProductFromCart, fetchUserCart, clearUserCart,deleteAllCart, decrementProductQty, updateCartItemQuantity,getCartByUser,incrementProductQty
 }

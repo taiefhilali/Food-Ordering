@@ -9,7 +9,7 @@ const {
     getCartCount,
     decrementProductQty,
     getAllCarts,
-    updateCartItemQuantity,payment,getCartByUser,incrementProductQty
+    updateCartItemQuantity,payment,getCartByUser,incrementProductQty,deleteAllCart
 } = require('../controllers/CartController');
 const { verifyToken, verifyUserType } = require('../middleware/verifyToken')
 
@@ -17,6 +17,7 @@ const { verifyToken, verifyUserType } = require('../middleware/verifyToken')
 router.post('/', verifyToken, verifyUserType,addProductToCart);
 router.post('/decrement', verifyToken, verifyUserType,decrementProductQty);
 router.post('/increment', verifyToken, verifyUserType,incrementProductQty);
+router.delete('/deleteAll', verifyToken, verifyUserType,deleteAllCart);
 router.delete('/delete/:id', verifyToken, verifyUserType,removeProductFromCart);
 router.get('/', verifyToken, verifyUserType,fetchUserCart);
 router.get('/cart', verifyToken, verifyUserType,getCartByUser);

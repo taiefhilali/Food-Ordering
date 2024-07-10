@@ -46,6 +46,7 @@
     "@types/express-session": "^1.18.0",
     "@types/nodemailer": "^6.4.15",
     "@types/passport-facebook-token": "^0.4.38",
-    "@types/passport-google-oauth20": "^2.0.16"
+    "@types/passport-google-oauth20": "^2.0.16",
+    "@types/qrcode": "^1.5.5"
   }
 }
