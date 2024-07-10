@@ -1,22 +1,66 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import QRCode from 'react-qr-code';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
+import Select, { GroupBase } from 'react-select';
+import { Controller, useForm } from 'react-hook-form';
+
+type Restaurant = {
+  _id: string;
+  restaurantName: string;
+  imageUrl: string;
+};
 
 const QRCodeGenerator = () => {
-  const [restaurantName, setRestaurantName] = useState('');
+  const { control, handleSubmit } = useForm();
   const [qrCodePath, setQRCodePath] = useState('');
   const [tableNumber, setTableNumber] = useState('');
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null); // Define selectedRestaurant as Restaurant | null
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('userToken');
+        if (!token) {
+          throw new Error('No token found');
+        }
+        const userId = localStorage.getItem('userId');
+
+        const response = await axios.get('http://localhost:7000/api/my/restaurant', {
+          params: { userId },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setRestaurants(response.data);
+      } catch (error) {
+        console.error('Error fetching restaurants:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const generateQRCode = async () => {
     try {
+      if (!selectedRestaurant) return; // Handle case where selectedRestaurant is null
+
+      const token = localStorage.getItem('userToken');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
       const response = await axios.get(`http://localhost:7000/api/my/table/generate-qr-code`, {
         params: {
-          restaurantName,
-          tableNumber
-        }
+          restaurantName: selectedRestaurant.restaurantName,
+          tableNumber,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.data.filePath) {
@@ -27,31 +71,99 @@ const QRCodeGenerator = () => {
     }
   };
 
-  const downloadQRCode = () => {
-    // Download QR code image as PNG
-    const link = document.createElement('a');
-    link.href = qrCodePath;
-    link.download = `QRCode-${restaurantName}.png`;
-    link.click();
+  const downloadQRCode = async () => {
+    try {
+      if (!selectedRestaurant || !qrCodePath) return; // Handle case where selectedRestaurant or qrCodePath is null
+
+      const response = await axios.get(`http://localhost:7000/api/my/table/generate-qr-code`, {
+        params: {
+          restaurantName: selectedRestaurant.restaurantName,
+          tableNumber,
+        },
+        responseType: 'blob' // Set response type to blob for binary data
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `QRCode-${selectedRestaurant.restaurantName}.png`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link); // Clean up
+    } catch (error) {
+      console.error('Error downloading QR code:', error);
+    }
   };
+
+  const customStyles = {
+    control: (provided: any) => ({
+      ...provided,
+      borderRadius: '9999px', // Rounded full
+      padding: '4px',
+      borderColor: '#d1d5db', // Tailwind gray-300
+      boxShadow: 'none',
+      '&:hover': {
+        borderColor: '#fb923c', // Tailwind orange-500
+      },
+      width: '200%'
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      borderRadius: '0.5rem', // Tailwind rounded-lg
+    }),
+    option: (provided: any, state: { isFocused: any; }) => ({
+      ...provided,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '8px 12px',
+      backgroundColor: state.isFocused ? '#fb923c' : 'white', // Tailwind orange-500 for focused state
+      color: state.isFocused ? 'white' : 'black',
+      '&:active': {
+        backgroundColor: '#fb923c',
+        color: 'white',
+      },
+    }),
+  };
+
+  const formatOptionLabel = ({ restaurantName, imageUrl }: Restaurant) => (
+    <div className="flex justify-between items-center">
+      <span>{restaurantName}</span>
+      <img
+        src={imageUrl}
+        alt={restaurantName}
+        className="w-8 h-8 rounded-full ml-2"
+      />
+    </div>
+  );
 
   return (
     <DefaultLayout>
       <Breadcrumb pageName='QrCode Generator' />
       <Container>
-      <Row className="mt-15">
-          <Col md={{ span: 6, offset: 3 }}>
-            <Form>
-              <Form.Group controlId="restaurantName">
-                <Form.Label>Restaurant Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter restaurant name"
-                  value={restaurantName}
-                  onChange={(e) => setRestaurantName(e.target.value)}
-                  style={{ borderRadius: '50px', width: '200%' }} // Rounded and full-width style
+        <Row className="mt-5 mr-40 align-bottom">
+          <Col>
+            <Form className='mr-28'>
+                <Controller
+                  name="restaurant"
+                  rules={{ required: true }}
+                  control={control}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={restaurants}
+                      getOptionLabel={(restaurant) => restaurant.restaurantName}
+                      getOptionValue={(restaurant) => restaurant._id}
+                      formatOptionLabel={formatOptionLabel}
+                      styles={customStyles}
+                      placeholder="Select Restaurant"
+                      onChange={(selected) => {
+                        setSelectedRestaurant(selected);
+                        field.onChange(selected);
+                      }}
+                    />
+                  )}
                 />
-              </Form.Group>
               <Form.Group controlId="tableNumber">
                 <Form.Label>Table Number</Form.Label>
                 <Form.Control
@@ -62,28 +174,33 @@ const QRCodeGenerator = () => {
                   style={{ borderRadius: '50px', width: '200%' }} // Rounded and full-width style
                 />
               </Form.Group>
-             
-            </Form>
-            <Row className="mt-15">
-
-             <Button  variant="warning" onClick={generateQRCode} style={{ backgroundColor: 'orange', borderColor: 'orange' , borderRadius: '50px', width: '200%' }}>
-                Generate QR Code
-              </Button>
+              <Row className="mt-5 justify-content-center">
+                <Button
+                  variant="warning"
+                  onClick={handleSubmit(generateQRCode)}
+                  style={{ backgroundColor: 'orange', borderColor: 'orange', borderRadius: '50px', width: '200%' }}
+                >
+                  Generate QR Code
+                </Button>
               </Row>
+            </Form>
           </Col>
-        </Row>  
+        </Row>
         {qrCodePath && (
-          <Row className="mt-6 ml-80 ">
-            <Col md={{ span: 6, offset: 3 }} className="text-center">
-              <h2>Generated QR Code</h2>
-              <QRCode value={qrCodePath} />
-              <Button variant="success" className="mt-3" onClick={downloadQRCode}>
-                Download QR Code
-              </Button>
-            </Col>
-          </Row>
+          <div className="text-center mt-4 ml-50">
+            <h4>Generated QR Code</h4>
+            <QRCode value={qrCodePath} />
+            <Button
+              variant="success"
+              className="mt-3"
+              onClick={downloadQRCode}
+              style={{ width: '200%', borderRadius: '50px' }}
+            >
+              Download QR Code
+            </Button>
+          </div>
         )}
-     </Container> 
+      </Container>
     </DefaultLayout>
   );
 };
