@@ -15,8 +15,8 @@ const { verifyToken, verifyUserType } = require('../middleware/verifyToken')
 
 
 router.post('/', verifyToken, verifyUserType,addProductToCart);
-router.post('/decrement', verifyToken, verifyUserType,decrementProductQty);
-router.post('/increment', verifyToken, verifyUserType,incrementProductQty);
+router.post('/decrement/:productId', verifyToken, verifyUserType,decrementProductQty);
+router.post('/increment/:productId', verifyToken, verifyUserType,incrementProductQty);
 router.delete('/deleteAll', verifyToken, verifyUserType,deleteAllCart);
 router.delete('/delete/:id', verifyToken, verifyUserType,removeProductFromCart);
 router.get('/', verifyToken, verifyUserType,fetchUserCart);

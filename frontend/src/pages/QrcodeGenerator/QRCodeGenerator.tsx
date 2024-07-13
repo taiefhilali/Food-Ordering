@@ -96,6 +96,7 @@ const QRCodeGenerator = () => {
   };
 
   const customStyles = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: (provided: any) => ({
       ...provided,
       borderRadius: '9999px', // Rounded full
@@ -107,10 +108,12 @@ const QRCodeGenerator = () => {
       },
       width: '200%'
     }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     menu: (provided: any) => ({
       ...provided,
       borderRadius: '0.5rem', // Tailwind rounded-lg
     }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     option: (provided: any, state: { isFocused: any; }) => ({
       ...provided,
       display: 'flex',

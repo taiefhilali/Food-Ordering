@@ -480,12 +480,83 @@ if(!totalPrice){
   }
 };
 
+// const decrementProductQty = async (req: Request, res: Response) => {
+//   const userId = (req as any).user.id;
+
+//   try {
+//     // Get product ID from request body
+//     const { productId } = req.body;
+
+//     // Find the user's cart
+//     const cart = await Cart.findOne({ user: userId });
+
+//     if (!cart) {
+//       return res.status(404).json({ error: 'Cart not found' });
+//     }
+
+//     // Find the index of the product in the cart
+//     const productIndex = cart.items.findIndex((item: CartItem) => item.product.toString() === productId);
+
+//     if (productIndex === -1) {
+//       return res.status(404).json({ error: 'Product not found in cart' });
+//     }
+
+//     // Decrement the quantity of the product
+//     if (cart.items[productIndex].quantity > 1) {
+//       cart.items[productIndex].quantity -= 1;
+//     } else {
+//       // Remove the product if the quantity is 1
+//       cart.items.splice(productIndex, 1);
+//     }
+
+//     // Save the updated cart
+//     await cart.save();
+
+//     res.status(200).json({ message: 'Product quantity decremented successfully' });
+//   } catch (error) {
+//     console.error('Error decrementing product quantity:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
+// const incrementProductQty = async (req: Request, res: Response) => {
+// try {  
+//   const userId = (req as any ).user.id; // Assuming you have authentication middleware setting req.user.id
+
+//     // Extract productId from request parameters
+//     const { productId } = req.params;
+
+//     // Find the user's cart and increment product quantity
+//     const cart = await Cart.findOne({ user: userId });
+
+//     if (!cart) {
+//       return res.status(404).json({ error: 'Cart not found' });
+//     }
+
+//     // Find the index of the product in the cart
+//     const productIndex = cart.items.findIndex((item) => item.product.toString() === productId);
+
+//     if (productIndex === -1) {
+//       return res.status(404).json({ error: 'Product not found in cart' });
+//     }
+
+//     // Increment the quantity of the product
+//     cart.items[productIndex].quantity += 1;
+
+//     // Save the updated cart
+//     await cart.save();
+
+//     res.status(200).json({ message: 'Product quantity incremented successfully' });
+//   } catch (error) {
+//     console.error('Error incrementing product quantity:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// }
 const decrementProductQty = async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
 
   try {
-    // Get product ID from request body
-    const { productId } = req.body;
+    // Get product ID from request parameters
+    const { productId } = req.params;
 
     // Find the user's cart
     const cart = await Cart.findOne({ user: userId });
@@ -518,9 +589,10 @@ const decrementProductQty = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 const incrementProductQty = async (req: Request, res: Response) => {
-try {  
-  const userId = (req as any ).user.id; // Assuming you have authentication middleware setting req.user.id
+  try {  
+    const userId = (req as any ).user.id; // Assuming you have authentication middleware setting req.user.id
 
     // Extract productId from request parameters
     const { productId } = req.params;
@@ -550,7 +622,8 @@ try {
     console.error('Error incrementing product quantity:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-}
+};
+
 
 module.exports = {
   addProductToCart, payment, getAllCarts, getCartCount, removeProductFromCart, fetchUserCart, clearUserCart,deleteAllCart, decrementProductQty, updateCartItemQuantity,getCartByUser,incrementProductQty

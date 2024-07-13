@@ -7,7 +7,7 @@ const Product = require('../models/product');
 import { Error } from 'mongoose'; // Import the Error type from mongoose
 
 // Get all products
-exports.getAllProducts = async (req:Request, res:Response) => {
+exports.getAllProducts = async (req: Request, res: Response) => {
   try {
     const products = await Product.find();
     res.json(products);
@@ -47,7 +47,7 @@ exports.createMyProduct = async (req: Request, res: Response) => {
 
 
 // Get a product by ID
-exports.getProductById = async (req:Request, res:Response) => {
+exports.getProductById = async (req: Request, res: Response) => {
   try {
     const product = await Product.findById(req.params.id);
     if (product === null) {
@@ -58,9 +58,17 @@ exports.getProductById = async (req:Request, res:Response) => {
     res.status(500).json({ message: (error as Error).message });
   }
 };
-
+exports.getProductBycategory = async (req: Request, res: Response) => {
+  try {
+    const { categoryId } = req.params;
+    const products = await Product.find({ category: categoryId });
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching products by category' });
+  }
+};
 // Update a product
-exports.updateProduct = async (req:Request, res:Response) => {
+exports.updateProduct = async (req: Request, res: Response) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updatedProduct);
@@ -70,7 +78,7 @@ exports.updateProduct = async (req:Request, res:Response) => {
 };
 
 // Delete a product
-exports.deleteProduct = async (req:Request, res:Response) => {
+exports.deleteProduct = async (req: Request, res: Response) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
     res.json({ message: 'Product deleted successfully' });
@@ -80,35 +88,35 @@ exports.deleteProduct = async (req:Request, res:Response) => {
 };
 
 // statistics 
-exports.quantityProduct= async(req:Request,res:Response)=>{
-  
-    try {
-      // Aggregate products based on quantity and sort in descending order
-      const topProducts = await Product.aggregate([
-        {
-          $sort: { quantity: -1 },
-        },
-        {
-          $limit: 5, // Adjust the number based on your requirement
-        },
-      ]);
-  
-      res.json(topProducts);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server Error' });
-    }
-  };
+exports.quantityProduct = async (req: Request, res: Response) => {
+
+  try {
+    // Aggregate products based on quantity and sort in descending order
+    const topProducts = await Product.aggregate([
+      {
+        $sort: { quantity: -1 },
+      },
+      {
+        $limit: 5, // Adjust the number based on your requirement
+      },
+    ]);
+
+    res.json(topProducts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
 
 const uploadimage = async (file: Express.Multer.File) => {
-    const image = file;
-    const base64Image = Buffer.from(image.buffer).toString("base64");
-    const dataURL = `data:${image.mimetype};base64,${base64Image}`;
-    const uploadResponse = await cloudinary.v2.uploader.upload(dataURL);
-    return uploadResponse.url;
-  }
+  const image = file;
+  const base64Image = Buffer.from(image.buffer).toString("base64");
+  const dataURL = `data:${image.mimetype};base64,${base64Image}`;
+  const uploadResponse = await cloudinary.v2.uploader.upload(dataURL);
+  return uploadResponse.url;
+}
 // Toggle product approval status
-exports.toggleProductApproval = async(req:Request,res:Response) => {
+exports.toggleProductApproval = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const product = await Product.findById(id);
@@ -127,13 +135,13 @@ exports.toggleProductApproval = async(req:Request,res:Response) => {
 };
 
 // GET /api/my/products?userId=:userId
-exports.productsByUserId =async (req:Request,res:Response) => {
+exports.productsByUserId = async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
-  console.log('============userid========================',userId);
+  console.log('============userid========================', userId);
   try {
     // Fetch products from MongoDB based on userId
     const products = await Product.find({ user: userId });
-    
+
     res.json(products);
     console.log('====================================');
     console.log(products);
@@ -145,12 +153,12 @@ exports.productsByUserId =async (req:Request,res:Response) => {
 }
 
 
-exports.productsByRestaurantId = async (req:Request, res:Response) => {
+exports.productsByRestaurantId = async (req: Request, res: Response) => {
   const restaurantId = req.params.restaurantId; // Assuming restaurantId is passed as a route parameter
   try {
     // Fetch products from MongoDB based on restaurantId
     const products = await Product.find({ restaurant: restaurantId });
-    
+
     res.json(products);
     console.log('====================================');
     console.log(products);
@@ -160,7 +168,7 @@ exports.productsByRestaurantId = async (req:Request, res:Response) => {
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 };
-exports.searchProductByName=async (req:Request,res:Response) => {
+exports.searchProductByName = async (req: Request, res: Response) => {
   const productName = req.query.name;
 
   try {
@@ -174,7 +182,7 @@ exports.searchProductByName=async (req:Request,res:Response) => {
 
 // Function to sell a product
 // Function to sell a product
-exports.sellProduct = async (req:Request,res:Response)  => {
+exports.sellProduct = async (req: Request, res: Response) => {
   const { productId, quantitySold } = req.body;
 
   try {
@@ -200,7 +208,7 @@ exports.sellProduct = async (req:Request,res:Response)  => {
 };
 
 // Function to calculate total revenue for a restaurant
-exports.calculateRestaurantRevenue = async (req:Request,res:Response)  => {
+exports.calculateRestaurantRevenue = async (req: Request, res: Response) => {
   const { restaurantId } = req.params;
 
   try {
@@ -220,7 +228,7 @@ exports.calculateRestaurantRevenue = async (req:Request,res:Response)  => {
     return res.status(500).json({ message: 'Failed to calculate restaurant revenue' });
   }
 };
-exports.revenuStatistics=async (req:Request,res:Response) => {
+exports.revenuStatistics = async (req: Request, res: Response) => {
   try {
     const revenueData = await Product.aggregate([
       {
@@ -230,7 +238,7 @@ exports.revenuStatistics=async (req:Request,res:Response) => {
         },
       },
     ]);
-    
+
 
     if (!revenueData || revenueData.length === 0) {
       return res.status(404).json({ message: 'No revenue data found' });

@@ -54,6 +54,20 @@ const AddProductForm = () => {
   const { register, handleSubmit, setValue, getValues, formState: { errors }, control } = methods;
   const socket = io("http://localhost:8000", { transports: ["websocket"] });
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('http://localhost:7000/api/my/categories');
+        setCategories(response.data.map((category: { _id: any; title: any; imageUrl: any }) => ({ value: category._id, label: category.title })));
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
 
   const dishTypes = [
@@ -103,7 +117,10 @@ const AddProductForm = () => {
     if (data.imageFile) {
       formData.append('imageFile', data.imageFile[0]);
     }
-
+    // Append category if it's selected
+    if (data.category) {
+      formData.append('category', data.category.value);
+    }
     try {
       const token = localStorage.getItem('userToken');
       if (!token) {
@@ -227,10 +244,25 @@ const AddProductForm = () => {
                       placeholder="Select Dish Type"
                       onChange={(selected) => field.onChange(selected)}
                     />
-                    
-                  )}              
+
+                  )}
                 />
-                      {errors.dishType && <span className="text-red-500">DishType is required </span>}
+                {errors.dishType && <span className="text-red-500">DishType is required </span>}
+
+                <Controller
+                  name="category" // Make sure this matches the field name in your schema
+                  control={control}
+                  rules={{ required: 'Category is required' }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={categories}
+                      styles={customStyles}
+                      placeholder="Select Category"
+                      onChange={(selected) => field.onChange(selected)}
+                    />
+                  )}
+                />
 
               </div>
               <div className="relative">

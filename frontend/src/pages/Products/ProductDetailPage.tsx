@@ -7,6 +7,9 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import Swal from 'sweetalert2';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import HTMLContent from '../../components/HTMLContent'; // Adjust the import path accordingly
+import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+
+import MultiSelect from '@/components/Forms/MultiSelect';
 
 // Define the type of the product prop
 type Product = {
@@ -17,13 +20,45 @@ type Product = {
     dishType: string;
     quantity: number;
     imageUrl: string;
+    category: string;
 };
 
 // Define the prop type for the ProductDetailPage component
 type ProductDetailPageProps = {
     product: Product; // Use the Product type for the product prop
 };
-
+const customStyles = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    control: (provided: any) => ({
+        ...provided,
+        borderRadius: '9999px', // Rounded full
+        padding: '4px',
+        borderColor: '#d1d5db', // Tailwind gray-300
+        boxShadow: 'none',
+        '&:hover': {
+            borderColor: '#fb923c', // Tailwind orange-500
+        },
+    }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    menu: (provided: any) => ({
+        ...provided,
+        borderRadius: '0.5rem', // Tailwind rounded-lg
+    }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    option: (provided: any, state: { isFocused: any; }) => ({
+        ...provided,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '8px 12px',
+        backgroundColor: state.isFocused ? '#fb923c' : 'white', // Tailwind orange-500 for focused state
+        color: state.isFocused ? 'white' : 'black',
+        '&:active': {
+            backgroundColor: '#fb923c',
+            color: 'white',
+        },
+    }),
+};
 // Function component for the ProductDetailPage
 const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialProduct }) => {
     const [product, setProduct] = useState<Product>(initialProduct);
@@ -35,10 +70,38 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
         price: initialProduct.price,
         dishType: initialProduct.dishType,
         quantity: initialProduct.quantity,
-        imageUrl: initialProduct.imageUrl
+        imageUrl: initialProduct.imageUrl,
+        category: initialProduct.category
     });
     const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('http://localhost:7000/api/my/categories');
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                setCategories(response.data.map((category: { _id: any; title: any; imageUrl: any }) => ({ value: category._id, label: category.title })));
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+    const dishTypes = [
+        { value: '', label: 'Select Dish Type' },
+        { value: 'main', label: 'Main' },
+        { value: 'side', label: 'Side' },
+        { value: 'beverage', label: 'Beverage' },
+        { value: 'entry', label: 'Entry' },
+        { value: 'dessert', label: 'Dessert' },
+    ];
+    const handleCategoryChange = (event) => {
+        setSelectedCategory(event.target.value);
+        // Additional actions based on selected category can be added here
+    };
     useEffect(() => {
         setProduct(initialProduct);
         setFormData(initialProduct);
@@ -132,7 +195,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
                                 <div className="mt-2">
                                     <span className="text-xl font-bold text-gray-900">${product.price}</span>
                                 </div>
-                                <p className="mt-4 text-gray-600">  <HTMLContent content={product.description}/> </p>
+                                <p className="mt-4 text-gray-600">  <HTMLContent content={product.description} /> </p>
                                 <div className="flex items-center mt-6">
                                     {/* Delete Product Button */}
                                     <button onClick={handleDeleteProduct} className="bg-gray-800 text-black rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-600">
@@ -163,6 +226,23 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
                                                 <div className="flex flex-col mb-4">
                                                     <label htmlFor="dishType" className="text-sm font-semibold text-gray-700 mb-1">DishType</label>
                                                     <input type="text" id="dishType" name="dishType" value={formData.dishType} onChange={handleInputChange} className="p-2 border rounded-md" />
+                                                </div>
+                                                <div className="flex flex-col mb-4">
+                                                    <label htmlFor="category" className="text-sm font-semibold text-gray-700 mb-1">Category</label>
+
+                                                    <Select
+                                                        labelId="category-label"
+                                                        id="category"
+                                                        value={selectedCategory}
+                                                        onChange={handleCategoryChange}
+                                                        label="Category"
+                                                    >
+                                                        {categories.map((category) => (
+                                                            <MenuItem key={category.value} value={category.value}>
+                                                                {category.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
                                                 </div>
                                                 <div className="flex flex-col mb-4">
                                                     <label htmlFor="quantity" className="text-sm font-semibold text-gray-700 mb-1">Quantity</label>
