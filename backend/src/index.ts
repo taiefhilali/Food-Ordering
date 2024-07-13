@@ -9,6 +9,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(() => con
 import RestaurantRoute from "./routes/RestaurantRoute";
 import ProductRoutes from "./routes/MyProductRoute";
 import authRoute from "./routes/authRoute";
+import feebackRoute from "./routes/FeedbackRoute";
 import categoriesRoute from "./routes/CategoriesRoute";
 import foodRoute from "./routes/FoodRoute";
 import TableRoute from "./routes/QrCodeRoute";
@@ -97,6 +98,7 @@ app.use('/api/my/foods', foodRoute);
 app.use('/api/my/table', TableRoute);
 app.use('/api/my/cart', CartRoute);
 app.use('/api/my/notifications', NotifRoute);
+app.use("/api/my/feedback", feebackRoute);
 
 // Initialize Passport
 app.use(passport.initialize());

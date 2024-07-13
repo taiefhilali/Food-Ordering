@@ -34,14 +34,13 @@ const addratingtorestaurant = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Restaurant not found' });
     }
 
-    // Check if restaurant.rating is not undefined before updating
-    if (restaurant.rating !== undefined && restaurant.ratingCount !== null) {
-      const currentRating = restaurant.rating || 0; // Provide a default value if restaurant.rating is undefined
-      restaurant.rating = (currentRating * restaurant.ratingCount + rating) / (restaurant.ratingCount + 1);
-      restaurant.ratingCount += 1;
-    } else {
-      console.error('Error: restaurant.rating is undefined or restaurant.ratingCount is null');
-    }
+    // Initialize rating and ratingCount if they are undefined or null
+    restaurant.rating = restaurant.rating || 0;
+    restaurant.ratingCount = restaurant.ratingCount || 0;
+
+    // Calculate new rating
+    restaurant.rating = (restaurant.rating * restaurant.ratingCount + rating) / (restaurant.ratingCount + 1);
+    restaurant.ratingCount += 1;
 
     // Save the updated restaurant data
     await restaurant.save();
@@ -52,6 +51,8 @@ const addratingtorestaurant = async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
 const serviceAvailability = async (req: Request, res: Response) => {
 
   const restaurantId = req.params.id;
