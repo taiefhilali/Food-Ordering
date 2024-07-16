@@ -1,24 +1,45 @@
-/* components/UserList/userList.css */
+/* userList.css */
 .user-list {
-    width: 250px;
-    border-right: 1px solid #ddd;
-    padding: 10px;
-  }
-  
-  .user-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .user-name {
-    font-size: 14px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.user-chat-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background-color: #fff;
+}
+
+.user-chat-item .rce-citem-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.user-chat-item .rce-citem-body {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+
+.user-chat-item .rce-citem-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.user-chat-item .rce-citem-subtitle {
+  font-size: 1rem;
+  color: #666;
+}
+
+.user-chat-item .rce-citem-date {
+  font-size: 0.8rem;
+  color: #999;
+}
