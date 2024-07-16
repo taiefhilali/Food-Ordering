@@ -1,45 +1,33 @@
-/* userList.css */
-.user-list {
+.chat-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-}
-
-.user-chat-item {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  background-color: #fff;
-}
-
-.user-chat-item .rce-citem-avatar {
   width: 20px;
   height: 20px;
-  border-radius: 50%;
 }
 
-.user-chat-item .rce-citem-body {
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem; /* Reduced padding to make the item smaller */
+  border-radius: 0.5rem;
+  font-size: 0.875rem; /* Adjust font size to make the text smaller */
+}
+
+.user-avatar {
+  width: 10px;
+  height: 10px;
+margin-right: 1rem;
+}
+
+.user-details {
   display: flex;
   flex-direction: column;
-  margin-left: 1rem;
+  align-items: flex-start;
 }
 
-.user-chat-item .rce-citem-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.user-chat-item .rce-citem-subtitle {
+.user-name {
   font-size: 1rem;
-  color: #666;
-}
-
-.user-chat-item .rce-citem-date {
-  font-size: 0.8rem;
-  color: #999;
+  font-weight: bold;
 }

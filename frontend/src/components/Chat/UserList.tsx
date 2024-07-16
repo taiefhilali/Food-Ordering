@@ -1,8 +1,7 @@
-// components/UserList/UserList.tsx
 import React, { useEffect, useState } from 'react';
-import './userList.css';
+ import './userList.css';
 import axios from 'axios';
-import { ChatItem } from 'react-chat-elements'; // Import ChatItem component
+import Members from '@/components/Members'; // Import Members component
 
 interface User {
   _id: string;
@@ -37,23 +36,20 @@ const UserList: React.FC = () => {
   if (error) {
     return <div>{error}</div>;
   }
-
+ 
   return (
-    <div className="user-list">
-    {users.map((user: User) => (
-      <ChatItem
-        key={user._id}
-        id={user._id} // Provide the id property
-        avatar={user.imageUrl}
-        alt={user.username}
-        title={user.username}
-        // subtitle={'Subtitle text'} // Replace with actual subtitle if needed
-        // date={new Date()} // Replace with actual date if needed
-        unread={0} // Replace with actual unread count if needed
-        className="user-chat-item" // Add a class for custom styling
-      />
-    ))}
-  </div>
+    <div>
+      {users.map((user: User) => (
+        <div key={user._id} className="member">
+          <img src={user.imageUrl} alt={user.username} className="avatar" />
+          <div className="user-details">
+            <span className="username">{user.username}</span>
+          </div>
+        </div>
+      ))}
+      {/* Replace with Members component */}
+      <Members members={[]} me={{ id: '' }} />
+    </div>
   );
 };
 
