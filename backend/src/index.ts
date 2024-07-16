@@ -9,6 +9,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(() => con
 import RestaurantRoute from "./routes/RestaurantRoute";
 import ProductRoutes from "./routes/MyProductRoute";
 import authRoute from "./routes/authRoute";
+import chatRoute from "./routes/ChatRoute";
 import feebackRoute from "./routes/FeedbackRoute";
 import categoriesRoute from "./routes/CategoriesRoute";
 import foodRoute from "./routes/FoodRoute";
@@ -28,6 +29,8 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 
 import crypto from 'crypto'; // Import crypto module
 import { Request, Response, NextFunction } from 'express'; // Import Request, Response, and NextFunction types
+import Chat from "./models/Chat";
+import { handleChatMessage } from "./controllers/ChatController";
 
 const generateRandomString = (length: number) => {
   return crypto.randomBytes(Math.ceil(length / 2))
@@ -98,7 +101,8 @@ app.use('/api/my/foods', foodRoute);
 app.use('/api/my/table', TableRoute);
 app.use('/api/my/cart', CartRoute);
 app.use('/api/my/notifications', NotifRoute);
-app.use("/api/my/feedback", feebackRoute);
+app.use('/api/my/feedback', feebackRoute);
+app.use('/api/my/messages', chatRoute);
 
 // Initialize Passport
 app.use(passport.initialize());
@@ -317,6 +321,22 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
       console.log('Notification saved to MongoDB:', savedNotification);
     } catch (error) {
       console.error('Error saving notification to MongoDB:', error);
+    }
+  });
+
+  // Handle incoming messages
+  socket.on('chat message', async (data) => {
+    try {
+      // Save message to MongoDB
+      const { sender, content } = data;
+      const newMessage = new Chat({ sender, content });
+      await newMessage.save();
+      await handleChatMessage(data, io); // Pass 'socket' to handleChatMessage
+
+      // Broadcast message to all clients
+      io.emit('chat message', newMessage);
+    } catch (error) {
+      console.error('Error saving message:', error);
     }
   });
   socket.on('disconnect', () => {

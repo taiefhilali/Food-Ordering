@@ -1,0 +1,13 @@
+// routes/messages.ts
+
+import express from 'express';
+
+const router = express.Router();
+import { FetchMessages,saveMessage,fetchusersByUserType } from '../controllers/ChatController'; // Adjust the path based on your project structure
+
+// Define your route for fetching messages
+router.get('/all', FetchMessages);
+router.post('/new', saveMessage);
+router.get('/clients', fetchusersByUserType);
+
+export default router;

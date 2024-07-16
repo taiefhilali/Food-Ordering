@@ -38,6 +38,7 @@ import StockComponent from './components/Products/StockComponent'
 import RevenueByDateComponent from './components/Products/RevenueByDateComponent'
 import Statistics from './components/Dashboard/Statistics'
 import QRCodeGenerator from './pages/QrcodeGenerator/QRCodeGenerator'
+import ChatComponent from './components/Chat/ChatComponent'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -214,7 +215,14 @@ const AppRoutes = () => {
           </>
         }
       />
-
+  <Route
+        path="/chat"
+        element={
+          <>
+            <ChatComponent />
+          </>
+        }
+      />
       <Route
         path="/details"
         element={

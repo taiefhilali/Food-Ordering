@@ -1,0 +1,24 @@
+/* components/UserList/userList.css */
+.user-list {
+    width: 250px;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .user-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .user-name {
+    font-size: 14px;
+  }
+  

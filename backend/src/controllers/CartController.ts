@@ -1,57 +1,107 @@
 import { Product } from './../../../frontend/src/types/product';
-import Cart from '../models/Cart'; // Ensure the correct path to the Cart model
+import Cart, { ICartItem } from '../models/Cart'; // Ensure the correct path to the Cart model
 import { Request, Response, response } from "express"
-import mongoose from 'mongoose';
+import mongoose, { model } from 'mongoose';
 import { title } from "process";
 import { stripe } from '..';
+// interface CartItem {
+//   quantity: number;
+//   totalPrice: number;
+//   additives: any; // Adjust the type as per your schema
+//   instruction: any; // Adjust the type as per your schema
+// }
+
 interface CartItem {
-  product: mongoose.Schema.Types.ObjectId;
+  itemType: string;
+  item: mongoose.Schema.Types.ObjectId;
   quantity: number;
   totalPrice: number;
+  additives: any; // Adjust the type as per your schema
+  instruction: any; // Adjust the type as per your schema
 }
 
-export const addProductToCart = async (req: Request, res: Response) => {
-  const userId = (req as any).user.id;
-  const { product, quantity, totalPrice } = req.body;
-  console.log(req.body);
+export const addFoodToCart = async (req: Request, res: Response) => {
+  const userId = (req as any).user.id; // Extract user ID from request
+  const { food, quantity, totalPrice, additives, instruction } = req.body; // Extract data from request body
+  console.log('Received food ID:', food); // Add this line to log the received food ID
 
-  if (!mongoose.Types.ObjectId.isValid(product)) {
-    return res.status(400).json({ error: 'Invalid product ID' });
+  if (!mongoose.Types.ObjectId.isValid(food)) {
+    return res.status(400).json({ error: 'Invalid food ID' });
   }
 
   try {
-    // Find the user's cart
+    // Find or create user's cart
     let cart = await Cart.findOne({ user: userId });
 
     if (!cart) {
-      // Create a new cart if it doesn't exist
       cart = new Cart({ user: userId, items: [] });
     }
 
-    // Check if the product already exists in the cart
-    const existingItemIndex = cart.items.findIndex(
-      (item) => item.product.toString() === product
-    );
+    // Create a new ICartItem object
+    const newCartItem: ICartItem = {
+      itemType: 'food',
+      item: new mongoose.Types.ObjectId(food),
+      quantity,
+      totalPrice,
+      additives,
+      instruction
+    } as ICartItem;
 
-    if (existingItemIndex !== -1) {
-      // Update the quantity and total price if the product already exists
-      cart.items[existingItemIndex].quantity += quantity;
-      cart.items[existingItemIndex].totalPrice += totalPrice;
-    } else {
-      // Add the new product to the cart
-      cart.items.push({ product, quantity, totalPrice });
-    }
+    // Add the new ICartItem to the cart
+    cart.items.push(newCartItem);
 
     // Save the updated cart
     await cart.save();
 
-    res.status(200).json({ status: true, message: 'Product added to cart successfully', cart });
+    res.status(200).json({ status: true, message: 'Food added to cart successfully', cart });
   } catch (error) {
-    console.error('Error adding product to cart:', error);
+    console.error('Error adding food to cart:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-
 };
+
+// export const addProductToCart = async (req: Request, res: Response) => {
+//   const userId = (req as any).user.id;
+//   const { product, quantity, totalPrice ,additives, instruction   } = req.body;
+//   console.log(req.body);
+
+//   if (!mongoose.Types.ObjectId.isValid(product)) {
+//     return res.status(400).json({ error: 'Invalid product ID' });
+//   }
+
+//   try {
+//     // Find the user's cart
+//     let cart = await Cart.findOne({ user: userId });
+
+//     if (!cart) {
+//       // Create a new cart if it doesn't exist
+//       cart = new Cart({ user: userId, items: [] });
+//     }
+
+//     // Check if the product already exists in the cart
+//     const existingItemIndex = cart.items.findIndex(
+//       (item) => item.product.toString() === product
+//     );
+
+//     if (existingItemIndex !== -1) {
+//       // Update the quantity and total price if the product already exists
+//       cart.items[existingItemIndex].quantity += quantity;
+//       cart.items[existingItemIndex].totalPrice += totalPrice;
+//     } else {
+//       // Add the new product to the cart
+//       cart.items.push({ product, quantity, totalPrice,additives, instruction });
+//     }
+
+//     // Save the updated cart
+//     await cart.save();
+
+//     res.status(200).json({ status: true, message: 'Product added to cart successfully', cart });
+//   } catch (error) {
+//     console.error('Error adding product to cart:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+
+// };
 export const getCartByUser = async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
 
@@ -60,6 +110,80 @@ export const getCartByUser = async (req: Request, res: Response) => {
     res.status(200).json(carts);
   } catch (error) {
     console.error('Error fetching carts by user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+export const addProductToCart = async (req: Request, res: Response) => {
+  const userId = (req as any).user.id;
+  const { product, quantity, totalPrice, additives, instruction } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(product)) {
+    return res.status(400).json({ error: 'Invalid product ID' });
+  }
+
+  try {
+    let cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+      cart = new Cart({ user: userId, items: [] });
+    }
+
+    const existingItemIndex = cart.items.findIndex(
+      (item: ICartItem) => item.itemType === 'product' && item.item.toString() === product
+    );
+
+    if (existingItemIndex !== -1) {
+      cart.items[existingItemIndex].quantity += quantity;
+      cart.items[existingItemIndex].totalPrice += totalPrice;
+    } else {
+      // Create a new ICartItem object
+      const newCartItem: ICartItem = {
+        itemType: 'product',
+        item: new mongoose.Types.ObjectId(product),
+        quantity,
+        totalPrice,
+        additives,
+        instruction
+      } as ICartItem;
+
+      cart.items.push(newCartItem);
+    }
+
+    await cart.save();
+
+    res.status(200).json({ status: true, message: 'Product added to cart successfully', cart });
+  } catch (error) {
+    console.error('Error adding product to cart:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+export const removeProductFromCart = async (req: Request, res: Response) => {
+  const userId = (req as any).user.id;
+
+  try {
+    const { id } = req.params;
+
+    const cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+      return res.status(404).json({ error: 'Cart not found' });
+    }
+
+    const productIndex = cart.items.findIndex((item: ICartItem) => item.itemType === 'product' && item.item.toString() === id);
+
+    if (productIndex === -1) {
+      return res.status(404).json({ error: 'Product not found in cart' });
+    }
+
+    cart.items.splice(productIndex, 1);
+
+    await cart.save();
+
+    res.status(200).json({ message: 'Product removed from cart successfully' });
+  } catch (error) {
+    console.error('Error removing product from cart:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -255,38 +379,38 @@ export const getAllCarts = async (req: Request, res: Response) => {
     res.status(500).json({ error });
   }
 };
-export const removeProductFromCart = async (req: Request, res: Response) => {
-  const userId = (req as any).user.id;
+// export const removeProductFromCart = async (req: Request, res: Response) => {
+//   const userId = (req as any).user.id;
 
-  try {
-    const { id } = req.params;
+//   try {
+//     const { id } = req.params;
 
-    // Find the user's cart
-    const cart = await Cart.findOne({ user: userId });
+//     // Find the user's cart
+//     const cart = await Cart.findOne({ user: userId });
 
-    if (!cart) {
-      return res.status(404).json({ error: 'Cart not found' });
-    }
+//     if (!cart) {
+//       return res.status(404).json({ error: 'Cart not found' });
+//     }
 
-    // Find the index of the product in the cart
-    const productIndex = cart.items.findIndex((item: CartItem) => item.product.toString() === id);
+//     // Find the index of the product in the cart
+//     const productIndex = cart.items.findIndex((item: CartItem) => item.product.toString() === id);
 
-    if (productIndex === -1) {
-      return res.status(404).json({ error: 'Product not found in cart' });
-    }
+//     if (productIndex === -1) {
+//       return res.status(404).json({ error: 'Product not found in cart' });
+//     }
 
-    // Remove the product from the cart
-    cart.items.splice(productIndex, 1);
+//     // Remove the product from the cart
+//     cart.items.splice(productIndex, 1);
 
-    // Save the updated cart
-    await cart.save();
+//     // Save the updated cart
+//     await cart.save();
 
-    res.status(200).json({ message: 'Product removed from cart successfully' });
-  } catch (error) {
-    console.error('Error removing product from cart:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
+//     res.status(200).json({ message: 'Product removed from cart successfully' });
+//   } catch (error) {
+//     console.error('Error removing product from cart:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
 
 // const getAllCarts = async (req: Request, res: Response) => {
 //   const userId = (req as any).user.id;
@@ -551,36 +675,33 @@ if(!totalPrice){
 //     res.status(500).json({ error: 'Internal server error' });
 //   }
 // }
+
 const decrementProductQty = async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
 
   try {
-    // Get product ID from request parameters
     const { productId } = req.params;
 
-    // Find the user's cart
     const cart = await Cart.findOne({ user: userId });
 
     if (!cart) {
       return res.status(404).json({ error: 'Cart not found' });
     }
 
-    // Find the index of the product in the cart
-    const productIndex = cart.items.findIndex((item: CartItem) => item.product.toString() === productId);
+    const productIndex = cart.items.findIndex(
+      (item: ICartItem) => item.itemType === 'product' && item.item.toString() === productId
+    );
 
     if (productIndex === -1) {
       return res.status(404).json({ error: 'Product not found in cart' });
     }
 
-    // Decrement the quantity of the product
     if (cart.items[productIndex].quantity > 1) {
       cart.items[productIndex].quantity -= 1;
     } else {
-      // Remove the product if the quantity is 1
       cart.items.splice(productIndex, 1);
     }
 
-    // Save the updated cart
     await cart.save();
 
     res.status(200).json({ message: 'Product quantity decremented successfully' });
@@ -589,32 +710,28 @@ const decrementProductQty = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 const incrementProductQty = async (req: Request, res: Response) => {
-  try {  
-    const userId = (req as any ).user.id; // Assuming you have authentication middleware setting req.user.id
+  const userId = (req as any).user.id;
 
-    // Extract productId from request parameters
+  try {
     const { productId } = req.params;
 
-    // Find the user's cart and increment product quantity
     const cart = await Cart.findOne({ user: userId });
 
     if (!cart) {
       return res.status(404).json({ error: 'Cart not found' });
     }
 
-    // Find the index of the product in the cart
-    const productIndex = cart.items.findIndex((item) => item.product.toString() === productId);
+    const productIndex = cart.items.findIndex(
+      (item: ICartItem) => item.itemType === 'product' && item.item.toString() === productId
+    );
 
     if (productIndex === -1) {
       return res.status(404).json({ error: 'Product not found in cart' });
     }
 
-    // Increment the quantity of the product
     cart.items[productIndex].quantity += 1;
 
-    // Save the updated cart
     await cart.save();
 
     res.status(200).json({ message: 'Product quantity incremented successfully' });
@@ -626,5 +743,5 @@ const incrementProductQty = async (req: Request, res: Response) => {
 
 
 module.exports = {
-  addProductToCart, payment, getAllCarts, getCartCount, removeProductFromCart, fetchUserCart, clearUserCart,deleteAllCart, decrementProductQty, updateCartItemQuantity,getCartByUser,incrementProductQty
+  addProductToCart, payment, getAllCarts, getCartCount, removeProductFromCart, fetchUserCart, addFoodToCart,clearUserCart,deleteAllCart, decrementProductQty, updateCartItemQuantity,getCartByUser,incrementProductQty
 }
