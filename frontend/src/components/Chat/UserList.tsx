@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
- import './userList.css';
+import './userList.css';
 import axios from 'axios';
-import Members from '@/components/Members'; // Import Members component
+import { ChatItem } from 'react-chat-elements'; // Import ChatItem component
 
 interface User {
   _id: string;
   username: string;
   imageUrl: string;
+  onSelectUser: (user: User) => void; // New prop to handle user selection
 }
 
-const UserList: React.FC = () => {
+const UserList: React.FC<{ onSelectUser: (user: User) => void }> = ({ onSelectUser }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +19,15 @@ const UserList: React.FC = () => {
     const fetchSenders = async () => {
       try {
         const response = await axios.get('http://localhost:7000/api/my/messages/fetch-senders');
-        setUsers(response.data);
+        
+        // Use a Map to filter out duplicate users
+        const uniqueUsersMap = new Map<string, User>();
+        response.data.forEach((user: User) => {
+          uniqueUsersMap.set(user._id, user);
+        });
+
+        const uniqueUsers = Array.from(uniqueUsersMap.values());
+        setUsers(uniqueUsers);
       } catch (err) {
         setError('Error fetching senders');
       } finally {
@@ -36,19 +45,22 @@ const UserList: React.FC = () => {
   if (error) {
     return <div>{error}</div>;
   }
- 
+
   return (
-    <div>
+    <div className="chat-list">
       {users.map((user: User) => (
-        <div key={user._id} className="member">
-          <img src={user.imageUrl} alt={user.username} className="avatar" />
-          <div className="user-details">
-            <span className="username">{user.username}</span>
-          </div>
-        </div>
+        <ChatItem
+          key={user._id}
+          id={user._id}
+          avatar={user.imageUrl}
+          alt={user.username}
+          title={user.username}
+          date={new Date()} // Add actual date if needed
+          unread={0} // Add actual unread count if needed
+          className="chat-item" // Add a class for custom styling
+          onClick={() => onSelectUser(user)} // Handle click to select user
+        />
       ))}
-      {/* Replace with Members component */}
-      <Members members={[]} me={{ id: '' }} />
     </div>
   );
 };
