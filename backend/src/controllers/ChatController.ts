@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Chat, { IChat } from '../models/Chat';
 import { Server as SocketIOServer, Socket } from 'socket.io'; // Import types for Socket.IO
-import User from '../models/User';
+import User, { IUser } from '../models/User';
 
 // Function to fetch messages from MongoDB
 export const FetchMessages = async (_req: Request, res: Response) => {
@@ -131,6 +131,36 @@ export const fetchSenders = async (_req: Request, res: Response) => {
     res.json(senderDetails);
   } catch (error) {
     console.error('Error fetching messages:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+export const fetchChatsByUserId = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId; // Assuming userId is passed as a parameter
+
+    // Fetch chats where the user is either the sender or the recipient
+    const chats = await Chat.find({
+      $or: [{ sender: userId }, { replyTo: userId }]
+    }).populate('sender', 'username imageUrl').exec();
+
+    // Extract user details from sender field
+    const userChats = chats.map((chat: IChat) => {
+      const sender = chat.sender as unknown as IUser; // Type cast sender to IUser
+      return {
+        sender: {
+          _id: sender._id,
+          username: sender.username,
+          imageUrl: sender.imageUrl
+        },
+        content: chat.content,
+        createdAt: chat.createdAt
+      };
+    });
+
+    res.json(userChats);
+  } catch (error) {
+    console.error('Error fetching chats by user ID:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };

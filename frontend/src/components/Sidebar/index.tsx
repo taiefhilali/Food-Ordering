@@ -888,38 +888,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               : setSidebarExpanded(true);
                           }}
                         >
-                          <svg
-                            className="fill-current"
-                            width="18"
-                            height="18"
-                            viewBox="0 0 18 18"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M2.5 1.5C2.22386 1.5 2 1.72386 2 2V4C2 4.27614 2.22386 4.5 2.5 4.5H15.5C15.7761 4.5 16 4.27614 16 4V2C16 1.72386 15.7761 1.5 15.5 1.5H2.5ZM1 5C1 4.44772 1.44772 4 2 4H16C16.5523 4 17 4.44772 17 5V15C17 15.5523 16.5523 16 16 16H2C1.44772 16 1 15.5523 1 15V5ZM3 6V14H15V6H3Z"
-                              fill="currentColor"
-                            />
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M6.5 8.5C6.5 7.39543 7.39543 6.5 8.5 6.5C9.60457 6.5 10.5 7.39543 10.5 8.5C10.5 9.60457 9.60457 10.5 8.5 10.5C7.39543 10.5 6.5 9.60457 6.5 8.5ZM8.5 7C7.94772 7 7.5 7.44772 7.5 8C7.5 8.55228 7.94772 9 8.5 9C9.05228 9 9.5 8.55228 9.5 8C9.5 7.44772 9.05228 7 8.5 7Z"
-                              fill="currentColor"
-                            />
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M6 11C6 10.7239 6.22386 10.5 6.5 10.5H12.5C12.7761 10.5 13 10.7239 13 11C13 11.2761 12.7761 11.5 12.5 11.5H6.5C6.22386 11.5 6 11.2761 6 11Z"
-                              fill="currentColor"
-                            />
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M6.5 12.5C6.5 12.2239 6.72386 12 7 12H11C11.2761 12 11.5 12.2239 11.5 12.5C11.5 12.7761 11.2761 13 11 13H7C6.72386 13 6.5 12.7761 6.5 12.5Z"
-                              fill="currentColor"
-                            />
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M19.5 7h-2.2l-.7-1.4c-.2-.3-.5-.4-.9-.4H9.3c-.4 0-.7.1-.9.4l-.7 1.4H4.5c-.8 0-1.5.7-1.5 1.5v10c0 .8.7 1.5 1.5 1.5h15c.8 0 1.5-.7 1.5-1.5v-10c0-.8-.7-1.5-1.5-1.5zM12 4.7l.9-1.8h-1.8l.9 1.8zM18 18H6v-8h12v8zM12 9c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1z" fill="currentColor" />
                           </svg>
 
 
@@ -1122,6 +1092,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
 
               </li>
+              <li>
+                <NavLink
+                  to="/chat"
+                  className={`group relative flex items-center gap-2.5 rounded-full px-4 py-2 font-medium text-graydarkduration-300 ease-in-out hover:bg-orange-300 dark:hover:bg-meta-4 ${(pathname === '/dashboards' ||
+                    pathname.includes('dashboard')) &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
+
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M3 3h18v14H3V3zm2 2v10h14V7H5zm2 2h10v2H7V9zm0 4h8v2H7v-2z" fill="currentColor" />
+                  </svg>
+
+
+                  Chat
+                </NavLink>
+              </li>
+
               <li>
                 <NavLink
                   to="/QrCode"
