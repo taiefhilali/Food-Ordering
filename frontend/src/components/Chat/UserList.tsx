@@ -18,16 +18,26 @@ const UserList: React.FC<{ onSelectUser: (user: User) => void }> = ({ onSelectUs
   useEffect(() => {
     const fetchSenders = async () => {
       try {
-        const response = await axios.get('http://localhost:7000/api/my/messages/fetch-senders');
-        
-        // Use a Map to filter out duplicate users
-        const uniqueUsersMap = new Map<string, User>();
-        response.data.forEach((user: User) => {
-          uniqueUsersMap.set(user._id, user);
-        });
+        const response = await axios.get<User[]>('http://localhost:7000/api/my/messages/fetch-senders');
 
-        const uniqueUsers = Array.from(uniqueUsersMap.values());
-        setUsers(uniqueUsers);
+        // Get the user ID from localStorage
+        const loggedInUserId = localStorage.getItem('userId');
+
+        if (loggedInUserId) {
+          // Use a Set to filter out duplicate users and exclude the logged-in user
+          const uniqueUsersSet = new Set<string>();
+          response.data.forEach((user) => {
+            if (user._id !== loggedInUserId && !uniqueUsersSet.has(user._id)) {
+              uniqueUsersSet.add(user._id);
+            }
+          });
+
+          // Convert Set back to array and update state
+          const filteredUsers = Array.from(uniqueUsersSet).map(userId => response.data.find(user => user._id === userId)!);
+          setUsers(filteredUsers);
+        } else {
+          setError('User ID not found in localStorage');
+        }
       } catch (err) {
         setError('Error fetching senders');
       } finally {
@@ -37,7 +47,6 @@ const UserList: React.FC<{ onSelectUser: (user: User) => void }> = ({ onSelectUs
 
     fetchSenders();
   }, []);
-
   if (loading) {
     return <div>Loading...</div>;
   }

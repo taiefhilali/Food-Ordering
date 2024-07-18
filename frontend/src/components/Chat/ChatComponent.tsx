@@ -5,7 +5,7 @@ import '../Chat/chat.css';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import UserList from './UserList';
-import { MessageBox } from 'react-chat-elements';
+import { ChatFeed, Message as ChatMessage, ChatBubble } from 'react-chat-ui';
 
 const ENDPOINT = 'http://localhost:8000';
 
@@ -26,9 +26,9 @@ interface User {
 const ChatComponent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null); // State for selected user
-  const [inputValue, setInputValue] = useState<string>(''); // State for input value
-  const [socket, setSocket] = useState<Socket | null>(null); // State for Socket.IO connection
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [inputValue, setInputValue] = useState<string>('');
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -92,8 +92,6 @@ const ChatComponent: React.FC = () => {
 
   const onSelectUser = (user: User) => {
     setSelectedUser(user);
-    // Fetch existing messages for this user or initialize new conversation
-    // Example: fetchMessagesForUser(user._id);
   };
 
   return (
@@ -117,7 +115,14 @@ const ChatComponent: React.FC = () => {
                       <div className="message-sender"></div>
                       <div className="message-timestamp">{formatTimestamp(message.timestamp)}</div>
                     </div>
-                    <div className="message-content">{message.content}</div>
+                    {/* Replace with ChatBubble component */}
+                    <ChatBubble
+                      message={{ id: message._id || '0', message: message.content }}
+                      bubbleProps={{
+                        showSenderName: true,
+                        senderName: message.sender,
+                      }}
+                    />
                   </li>
                 ))}
             </ul>
@@ -142,6 +147,8 @@ const ChatComponent: React.FC = () => {
     </DefaultLayout>
   );
 };
+
+
 
 const formatTimestamp = (timestamp: Date): string => {
   const options: Intl.DateTimeFormatOptions = {
