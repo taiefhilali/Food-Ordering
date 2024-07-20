@@ -26,7 +26,7 @@ import User, { IUser } from './models/User';
 const session = require('express-session');
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 const FacebookStrategy = require('passport-facebook').Strategy;
-
+import discountRoute from "./routes/DiscountRoute";
 import crypto from 'crypto'; // Import crypto module
 import { Request, Response, NextFunction } from 'express'; // Import Request, Response, and NextFunction types
 import Chat from "./models/Chat";
@@ -103,6 +103,7 @@ app.use('/api/my/cart', CartRoute);
 app.use('/api/my/notifications', NotifRoute);
 app.use('/api/my/feedback', feebackRoute);
 app.use('/api/my/messages', chatRoute);
+app.use('/api/my/discounts', discountRoute);
 
 // Initialize Passport
 app.use(passport.initialize());

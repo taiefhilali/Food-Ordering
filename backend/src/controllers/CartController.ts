@@ -3,14 +3,16 @@ import Cart, { ICartItem } from '../models/Cart'; // Ensure the correct path to 
 import { Request, Response, response } from "express"
 import mongoose, { model } from 'mongoose';
 import { title } from "process";
-import { stripe } from '..';
+import stripe from 'stripe';
+
 // interface CartItem {
 //   quantity: number;
 //   totalPrice: number;
 //   additives: any; // Adjust the type as per your schema
 //   instruction: any; // Adjust the type as per your schema
 // }
-
+const stripeSecretKey = 'sk_test_51PM7rN03qVjqSurgaFDcUo3Y1GrtFJoYzoiHZZRIWvNhaIec7DrXqNPLFuori2tTwAjBPEQwHF4UOuLBIptnxx4m00OwswBdhb'; // Replace with your actual Stripe secret key
+const stripeClient = new stripe(stripeSecretKey);
 interface CartItem {
   itemType: string;
   item: mongoose.Schema.Types.ObjectId;
@@ -583,26 +585,26 @@ const updateCartItemQuantity = async (req: Request, res: Response) => {
 //   }
 // };
 
-const payment = async (req: Request, res: Response) => {
+// const payment = async (req: Request, res: Response) => {
 
-  try {
-    //get amount
-    const { totalPrice } = req.body;
-    //validation
-if(!totalPrice){
-  return res.status(404).json({ status: false, message: 'Invalid amount' });
-}
-    const { client_secret } = await stripe.paymentIntents.create({
-      amount: Number(totalPrice),
-      currency: 'usd'
-    })
-    res.status(200).json({ status: true, message: 'Payment completed successfully' });
+//   try {
+//     //get amount
+//     const { totalPrice } = req.body;
+//     //validation
+// if(!totalPrice){
+//   return res.status(404).json({ status: false, message: 'Invalid amount' });
+// }
+//     const { client_secret } = await stripe.paymentIntents.create({
+//       amount: Number(totalPrice),
+//       currency: 'usd'
+//     })
+//     res.status(200).json({ status: true, message: 'Payment completed successfully' });
 
-  } catch (error) {
-    console.error(' Payment Error :', error);
-    res.status(500).json({ status: false, message: 'Error in payment    ' });
-  }
-};
+//   } catch (error) {
+//     console.error(' Payment Error :', error);
+//     res.status(500).json({ status: false, message: 'Error in payment    ' });
+//   }
+// };
 
 // const decrementProductQty = async (req: Request, res: Response) => {
 //   const userId = (req as any).user.id;
@@ -675,7 +677,25 @@ if(!totalPrice){
 //     res.status(500).json({ error: 'Internal server error' });
 //   }
 // }
+const payment = async (req: Request, res: Response) => {
+  try {
+    const { totalPrice } = req.body;
 
+    if (!totalPrice) {
+      return res.status(400).json({ status: false, message: 'Invalid amount' });
+    }
+
+    const paymentIntent = await stripeClient.paymentIntents.create({
+      amount: Number(totalPrice),
+      currency: 'usd',
+    });
+
+    res.status(200).json({ status: true, client_secret: paymentIntent.client_secret });
+  } catch (error) {
+    console.error('Payment Error:', error);
+    res.status(500).json({ status: false, message: 'Error in payment' });
+  }
+};
 const decrementProductQty = async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
 

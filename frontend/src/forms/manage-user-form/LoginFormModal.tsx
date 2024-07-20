@@ -17,7 +17,16 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
   const [activeTab, setActiveTab] = useState('login');
   const { user } = useUser();
   const navigate = useNavigate();
+  // useEffect(() => {
+  //   const script = document.createElement('script');
+  //   script.src = "https://static-bundles.visme.co/forms/vismeforms-embed.js";
+  //   script.async = true;
+  //   document.body.appendChild(script);
 
+  //   return () => {
+  //     document.body.removeChild(script);
+  //   };
+  // }, []);
   const google = () => {
     window.open("http://localhost:7000/auth/google", "_self");
   };
@@ -85,8 +94,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="bg-white text-black p-8 rounded shadow-lg z-50 flex w-full max-w-3xl  border-2 border-opacity-50 border-orange-500 opacity-90">
         <div className="flex-shrink-0 w-1/2 rounded-sm overflow-hidden">
-          <Lottie options={defaultOptions} height="100%" width="100% " />
-
+           <Lottie options={defaultOptions} height="100%" width="100% " /> 
         </div>
         <div className="flex-grow px-4">
           <div className="flex justify-end">
@@ -135,10 +143,23 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
             {activeTab === 'login' && <LoginForm closeModal={closeModal} />}
             {activeTab === 'register' && <RegisterForm closeModal={closeModal} />}
           </div>
+          <div
+            className="visme_d"
+            data-title="Untitled Project"
+            data-url="epqxmy1m-untitled-project?fullPage=true"
+            data-domain="forms"
+            data-full-page="true"
+            data-min-height="100vh"
+            data-form-id="83326"
+            dangerouslySetInnerHTML={{
+              __html: '<div class="visme_d" data-title="Untitled Project" data-url="epqxmy1m-untitled-project?fullPage=true" data-domain="forms" data-full-page="true" data-min-height="100vh" data-form-id="83326"></div><script src="https://static-bundles.visme.co/forms/vismeforms-embed.js"></script>',
+            }}
+          ></div>
         </div>
       </div>
     </div>
   );
 };
+  
 
 export default LoginFormModal;

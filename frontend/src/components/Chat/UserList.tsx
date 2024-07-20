@@ -66,9 +66,11 @@ const UserList: React.FC<{ onSelectUser: (user: User) => void }> = ({ onSelectUs
           title={user.username}
           date={new Date()} // Add actual date if needed
           unread={0} // Add actual unread count if needed
+          showMute={true}
           className="chat-item" // Add a class for custom styling
           onClick={() => onSelectUser(user)} // Handle click to select user
         />
+
       ))}
     </div>
   );
