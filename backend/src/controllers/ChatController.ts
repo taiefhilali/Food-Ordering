@@ -6,11 +6,34 @@ import User, { IUser } from '../models/User';
 // Function to fetch messages from MongoDB
 export const FetchMessages = async (_req: Request, res: Response) => {
   try {
-    const messages: IChat[] = await Chat.find().populate('sender', 'username imageUrl');
-    console.log('Fetched messages:', messages); // Log fetched messages
+    const messages: IChat[] = await Chat.find().populate('sender', 'username imageUrl').populate('replyTo', 'content sender createdAt');
+    // console.log('Fetched messages:', messages);
     res.json(messages);
   } catch (error) {
     console.error('Error fetching messages:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+// Fetch chats by user ID
+export const fetchChats = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
+
+    const chats = await Chat.find({
+      $or: [{ sender: userId }, { replyTo: userId }]
+    })
+    .populate('sender', 'username imageUrl')
+    .populate('replyTo', 'content sender createdAt') // Populate replyTo field
+    .exec();
+
+    res.json(chats);
+  } catch (error) {
+    console.error('Error fetching chats by user ID:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -50,7 +73,7 @@ export const saveMessage = async (req: Request, res: Response) => {
       const newMessage = new Chat({ sender, content });
       await newMessage.save();
   
-      console.log('Message saved:', newMessage); // Log saved message
+      // console.log('Message saved:', newMessage); // Log saved message
       res.status(201).json(newMessage);
     } catch (error) {
       console.error('Error saving message:', error);
@@ -109,7 +132,7 @@ export const saveMessage = async (req: Request, res: Response) => {
       // Filter clients who have chatted with the vendor
       const filteredClients = clients.filter(client => userIdsFromChats.includes(client._id.toString()));
   console.log('=========filteredClients===========================');
-  console.log(filteredClients);
+  // console.log(filteredClients);
   console.log('=================filteredClients===================');
       res.json(filteredClients);
     } catch (error) {
@@ -149,9 +172,9 @@ export const fetchChatsByUserId = async (req: Request, res: Response) => {
       const sender = chat.sender as unknown as IUser; // Type cast sender to IUser
       return {
         sender: {
-          _id: sender._id,
-          username: sender.username,
-          imageUrl: sender.imageUrl
+           _id: sender,
+          // username: sender.username,
+          // imageUrl: sender.imageUrl
         },
         content: chat.content,
         createdAt: chat.createdAt

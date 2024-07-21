@@ -18,6 +18,26 @@
   margin-bottom: 60px;
 
 }
+.message-item.sent {
+  text-align: right;
+}
+
+.message-item.sent .chat-bubble {
+  background-color: #007bff; /* Blue color for sent messages */
+  color: white;
+  border-radius: 15px 15px 0 15px;
+}
+
+.message-item.received {
+  text-align: left;
+}
+
+.message-item.received .chat-bubble {
+  background-color: #d9d3d3; /* Default color for received messages */
+  color: black;
+  border-radius: 15px 15px 15px 0;
+}
+
 
 .selected-user {
   display: flex;

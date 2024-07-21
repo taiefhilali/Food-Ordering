@@ -1,9 +1,9 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IChat extends Document {
-  sender: mongoose.Schema.Types.ObjectId;
+  sender: mongoose.Schema.Types.ObjectId; // Reference to a User
   content: string;
-  replyTo?: mongoose.Schema.Types.ObjectId;
+  replyTo?: mongoose.Schema.Types.ObjectId; // Optional reference to another Chat
   createdAt: Date;
 }
 

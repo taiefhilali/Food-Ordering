@@ -326,20 +326,47 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
   });
 
   // Handle incoming messages
-  socket.on('chat message', async (data) => {
-    try {
-      // Save message to MongoDB
-      const { sender, content } = data;
-      const newMessage = new Chat({ sender, content });
-      await newMessage.save();
-      await handleChatMessage(data, io); // Pass 'socket' to handleChatMessage
+    // Handle incoming messages
+    socket.on('chat message', async (data) => {
+      try {
+        const { sender, content } = data;
+        const newMessage = new Chat({ sender, content });
+        await newMessage.save();
+    
+        // Broadcast message to all connected clients
+        io.emit('chat message', {
+          _id: newMessage._id,
+          sender,
+          content,
+          createdAt: newMessage.createdAt,
+        });
+    
+        console.log('Message broadcasted:', {
+          _id: newMessage._id,
+          sender,
+          content,
+          createdAt: newMessage.createdAt,
+        });
+    
+      } catch (error) {
+        console.error('Error saving message:', error);
+      }
+    });
+    
+  // socket.on('chat message', async (data) => {
+  //   try {
+  //     // Save message to MongoDB
+  //     const { sender, content } = data;
+  //     const newMessage = new Chat({ sender, content });
+  //     await newMessage.save();
+  //     await handleChatMessage(data, io); // Pass 'socket' to handleChatMessage
 
-      // Broadcast message to all clients
-      io.emit('chat message', newMessage);
-    } catch (error) {
-      console.error('Error saving message:', error);
-    }
-  });
+  //     // Broadcast message to all clients
+  //     io.emit('chat message', newMessage);
+  //   } catch (error) {
+  //     console.error('Error saving message:', error);
+  //   }
+  // });
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });
