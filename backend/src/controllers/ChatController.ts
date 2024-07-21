@@ -65,21 +65,23 @@ export const handleChatMessage = async (data: any, io: SocketIOServer) => {
     console.error('Error saving or fetching message:', error);
   }
 };
-
 export const saveMessage = async (req: Request, res: Response) => {
-    try {
-      const { sender, content } = req.body;
-  
-      const newMessage = new Chat({ sender, content });
-      await newMessage.save();
-  
-      // console.log('Message saved:', newMessage); // Log saved message
-      res.status(201).json(newMessage);
-    } catch (error) {
-      console.error('Error saving message:', error);
-      res.status(500).json({ error: 'Internal server error' });
+  try {
+    const { sender, content } = req.body;
+
+    if (!sender || !content) {
+      return res.status(400).json({ error: 'Sender and content are required' });
     }
-  };
+
+    const newMessage = new Chat({ sender, content });
+    await newMessage.save();
+
+    res.status(201).json(newMessage);
+  } catch (error) {
+    console.error('Error saving message:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 
 
   // export const fetchusersByUserType=  async (req: Request, res: Response) =>{

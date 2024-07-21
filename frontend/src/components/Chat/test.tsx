@@ -9,11 +9,13 @@ import { io } from 'socket.io-client';
 
 interface Chat {
   _id: string;
-  content: string; // Update this to `content` if that’s the field in your database
+  text: string;
   createdAt: Date;
-  sender: string;
-
-
+  user: {
+    _id: string;
+    name: string;
+    avatar: string;
+  };
 }
 
 interface User {
@@ -33,7 +35,6 @@ const ChatComponent: React.FC = () => {
     const fetchMessages = async () => {
       try {
         const accessToken = localStorage.getItem('userToken');
-
         const response = await axios.get('http://localhost:7000/api/my/messages/all', {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -71,73 +72,36 @@ const ChatComponent: React.FC = () => {
     fetchMessages();
   }, []); // Empty dependency array ensures this runs once on mount
 
-
-
-  const sendMessage = async (content: string) => {
+  const sendMessage = (content: string) => {
     const userId = localStorage.getItem('userId');
     if (!userId || !selectedUser || !socket) {
       console.error('User ID, selected user, or socket not found');
       return;
     }
-  
-    // Get the sender info from local storage or other sources
-    const sender= userId;// Ensure sender ID is included
 
-  
     const newMessage = {
-      content: content, // Use `content` to match the database field
-      sender: sender, // Use `user` instead of `sender`
+      _id: Date.now().toString(),
+      text: content,
+      user: {
+        _id: userId,
+        name: 'Current User',
+        avatar: 'https://example.com/avatar.png', // Replace with the actual avatar URL if needed
+      },
+      createdAt: new Date(),
     };
-  
-    try {
-      // Send the message to the server (if needed for persistence)
-      const response = await axios.post('http://localhost:7000/api/my/messages/new', newMessage, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('userToken')}`,
-        },
-      });
-  
-      if (response.status === 200) {
-        const serverMessage = response.data;
-  
-        // Emit the message using Socket.IO
-        socket.emit('chat message', {
-          _id: serverMessage._id,
-          content: serverMessage.content, // Use `content` to match the database field
-          createdAt: serverMessage.createdAt,
-          sender: serverMessage.user,
-        });
-  
-        // Update local messages state
-        setMessages(prevMessages => [
-          ...prevMessages,
-          {
-            _id: serverMessage._id,
-            content: serverMessage.content, // Use `content` to match the database field
-            createdAt: new Date(serverMessage.createdAt),
-            sender: serverMessage.user,
-          } as Chat, // Cast to `Chat` type
-        ]);
-      } else {
-        console.log('Unexpected response status:', response.status);
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-    }
+
+    socket.emit('sendMessage', newMessage);
+    setMessages([...messages, newMessage]);
   };
-  
-  
 
   const handleSend = () => {
     if (inputValue.trim() !== '') {
-      // Your sendMessage logic here...
       sendMessage(inputValue);
-
       setInputValue(''); // Clear input field
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSend();
     }
@@ -183,6 +147,7 @@ const ChatComponent: React.FC = () => {
                         showSenderName: message.user._id !== localStorage.getItem('userId'),
                         senderName: message.user.name,
                       }}
+                      className="chat-bubble"
                     />
                   </li>
                 ))}

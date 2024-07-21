@@ -132,7 +132,7 @@ const ProductTable: React.FC = () => {
                 </td>
                 <td>{product.name}</td>
                 <td> <HTMLContent content={product.description}/></td>
-                <td>${product.price.toFixed(2)}</td>
+                <td>{product.price.toFixed(2)}dt</td>
                 <td>{product.dishType}</td>
                 <td>{product.quantity}</td>
                 <td>
