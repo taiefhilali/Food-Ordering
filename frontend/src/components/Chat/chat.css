@@ -100,10 +100,11 @@
   padding: 10px;
   bottom: 0; /* Align at the bottom */
   position: absolute; /* Ensure absolute positioning */
-  left: 20px; /* Adjust as needed to center horizontally */
+  left: 190px; /* Adjust as needed to center horizontally */
   right: 20px; /* Adjust as needed to center horizontally */
   background-color: transparent;
   border-radius: 5px;
+  width: 700px;
 }
 
 .message-input {
