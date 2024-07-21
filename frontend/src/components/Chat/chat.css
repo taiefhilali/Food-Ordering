@@ -1,6 +1,6 @@
 .chat-layout {
   display: flex;
-  border: 3px solid #ccccccb1;
+  border: 1px solid #cccccc53;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -11,7 +11,7 @@
 
 .chat-container {
   flex: 1;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc84;
   border-radius: 8px;
   padding: 20px;
   margin-right: 10px;
@@ -59,7 +59,7 @@
 }
 
 .selected-user-divider {
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #f69b4b71;
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -151,12 +151,16 @@
   background-color: #f1d6b85f;
   margin-left: auto;
   text-align: right;
+  border-radius: 28px;
+
 }
 
 .received {
-  background-color: #f1f1f1;
+  background-color: #cccccc2a;
   margin-right: auto;
   text-align: left;
+  border-radius: 28px;
+
 }
 
 .message-sender-container {
