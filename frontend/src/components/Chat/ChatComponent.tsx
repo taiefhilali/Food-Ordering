@@ -9,11 +9,13 @@ import { io } from 'socket.io-client';
 
 interface Chat {
   _id: string;
-  content: string; // Update this to `content` if that’s the field in your database
+  content: string; 
   createdAt: Date;
-  sender: string;
-
-
+  sender: {
+    _id: string;
+    name: string;
+    avatar: string;
+  };
 }
 
 interface User {
@@ -27,13 +29,13 @@ const ChatComponent: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [inputValue, setInputValue] = useState<string>('');
+  const [refreshKey, setRefreshKey] = useState<number>(0); // State to trigger refresh
   const socket = io("http://localhost:8000", { transports: ["websocket"] });
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         const accessToken = localStorage.getItem('userToken');
-
         const response = await axios.get('http://localhost:7000/api/my/messages/all', {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -45,9 +47,9 @@ const ChatComponent: React.FC = () => {
             const formattedMessages = response.data
               .map((msg: any) => ({
                 _id: msg._id,
-                text: msg.content,
+                content: msg.content,
                 createdAt: new Date(msg.createdAt),
-                user: {
+                sender: {
                   _id: msg.sender._id,
                   name: msg.sender.username,
                   avatar: msg.sender.imageUrl,
@@ -56,12 +58,7 @@ const ChatComponent: React.FC = () => {
               .sort((a: { createdAt: { getTime: () => number; }; }, b: { createdAt: { getTime: () => number; }; }) => a.createdAt.getTime() - b.createdAt.getTime());
 
             setMessages(formattedMessages);
-            console.log('Fetched messages:', formattedMessages); // Debug log
-          } else {
-            console.log('No messages found');
           }
-        } else {
-          console.log('Unexpected response status:', response.status);
         }
       } catch (error) {
         console.error('Error fetching messages:', error);
@@ -69,9 +66,30 @@ const ChatComponent: React.FC = () => {
     };
 
     fetchMessages();
-  }, []); // Empty dependency array ensures this runs once on mount
+  }, [refreshKey]);
 
+  useEffect(() => {
+    socket.on('chat message', (message: Chat) => {
+      setMessages(prevMessages => [
+        ...prevMessages,
+        message,
+      ]);
+    });
 
+    return () => {
+      socket.off('chat message');
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setRefreshKey(prevKey => prevKey + 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   const sendMessage = async (content: string) => {
     const userId = localStorage.getItem('userId');
@@ -79,61 +97,62 @@ const ChatComponent: React.FC = () => {
       console.error('User ID, selected user, or socket not found');
       return;
     }
-  
-    // Get the sender info from local storage or other sources
-    const sender= userId;// Ensure sender ID is included
 
-  
-    const newMessage = {
-      content: content, // Use `content` to match the database field
-      sender: sender, // Use `user` instead of `sender`
+    const sender = {
+      _id: userId,
+      name: localStorage.getItem('username') || 'Unknown',
+      avatar: localStorage.getItem('avatar') || 'https://example.com/avatar.png',
     };
-  
+
+    const newMessage = {
+      content: content,
+      sender: sender._id,
+    };
+
     try {
-      // Send the message to the server (if needed for persistence)
       const response = await axios.post('http://localhost:7000/api/my/messages/new', newMessage, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('userToken')}`,
         },
       });
-  
-      if (response.status === 200) {
+
+      if (response.status === 201) {
         const serverMessage = response.data;
-  
-        // Emit the message using Socket.IO
+
         socket.emit('chat message', {
           _id: serverMessage._id,
-          content: serverMessage.content, // Use `content` to match the database field
+          content: serverMessage.content,
           createdAt: serverMessage.createdAt,
-          sender: serverMessage.user,
+          sender: {
+            _id: serverMessage.sender._id,
+            name: serverMessage.sender.username,
+            avatar: serverMessage.sender.imageUrl,
+          },
         });
-  
-        // Update local messages state
+
         setMessages(prevMessages => [
           ...prevMessages,
           {
             _id: serverMessage._id,
-            content: serverMessage.content, // Use `content` to match the database field
+            content: serverMessage.content,
             createdAt: new Date(serverMessage.createdAt),
-            sender: serverMessage.user,
-          } as Chat, // Cast to `Chat` type
+            sender: {
+              _id: serverMessage.sender._id,
+              name: serverMessage.sender.username,
+              avatar: serverMessage.sender.imageUrl,
+            },
+          } as Chat,
         ]);
-      } else {
-        console.log('Unexpected response status:', response.status);
       }
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };
-  
-  
 
   const handleSend = () => {
     if (inputValue.trim() !== '') {
-      // Your sendMessage logic here...
       sendMessage(inputValue);
-
-      setInputValue(''); // Clear input field
+      setInputValue('');
     }
   };
 
@@ -170,18 +189,27 @@ const ChatComponent: React.FC = () => {
             <div className="selected-user-divider"></div>
             <ul className="message-list">
               {messages
-                .filter(message => selectedUser && (message.user._id === selectedUser._id || message.user._id === localStorage.getItem('userId')))
+                .filter(message => selectedUser && (message.sender._id === selectedUser._id || message.sender._id === localStorage.getItem('userId')))
                 .map((message) => (
-                  <li key={message._id} className={`message-item ${message.user._id === localStorage.getItem('userId') ? 'sent' : 'received'}`}>
+                  <li
+                    key={message._id}
+                    className={`message-item ${
+                      message.sender._id === localStorage.getItem('userId') ? 'sent' : 'received'
+                    }`}
+                  >
                     <div className="message-sender-container">
-                      <div className="message-sender">{message.user.name}</div>
-                      <div className="message-timestamp">{formatTimestamp(message.createdAt)}</div>
+                      <div className="message-sender">
+                        {message.sender.name}
+                      </div>
+                      <div className="message-timestamp">
+                        {formatTimestamp(message.createdAt)}
+                      </div>
                     </div>
                     <ChatBubble
-                      message={{ id: message._id || '0', message: message.text }}
+                      message={{ id: message._id || '0', message: message.content }}
                       bubbleProps={{
-                        showSenderName: message.user._id !== localStorage.getItem('userId'),
-                        senderName: message.user.name,
+                        showSenderName: message.sender._id !== localStorage.getItem('userId'),
+                        senderName: message.sender.name,
                       }}
                     />
                   </li>
