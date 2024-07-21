@@ -255,3 +255,36 @@ exports.revenuStatistics = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Failed to fetch revenue data' });
   }
 };
+
+exports.LikeProduct = async (req: Request, res: Response) => {
+  const { userId } = req.body;
+  const { productId } = req.params;
+
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+
+  try {
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    const alreadyLiked = product.likes.includes(userId);
+
+    if (alreadyLiked) {
+      // Unlike the product
+      product.likes = product.likes.filter((id: { toString: () => any; }) => id.toString() !== userId);
+    } else {
+      // Like the product
+      product.likes.push(userId);
+    }
+
+    await product.save();
+    res.status(200).json({ message: 'Like status updated', likes: product.likes.length });
+  } catch (error) {
+    console.error('Error handling like:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};

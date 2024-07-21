@@ -35,6 +35,7 @@ router.delete('/:id', verifyToken, verifyVendor, productController.deleteProduct
 router.patch('/:id/toggle-approval', verifyToken, verifyAdmin, productController.toggleProductApproval);
 router.get('/:restaurantId', productController.productsByRestaurantId);
 router.get('/category/:categoryId', productController.getProductBycategory);
+router.post('/like/:productId', productController.LikeProduct);
 
 // Route for fetching products by restaurantId
 export default router;

@@ -16,7 +16,8 @@ const productSchema = new mongoose.Schema({
   soldQuantity: { type: Number, default: 0 }, // Track the quantity sold
   revenue: { type: Number, default: 0 }, // Track the revenue generated
   createdAt: { type: Date, default: Date.now },
-  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categories', required: true } // Reference to the Categories model
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categories', required: true }, // Reference to the Categories model
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Add this line
 
 
 });
