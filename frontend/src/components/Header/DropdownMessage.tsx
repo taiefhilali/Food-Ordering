@@ -127,12 +127,12 @@ const DropdownMessage = () => {
               >
                 <div className="h-12.5 w-12.5 rounded-full">
                   {/* Replace with dynamic image URL */}
-                  <img src={chat.sender.imageUrl} alt="User" /> {/* Replace with dynamic image */}
+                  <img src={chat.sender._id.imageUrl} alt="User" /> {/* Replace with dynamic image */}
                 </div>
 
                 <div>
                   <h6 className="text-sm font-medium text-black dark:text-white">
-                    {chat.sender.username} {/* Access sender's username */}
+                    {chat.sender._id.username} {/* Access sender's username */}
                   </h6>
                   <p className="text-sm">{chat.content}</p>
                   <p className="text-xs">{/* Format date/time */}</p>
