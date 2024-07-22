@@ -7,6 +7,8 @@ import { v2 as cloudinary } from "cloudinary";
 import myRestaurantRoute from "./routes/MyRestaurantRoute";
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(() => console.log("CONNECTED TO DB!!"));//casting 
 import RestaurantRoute from "./routes/RestaurantRoute";
+// @ts-ignore
+import bardRoute from './Apis/bardapi';
 import ProductRoutes from "./routes/MyProductRoute";
 import authRoute from "./routes/authRoute";
 import chatRoute from "./routes/ChatRoute";
@@ -31,6 +33,10 @@ import crypto from 'crypto'; // Import crypto module
 import { Request, Response, NextFunction } from 'express'; // Import Request, Response, and NextFunction types
 import Chat from "./models/Chat";
 import { handleChatMessage } from "./controllers/ChatController";
+const { TextServiceClient } =
+  require("@google-ai/generativelanguage").v1beta2;
+
+const { GoogleAuth } = require("google-auth-library");
 
 const generateRandomString = (length: number) => {
   return crypto.randomBytes(Math.ceil(length / 2))
@@ -52,6 +58,9 @@ cloudinary.config({
 // stripe configuration 
 export const stripe = new Stripe('sk_test_51PM7rN03qVjqSurgaFDcUo3Y1GrtFJoYzoiHZZRIWvNhaIec7DrXqNPLFuori2tTwAjBPEQwHF4UOuLBIptnxx4m00OwswBdhb');
 
+
+const MODEL_NAME = "models/text-bison-001";
+const API_KEY = "AIzaSyBSlbF1pZtkBsVS_em2bMONJB5kMDYZImI";
 
 //firebase configuration
 const admin = require('firebase-admin');
@@ -104,10 +113,34 @@ app.use('/api/my/notifications', NotifRoute);
 app.use('/api/my/feedback', feebackRoute);
 app.use('/api/my/messages', chatRoute);
 app.use('/api/my/discounts', discountRoute);
+app.use('/api/my/bard', bardRoute);
 
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+
+//gemini configuration 
+
+const client = new TextServiceClient({
+  authClient: new GoogleAuth().fromAPIKey(API_KEY),
+});
+
+const prompt = "Repeat after me: one, two,";
+
+client
+  .generateText({
+    model: MODEL_NAME,
+    prompt: {
+      text: prompt,
+    },
+  })
+  .then((result: any) => {
+    console.log(JSON.stringify(result, null, 2));
+  });
+
+//gemini configuration 
 
 // Initialize Facebook authentication strategy
 // Configure Google OAuth2 strategy
