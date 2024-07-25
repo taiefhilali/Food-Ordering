@@ -4,7 +4,23 @@
   "description": "",
   "main": "./src/index.ts",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "**/tests/**/*.test.(ts|js)"
+    ],
+    "coverageDirectory": "coverage",
+    "collectCoverage": true
   },
   "keywords": [],
   "author": "",
@@ -41,14 +57,29 @@
     "socket.io": "^4.7.5",
     "stripe": "^15.8.0"
   },
+  "compilerOptions": {
+    "types": [
+      "jest",
+      "node"
+    ]
+  },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",
+    "@types/jest": "^29.5.12",
+    "@types/mocha": "^10.0.7",
     "@types/nodemailer": "^6.4.15",
     "@types/passport-facebook-token": "^0.4.38",
     "@types/passport-google-oauth20": "^2.0.16",
-    "@types/qrcode": "^1.5.5"
+    "@types/qrcode": "^1.5.5",
+    "@types/sinon": "^17.0.3",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "sinon": "^18.0.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.3"
   }
 }

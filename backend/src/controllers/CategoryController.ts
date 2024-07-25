@@ -10,7 +10,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Controller function to create a category with image upload
-const createCategory = async (req: Request, res: Response) => {
+ const createCategory= async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user.id;
 

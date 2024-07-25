@@ -2,7 +2,7 @@ import { body } from 'express-validator';
 import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
    console.log(authHeader);
     if (authHeader) {
@@ -45,7 +45,7 @@ const verifyUserType = (
 
 
 
-const verifyVendor = (
+export const verifyVendor = (
     req: Request,
     res: Response,
     next: NextFunction

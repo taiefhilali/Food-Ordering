@@ -21,7 +21,9 @@ const upload = multer({
 });
 
 // Route to create a new category
-router.post('/',verifyToken, verifyVendor, upload.single("imageFile"), createCategory);
+ router.post('/',verifyToken, verifyVendor, upload.single("imageFile"), createCategory);
+//  router.post('/', upload.single("imageFile"), createCategory);
+
 router.get('/all', verifyToken, categoriesByUserId);
 
 // Route to update a category by ID
