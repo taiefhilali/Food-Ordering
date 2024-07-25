@@ -1,21 +1,19 @@
-# Backend Dockerfile
-
-# Use an official Node.js runtime as a parent image
+# Use an official Node.js runtime as a parent image ----- docker build -t taiefhilali/quickbiteimage .----
 FROM node:21
 
 # Set the working directory in the container
 WORKDIR /backend/src/index
 
 # Copy package.json and package-lock.json
-COPY backend/package*.json ./
+COPY /package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the application code
-COPY backend/ .
+COPY . .
 
-# Expose the port that the app runs on
+# Expose the port that the app runs on 
 EXPOSE 7000
 
 # Command to run the application

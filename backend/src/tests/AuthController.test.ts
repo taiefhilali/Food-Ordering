@@ -29,24 +29,24 @@ describe('Authentication Controller', () => {
         sandbox.restore();
     });
 
-    // test('createUser should handle errors correctly', async () => {
-    //     const user = {
-    //         email: 'test@example.com',
-    //         username: 'testuser',
-    //         password: 'password123',
-    //     };
+    test('createUser should handle errors correctly', async () => {
+        const user = {
+            email: 'test@example.com',
+            username: 'testuser',
+            password: 'password123',
+        };
 
-    //     // Mocking the error scenario by forcing a failure in the route handler
-    //     sandbox.stub(User.prototype, 'save').throws(new Error('Database error'));
+        // Mocking the error scenario by forcing a failure in the route handler
+        sandbox.stub(User.prototype, 'save').throws(new Error('Database error'));
 
-    //     const response = await request(app)
-    //         .post('/api/my/auth/register') // Ensure this path matches the actual route
-    //         .send(user);
+        const response = await request(app)
+            .post('/api/my/auth/register') // Ensure this path matches the actual route
+            .send(user);
 
-    //     expect(response.status).toBe(500);
-    //     expect(response.body).toHaveProperty('error', 'Unknown error occurred');
-    //     expect(response.body).toHaveProperty('status', false);
-    // });
+        expect(response.status).toBe(500);
+        expect(response.body).toHaveProperty('error', 'Unknown error occurred');
+        expect(response.body).toHaveProperty('status', false);
+    });
     // test('loginUser should return a JWT token on successful login', async () => {
     //     const user = {
     //         email: 'bobtaief@gmail.com',
