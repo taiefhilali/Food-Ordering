@@ -1239,7 +1239,167 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Qr Code Generator
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/stock"
+                  className={`group relative flex items-center gap-2.5 rounded-full px-4 py-2 font-medium text-graydarkduration-300 ease-in-out hover:bg-orange-300 dark:hover:bg-meta-4 ${(pathname === '/dashboards' ||
+                    pathname.includes('dashboard')) &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
 
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 400 300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                  >
+                    <rect
+                      x="10"
+                      y="10"
+                      width="380"
+                      height="280"
+                      fill="#c4c4c4 "
+                      stroke="#cccccc"
+                      stroke-width="2"
+                    />
+
+                    <line x1="50" y1="250" x2="350" y2="250" stroke="#000" stroke-width="1" />
+                    <line x1="50" y1="50" x2="50" y2="250" stroke="#000" stroke-width="1" />
+
+                    <polyline
+                      points="50,200 100,150 150,180 200,120 250,160 300,100 350,140"
+                      fill="none"
+                      stroke="#4caf50"
+                      stroke-width="2"
+                    />
+
+                    <circle cx="50" cy="200" r="4" fill="#4caf50" />
+                    <circle cx="100" cy="150" r="4" fill="#4caf50" />
+                    <circle cx="150" cy="180" r="4" fill="#4caf50" />
+                    <circle cx="200" cy="120" r="4" fill="#4caf50" />
+                    <circle cx="250" cy="160" r="4" fill="#4caf50" />
+                    <circle cx="300" cy="100" r="4" fill="#4caf50" />
+                    <circle cx="350" cy="140" r="4" fill="#4caf50" />
+
+                    <text
+                      x="50"
+                      y="270"
+                      text-anchor="middle"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      Jan
+                    </text>
+                    <text
+                      x="100"
+                      y="270"
+                      text-anchor="middle"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      Feb
+                    </text>
+                    <text
+                      x="150"
+                      y="270"
+                      text-anchor="middle"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      Mar
+                    </text>
+                    <text
+                      x="200"
+                      y="270"
+                      text-anchor="middle"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      Apr
+                    </text>
+                    <text
+                      x="250"
+                      y="270"
+                      text-anchor="middle"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      May
+                    </text>
+                    <text
+                      x="300"
+                      y="270"
+                      text-anchor="middle"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      Jun
+                    </text>
+                    <text
+                      x="350"
+                      y="270"
+                      text-anchor="middle"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      Jul
+                    </text>
+
+                    <text
+                      x="30"
+                      y="200"
+                      text-anchor="end"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      50
+                    </text>
+                    <text
+                      x="30"
+                      y="150"
+                      text-anchor="end"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      100
+                    </text>
+                    <text
+                      x="30"
+                      y="100"
+                      text-anchor="end"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      150
+                    </text>
+                    <text
+                      x="30"
+                      y="50"
+                      text-anchor="end"
+                      font-family="Arial, sans-serif"
+                      font-size="12"
+                      fill="#000"
+                    >
+                      200
+                    </text>
+                  </svg>
+
+
+
+                  Revenus                </NavLink>
+              </li>
               <li>
                 <NavLink
                   to="/settings"
