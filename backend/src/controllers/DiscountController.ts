@@ -72,3 +72,22 @@ export const addCoupon = async (req: Request, res: Response) => {
     }
   }
 };
+export const getCouponsByRestaurant = async (req: Request, res: Response) => {
+  const { restaurantName } = req.query; // Using query parameter
+
+  try {
+    if (!restaurantName) {
+      return res.status(400).json({ message: 'Restaurant name is required' });
+    }
+
+    const restaurant = await Restaurant.findOne({ restaurantName });
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant not found' });
+    }
+
+    const coupons = await Discount.find({ restaurantName: restaurant._id });
+    return res.status(200).json({ coupons });
+  } catch (error) {
+    return res.status(500).json({ message: 'Server error', error });
+  }
+};
