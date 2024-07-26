@@ -56,13 +56,13 @@ const StockComponent = () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName='Revenus calculation'/>
-        <div className="flex justify-center items-center h-full">
-            <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
-                <h2 className="text-2xl font-semibold mb-4">Selled Product of the day</h2>
+        <div className="flex justify-center items-center h-full ">
+            <div className="max-w-md w-full bg-white shadow-full rounded-lg p-6">
+                <h2 className="text-2xl font-semibold mb-4">Most Selled Product of the day</h2>
                 <select
                     value={productId}
                     onChange={(e) => setProductId(e.target.value)}
-                    className="w-full p-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                    className="w-full p-2 border rounded-full mb-4 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                 >
                     <option value="">Select Product</option>
                     {products.map((product) => (
@@ -76,15 +76,15 @@ const StockComponent = () => {
                     placeholder="Quantity Sold"
                     value={quantitySold}
                     onChange={(e) => setQuantitySold(e.target.value)}
-                    className="w-full p-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                    className="w-full p-2 border rounded-full mb-4 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
                 />
                 <button
                     onClick={handleSellProduct}
-                    className="w-full bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    className="w-full bg-orange-400 text-white px-4 py-2 rounded-full hover:bg-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
                 >
                     Sell Product
                 </button>
-                {sellMessage && <p className="mt-4 text-red-600">{sellMessage}</p>}
+                {sellMessage && <p className="mt-4 text-slate-400">{sellMessage}</p>}
                 <RevenueComponent />
             </div>
         </div>
@@ -141,12 +141,12 @@ const RevenueComponent = () => {
 
     return (
         <div className="mt-8">
-            <div className="max-w-md w-full  bg-white shadow-lg rounded-lg p-6">
+            <div className="max-w-md w-full  bg-white shadow-lg rounded-lg p-10">
                 <h2 className="text-2xl font-semibold mb-4">Calculate Restaurant Revenue</h2>
                 <form onSubmit={handleSubmit(handleCalculateRevenue)}>
                     <select
                         {...register('restaurant', { required: true })}
-                        className="w-full p-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent dark:bg-gray-800 dark:text-white"
+                        className="w-full p-2 border rounded-full mb-4 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent dark:bg-gray-800 dark:text-white"
                         value={selectedRestaurantId}
                         onChange={(e) => setSelectedRestaurantId(e.target.value)}
                     >
@@ -159,7 +159,7 @@ const RevenueComponent = () => {
                     </select>
                     <button
                         type="submit"
-                        className="w-full bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        className="w-full bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
                     >
                         Calculate Revenue
                     </button>
