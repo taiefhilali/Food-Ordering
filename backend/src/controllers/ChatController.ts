@@ -132,7 +132,7 @@ export const saveMessage = async (req: Request, res: Response) => {
       const userIdsFromChats = chats.map(chat => chat.sender.toString());
   
       // Filter clients who have chatted with the vendor
-      const filteredClients = clients.filter(client => userIdsFromChats.includes(client._id.toString()));
+      const filteredClients = clients.filter(client => userIdsFromChats.includes(client.toString()));
   console.log('=========filteredClients===========================');
   // console.log(filteredClients);
   console.log('=================filteredClients===================');

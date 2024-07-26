@@ -1109,7 +1109,26 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Chat
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/coupons"
+                  className={`group relative flex items-center gap-2.5 rounded-full px-4 py-2 font-medium text-graydarkduration-300 ease-in-out hover:bg-orange-300 dark:hover:bg-meta-4 ${(pathname === '/dashboards' ||
+                    pathname.includes('dashboard')) &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
 
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" width="18" height="18">
+                    <rect width="18" height="18" fill="white" />
+                    <rect x="1" y="1" width="4" height="4" fill="gray" />
+                    <rect x="1" y="13" width="4" height="4" fill="gray" />
+                    <rect x="13" y="1" width="4" height="4" fill="gray" />
+                    <rect x="13" y="13" width="4" height="4" fill="gray" />
+                    <rect x="6" y="6" width="6" height="6" fill="gray" />
+                  </svg>
+
+   Coupons                 </NavLink>
+              </li>
               <li>
                 <NavLink
                   to="/QrCode"

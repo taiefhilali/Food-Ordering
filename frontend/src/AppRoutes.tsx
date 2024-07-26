@@ -39,6 +39,7 @@ import RevenueByDateComponent from './components/Products/RevenueByDateComponent
 import Statistics from './components/Dashboard/Statistics'
 import QRCodeGenerator from './pages/QrcodeGenerator/QRCodeGenerator'
 import ChatComponent from './components/Chat/ChatComponent'
+import AddCouponCode from './pages/Discount/AddCouponCode'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -289,6 +290,14 @@ const AppRoutes = () => {
           <>
             < StockComponent />
           </>
+        }
+      />
+       <Route
+        path="/coupons"
+        element={
+
+            <AddCouponCode />
+     
         }
       />
       <Route

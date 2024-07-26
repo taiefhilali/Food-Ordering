@@ -4,7 +4,7 @@ import { Button, Form, Container, Row, Col } from 'react-bootstrap';
 import QRCode from 'react-qr-code';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
-import Select, { GroupBase } from 'react-select';
+import Select from 'react-select';
 import { Controller, useForm } from 'react-hook-form';
 
 type Restaurant = {
