@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
@@ -21,6 +21,7 @@ const AddCouponCode = () => {
     const [couponCode, setCouponCode] = useState('');
     const [discount, setDiscount] = useState('');
     const [expirationDate, setExpirationDate] = useState('');
+    const [reloadCoupons, setReloadCoupons] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,7 +67,7 @@ const AddCouponCode = () => {
                 couponCode,
                 discount,
                 expirationDate,
-                restaurantName: selectedRestaurant?.restaurantName, // Use optional chaining to handle null cases
+                restaurantName: selectedRestaurant?.restaurantName,
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -80,6 +81,11 @@ const AddCouponCode = () => {
             });
 
             reset();
+            setCouponCode('');
+            setDiscount('');
+            setExpirationDate('');
+            setReloadCoupons(prev => !prev);  // Toggle the reloadCoupons state to trigger a refresh
+
         } catch (error) {
             Swal.fire({
                 icon: 'error',
@@ -92,31 +98,28 @@ const AddCouponCode = () => {
     };
 
     const customStyles = {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         control: (provided: any) => ({
             ...provided,
-            borderRadius: '9999px', // Rounded full
+            borderRadius: '9999px',
             padding: '4px',
-            borderColor: '#d1d5db', // Tailwind gray-300
+            borderColor: '#d1d5db',
             boxShadow: 'none',
             '&:hover': {
-                borderColor: '#fb923c', // Tailwind orange-500
+                borderColor: '#fb923c',
             },
             width: '200%'
         }),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         menu: (provided: any) => ({
             ...provided,
-            borderRadius: '0.5rem', // Tailwind rounded-lg
+            borderRadius: '0.5rem',
         }),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         option: (provided: any, state: { isFocused: any; }) => ({
             ...provided,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '8px 12px',
-            backgroundColor: state.isFocused ? '#fb923c' : 'white', // Tailwind orange-500 for focused state
+            backgroundColor: state.isFocused ? '#fb923c' : 'white',
             color: state.isFocused ? 'white' : 'black',
             '&:active': {
                 backgroundColor: '#fb923c',
@@ -208,7 +211,7 @@ const AddCouponCode = () => {
                 {selectedRestaurant && (
                     <Row className="mt-5">
                         <Col>
-                            <CouponList restaurantName={selectedRestaurant.restaurantName} />
+                            <CouponList restaurantName={selectedRestaurant.restaurantName} key={reloadCoupons.toString()} />
                         </Col>
                     </Row>
                 )}
