@@ -38,16 +38,15 @@ const { TextServiceClient } =
   require("@google-ai/generativelanguage").v1beta2;
 
 const { GoogleAuth } = require("google-auth-library");
-import { deleteExpiredCoupons } from './../src/controllers/DiscountController'; // Adjust the path as necessary
 
 const generateRandomString = (length: number) => {
   return crypto.randomBytes(Math.ceil(length / 2))
     .toString('hex'); // convert to hexadecimal format
 };
-cron.schedule('0 0 * * *', async () => {
-  console.log('Running scheduled task to delete expired coupons...');
-  await deleteExpiredCoupons();
-});
+// cron.schedule('0 0 * * *', async () => {
+//   console.log('Running scheduled task to delete expired coupons...');
+//   await deleteExpiredCoupons();
+// });
 
 const SESSION_SECRET = generateRandomString(32);
 //cloudinary configuration

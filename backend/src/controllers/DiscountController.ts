@@ -1,27 +1,22 @@
-import { Request, Response } from "express";
+import { Request, Response, response } from "express"
 import Restaurant from "../models/Restaurant";
 import Discount from '../models/Discount'; // Adjust the path as necessary
-
-export const validatecoupon = async (req: Request, res: Response) => {
-  const { couponCode } = req.body;
-
-  try {
-    const coupon = await Discount.findOne({ couponCode });
-    if (!coupon) {
-      return res.status(400).json({ message: 'Invalid coupon code' });
-    }
-
-    const currentDate = new Date();
-    if (currentDate > coupon.expirationDate) {
-      return res.status(400).json({ message: 'Coupon code has expired' });
-    }
-
-    return res.status(200).json({ discount: coupon.discount });
-  } catch (error) {
-    return res.status(500).json({ message: 'Server error', error });
+export const validatecoupon = async (req: Request, res: Response) => 
+    {const { couponCode } = req.body;
+try {
+  const coupon = await Discount.findOne({ code: couponCode });
+  if (!coupon) {
+    return res.status(400).json({ message: 'Invalid coupon code' });
   }
+  const currentDate = new Date();
+  if (currentDate > coupon.expirationDate) {
+    return res.status(400).json({ message: 'Coupon code has expired' });
+  }
+  return res.status(200).json({ discount: coupon.discount });
+} catch (error) {
+  return res.status(500).json({ message: 'Server error', error });
+}
 };
-
 const retryOperation = async (operation: () => Promise<any>, retries: number = 3): Promise<any> => {
   let attempt = 0;
   while (attempt < retries) {
@@ -36,27 +31,22 @@ const retryOperation = async (operation: () => Promise<any>, retries: number = 3
     }
   }
 };
-
 export const addCoupon = async (req: Request, res: Response) => {
   const { couponCode, discount, expirationDate, restaurantName } = req.body;
-
   try {
     if (!restaurantName) {
       return res.status(400).json({ message: 'Restaurant name is required' });
     }
-
     const restaurant = await Restaurant.findOne({ restaurantName });
     if (!restaurant) {
       return res.status(404).json({ message: 'Restaurant not found' });
     }
-
     const newCoupon = new Discount({
       couponCode,
       discount: parseFloat(discount), // Ensure discount is a number
       expirationDate: new Date(expirationDate), // Ensure expirationDate is a Date
       restaurantName: restaurant._id
     });
-
     await newCoupon.save();
     return res.status(201).json({ message: 'Coupon code added successfully', coupon: newCoupon });
   } catch (error: unknown) {
@@ -74,7 +64,6 @@ export const addCoupon = async (req: Request, res: Response) => {
     }
   }
 };
-
 export const getCouponsByRestaurant = async (req: Request, res: Response) => {
   const { restaurantName } = req.query; // Using query parameter
 
@@ -88,24 +77,18 @@ export const getCouponsByRestaurant = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'Restaurant not found' });
     }
 
-    const currentDate = new Date();
-    const coupons = await Discount.find({
-      restaurantName: restaurant._id,
-      expirationDate: { $gte: currentDate } // Filter out expired coupons
-    });
-
+    const coupons = await Discount.find({ restaurantName: restaurant._id });
     return res.status(200).json({ coupons });
   } catch (error) {
     return res.status(500).json({ message: 'Server error', error });
   }
 };
-
-export const deleteExpiredCoupons = async () => {
-  try {
-    const currentDate = new Date();
-    const result = await Discount.deleteMany({ expirationDate: { $lt: currentDate } });
-    console.log(`${result.deletedCount} expired coupons removed.`);
-  } catch (error) {
-    console.error('Error deleting expired coupons:', error);
-  }
-};
+// export const deleteExpiredCoupons = async () => {
+//   try {
+//     const currentDate = new Date();
+//     const result = await Discount.deleteMany({ expirationDate: { $: currentDate } });
+//     console.log(`${result.deletedCount} expired coupons removed.`);
+//   } catch (error) {
+//     console.error('Error deleting expired coupons:', error);
+//   }
+// };

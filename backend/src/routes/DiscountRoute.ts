@@ -6,6 +6,7 @@ const {validatecoupon,addCoupon,getCouponsByRestaurant,deleteExpiredCoupons}=req
 
 router.post('/validate-coupon',validatecoupon);
 router.post('/add-coupon', addCoupon);
+// router.delete('/delete', deleteExpiredCoupons);
 router.get('/by-restaurant', getCouponsByRestaurant);
-router.delete('/delete', deleteExpiredCoupons);
+
 export default router;

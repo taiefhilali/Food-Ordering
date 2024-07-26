@@ -75,7 +75,18 @@ const getAllRestaurant = async (req: Request, res: Response) => {
   }
 };
 
+ const searchRestaurantByName = async (req: Request, res: Response) => {
+  const restaurantName = req.query.name as string;
 
+  try {
+    // Perform a case-insensitive search for restaurants by name
+    const restaurants = await Restaurant.find({ restaurantName: { $regex: restaurantName, $options: 'i' } });
+    res.json(restaurants);
+  } catch (error) {
+    console.error('Error searching restaurants:', error);
+    res.status(500).json({ error: 'Failed to search restaurants' });
+  }
+};
 // // Function to handle restaurant creation
 // const createMyRestaurant = async (req: Request, res: Response) => {
 //   try {
@@ -325,4 +336,4 @@ const getRestaurantbyName=async (req:Request, res:Response) => {
   }
 }
 
-export default { createMyRestaurant,LikeRestaurant, getMyRestaurant,getRestaurantbyName, updateMyRestaurant, getAllRestaurantbyUser,getAllRestaurant, getCuisinesStat,toggleRestaurantApproval };
+export default { createMyRestaurant,LikeRestaurant, searchRestaurantByName,getMyRestaurant,getRestaurantbyName, updateMyRestaurant, getAllRestaurantbyUser,getAllRestaurant, getCuisinesStat,toggleRestaurantApproval };
