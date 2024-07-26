@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
@@ -6,7 +5,8 @@ import Select from 'react-select';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
-import Swal from 'sweetalert2';  // Import SweetAlert2
+import Swal from 'sweetalert2';
+import CouponList from './CouponList'; // Adjust the path as necessary
 
 type Restaurant = {
     _id: string;
@@ -21,8 +21,6 @@ const AddCouponCode = () => {
     const [couponCode, setCouponCode] = useState('');
     const [discount, setDiscount] = useState('');
     const [expirationDate, setExpirationDate] = useState('');
-    console.log('Selected restaurant:', selectedRestaurant);
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,7 +73,6 @@ const AddCouponCode = () => {
                 },
             });
 
-
             Swal.fire({
                 icon: 'success',
                 title: 'Coupon code added successfully',
@@ -93,6 +90,7 @@ const AddCouponCode = () => {
             console.error('Error adding coupon code:', error);
         }
     };
+
     const customStyles = {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         control: (provided: any) => ({
@@ -126,6 +124,7 @@ const AddCouponCode = () => {
             },
         }),
     };
+
     const formatOptionLabel = ({ restaurantName, imageUrl }: Restaurant) => (
         <div className="flex justify-between items-center">
             <span>{restaurantName}</span>
@@ -136,9 +135,10 @@ const AddCouponCode = () => {
             />
         </div>
     );
+
     return (
         <DefaultLayout>
-            <Breadcrumb pageName='Disount Page' />
+            <Breadcrumb pageName='Discount Page' />
             <Container>
                 <Row className="mt-5 mr-40 align-bottom">
                     <Col>
@@ -205,6 +205,13 @@ const AddCouponCode = () => {
                         </Form>
                     </Col>
                 </Row>
+                {selectedRestaurant && (
+                    <Row className="mt-5">
+                        <Col>
+                            <CouponList restaurantName={selectedRestaurant.restaurantName} />
+                        </Col>
+                    </Row>
+                )}
             </Container>
         </DefaultLayout>
     );

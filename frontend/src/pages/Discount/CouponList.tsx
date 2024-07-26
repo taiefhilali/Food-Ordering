@@ -1,13 +1,23 @@
-import  { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, Container, Row, Col } from 'react-bootstrap';
-import Swal from 'sweetalert2';
+import { Container, Grid, Card, CardContent, Typography, Alert } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 type Coupon = {
     couponCode: string;
     discount: number;
     expirationDate: string;
 };
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    borderRadius: '20px',  // Rounded corners
+    border: '1px solid #ddd',  // Border color
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',  // Shadow for depth
+    backgroundColor: '#f9f9f9',  // Background color
+    padding: '16px',
+    maxWidth: '300px',
+    margin: 'auto',
+}));
 
 const CouponList = ({ restaurantName }: { restaurantName: string }) => {
     const [coupons, setCoupons] = useState<Coupon[]>([]);
@@ -31,39 +41,38 @@ const CouponList = ({ restaurantName }: { restaurantName: string }) => {
         }
     }, [restaurantName]);
 
-    if (error) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: error,
-        });
-    }
-
     return (
         <Container>
-            <Row>
+            {error && (
+                <Alert severity="error">{error}</Alert>
+            )}
+            <Grid container spacing={3}>
                 {coupons.length > 0 ? (
                     coupons.map((coupon) => (
-                        <Col key={coupon.couponCode} md={4} className="mb-4">
-                            <Card>
-                                <Card.Body>
-                                    <Card.Title>{coupon.couponCode}</Card.Title>
-                                    <Card.Text>
+                        <Grid item key={coupon.couponCode}>
+                            <StyledCard>
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        {coupon.couponCode}
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary">
                                         Discount: {coupon.discount}%
-                                    </Card.Text>
-                                    <Card.Text>
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary">
                                         Expiration Date: {new Date(coupon.expirationDate).toLocaleDateString()}
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
+                                    </Typography>
+                                </CardContent>
+                            </StyledCard>
+                        </Grid>
                     ))
                 ) : (
-                    <Col>
-                        <p>No coupons available</p>
-                    </Col>
+                    <Grid item xs={12}>
+                        <Typography variant="body1" color="textSecondary">
+                            No coupons available
+                        </Typography>
+                    </Grid>
                 )}
-            </Row>
+            </Grid>
         </Container>
     );
 };
