@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for middleware/validation.ts</title>
+    <title>Code coverage report for models/Product.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">middleware</a> validation.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">models</a> Product.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/8</span>
+                <span class='fraction'>6/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/8</span>
+                <span class='fraction'>6/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -96,21 +96,12 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -129,40 +120,64 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { body, validationResult } from "express-validator";
-import { Request, Response, NextFunction } from "express";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import mongoose from "mongoose";
 &nbsp;
-const handleValidationErrors = <span class="fstat-no" title="function not covered" >async (</span>
-  req: Request,
-  res: Response,
-  next: NextFunction
-) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
-  const errors = <span class="cstat-no" title="statement not covered" >validationResult(req);</span>
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!errors.isEmpty()) {</span>
-<span class="cstat-no" title="statement not covered" >    return res.status(400).json({ errors: errors.array() });</span>
-  }
-<span class="cstat-no" title="statement not covered" >  next();</span>
+const productSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String },
+  price: { type: Number, required: true },
+  dishType: { type: String, enum: ['main', 'side', 'beverage', 'entry', 'dessert'], required: true },
+  restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },
+  quantity: { type: Number, required: true },
+  imageUrl: { type: String },
+  isApproved: { type: Boolean, default: false },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User" // Reference to the User model
+  },
+  soldQuantity: { type: Number, default: 0 }, // Track the quantity sold
+  revenue: { type: Number, default: 0 }, // Track the revenue generated
+  createdAt: { type: Date, default: Date.now },
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categories', required: true }, // Reference to the Categories model
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Add this line
+&nbsp;
+&nbsp;
+});
+&nbsp;
+&nbsp;
+// Virtual property to calculate total revenue (price * soldQuantity)
+productSchema.virtual('totalRevenue').get(<span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >  return this.price * this.soldQuantity;</span>
+});
+&nbsp;
+// Middleware to update soldQuantity and revenue when a product is sold
+productSchema.methods.sell = <span class="fstat-no" title="function not covered" >async function(q</span>uantitySold: any) {
+<span class="cstat-no" title="statement not covered" >  this.soldQuantity += quantitySold;</span>
+<span class="cstat-no" title="statement not covered" >  await this.save();</span>
 };
 &nbsp;
-&nbsp;
-export const validateMyRestaurantRequest = [
-  body("restaurantName").notEmpty().withMessage("Restaurant name is required"),
-  body("estimatedDeliveryTime")
-    .isInt({ min: 0 })
-    .withMessage("Estimated delivery time must be a postivie integar"),
-  body("cuisines")
-    .isArray()
-    .withMessage("Cuisines must be an array")
-    .not()
-    .isEmpty()
-    .withMessage("Cuisines array cannot be empty"),
-  body("menuItems").isArray().withMessage("Menu items must be an array"),
-  body("menuItems.*.name").notEmpty().withMessage("Menu item name is required"),
-  body("menuItems.*.price")
-    .isFloat({ min: 0 })
-    .withMessage("Menu item price is required and must be a postive number"),
-  handleValidationErrors,
-];</pre></td></tr></table></pre>
+const Product = mongoose.model('Product', productSchema);
+export default Product;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

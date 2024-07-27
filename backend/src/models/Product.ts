@@ -34,4 +34,5 @@ productSchema.methods.sell = async function(quantitySold: any) {
   await this.save();
 };
 
-module.exports = mongoose.model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema);
+export default Product;
