@@ -15,6 +15,7 @@ import chatRoute from "./routes/ChatRoute";
 import feebackRoute from "./routes/FeedbackRoute";
 import categoriesRoute from "./routes/CategoriesRoute";
 import foodRoute from "./routes/FoodRoute";
+import invoiceRoute from "./routes/InvoiceRoute";
 import TableRoute from "./routes/QrCodeRoute";
 import CartRoute from "./routes/CartRoute";
 import NotifRoute from "./routes/NotificationRoute";
@@ -119,6 +120,7 @@ app.use('/api/my/feedback', feebackRoute);
 app.use('/api/my/messages', chatRoute);
 app.use('/api/my/discounts', discountRoute);
 app.use('/api/my/bard', bardRoute);
+app.use('/api/my/invoice', invoiceRoute);
 
 // Initialize Passport
 app.use(passport.initialize());

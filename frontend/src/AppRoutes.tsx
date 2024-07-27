@@ -125,7 +125,10 @@ const AppRoutes = () => {
             element={<DisplayProductsPage />}
           />
        
-       
+       <Route
+            path="/display-orders"
+            element={<OrdersList />}
+          />
   
       {/* {userType === "Vendor" ? (
         <>
@@ -137,10 +140,7 @@ const AppRoutes = () => {
             path="/display-products"
             element={<DisplayProductsPage />}
           />
-            <Route
-            path="/display-orders"
-            element={<OrdersList />}
-          />
+          
         </>
       ) : (
         <Route
