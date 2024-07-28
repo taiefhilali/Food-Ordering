@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const discountSchema = new mongoose.Schema({
-    couponCode: { type: String, required: true, unique: true },
+    couponCode: { type: String, required: true },
     discount: { type: Number, required: true }, // e.g., 0.1 for 10% discount
     expirationDate: { type: Date, required: true },
     restaurantName: {
