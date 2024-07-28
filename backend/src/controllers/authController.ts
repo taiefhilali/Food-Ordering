@@ -72,11 +72,7 @@ const loguser = async (req: Request, res: Response) => {
     }
 
     // Compare the provided password with the hashed password using bcrypt
-    console.log("Stored hashed password:", existingUser.password);
     const isPasswordValid = await bcrypt.compare(password, existingUser.password);
-    console.log("Password valid:", isPasswordValid);
-    
-
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
@@ -93,9 +89,16 @@ const loguser = async (req: Request, res: Response) => {
     res.status(200).json({ ...userWithoutPassword, userToken });
   } catch (error) {
     console.error('Error logging in:', error);
-    res.status(500).json({ message: 'Error logging in' });
+
+    // Check if the error is an instance of Error to safely extract the message
+    if (error instanceof Error) {
+      res.status(500).json({ message: 'Error logging in', error: error.message });
+    } else {
+      res.status(500).json({ message: 'Error logging in' });
+    }
   }
 };
+
 
 // const loguser = async (req: Request, res: Response) => {
 //     try {

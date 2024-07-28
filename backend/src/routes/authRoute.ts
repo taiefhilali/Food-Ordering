@@ -10,7 +10,7 @@ const CLIENT_URL = "http://localhost:3000";
 
 router.post('/register',authController.createUser);
 router.post("/login",authController.loginUser);
-router.post("/log",verifyToken, verifyUserType ,authController.loguser);
+router.post("/log",authController.loguser);
 router.post('/forgot-password',verifyToken, verifyVendor,authController.forgotPassword);
 router.post('/reset-password',verifyToken, verifyVendor,authController.resetPassword);
 

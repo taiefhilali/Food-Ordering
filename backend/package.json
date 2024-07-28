@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon",
     "test": "jest",
-    "test:category": "jest --testPathPattern=src/tests/MyCategoriesController.test.ts"
+    "test:category": "jest --testPathPattern=src/tests/MyCategoriesController.test.ts",
+    "test:auth": "jest --testPathPattern=src/tests/AuthController.test.ts"
 
   },
   "jest": {
