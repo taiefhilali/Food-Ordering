@@ -27,19 +27,19 @@ const {
 // Set up the Express app and routes for testing
 const app = express();
 app.use(bodyParser.json());
-app.get('/products', getAllProducts);
-app.post('/products', createMyProduct);
-app.get('/products/:id', getProductById);
-app.put('/products/:id', updateProduct);
-app.delete('/products/:id', deleteProduct);
-app.get('/products/category/:categoryId',getProductBycategory);
-app.post('/products/sell', sellProduct);
-app.get('/products/quantity',quantityProduct);
-app.patch('/products/:id/toggle-approval', toggleProductApproval);
-app.get('/products/restaurant/:restaurantId',productsByRestaurantId);
-app.get('/products/revenue/:date', revenuStatistics);
-app.post('/products/like/:productId', LikeProduct);
-app.get('/products/search', searchProductByName);
+app.get('/api/my/products', getAllProducts);
+app.post('/api/my/products', createMyProduct);
+app.get('/api/my/products/:id', getProductById);
+app.put('/api/my/products/:id', updateProduct);
+app.delete('/api/my/products/:id', deleteProduct);
+app.get('/api/my/products/category/:categoryId',getProductBycategory);
+app.post('/api/my/products/sell', sellProduct);
+app.get('/api/my/products/quantity',quantityProduct);
+app.patch('/api/my/products/:id/toggle-approval', toggleProductApproval);
+app.get('/api/my/products/restaurant/:restaurantId',productsByRestaurantId);
+app.get('/api/my/products/revenue/:date', revenuStatistics);
+app.post('/api/my/products/like/:productId', LikeProduct);
+app.get('/api/my/products/search', searchProductByName);
 
 describe('Product Controller', () => {
     beforeEach(async () => {
@@ -64,17 +64,18 @@ describe('Product Controller', () => {
 
     test('should create a new product', async () => {
         // Assuming you have a user and a restaurant created for the product
-        const user = new User({ username: 'testuser', password: 'password' });
+        const user = new User({ username: 'taiem2008', password: 'ghghgh' ,  email: 'bobtaiem@gmail.com'  // Include email
+        });
         await user.save();
 
         const newProduct = {
             name: 'Test Product',
             price: 10,
             dishType: 'main',
-            restaurant: new mongoose.Types.ObjectId(),
+            restaurant: new mongoose.Types.ObjectId('667a48e1b4d43cefbb966ab2'),
             quantity: 100,
-            user: user._id,
-            category: new mongoose.Types.ObjectId(),
+            user:  new mongoose.Types.ObjectId('66789859995e5444eeff0dc5'),
+            category: new mongoose.Types.ObjectId('66a56ac8b4b88056a150591c'),
         };
 
         const response = await request(app)

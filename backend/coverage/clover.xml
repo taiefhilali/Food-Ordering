@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1722116810342" clover="3.2.0">
-  <project timestamp="1722116810342" name="All files">
-    <metrics statements="569" coveredstatements="180" conditionals="76" coveredconditionals="3" methods="108" coveredmethods="18" elements="753" coveredelements="201" complexity="0" loc="569" ncloc="569" packages="4" files="11" classes="11"/>
+<coverage generated="1722164689605" clover="3.2.0">
+  <project timestamp="1722164689606" name="All files">
+    <metrics statements="569" coveredstatements="177" conditionals="76" coveredconditionals="3" methods="108" coveredmethods="16" elements="753" coveredelements="196" complexity="0" loc="569" ncloc="569" packages="4" files="11" classes="11"/>
     <package name="controllers">
-      <metrics statements="457" coveredstatements="115" conditionals="58" coveredconditionals="3" methods="92" coveredmethods="18"/>
+      <metrics statements="457" coveredstatements="112" conditionals="58" coveredconditionals="3" methods="92" coveredmethods="16"/>
       <file name="MyProductController.ts" path="C:\Users\msi\Desktop\Food-Ordering\backend\src\controllers\MyProductController.ts">
-        <metrics statements="138" coveredstatements="22" conditionals="12" coveredconditionals="0" methods="34" coveredmethods="2"/>
+        <metrics statements="138" coveredstatements="19" conditionals="12" coveredconditionals="0" methods="34" coveredmethods="0"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
