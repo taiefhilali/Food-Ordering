@@ -11,9 +11,10 @@ const CLIENT_URL = "http://localhost:3000";
 router.post('/register',authController.createUser);
 router.post("/login",authController.loginUser);
 router.post("/log",authController.loguser);
-router.post('/forgot-password',verifyToken, verifyVendor,authController.forgotPassword);
-router.post('/reset-password',verifyToken, verifyVendor,authController.resetPassword);
-
+// router.post('/forgot-password',verifyToken, verifyVendor,authController.forgotPassword);
+// router.post('/reset-password',verifyToken, verifyVendor,authController.resetPassword);
+router.post('/forgot-password',authController.forgotPassword);
+router.post('/reset-password',authController.resetPassword);
 router.get("/login/success", (req, res) => {
     if (req.user) {
       res.status(200).json({

@@ -207,7 +207,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
       secure: false,
       auth: {
         user: 'bobtaief@gmail.com', // Your Gmail address
-        pass: 'dcun dfvd lfse rgih', // Your Gmail password or app-specific password
+        pass: 'ovdt hawt cehv yrvh', // Your Gmail password or app-specific password
       },
     });
     
