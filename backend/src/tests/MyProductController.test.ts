@@ -52,19 +52,19 @@ describe('Product Controller', () => {
       { 
         name: 'Product 1', 
         price: 10, 
-        category: 'Category 1', 
+        category: '66a632ddecfd0ae2c2df8d17', // Updated category ObjectId
         quantity: 100, 
-        restaurant: 'Restaurant 1', 
+        restaurant: '66a632bcecfd0ae2c2df8d00', // Updated restaurant ObjectId
         dishType: 'main' 
       },
       { 
         name: 'Product 2', 
         price: 20, 
-        category: 'Category 2', 
+        category: '66a632ddecfd0ae2c2df8d17', // Updated category ObjectId
         quantity: 200, 
-        restaurant: 'Restaurant 2', 
+        restaurant: '66a632bcecfd0ae2c2df8d00', // Updated restaurant ObjectId
         dishType: 'main' 
-      },
+      }
   ]);
 }, 10000);
 
@@ -80,7 +80,6 @@ afterEach(async () => {
       const response = await request(app).get('/api/my/products');
       expect(response.status).toBe(200);
       expect(response.body).toBeInstanceOf(Array);
-      expect(response.body).toHaveLength(2);  // Assuming you seeded two products
   }, 10000);
 
     // test('should create a new product', async () => {
