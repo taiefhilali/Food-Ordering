@@ -10,4 +10,6 @@ const categorySchema = new mongoose.Schema({
   },
 }, { timestamps: false });
 
-module.exports = mongoose.model('Categories', categorySchema);
+const category = mongoose.model('Categories', categorySchema);
+
+export default category;

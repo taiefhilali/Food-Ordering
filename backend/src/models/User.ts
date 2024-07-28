@@ -120,11 +120,15 @@ const userSchema = new mongoose.Schema<IUser>({
     type: Boolean,
     default: false,
   },
-  googleId: { type: String, unique: true, sparse: true }, // Ensure sparse index if you want to allow multiple nulls
+  googleId: { type: String, 
+    // unique: true,
+    default: "idgoogle",
+     sparse: true }, // Ensure sparse index if you want to allow multiple nulls
 
   facebookId: {
     type: String,
-    unique: true,
+    default: "idfacebook",
+    // unique: true,
     sparse:true
   },
 }, { timestamps: true });

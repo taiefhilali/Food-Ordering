@@ -1,4 +1,4 @@
-const Category = require('../models/Category')
+import Category from '../models/Category'
 import { Request, Response, response } from "express"
 import multer from "multer";
 import { title } from "process";

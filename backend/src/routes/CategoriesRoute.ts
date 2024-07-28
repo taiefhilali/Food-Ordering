@@ -24,7 +24,7 @@ const upload = multer({
  router.post('/',verifyToken, verifyVendor, upload.single("imageFile"), createCategory);
 //  router.post('/', upload.single("imageFile"), createCategory);
 
-router.get('/all', verifyToken, categoriesByUserId);
+router.get('/all', categoriesByUserId);
 
 // Route to update a category by ID
 router.put('/:id',verifyToken,verifyAdmin, updateCategory);
