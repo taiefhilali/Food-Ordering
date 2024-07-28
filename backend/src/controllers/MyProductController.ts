@@ -3,17 +3,25 @@ import Restaurant from "../models/Restaurant";
 import { Request, Response } from "express";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
-const Product = require('../models/product');
+import Product  from '../models/Product'; // Adjust the path as needed
 import { Error } from 'mongoose'; // Import the Error type from mongoose
+// const Product = require('../models/Product')
 
 // Get all products
 exports.getAllProducts = async (req: Request, res: Response) => {
+  // try {
+  //   const products = await Product.find();
+  //   res.json(products);
+  // } catch (error) {
+  //   res.status(500).json({ message: (error as Error).message });
+  // }
   try {
     const products = await Product.find();
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
-  }
+    res.status(200).json(products);
+} catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+}
 };
 
 // Create a new product
@@ -197,7 +205,7 @@ exports.sellProduct = async (req: Request, res: Response) => {
     }
 
     // Call the sell method defined in the schema
-    await product.sell(quantitySold);
+      await product.sell(quantitySold);
 
     // Optionally, respond with updated product data or success message
     return res.status(200).json({ message: `Sold ${quantitySold} units of ${product.name}` });

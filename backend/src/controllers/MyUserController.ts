@@ -62,7 +62,7 @@ const registerUser = async (req: Request, res: Response) => {
       service: 'Gmail',
       auth: {
         user: 'bobtaief@gmail.com',
-        pass: 'hcdz tdlj wywv dfxj'
+        pass: 'ovdt hawt cehv yrvh'
       }
     });
 
