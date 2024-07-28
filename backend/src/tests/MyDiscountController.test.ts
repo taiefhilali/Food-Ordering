@@ -63,15 +63,14 @@ describe('Discount Controller', () => {
     expect(response.status).toBe(201);
     expect(response.body.coupon).toHaveProperty('couponCode', 'DISCOUNT39');
   }, 10000);
-//   test('should validate a coupon code', async () => {
-//     const response = await request(app)
-//       .post('/api/my/discounts/validate-coupon')
-//       .send({ couponCode: 'DISCOUNT11' });
+  test('should validate a coupon code', async () => {
+    const response = await request(app)
+      .post('/api/my/discounts/validate-coupon')
+      .send({ couponCode: 'DISCOUNT11' }); // Ensure this matches a seeded coupon code
 
-//     expect(response.status).toBe(200);
-//     expect(response.body).toHaveProperty('discount', 0.1);
-//   }, 10000);
-
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('discount', 0.1); // Ensure the discount matches the seeded coupon
+  }, 10000);
 //   test('should fail to validate an expired coupon code', async () => {
 //     const response = await request(app)
 //       .post('/api/my/discounts/validate-coupon')
