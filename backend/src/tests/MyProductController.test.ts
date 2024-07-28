@@ -87,7 +87,7 @@ afterEach(async () => {
     //     const user = new User({
     //       username: `user_${Date.now()}`,
     //       password: 'password',
-    //       email: `user_${Date.now()}@example.com`
+    //       email: `user_${Date.now()}@gmail.com`
     //   });
     //   await user.save();
   
@@ -110,82 +110,83 @@ afterEach(async () => {
     //     expect(response.body.product).toHaveProperty('name', newProduct.name);
     // }, 10000);
 
-    // test('should get a product by ID', async () => {
-    //     const product = new Product({
-    //         name: 'Test Product',
-    //         price: 10,
-    //         dishType: 'main',
-    //         restaurant: new mongoose.Types.ObjectId(),
-    //         quantity: 100,
-    //         user: new mongoose.Types.ObjectId(),
-    //         category: new mongoose.Types.ObjectId(),
-    //     });
-    //     await product.save();
+    test('should get a product by ID', async () => {
+        const product = new Product({
+            name: 'Test Product',
+            price: 10,
+            dishType: 'main',
+            restaurant: new mongoose.Types.ObjectId(),
+            quantity: 100,
+            user: new mongoose.Types.ObjectId(),
+            category: new mongoose.Types.ObjectId(),
+        });
+        await product.save();
 
-    //     const response = await request(app).get(`/api/my/products/${product._id}`);
-    //     expect(response.status).toBe(200);
-    //     expect(response.body).toHaveProperty('name', product.name);
-    // }, 10000);
+        const response = await request(app).get(`/api/my/products/${product._id}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('name', product.name);
+    }, 10000);
 
-    // test('should update a product by ID', async () => {
-    //     const product = new Product({
-    //         name: 'Test Product',
-    //         price: 10,
-    //         dishType: 'main',
-    //         restaurant: new mongoose.Types.ObjectId(),
-    //         quantity: 100,
-    //         user: new mongoose.Types.ObjectId(),
-    //         category: new mongoose.Types.ObjectId(),
-    //     });
-    //     await product.save();
+    test('should update a product by ID', async () => {
+        const product = new Product({
+            name: 'Test Product',
+            price: 10,
+            dishType: 'main',
+            restaurant: new mongoose.Types.ObjectId(),
+            quantity: 100,
+            user: new mongoose.Types.ObjectId(),
+            category: new mongoose.Types.ObjectId(),
+        });
+        await product.save();
 
-    //     const updatedData = { name: 'Updated Product Name' };
-    //     const response = await request(app).put(`/api/my/products/${product._id}`).send(updatedData);
+        const updatedData = { name: 'Updated Product Name' };
+        const response = await request(app).put(`/api/my/products/${product._id}`).send(updatedData);
 
-    //     expect(response.status).toBe(200);
-    //     expect(response.body).toHaveProperty('name', updatedData.name);
-    // }, 10000);
-    // test('should delete a product by ID', async () => {
-    //     const product = new Product({
-    //         name: 'Test Product',
-    //         price: 10,
-    //         dishType: 'main',
-    //         restaurant: new mongoose.Types.ObjectId(),
-    //         quantity: 100,
-    //         user: new mongoose.Types.ObjectId(),
-    //         category: new mongoose.Types.ObjectId(),
-    //     });
-    //     await product.save();
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('name', updatedData.name);
+    }, 10000);
+    test('should delete a product by ID', async () => {
+        const product = new Product({
+            name: 'Test Product',
+            price: 10,
+            dishType: 'main',
+            restaurant: new mongoose.Types.ObjectId(),
+            quantity: 100,
+            user: new mongoose.Types.ObjectId(),
+            category: new mongoose.Types.ObjectId(),
+        });
+        await product.save();
 
-    //     const response = await request(app).delete(`/api/my/products/${product._id}`);
-    //     expect(response.status).toBe(200);
-    //     expect(response.body).toHaveProperty('message', 'Product deleted successfully');
-    // }, 10000);
+        const response = await request(app).delete(`/api/my/products/${product._id}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('message', 'Product deleted successfully');
+    }, 10000);
 
-    // // Add more tests for the remaining routes and functionalities as needed
+    // Add more tests for the remaining routes and functionalities as needed
 
-    // test('should like a product', async () => {
-    //     const user = new User({ username: 'testuser', password: 'password' });
-    //     await user.save();
+    test('should like a product', async () => {
+        const user = new User({ username: 'testuser', password: 'password' , email:'testuser@gmail.com', googleId: 'unique-google-id-1' ,facebookId: 'unique-facebook-id-1'// Provide a unique googleId
+        });
+        await user.save();
 
-    //     const product = new Product({
-    //         name: 'Test Product',
-    //         price: 10,
-    //         dishType: 'main',
-    //         restaurant: new mongoose.Types.ObjectId(),
-    //         quantity: 100,
-    //         user: new mongoose.Types.ObjectId(),
-    //         category: new mongoose.Types.ObjectId(),
-    //     });
-    //     await product.save();
+        const product = new Product({
+            name: 'Test Product',
+            price: 10,
+            dishType: 'main',
+            restaurant: new mongoose.Types.ObjectId(),
+            quantity: 100,
+            user: new mongoose.Types.ObjectId(),
+            category: new mongoose.Types.ObjectId(),
+        });
+        await product.save();
 
-    //     const response = await request(app)
-    //         .post(`/api/my/products/like/${product._id}`)
-    //         .send({ userId: user._id });
+        const response = await request(app)
+            .post(`/api/my/products/like/${product._id}`)
+            .send({ userId: user._id });
 
-    //     expect(response.status).toBe(200);
-    //     expect(response.body).toHaveProperty('message', 'Like status updated');
-    // }, 10000);
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('message', 'Like status updated');
+    }, 10000);
 
     // Continue adding tests for other functionalities like sellProduct, calculateRestaurantRevenue, etc.
 });
