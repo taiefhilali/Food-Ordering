@@ -68,22 +68,29 @@ describe('Category Controller', () => {
 //   }, 10000);
 
 
-test('should update a category by IDD', async () => {
+test('should update a category by ID', async () => {
     const category = new Category({
-        title: 'Test Category',
-        value: 'test_category',
-        user: new mongoose.Types.ObjectId()
-      });
-      await category.save();
-
-      const updatedData = { title: 'Updated Category Title' };
-      const response = await request(app)
+      title: 'Test Category',
+      value: 'test_category',
+      user: new mongoose.Types.ObjectId()
+    });
+    await category.save();
+  
+    const updatedData = { title: 'Updated Category Title' };
+    const response = await request(app)
       .put(`/api/my/categories/${category._id}`)
-      .set('Authorization', `Bearer ${token}`).send(updatedData);
-
+      .set('Authorization', `Bearer ${token}`)
+      .send(updatedData);
+  
     expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty('title', updatedData.title);
+    expect(response.body).toHaveProperty('message', 'Category updated successfully');
+    expect(response.body).toHaveProperty('status', true);
+  
+    // Optionally fetch the category to verify the update
+    const updatedCategory = await Category.findById(category._id);
+    expect(updatedCategory).toHaveProperty('title', updatedData.title);
   }, 10000);
+  
 //   test('should update a category by ID', async () => {
 //     const category = new Category({
 //       title: 'Test Category',
