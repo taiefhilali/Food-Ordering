@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1722194696640" clover="3.2.0">
-  <project timestamp="1722194696640" name="All files">
-    <metrics statements="65" coveredstatements="37" conditionals="10" coveredconditionals="0" methods="8" coveredmethods="4" elements="83" coveredelements="41" complexity="0" loc="65" ncloc="65" packages="3" files="4" classes="4"/>
+<coverage generated="1722195485146" clover="3.2.0">
+  <project timestamp="1722195485146" name="All files">
+    <metrics statements="65" coveredstatements="44" conditionals="10" coveredconditionals="0" methods="8" coveredmethods="6" elements="83" coveredelements="50" complexity="0" loc="65" ncloc="65" packages="3" files="4" classes="4"/>
     <package name="controllers">
-      <metrics statements="49" coveredstatements="21" conditionals="10" coveredconditionals="0" methods="8" coveredmethods="4"/>
+      <metrics statements="49" coveredstatements="28" conditionals="10" coveredconditionals="0" methods="8" coveredmethods="6"/>
       <file name="DiscountController.ts" path="C:\Users\msi\Desktop\Food-Ordering\backend\src\controllers\DiscountController.ts">
-        <metrics statements="49" coveredstatements="21" conditionals="10" coveredconditionals="0" methods="8" coveredmethods="4"/>
+        <metrics statements="49" coveredstatements="28" conditionals="10" coveredconditionals="0" methods="8" coveredmethods="6"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -45,16 +45,16 @@
         <line num="62" count="0" type="stmt"/>
         <line num="63" count="0" type="stmt"/>
         <line num="67" count="1" type="stmt"/>
-        <line num="68" count="0" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="71" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="71" count="1" type="cond" truecount="0" falsecount="1"/>
         <line num="72" count="0" type="stmt"/>
-        <line num="75" count="0" type="stmt"/>
-        <line num="76" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="77" count="0" type="stmt"/>
-        <line num="80" count="0" type="stmt"/>
-        <line num="81" count="0" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="77" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="83" count="1" type="stmt"/>
+        <line num="85" count="0" type="stmt"/>
       </file>
     </package>
     <package name="models">

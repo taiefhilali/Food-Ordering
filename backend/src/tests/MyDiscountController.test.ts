@@ -80,16 +80,51 @@ describe('Discount Controller', () => {
 //     expect(response.body).toHaveProperty('message', 'Coupon code has expired');
 //   }, 10000);
 
-//   test('should get coupons by restaurant name', async () => {
-//     const restaurant = new Restaurant({
-//         restaurantName: 'Test Restaurant'
-//       });
-//     const response = await request(app)
-//       .get(`/api/my/discounts/get-coupons?restaurantName=${restaurant._id}`);
-
-//     expect(response.status).toBe(200);
-//     expect(response.body).toEqual(expect.arrayContaining([
-//       expect.objectContaining({ couponCode: 'DISCOUNT11' })
-//     ]));
-//   }, 10000);
+test('should get coupons by restaurant name', async () => {
+    // Create a new restaurant for testing
+    const restaurant = new Restaurant({
+      restaurantName: 'Test Restaurant'
+    });
+    await restaurant.save();
+  
+    // Create coupons associated with the restaurant
+    await Discount.create([
+      {
+        couponCode: 'DISCOUNT11',
+        discount: 0.1,
+        expirationDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        restaurantName: restaurant._id
+      },
+      {
+        couponCode: 'DISCOUNT39',
+        discount: 0.2,
+        expirationDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        restaurantName: restaurant._id
+      }
+    ]);
+  
+    // Test the endpoint
+    const response = await request(app)
+      .get(`/api/my/discounts/by-restaurant?restaurantName=${restaurant.restaurantName}`);
+  
+    console.log('Response body:', response.body);
+  
+    expect(response.status).toBe(200);
+  
+    // Adjust the expected result to match the actual data created
+    expect(response.body).toEqual({
+        coupons: expect.arrayContaining([
+          expect.objectContaining({
+            // Define the properties you expect each coupon to have
+            _id: expect.any(String),
+            couponCode: expect.any(String),
+            discount: expect.any(Number),
+            expirationDate: expect.any(String),
+            restaurantName: expect.any(String),
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          }),
+        ]),
+    });
+  }, 10000);
 });
