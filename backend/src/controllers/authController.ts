@@ -10,50 +10,50 @@ import nodemailer from 'nodemailer';
 
 
 
-const createUser = async (req: Request, res: Response) => {
-    const user = req.body;
+// const createUser = async (req: Request, res: Response) => {
+//     const user = req.body;
 
-    try {
-        // Check if the user already exists
-        await admin.auth().getUserByEmail(user.email);
-        // If user exists, return a 400 response
-        return res.status(400).json({ message: 'Email already registered' });
-    } catch (error: any) {
-        // Handle the error if the user does not exist
-        if (error.code === 'auth/user-not-found') {
-            try {
-                // Create a new user using Firebase Admin SDK
-                const userRecord = await admin.auth().createUser({
-                    email: user.email,
-                    emailVerified: false,
-                    password: user.password,
-                    disabled: false
-                });
+//     try {
+//         // Check if the user already exists
+//         // await admin.auth().getUserByEmail(user.email);
+//         // If user exists, return a 400 response
+//         // return res.status(400).json({ message: 'Email already registered' });
+//     } catch (error: any) {
+//         // Handle the error if the user does not exist
+//         if (error.code === 'auth/user-not-found') {
+//             try {
+//                 // Create a new user using Firebase Admin SDK
+//                 const userRecord = await admin.auth().createUser({
+//                     email: user.email,
+//                     emailVerified: false,
+//                     password: user.password,
+//                     disabled: false
+//                 });
 
-                // Create a new user document in your database (e.g., MongoDB)
-                const newUser = new User({
-                    username: user.username,
-                    email: user.email,
-                    password: CryptoTs.AES.encrypt(user.password, process.env.JWT_SECRET).toString(),
-                    userType: 'Client'
-                });
+//                 // Create a new user document in your database (e.g., MongoDB)
+//                 const newUser = new User({
+//                     username: user.username,
+//                     email: user.email,
+//                     password: CryptoTs.AES.encrypt(user.password, process.env.JWT_SECRET).toString(),
+//                     userType: 'Client'
+//                 });
                 
-                await newUser.save(); // Save the new user document to the database
+//                 await newUser.save(); // Save the new user document to the database
 
-                // Return a success response
-                return res.status(201).json({ message: 'User created successfully' });
-            } catch (createUserError: any) {
-                // Handle errors that occur during user creation
-                console.error('Error creating user:', createUserError);
-                return res.status(500).json({ status: false, error: 'Error creating a user' });
-            }
-        } else {
-            // Handle other errors
-            console.error('Unknown error:', error);
-            return res.status(500).json({ status: false, error: 'Unknown error occurred' });
-        }
-    }
-};
+//                 // Return a success response
+//                 return res.status(201).json({ message: 'User created successfully' });
+//             } catch (createUserError: any) {
+//                 // Handle errors that occur during user creation
+//                 console.error('Error creating user:', createUserError);
+//                 return res.status(500).json({ status: false, error: 'Error creating a user' });
+//             }
+//         } else {
+//             // Handle other errors
+//             console.error('Unknown error:', error);
+//             return res.status(500).json({ status: false, error: 'Unknown error occurred' });
+//         }
+//     }
+// };
 
 // Controller function for user login
 const loguser = async (req: Request, res: Response) => {
@@ -270,4 +270,4 @@ export const resetPassword = async (req: Request, res: Response) => {
 
 
 
-    export default { createUser,loginUser,loguser,forgotPassword,resetPassword}
+    export default { loginUser,loguser,forgotPassword,resetPassword}

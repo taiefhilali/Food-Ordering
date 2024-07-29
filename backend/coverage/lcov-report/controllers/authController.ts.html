@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.41% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>59/101</span>
+                <span class='fraction'>51/85</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.84% </span>
+                <span class="strong">35.29% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/19</span>
+                <span class='fraction'>6/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.81% </span>
+                <span class="strong">77.77% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>9/11</span>
+                <span class='fraction'>7/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">56.04% </span>
+                <span class="strong">57.89% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>51/91</span>
+                <span class='fraction'>44/76</span>
             </div>
         
             
@@ -347,20 +347,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -368,26 +354,40 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -619,50 +619,50 @@ import nodemailer from 'nodemailer';
 &nbsp;
 &nbsp;
 &nbsp;
-const createUser = async (req: Request, res: Response) =&gt; {
-    const user = req.body;
+// const createUser = async (req: Request, res: Response) =&gt; {
+//     const user = req.body;
 &nbsp;
-    try {
-        // Check if the user already exists
-        await admin.auth().getUserByEmail(user.email);
-        // If user exists, return a 400 response
-<span class="cstat-no" title="statement not covered" >        return res.status(400).json({ message: 'Email already registered' });</span>
-    } catch (error: any) {
-        // Handle the error if the user does not exist
-        <span class="missing-if-branch" title="if path not taken" >I</span>if (error.code === 'auth/user-not-found') {
-<span class="cstat-no" title="statement not covered" >            try {</span>
-                // Create a new user using Firebase Admin SDK
-                const userRecord = <span class="cstat-no" title="statement not covered" >await admin.auth().createUser({</span>
-                    email: user.email,
-                    emailVerified: false,
-                    password: user.password,
-                    disabled: false
-                });
+//     try {
+//         // Check if the user already exists
+//         // await admin.auth().getUserByEmail(user.email);
+//         // If user exists, return a 400 response
+//         // return res.status(400).json({ message: 'Email already registered' });
+//     } catch (error: any) {
+//         // Handle the error if the user does not exist
+//         if (error.code === 'auth/user-not-found') {
+//             try {
+//                 // Create a new user using Firebase Admin SDK
+//                 const userRecord = await admin.auth().createUser({
+//                     email: user.email,
+//                     emailVerified: false,
+//                     password: user.password,
+//                     disabled: false
+//                 });
 &nbsp;
-                // Create a new user document in your database (e.g., MongoDB)
-                const newUser = <span class="cstat-no" title="statement not covered" >new User({</span>
-                    username: user.username,
-                    email: user.email,
-                    password: CryptoTs.AES.encrypt(user.password, process.env.JWT_SECRET).toString(),
-                    userType: 'Client'
-                });
+//                 // Create a new user document in your database (e.g., MongoDB)
+//                 const newUser = new User({
+//                     username: user.username,
+//                     email: user.email,
+//                     password: CryptoTs.AES.encrypt(user.password, process.env.JWT_SECRET).toString(),
+//                     userType: 'Client'
+//                 });
                 
-<span class="cstat-no" title="statement not covered" >                await newUser.save(); </span>// Save the new user document to the database
+//                 await newUser.save(); // Save the new user document to the database
 &nbsp;
-                // Return a success response
-<span class="cstat-no" title="statement not covered" >                return res.status(201).json({ message: 'User created successfully' });</span>
-            } catch (createUserError: any) {
-                // Handle errors that occur during user creation
-<span class="cstat-no" title="statement not covered" >                console.error('Error creating user:', createUserError);</span>
-<span class="cstat-no" title="statement not covered" >                return res.status(500).json({ status: false, error: 'Error creating a user' });</span>
-            }
-        } else {
-            // Handle other errors
-            console.error('Unknown error:', error);
-            return res.status(500).json({ status: false, error: 'Unknown error occurred' });
-        }
-    }
-};
+//                 // Return a success response
+//                 return res.status(201).json({ message: 'User created successfully' });
+//             } catch (createUserError: any) {
+//                 // Handle errors that occur during user creation
+//                 console.error('Error creating user:', createUserError);
+//                 return res.status(500).json({ status: false, error: 'Error creating a user' });
+//             }
+//         } else {
+//             // Handle other errors
+//             console.error('Unknown error:', error);
+//             return res.status(500).json({ status: false, error: 'Unknown error occurred' });
+//         }
+//     }
+// };
 &nbsp;
 // Controller function for user login
 const loguser = async (req: Request, res: Response) =&gt; {
@@ -879,14 +879,14 @@ export const resetPassword = async (req: Request, res: Response) =&gt; {
 &nbsp;
 &nbsp;
 &nbsp;
-    export default { createUser,loginUser,loguser,forgotPassword,resetPassword}</pre></td></tr></table></pre>
+    export default { loginUser,loguser,forgotPassword,resetPassword}</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-29T14:12:58.203Z
+                at 2024-07-29T14:24:28.366Z
             </div>
         <script src="../prettify.js"></script>
         <script>
