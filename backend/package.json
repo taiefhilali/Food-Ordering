@@ -13,7 +13,6 @@
   "publishConfig": {
     "registry": "http://172.10.0.140:8081/repository/repository/"
   },
-
   "jest": {
     "testEnvironment": "node",
     "moduleFileExtensions": [
