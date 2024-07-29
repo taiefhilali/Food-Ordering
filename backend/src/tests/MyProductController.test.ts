@@ -197,7 +197,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import Product from '../../src/models/Product';
 import User from '../../src/models/User';
-import { beforeEach, afterEach, describe, test, expect } from '@jest/globals';
+import { beforeEach, afterEach, describe, test, expect,afterAll } from '@jest/globals';
 
 // Import your controllers
 const { 
@@ -253,7 +253,10 @@ describe('Product Controller', () => {
     // await mongoose.connection.dropDatabase();
     // await mongoose.connection.close();
   }, 10000);
-
+  afterAll(async () => {
+    await mongoose.connection.close();
+  });
+  
   test('should get all products', async () => {
     const response = await request(app).get('/api/my/products');
     expect(response.status).toBe(200);

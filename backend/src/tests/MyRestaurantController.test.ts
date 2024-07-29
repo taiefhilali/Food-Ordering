@@ -5,7 +5,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import Restaurant from '../models/Restaurant';
 import restaurantController from './../controllers/MyRestaurantController'; // Adjust path if necessary
-import { describe, beforeEach, afterEach, test, expect } from '@jest/globals';
+import { describe, beforeEach, afterEach, test, expect,afterAll } from '@jest/globals';
 import multer from 'multer';
 import myRestaurantRoute from './../routes/MyRestaurantRoute'; // Ensure this path is correct
 // Set up the Express app and routes for testing
@@ -41,7 +41,8 @@ describe('Restaurant Controller', () => {
     afterEach(() => {
         sandbox.restore();
     });
-
+ 
+      
 //     test('createMyRestaurant should handle errors correctly', async () => {
 //        // Stub the Restaurant model's save method to reject with an error
 //        sandbox.stub(Restaurant.prototype, 'save').rejects(new Error('Save failed'));

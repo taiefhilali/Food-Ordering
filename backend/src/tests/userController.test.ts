@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import bcrypt from 'bcrypt';
 import User from '../models/User';
 import userController from './../controllers/MyUserController';
-import { describe, beforeEach, afterEach, test, expect } from '@jest/globals';
+import { describe, beforeEach, afterEach, test, expect,afterAll } from '@jest/globals';
 
 // Set up the Express app and routes for testing
 const app = express();

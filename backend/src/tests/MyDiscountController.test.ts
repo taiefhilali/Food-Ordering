@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import { describe, beforeEach, afterEach, test, expect } from '@jest/globals';
+import { describe, beforeEach, afterEach, test, expect,afterAll } from '@jest/globals';
 import Discount from '../../src/models/Discount';
 import Restaurant from '../../src/models/Restaurant';
 import discountRoutes from '../../src/routes/DiscountRoute'; // Adjust the path as necessary
@@ -44,9 +44,10 @@ beforeEach(async () => {
   ]);
 });
 
+
 afterEach(async () => {
 //   await mongoose.connection.db.dropDatabase();
-//   await mongoose.connection.close();
+   await mongoose.connection.close();
 });
 
 describe('Discount Controller', () => {

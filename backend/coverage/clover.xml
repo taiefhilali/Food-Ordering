@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1722263068460" clover="3.2.0">
-  <project timestamp="1722263068460" name="All files">
+<coverage generated="1722264530240" clover="3.2.0">
+  <project timestamp="1722264530240" name="All files">
     <metrics statements="715" coveredstatements="336" conditionals="97" coveredconditionals="14" methods="132" coveredmethods="51" elements="944" coveredelements="401" complexity="0" loc="715" ncloc="715" packages="4" files="17" classes="17"/>
     <package name="controllers">
       <metrics statements="573" coveredstatements="226" conditionals="71" coveredconditionals="10" methods="116" coveredmethods="45"/>
@@ -696,19 +696,19 @@
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="12" count="1" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="14" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
-        <line num="27" count="1" type="stmt"/>
-        <line num="30" count="1" type="stmt"/>
-        <line num="33" count="1" type="stmt"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="42" count="1" type="stmt"/>
-        <line num="43" count="1" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
       </file>
       <file name="DiscountRoute.ts" path="C:\Users\msi\Desktop\Food-Ordering\backend\src\routes\DiscountRoute.ts">
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>

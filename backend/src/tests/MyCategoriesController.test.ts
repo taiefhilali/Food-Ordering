@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import { describe, beforeEach, afterEach, test, expect, jest } from '@jest/globals';
+import { describe, beforeEach, afterEach, test, expect, jest,afterAll } from '@jest/globals';
 import Category from '../../src/models/Category';
 import categoryRoutes from '../routes/CategoriesRoute';
 import jwt from 'jsonwebtoken';
@@ -30,7 +30,8 @@ describe('Category Controller', () => {
       process.env.JWT_SECRET || 'default_secret',
       { expiresIn: '365d' }
     );
-
+  
+    
     // Seed the database with test data
     await Category.create([
       { title: 'Category 1', value: 'category_1', user: new mongoose.Types.ObjectId() },
@@ -40,7 +41,7 @@ describe('Category Controller', () => {
 
   afterEach(async () => {
     // await mongoose.connection.db.dropDatabase();
-    // await mongoose.connection.close();
+    await mongoose.connection.close();
   });
 
   test('should get all categories', async () => {
