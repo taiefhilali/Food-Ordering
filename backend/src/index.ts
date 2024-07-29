@@ -69,11 +69,11 @@ const MODEL_NAME = "models/text-bison-001";
 const API_KEY = "AIzaSyBSlbF1pZtkBsVS_em2bMONJB5kMDYZImI";
 
 //firebase configuration
-const admin = require('firebase-admin');
-const serviceAccount = require('../firebaseprivkey.json');
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-})
+// import firebase from 'firebase-admin';
+// const serviceAccount = require('../firebaseprivkey.json');
+// firebase.initializeApp({
+//   credential: firebase.credential.cert(serviceAccount)
+// })
 
 
 const app = express();
