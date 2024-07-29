@@ -8,7 +8,7 @@
     "test": "jest --detectOpenHandles",
     "test:category": "jest --testPathPattern=src/tests/MyCategoriesController.test.ts",
     "test:auth": "jest --testPathPattern=src/tests/AuthController.test.ts",
-    "test:discount": "jest --testPathPattern=src/tests/MyDiscountController.test.ts",
+    "test:discount": "jest --testPathPattern=src/tests/MyDiscountController.test.ts"
   },
   "jest": {
     "testEnvironment": "node",
