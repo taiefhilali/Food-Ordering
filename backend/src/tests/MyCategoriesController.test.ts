@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import { describe, beforeEach, afterEach, test, expect, jest } from '@jest/globals';
 import Category from '../../src/models/Category';
-import categoryRoutes from '../../src/routes/CategoriesRoute'; 
+import categoryRoutes from '../routes/CategoriesRoute';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YTY1OTBmNDAxODI4YjQxMWMyNDJhOCIsInVzZXJUeXBlIjoiQWRtaW4iLCJlbWFpbCI6ImJvYnRhaWVmQGdtYWlsLmNvbSIsImlhdCI6MTcyMjE3NzgzNSwiZXhwIjoxNzI2NDk3ODM1fQ.NPu7UWwOoP8HBHh-szN9f_a3-OxCI9SgVY9MV-ZJsvA'; // Replace with your actual static token
