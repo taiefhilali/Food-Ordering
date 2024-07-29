@@ -26,7 +26,7 @@ beforeEach(async () => {
     {
       couponCode: 'DISCOUNT11',
       discount: 0.1,
-      expirationDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      expirationDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
       restaurantName: restaurant._id // Use the actual restaurant ID
     },
     {
