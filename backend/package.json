@@ -10,7 +10,7 @@
     "test:auth": "jest --testPathPattern=src/tests/AuthController.test.ts",
     "test:discount": "jest --testPathPattern=src/tests/MyDiscountController.test.ts"
   },
-  "publishConfig":{
+  "publishConfig": {
     "registry": "http://172.10.0.140:8081/repository/repository/"
   },
   "jest": {
