@@ -9,10 +9,6 @@
     "test:category": "jest --testPathPattern=src/tests/MyCategoriesController.test.ts",
     "test:auth": "jest --testPathPattern=src/tests/AuthController.test.ts",
     "test:discount": "jest --testPathPattern=src/tests/MyDiscountController.test.ts",
-    "sonar:scan": "sonar-scanner -Dsonar.projectKey=quickbite -Dsonar.sources=. -Dsonar.host.url=http://172.10.0.140:9000 -Dsonar.login=94c827b954a1fe2b61f538e957dd08415be6ed35"
-
-
-
   },
   "jest": {
     "testEnvironment": "node",
@@ -90,6 +86,7 @@
     "@types/uuid": "^10.0.0",
     "jest": "^29.7.0",
     "sinon": "^18.0.0",
+    "sonarqube-scanner": "^4.0.1",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.3"
   }

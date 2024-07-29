@@ -1,0 +1,1 @@
+ 2webXhr,coverage/lcov-report/models/Category.ts.html

@@ -1,0 +1,1 @@
+ 2webXÙhr;coverage/lcov-report/controllers/CategoryController.ts.html

@@ -1,0 +1,1 @@
+F 2tsX4hr#src/controllers/QrCodeController.ts

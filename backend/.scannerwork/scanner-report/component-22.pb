@@ -1,0 +1,1 @@
+ 2webXæhr+coverage/lcov-report/models/Product.ts.html

@@ -1,0 +1,44 @@
+SonarQube plugins:
+  - Python Code Quality and Security 3.4.1.8066 (python)
+  - CSS Code Quality and Security 1.4.2.2002 (cssfamily)
+  - Go Code Quality and Security 1.8.3.2219 (go)
+  - JaCoCo 1.1.1.1157 (jacoco)
+  - Kotlin Code Quality and Security 1.8.3.2219 (kotlin)
+  - JavaScript/TypeScript Code Quality and Security 7.4.4.15624 (javascript)
+  - Ruby Code Quality and Security 1.8.3.2219 (ruby)
+  - Scala Code Quality and Security 1.8.3.2219 (sonarscala)
+  - C# Code Quality and Security 8.22.0.31243 (csharp)
+  - Java Code Quality and Security 6.15.1.26025 (java)
+  - HTML Code Quality and Security 3.4.0.2754 (web)
+  - Flex Code Quality and Security 2.6.1.2564 (flex)
+  - XML Code Quality and Security 2.2.0.2973 (xml)
+  - PHP Code Quality and Security 3.17.0.7439 (php)
+  - VB.NET Code Quality and Security 8.22.0.31243 (vbnet)
+Global server settings:
+  - sonar.core.id=BF41A1F2-AZD-e62Ep7HN58rc_6rA
+  - sonar.core.startTime=2024-07-29T12:33:53+0000
+  - sonar.forceAuthentication=true
+Project server settings:
+Project scanner properties:
+  - sonar.exclusions=node_modules/**,bower_components/**,jspm_packages/**,typings/**,lib-cov/**
+  - sonar.host.url=http://172.10.0.140:9000
+  - sonar.javascript.lcov.reportPaths=coverage/lcov.info
+  - sonar.login=******
+  - sonar.projectBaseDir=C:\Users\msi\Desktop\Food-Ordering\backend
+  - sonar.projectKey=quickbite
+  - sonar.projectName=QuickBite
+  - sonar.projectVersion=1.0
+  - sonar.scanner.apiBaseUrl=http://172.10.0.140:9000/api/v2
+  - sonar.scanner.app=ScannerNpm
+  - sonar.scanner.appVersion=4.0.1
+  - sonar.scanner.arch=x64
+  - sonar.scanner.bootstrapStartTime=1722280032994
+  - sonar.scanner.internal.isSonarCloud=false
+  - sonar.scanner.os=win32
+  - sonar.scanner.wasEngineCacheHit=false
+  - sonar.scanner.wasJreCacheHit=disabled
+  - sonar.sourceEncoding=UTF-8
+  - sonar.sources=.
+  - sonar.userHome=C:\Users\msi\.sonar
+  - sonar.verbose=true
+  - sonar.working.directory=C:\Users\msi\Desktop\Food-Ordering\backend\.scannerwork

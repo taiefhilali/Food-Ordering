@@ -1,0 +1,1 @@
+ 2webX‚hr,coverage/lcov-report/models/Discount.ts.html

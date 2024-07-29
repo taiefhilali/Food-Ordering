@@ -1,0 +1,1 @@
+ 2webXÍhr3coverage/lcov-report/routes/CategoriesRoute.ts.html
