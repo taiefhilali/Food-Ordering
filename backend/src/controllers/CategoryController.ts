@@ -168,6 +168,6 @@ const getDistinctCategories = async (req: Request, res: Response) => {
       res.status(500).json({ error: 'Failed to fetch categories' });
     }
   }
-module.exports = {
+  export default {
     createCategory,getDistinctCategories, updateCategory, deleteCategory, getAllCategories, patchCategoryImage,getRandomCategories,categoriesByUserId
 }

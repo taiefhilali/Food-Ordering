@@ -2,14 +2,9 @@ import multer from "multer";
 
 const express = require('express');
 const router = express.Router();
-const {
-    createCategory,
-    updateCategory,
-    deleteCategory,
-    getAllCategories,
-    patchCategoryImage,
-    getRandomCategories,getDistinctCategories,categoriesByUserId
-} = require('../controllers/categoryController');
+import  CategoryController from '../controllers/CategoryController';
+
+
 const {verifyToken, verifyAdmin,verifyVendor} = require('../middleware/verifyToken')
 const storage = multer.memoryStorage();
 
@@ -21,26 +16,26 @@ const upload = multer({
 });
 
 // Route to create a new category
- router.post('/',verifyToken, verifyVendor, upload.single("imageFile"), createCategory);
+ router.post('/',verifyToken, verifyVendor, upload.single("imageFile"), CategoryController.createCategory);
 //  router.post('/', upload.single("imageFile"), createCategory);
 
-router.get('/all', categoriesByUserId);
+router.get('/all',CategoryController. categoriesByUserId);
 
 // Route to update a category by ID
-router.put('/:id',verifyToken,verifyAdmin, updateCategory);
+router.put('/:id',verifyToken,verifyAdmin, CategoryController.updateCategory);
 
 // Route to delete a category by ID
-router.delete('/:id',verifyToken,verifyVendor, deleteCategory);
+router.delete('/:id',verifyToken,verifyVendor, CategoryController.deleteCategory);
 
 // Route to get all categories
-router.get('/',getAllCategories);
+router.get('/',CategoryController.getAllCategories);
 
 // Route to update category image by ID
-router.post('/image/:id',verifyToken,verifyAdmin, patchCategoryImage);
+router.post('/image/:id',verifyToken,verifyAdmin, CategoryController.patchCategoryImage);
 
 // Route to get random categories
-router.get('/random',getRandomCategories);
-router.get('/categories', getDistinctCategories);
+router.get('/random',CategoryController.getRandomCategories);
+router.get('/categories',CategoryController.getDistinctCategories);
 
 
 export default router;
