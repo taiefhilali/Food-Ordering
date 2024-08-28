@@ -5,6 +5,7 @@ import mongoose, { model } from 'mongoose';
 import { title } from "process";
 import stripe from 'stripe';
 import User from '../models/User';
+import { io } from './../index' 
 
 // interface CartItem {
 //   quantity: number;
@@ -679,66 +680,106 @@ const updateCartItemQuantity = async (req: Request, res: Response) => {
 //   }
 // }
 const payment = async (req: Request, res: Response) => {
-  try {
-    const { totalPrice } = req.body;
-
-    if (!totalPrice) {
-      return res.status(400).json({ status: false, message: 'Invalid amount' });
+    try {
+      const { totalPrice } = req.body;
+  
+      if (!totalPrice) {
+        return res.status(400).json({ status: false, message: 'Invalid amount' });
+      }
+  
+      // Create a PaymentIntent with Stripe
+      const paymentIntent = await stripeClient.paymentIntents.create({
+        amount: Math.round(Number(totalPrice) * 100), // Convert to cents
+        currency: 'usd',
+      });
+  
+      // Check if the PaymentIntent was successful
+      if (paymentIntent.status === 'succeeded') {
+        // Emit event after payment is successful
+        io.emit('paymentSuccess', {
+          message: 'Payment Successful!',
+          orderDetails: {
+            userId: (req as any).user.id, // Assuming user info is available in req.user
+            amount: paymentIntent.amount,
+            date: new Date(),
+          },
+        });
+      }
+  
+      // Respond with the client_secret for the PaymentIntent
+      return res.status(200).json({ 
+        status: true, 
+        client_secret: paymentIntent.client_secret 
+      });
+    } catch (error) {
+      console.error('Payment Error:', error);
+      return res.status(500).json({ 
+        status: false, 
+        message: 'Error in payment' 
+      });
     }
-
-    const paymentIntent = await stripeClient.paymentIntents.create({
-      amount: Number(totalPrice),
-      currency: 'usd',
-    
-    });
-
-    res.status(200).json({ status: true, client_secret: paymentIntent.client_secret });
-  } catch (error) {
-    console.error('Payment Error:', error);
-    res.status(500).json({ status: false, message: 'Error in payment' });
-  }
-  // const userId = (req as any).user.id; // Extract user ID from request
-  // const { token, amount } = req.body; // Extract data from request body
-
+  
+  
   // try {
-  //   // Create a charge using Stripe
-  //   const charge = await stripeClient.charges.create({
-  //     amount: amount * 100, // Amount in cents
+  //   const { totalPrice } = req.body;
+
+  //   if (!totalPrice) {
+  //     return res.status(400).json({ status: false, message: 'Invalid amount' });
+  //   }
+
+  //   const paymentIntent = await stripeClient.paymentIntents.create({
+  //     amount: Number(totalPrice),
   //     currency: 'usd',
-  //     source: token,
-  //     description: `Charge for user ${userId}`,
+    
   //   });
 
-  //   if (charge.status === 'succeeded') {
-  //     // Clear the cart after successful payment
-  //     await Cart.findOneAndDelete({ user: userId });
-      
-  //     // Display the cart with amount and user details
-  //     const user = await User.findById(userId);
-  //     const cart = await Cart.findOne({ user: userId });
-
-  //     if (!user) {
-  //       return res.status(404).json({ error: 'User not found' });
-  //     }
-
-  //     const totalAmount = cart ? cart.items.reduce((sum, item) => sum + item.totalPrice, 0) : 0;
-
-  //     res.status(200).json({
-  //       user: {
-  //         id: user._id,
-  //         name: user.username,
-  //         email: user.email,
-  //       },
-  //       cart: cart ? cart.items : [],
-  //       totalAmount,
-  //     });
-  //   } else {
-  //     res.status(400).json({ error: 'Payment failed' });
-  //   }
+  //   res.status(200).json({ status: true, client_secret: paymentIntent.client_secret });
   // } catch (error) {
-  //   console.error('Error processing payment:', error);
-  //   res.status(500).json({ error: 'Internal server error' });
+  //   console.error('Payment Error:', error);
+  //   res.status(500).json({ status: false, message: 'Error in payment' });
   // }
+  // // const userId = (req as any).user.id; // Extract user ID from request
+  // // const { token, amount } = req.body; // Extract data from request body
+
+  // // try {
+  // //   // Create a charge using Stripe
+  // //   const charge = await stripeClient.charges.create({
+  // //     amount: amount * 100, // Amount in cents
+  // //     currency: 'usd',
+  // //     source: token,
+  // //     description: `Charge for user ${userId}`,
+  // //   });
+
+  // //   if (charge.status === 'succeeded') {
+  // //     // Clear the cart after successful payment
+  // //     await Cart.findOneAndDelete({ user: userId });
+      
+  // //     // Display the cart with amount and user details
+  // //     const user = await User.findById(userId);
+  // //     const cart = await Cart.findOne({ user: userId });
+
+  // //     if (!user) {
+  // //       return res.status(404).json({ error: 'User not found' });
+  // //     }
+
+  // //     const totalAmount = cart ? cart.items.reduce((sum, item) => sum + item.totalPrice, 0) : 0;
+
+  // //     res.status(200).json({
+  // //       user: {
+  // //         id: user._id,
+  // //         name: user.username,
+  // //         email: user.email,
+  // //       },
+  // //       cart: cart ? cart.items : [],
+  // //       totalAmount,
+  // //     });
+  // //   } else {
+  // //     res.status(400).json({ error: 'Payment failed' });
+  // //   }
+  // // } catch (error) {
+  // //   console.error('Error processing payment:', error);
+  // //   res.status(500).json({ error: 'Internal server error' });
+  // // }
 };
 
 // Fetch cart and display with amount and user details after payment

@@ -69,16 +69,15 @@ const MODEL_NAME = "models/text-bison-001";
 const API_KEY = "AIzaSyBSlbF1pZtkBsVS_em2bMONJB5kMDYZImI";
 
 //firebase configuration
-// import firebase from 'firebase-admin';
-// const serviceAccount = require('../firebaseprivkey.json');
-// firebase.initializeApp({
-//   credential: firebase.credential.cert(serviceAccount)
-// })
-
+import firebase from 'firebase-admin';
+const serviceAccount = require('../service.json');
+firebase.initializeApp({
+  credential: firebase.credential.cert(serviceAccount)
+})
 
 const app = express();
 const server = http.createServer(app);
-const io = require('socket.io')(server, {
+export const io = require('socket.io')(server, {
   cors: {
     origin: 'http://localhost:3000', // Replace with your frontend URL during development
     methods: ['GET', 'POST'],

@@ -53,6 +53,9 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
                 },
             });
             setCategories(response.data);
+            console.log('=============response.data=======================');
+            console.log(response.data);
+            console.log('====================================');
         } catch (error) {
             console.error('Error fetching categories:', error);
         }
@@ -74,6 +77,7 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
 
             const response = await axios.post('http://localhost:7000/api/my/categories', formData, {
                 params: { userId },
+                data:formData,
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',

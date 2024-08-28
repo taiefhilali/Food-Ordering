@@ -1,13 +1,10 @@
 import Category from '../models/Category'
 import { Request, Response, response } from "express"
 import multer from "multer";
-import { title } from "process";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
 
 // Multer setup for image upload
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 
 // Controller function to create a category with image upload
  const createCategory= async (req: Request, res: Response) => {
@@ -63,6 +60,9 @@ const updateCategory = async (req: Request, res: Response) => {
 const uploadimage = async (file: Express.Multer.File) => {
     const image = file;
     const base64Image = Buffer.from(image.buffer).toString("base64");
+    console.log('====================================');
+    console.log(base64Image);
+    console.log('====================================');
     const dataURL = `data:${image.mimetype};base64,${base64Image}`;
     const uploadResponse = await cloudinary.v2.uploader.upload(dataURL);
     return uploadResponse.url;

@@ -7,19 +7,15 @@ import  CategoryController from '../controllers/CategoryController';
 
 const {verifyToken, verifyAdmin,verifyVendor} = require('../middleware/verifyToken')
 const storage = multer.memoryStorage();
-
 const upload = multer({
   storage: storage,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
-  },
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
 });
-
 // Route to create a new category
- router.post('/',verifyToken, verifyVendor, upload.single("imageFile"), CategoryController.createCategory);
+router.post('/', verifyToken, verifyVendor, upload.single("imageFile"), CategoryController.createCategory);
 //  router.post('/', upload.single("imageFile"), createCategory);
 
-router.get('/all',CategoryController. categoriesByUserId);
+router.get('/all',verifyToken,verifyVendor,CategoryController. categoriesByUserId);
 
 // Route to update a category by ID
 router.put('/:id',verifyToken,verifyAdmin, CategoryController.updateCategory);
