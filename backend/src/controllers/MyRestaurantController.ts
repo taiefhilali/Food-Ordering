@@ -333,5 +333,13 @@ const getRestaurantbyName=async (req:Request, res:Response) => {
     res.status(500).json({ error: 'Server error' });
   }
 }
-
-export default { createMyRestaurant,LikeRestaurant, searchRestaurantByName,getMyRestaurant,getRestaurantbyName, updateMyRestaurant, getAllRestaurantbyUser,getAllRestaurant, getCuisinesStat,toggleRestaurantApproval };
+const restaurantsbyspcuser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const restaurants = await Restaurant.find({ user: userId });
+    res.json(restaurants);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching restaurants', error });
+  }
+  }
+export default { createMyRestaurant,LikeRestaurant, searchRestaurantByName,getMyRestaurant,getRestaurantbyName, updateMyRestaurant, getAllRestaurantbyUser,getAllRestaurant, getCuisinesStat,toggleRestaurantApproval,restaurantsbyspcuser };

@@ -31,7 +31,7 @@ import UnauthorizedPage from './components/UnauthorizedPage'
 import AddCategoryForm from './forms/manage-category-form/AddCategoryForm'
 import OrdersList from './pages/Orders/OrdersDisplay'
 import RestaurantTable from './pages/Restaurant/RestaurantTable'
-import UsersDisplay from './components/Authentication/usersDisplay'
+import UsersDisplay from './components/Authentication/AdminsDisplay'
 import { BrowserRouter as Router } from 'react-router-dom';
 import UserDisplayTest from './pages/Users/userDisplayTest'
 import StockComponent from './components/Products/StockComponent'
@@ -42,6 +42,9 @@ import ChatComponent from './components/Chat/ChatComponent'
 import AddCouponCode from './pages/Discount/AddCouponCode'
 import CouponList from './pages/Discount/CouponList'
 import OrderDetails from './pages/Orders/OrderDetails'
+import AdminsDisplay from './components/Authentication/AdminsDisplay'
+import ClientsDisplay from './components/Authentication/ClientsDisplay'
+import VendorsDisplay from './components/Authentication/VendorsDisplay'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -305,10 +308,26 @@ const AppRoutes = () => {
       />
 
       <Route
-        path="/allusers"
+        path="/admins"
         element={
           <>
-            <UsersDisplay />
+            <AdminsDisplay />
+          </>
+        }
+      />
+      <Route
+        path="/clients"
+        element={
+          <>
+            <ClientsDisplay />
+          </>
+        }
+      />
+      <Route
+        path="/vendors"
+        element={
+          <>
+            <VendorsDisplay />
           </>
         }
       />

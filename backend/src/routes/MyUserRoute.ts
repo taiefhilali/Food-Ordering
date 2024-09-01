@@ -17,7 +17,14 @@ const upload = multer({
 
 router.post("/", MyUserController.registerUser);
 router.get('/users',verifyToken,verifyVendor,MyUserController.getAllUsers);
+// Route to get all Admins
+router.get('/admins', MyUserController.getAllAdmins);
 
+// Route to get all Clients
+router.get('/clients', MyUserController.getAllClients);
+
+// Route to get all Vendors
+router.get('/vendors',MyUserController.getAllVendors);
 // Register endpoint (for user registration)
 router.post('/register',verifyToken, verifyUserType, upload.single("imageFile"), MyUserController.registerUser);
 router.post("/login", verifyToken, verifyUserType, MyUserController.loginUser);
@@ -43,5 +50,6 @@ router.delete("/delete/:id",verifyToken,verifyVendor, MyUserController.deleteUse
 router.put("/update/:id",verifyToken,verifyVendor, MyUserController.updateUser);
 router.post('/uploadProfilePicture/:userId', verifyToken,verifyVendor,upload.single('File'),MyUserController.uploadProfilePicture);
 router.put('/block/:id',verifyToken,verifyVendor,MyUserController.blockUser);
+
 
 export default router;

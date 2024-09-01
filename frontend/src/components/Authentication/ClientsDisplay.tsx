@@ -18,7 +18,7 @@ type User = {
   userType: string;
 };
 
-const UserTable: React.FC = () => {
+const ClientsDisplay: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const UserTable: React.FC = () => {
         return;
       }
 
-      const response = await axios.get('http://localhost:7000/api/my/user/users', {
+      const response = await axios.get('http://localhost:7000/api/my/user/clients', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -148,4 +148,4 @@ const UserTable: React.FC = () => {
   );
 };
 
-export default UserTable;
+export default ClientsDisplay;

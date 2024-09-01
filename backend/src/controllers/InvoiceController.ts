@@ -178,7 +178,15 @@ export const generateInvoicePDF = async (invoiceData: { _id: any; createdAt: str
   // Add the title and details
   doc.fontSize(20).text('Invoice', { align: 'center' });
   doc.moveDown();
-  doc.fontSize(14).text(`Date: ${new Date(invoiceData.createdAt).toLocaleDateString()}`, { align: 'right' });
+  doc.fontSize(14).text(`At ${new Date(invoiceData.createdAt).toLocaleString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false, // Use 24-hour time format; set to true for 12-hour format
+})}`, { align: 'right' });
   doc.moveDown(2);
 
   // Table headers
@@ -223,12 +231,12 @@ export const generateInvoicePDF = async (invoiceData: { _id: any; createdAt: str
 
       // Draw item details
       doc.text(item.name, itemColX, positionY + 20, { width: 200 });
-      doc.text(item.quantity, quantityColX, positionY + 20);
+      doc.text(`x ${item.quantity} `, quantityColX, positionY + 20);
       doc.text(`${item.price} dt`, priceColX, positionY + 20);
 
       // Draw a line under each item
       positionY += 80; // Move to the next row
-      doc.moveTo(50, positionY - 15).lineTo(550, positionY - 15).strokeColor('orange').stroke();
+      doc.moveTo(50, positionY - 15).lineTo(550, positionY - 15).strokeColor('black').stroke();
     }
   } else {
     doc.text('No items found.', 50, positionY);

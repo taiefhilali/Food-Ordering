@@ -271,5 +271,36 @@ const blockUser= async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error blocking user' });
   }
 };
+// Controller function to get all Admins
+ const getAllAdmins = async (req: Request, res: Response) => {
+  try {
+    const admins = await User.find({ userType: 'Admin' });
+    res.status(200).json(admins);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching admins', error });
+  }
+};
 
-export default { registerUser, loginUser, getUser, deleteUser,updateUser,uploadProfilePicture,getAllUsers,blockUser};
+// Controller function to get all Clients
+ const getAllClients = async (req: Request, res: Response)=> {
+  try {
+    const clients = await User.find({ userType: 'Client' });
+    res.status(200).json(clients);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching clients', error });
+  }
+};
+
+// Controller function to get all Vendors
+ const getAllVendors = async (req: Request, res: Response) => {
+  try {
+    const vendors = await User.find({ userType: 'Vendor' });
+    res.status(200).json(vendors);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching vendors', error });
+  }
+};
+
+export default { registerUser, loginUser, getUser, deleteUser,updateUser,uploadProfilePicture,getAllUsers,blockUser,getAllAdmins,
+  getAllClients,
+  getAllVendors};

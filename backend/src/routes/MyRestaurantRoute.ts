@@ -28,5 +28,6 @@ router.post('/like/:restaurantId', MyRestaurantController.LikeRestaurant);
 router.patch('/:id/toggle-approval', MyRestaurantController.toggleRestaurantApproval);
 // API endpoint to fetch restaurant data
 router.get('/:id',MyRestaurantController.getCuisinesStat);
-
+// Get all restaurants for a specific user
+router.get('/:userId/restaurants',MyRestaurantController.restaurantsbyspcuser);
 export default router;
