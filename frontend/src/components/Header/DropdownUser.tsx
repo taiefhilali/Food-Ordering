@@ -59,9 +59,7 @@ const DropdownUser = () => {
 
       });
 
-      console.log('====================================');
-      console.log(response.data);
-      console.log('====================================');
+  
     } catch (error) {
       console.error('Error fetching user data:', error);
     }

@@ -52,9 +52,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
           return;
         }
         const { firstname, lastname } = response.data;
-        console.log('================usernamme====================');
-        console.log(response.data);
-        console.log('====================================');
+   
         // Store token and user info in local storage
         localStorage.setItem('firstname', firstname);
         localStorage.setItem('lastname', lastname);

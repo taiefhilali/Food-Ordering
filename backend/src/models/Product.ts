@@ -42,6 +42,7 @@ import mongoose, { Document, Schema, Model } from 'mongoose';
 interface IProduct extends Document {
   name: string;
   description?: string;
+  cost: number; // New attribute
   price: number;
   dishType: 'main' | 'side' | 'beverage' | 'entry' | 'dessert';
   restaurant: mongoose.Schema.Types.ObjectId;
@@ -62,6 +63,7 @@ interface IProduct extends Document {
 const productSchema: Schema<IProduct> = new Schema({
   name: { type: String, required: true },
   description: { type: String },
+  cost: { type: Number, required: true }, // New attribute
   price: { type: Number, required: true },
   dishType: { type: String, enum: ['main', 'side', 'beverage', 'entry', 'dessert'], required: true },
   restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant', required: true },

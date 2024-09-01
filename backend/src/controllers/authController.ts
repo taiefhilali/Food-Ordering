@@ -168,9 +168,7 @@ const loguser = async (req: Request, res: Response) => {
             
                const { email, password ,...others} = existingUser;
                res.status(200).json({...others,userToken});
-               console.log('====================================');
-               console.log(userToken);
-               console.log('====================================');
+           
             } catch (error) {
             console.error('Error logging in:', error);
             res.status(500).json({ message: 'Error logging in' });

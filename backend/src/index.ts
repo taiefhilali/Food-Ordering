@@ -219,10 +219,11 @@ app.get('/auth/google/callback',
     console.log('Google OAuth callback:', req.user); // Log user data
     const userId = (req as any).user._id;
     const token = (req as any).user.token; // Assuming you generate a token for the user
-    console.log('====================================');
-    console.log(token +' '+ userId);
-    console.log('====================================');
+    newFunction();
     res.redirect(`http://localhost:3000/settings?userId=${userId}&token=${token}`);
+
+    function newFunction() {
+    }
   });
   app.get('/api/my/user/:id', async (req: Request, res: Response) => {
     try {
@@ -391,7 +392,48 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
         console.error('Error saving message:', error);
       }
     });
+    socket.on('invoiceSaved', async (data) => {
+      console.log('Invoice saved:', data);
     
+      try {
+        // Save notification to MongoDB
+        const notificationData = new Notification({
+          event: 'invoiceSaved',
+          data: data,
+          timestamp: new Date(),
+        });
+    
+        const savedNotification = await notificationData.save();
+        console.log('Notification saved to MongoDB:', savedNotification);
+        console.log('Notification Data:', notificationData.data);
+
+        // Emit notification to all connected clients
+        io.emit('notifications', savedNotification);  // Emit the actual saved notification
+      } catch (error) {
+        console.error('Error saving notification to MongoDB:');
+      }
+    });
+    socket.on('orderReady', async (data) => {
+      console.log('orderReady event received:', data);
+  
+      try {
+        // Create a new notification document
+        const notificationData = new Notification({
+          event: 'orderReady',
+          data: data,
+          timestamp: new Date(),
+        });
+  
+        // Save the notification to MongoDB
+        const savedNotification = await notificationData.save();
+        console.log('Notification saved to MongoDB:', savedNotification);
+  
+        // Emit the notification to all connected clients
+        io.emit('notifications', savedNotification);
+      } catch (error) {
+        console.error('Error saving notification to MongoDB:', error);
+      }
+    });
   // socket.on('chat message', async (data) => {
   //   try {
   //     // Save message to MongoDB

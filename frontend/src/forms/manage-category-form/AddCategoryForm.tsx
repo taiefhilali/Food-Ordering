@@ -53,9 +53,7 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
                 },
             });
             setCategories(response.data);
-            console.log('=============response.data=======================');
-            console.log(response.data);
-            console.log('====================================');
+  
         } catch (error) {
             console.error('Error fetching categories:', error);
         }

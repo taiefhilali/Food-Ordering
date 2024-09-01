@@ -11,6 +11,12 @@ interface Notification {
   data: {
     name: string;
     imageUrl: string;
+    userId: string;
+    items: Array<{ name: string; price: number; quantity: number; imageUrl: string; totalPrice: number }>;
+    totalAmount: number; // Ensure this matches the data structure
+    discount: number;
+    restaurant: string;
+    createdAt: string;
   };
   timestamp: Date;
   user: string;
@@ -42,10 +48,25 @@ const DropdownNotification: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [notifying, setNotifying] = useState(true);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const trigger = useRef<HTMLAnchorElement>(null);
   const dropdown = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    // Create the audio object and assign it to the ref's current property
+    const audioElement = new Audio('/notification.mp3');
+    audioElement.volume = 0.9; // Set volume (0.0 to 1.0)
+        console.log('Audio element created:', audioElement);
 
+    // Assign the audio element to audioRef.current
+    audioRef.current = audioElement;
+
+    // Cleanup if necessary
+    return () => {
+      audioElement.pause();
+      audioRef.current = null;
+    };
+  }, []);
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
@@ -110,7 +131,14 @@ const DropdownNotification: React.FC = () => {
         ...prevNotifications, // Maintain previous notifications
       ]);
     });
-
+    if (audioRef.current) {
+      console.log('Playing notification sound');
+      audioRef.current.play().catch((error) => {
+        console.error('Error playing notification sound:', error);
+      });
+    } else {
+      console.error('Audio reference is null');
+    }
     // Clean up socket listeners
     return () => {
       socket.off('messages');
@@ -173,6 +201,52 @@ const DropdownNotification: React.FC = () => {
           <ul className="flex h-auto flex-col overflow-y-auto">
             {notifications.map((notification, index) => (
               <li key={index} className="relative">
+                <Link
+                  className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                  to="/display-orders "
+                >
+                  <div className="flex flex-col gap-2">
+                    <div className="text-orange-500 dark:text-white font-extrabold text-base">
+                      📜 New Order
+                    </div>
+                    <div className="text-black dark:text-white font-normal text-base">
+                      {/* Restaurant: {notification.data.restaurant} */}
+                      click to check the order
+                    </div>
+                    <ul className="pl-4 mt-2">
+                      {notification.data.items && notification.data.items.length > 0 && (
+                        <ul className="pl-4 mt-2">
+                          {notification.data.items.map((item, idx) => (
+                            <li key={idx} className="flex items-center gap-2 mb-2">
+                              <img
+                                src={item.imageUrl}
+                                alt={item.name}
+                                className="w-8 h-8 rounded object-cover"
+                              />
+                              <div className="text-sm">
+                                <div className="font-semibold">{item.name}</div>
+                                <div className="text-gray-500 dark:text-gray-400">
+                                  Quantity: {item.quantity} | Price: ${item.price} | Total: ${item.totalPrice}
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                    </ul>
+                    <div className="text-black dark:text-white">
+                      {/* Total Amount: {notification.data.totalAmount}dt */}
+                    </div>
+                    {/* Uncomment if discount information is needed */}
+                    {/* <div className="text-black dark:text-white">
+            Discount: ${notification.data.discount}
+          </div> */}
+                    <div className="text-xs text-gray-600 dark:text-gray-400">
+                      {/* Date: {new Date(notification.timestamp).toLocaleDateString()} */}
+                    </div>
+                  </div>
+                </Link>
                 <Link
                   className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   to="#"

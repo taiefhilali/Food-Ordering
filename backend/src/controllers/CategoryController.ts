@@ -60,9 +60,7 @@ const updateCategory = async (req: Request, res: Response) => {
 const uploadimage = async (file: Express.Multer.File) => {
     const image = file;
     const base64Image = Buffer.from(image.buffer).toString("base64");
-    console.log('====================================');
-    console.log(base64Image);
-    console.log('====================================');
+
     const dataURL = `data:${image.mimetype};base64,${base64Image}`;
     const uploadResponse = await cloudinary.v2.uploader.upload(dataURL);
     return uploadResponse.url;
@@ -161,7 +159,6 @@ const getDistinctCategories = async (req: Request, res: Response) => {
       const categories = await Category.find({ user: userId });
       
       res.json(categories);
-      console.log('====================================',categories); 
 
     } catch (err) {
       console.error('Error fetching categories:', err);

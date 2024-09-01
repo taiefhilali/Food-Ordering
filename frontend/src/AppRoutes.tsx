@@ -41,6 +41,7 @@ import QRCodeGenerator from './pages/QrcodeGenerator/QRCodeGenerator'
 import ChatComponent from './components/Chat/ChatComponent'
 import AddCouponCode from './pages/Discount/AddCouponCode'
 import CouponList from './pages/Discount/CouponList'
+import OrderDetails from './pages/Orders/OrderDetails'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -129,7 +130,8 @@ const AppRoutes = () => {
             path="/display-orders"
             element={<OrdersList />}
           />
-  
+        <Route path="/order-details/:id" element={<OrderDetails />} />
+
       {/* {userType === "Vendor" ? (
         <>
           <Route

@@ -7,7 +7,7 @@ import DarkModeSwitcher from './DarkModeSwitcher';
 import { useState } from 'react';
 import axios from 'axios';
 import { Product } from '@/types/product';
-import ProductCard from '../Products/ProductCard';
+import { Description } from '@radix-ui/react-dialog';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -15,11 +15,13 @@ const Header = (props: {
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]); // Adjust type as per your Product interface
+  console.log(searchTerm);
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await axios.get(`http://localhost:7000/api/my/products/search?name=${searchTerm}`);
+      console.log(response.data); // Check what is being returned here
       setSearchResults(response.data);
     } catch (error) {
       console.error('Error searching products:', error);
@@ -78,7 +80,7 @@ const Header = (props: {
          </Link>
           <div className="p-2">
             <h2 className="text-gray-800 font-semibold text-xs sm:text-sm">{product.name}</h2>
-            <p className="text-gray-600 text-xs">{cription}</p>
+            <p className="text-gray-600 text-xs">{product.description}</p>
             <p className="text-gray-700 text-sm mt-1">{product.price} dt</p>
           </div>
         </div>

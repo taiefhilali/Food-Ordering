@@ -83,7 +83,7 @@ const RestaurantList = () => {
             </div>
             <div className="hidden p-2.5 text-center sm:block xl:p-5">
               <h5 className="text-sm font-medium uppercase xsm:text-base">
-                Actions
+                Details
               </h5>
             </div>
           </div>
@@ -116,7 +116,7 @@ const RestaurantList = () => {
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <Link to={`/manage-restaurant/${restaurant._id}`}>
+                {/* <Link to={`/manage-restaurant/${restaurant._id}`}>
                   <Button
                     variant="contained"
                     color="primary"
@@ -125,7 +125,8 @@ const RestaurantList = () => {
                   >
                     Update
                   </Button>
-                </Link>
+                </Link> */}
+                
               </div>
             </div>
           ))}

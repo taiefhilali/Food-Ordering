@@ -203,9 +203,7 @@ const getAllRestaurant = async (req: Request, res: Response) => {
 const createMyRestaurant = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user.id;
-    console.log('====================================');
-    console.log(userId);
-    console.log('====================================');
+
     const existingRestaurant = await Restaurant.findOne({ user: userId });
 
     // if (existingRestaurant) {

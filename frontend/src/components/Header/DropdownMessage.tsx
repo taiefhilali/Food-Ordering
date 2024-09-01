@@ -22,9 +22,7 @@ const DropdownMessage = () => {
       try {
         const response = await axios.get('http://localhost:7000/api/my/messages/fetch-chat-byusers'); // Adjust endpoint as per your backend route
         setChats(response.data);
-        console.log('======================chat==============');
-        console.log(response.data);
-        console.log('====================================');
+
       } catch (error) {
         console.error('Error fetching chats:', error);
       }

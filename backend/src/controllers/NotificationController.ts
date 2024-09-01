@@ -10,9 +10,7 @@ exports. getNotificationsByUserId = async (req: Request, res: Response) => {
         const Notifications = await Notification.find({ user: userId });
         
         res.json(Notifications);
-        console.log('========ggggg============================');
-        console.log(Notifications);
-        console.log('====================================');
+  
 
       } catch (err) {
         console.error('Error fetching notifications:', err);

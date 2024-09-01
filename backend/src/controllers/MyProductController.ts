@@ -151,9 +151,7 @@ exports.productsByUserId = async (req: Request, res: Response) => {
     const products = await Product.find({ user: userId });
 
     res.json(products);
-    console.log('====================================');
-    console.log(products);
-    console.log('====================================');
+  
   } catch (err) {
     console.error('Error fetching products:', err);
     res.status(500).json({ error: 'Failed to fetch products' });
@@ -168,9 +166,7 @@ exports.productsByRestaurantId = async (req: Request, res: Response) => {
     const products = await Product.find({ restaurant: restaurantId });
 
     res.json(products);
-    console.log('====================================');
-    console.log(products);
-    console.log('====================================');
+
   } catch (err) {
     console.error('Error fetching products:', err);
     res.status(500).json({ error: 'Failed to fetch products' });
