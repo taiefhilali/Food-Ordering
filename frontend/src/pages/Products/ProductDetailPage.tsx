@@ -17,6 +17,7 @@ type Product = {
     name: string;
     description: string;
     price: number;
+    cost: number; // Added cost field
     dishType: string;
     quantity: number;
     imageUrl: string;
@@ -27,6 +28,7 @@ type Product = {
 type ProductDetailPageProps = {
     product: Product; // Use the Product type for the product prop
 };
+
 const customStyles = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: (provided: any) => ({
@@ -59,6 +61,7 @@ const customStyles = {
         },
     }),
 };
+
 // Function component for the ProductDetailPage
 const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialProduct }) => {
     const [product, setProduct] = useState<Product>(initialProduct);
@@ -68,6 +71,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
         name: initialProduct.name,
         description: initialProduct.description,
         price: initialProduct.price,
+        cost: initialProduct.cost, // Added cost to formData
         dishType: initialProduct.dishType,
         quantity: initialProduct.quantity,
         imageUrl: initialProduct.imageUrl,
@@ -90,6 +94,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
 
         fetchCategories();
     }, []);
+
     const dishTypes = [
         { value: '', label: 'Select Dish Type' },
         { value: 'main', label: 'Main' },
@@ -98,10 +103,12 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
         { value: 'entry', label: 'Entry' },
         { value: 'dessert', label: 'Dessert' },
     ];
+
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.value);
         // Additional actions based on selected category can be added here
     };
+
     useEffect(() => {
         setProduct(initialProduct);
         setFormData(initialProduct);
@@ -156,7 +163,13 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
             [name]: value
         }));
     };
-
+    useEffect(() => {
+        setFormData(prevState => ({
+            ...prevState,
+            category: selectedCategory
+        }));
+    }, [selectedCategory]);
+    
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -170,67 +183,115 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
             reader.readAsDataURL(file);
         }
     };
+
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Product Details" />
-
             <div className="container mx-auto mt-5">
-                <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
-                    <div className="md:flex" style={{ marginTop: '2cm', marginBottom: '1cm' }}>
-                        <div className="md:flex-shrink-0">
-                            <img className="h-48 w-full object-cover md:w-48 rounded-full" src={product.imageUrl} alt="Product" />
-                        </div>
-                        <div className="p-8">
-                            <div className="flex items-center justify-between">
-                                {/* <Link to="/" className="text-gray-500 hover:text-gray-700">
-                                    <i className="fa fa-long-arrow-left"></i>
-                                    <span className="ml-1">Back</span>
-                                </Link> */}
-                            </div>
-                            <div className="mt-4">
-                                <h2 className="text-2xl font-bold text-gray-900">{product.name}</h2>
-                                <div className="flex items-center mt-1">
-                                    <span className="text-sm text-gray-600 uppercase">{product.dishType}</span>
+    <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
+        <div className="md:flex" style={{ marginTop: '2cm', marginBottom: '1cm' }}>
+            <div className="md:flex-shrink-0">
+                <img className="h-48 w-full object-cover md:w-48 rounded-full" src={product.imageUrl} alt="Product" />
+            </div>
+            <div className="p-8">
+                <div className="flex items-center justify-between">
+                    {/* <Link to="/" className="text-gray-500 hover:text-gray-700">
+                        <i className="fa fa-long-arrow-left"></i>
+                        <span className="ml-1">Back</span>
+                    </Link> */}
+                </div>
+                <div className="mt-4">
+                    <h2 className="text-2xl font-bold text-gray-900">{product.name}</h2>
+                    <div className="flex items-center mt-1">
+                        <span className="text-sm text-gray-600 uppercase">{product.dishType}</span>
+                    </div>
+                    <div className="mt-2">
+                        <span className="text-xl font-bold text-gray-900">{product.price} dt</span>
+                    </div>
+                    <p className="mt-4 text-gray-600">  <HTMLContent content={product.description} /> </p>
+                    <div className="flex items-center mt-6">
+                        {/* Delete Product Button */}
+                        <button onClick={handleDeleteProduct} className="bg-gray-800 text-black rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-600">
+                            <i className="fa fa-trash"></i>
+                        </button>
+                        {/* Toggle Edit Form Button */}
+                        <button onClick={() => setIsEditing(true)} className="ml-4 bg-gray-800 text-black rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-600">
+                            <i className="fa fa-edit"></i>
+                        </button>
+                    </div>
+                    {/* Update Form */}
+                    {isEditing && (
+                        <form onSubmit={handleUpdateSubmit} className="mt-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-gray-700">Product Name</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                        className="border border-gray-300 p-2 rounded-lg w-full"
+                                    />
                                 </div>
-                                <div className="mt-2">
-                                    <span className="text-xl font-bold text-gray-900">${product.price}</span>
+                                <div>
+                                    <label className="block text-gray-700">Description</label>
+                                    <textarea
+                                        name="description"
+                                        value={formData.description}
+                                        onChange={handleInputChange}
+                                        className="border border-gray-300 p-2 rounded-lg w-full"
+                                    />
                                 </div>
-                                <p className="mt-4 text-gray-600">  <HTMLContent content={product.description} /> </p>
-                                <div className="flex items-center mt-6">
-                                    {/* Delete Product Button */}
-                                    <button onClick={handleDeleteProduct} className="bg-gray-800 text-black rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-600">
-                                        <i className="fa fa-trash"></i>
-                                    </button>
-                                    {/* Toggle Edit Form Button */}
-                                    <button onClick={() => setIsEditing(true)} className="ml-4 bg-gray-800 text-black rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-600">
-                                        <i className="fa fa-edit"></i>
-                                    </button>
+                                <div>
+                                    <label className="block text-gray-700">Price</label>
+                                    <input
+                                        type="number"
+                                        name="price"
+                                        value={formData.price}
+                                        onChange={handleInputChange}
+                                        className="border border-gray-300 p-2 rounded-lg w-full"
+                                    />
                                 </div>
-                                {/* Update Form */}
-                                {isEditing && (
-                                    <div className="mt-4 p-4 bg-gray-100 rounded-md">
-                                        <form onSubmit={handleUpdateSubmit}>
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div className="flex flex-col mb-4">
-                                                    <label htmlFor="name" className="text-sm font-semibold text-gray-700 mb-1">Name</label>
-                                                    <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} className="p-2 border rounded-md" />
-                                                </div>
-                                                <div className="flex flex-col mb-4">
-                                                    <label htmlFor="description" className="text-sm font-semibold text-gray-700 mb-1">Description</label>
-                                                    <input type="text" id="description" name="description" value={formData.description} onChange={handleInputChange} className="p-2 border rounded-md" />
-                                                </div>
-                                                <div className="flex flex-col mb-4">
-                                                    <label htmlFor="price" className="text-sm font-semibold text-gray-700 mb-1">Price</label>
-                                                    <input type="number" id="price" name="price" value={formData.price} onChange={handleInputChange} className="p-2 border rounded-md" />
-                                                </div>
-                                                <div className="flex flex-col mb-4">
-                                                    <label htmlFor="dishType" className="text-sm font-semibold text-gray-700 mb-1">DishType</label>
-                                                    <input type="text" id="dishType" name="dishType" value={formData.dishType} onChange={handleInputChange} className="p-2 border rounded-md" />
-                                                </div>
-                                                <div className="flex flex-col mb-4">
-                                                    <label htmlFor="category" className="text-sm font-semibold text-gray-700 mb-1">Category</label>
-
-                                                    <Select
+                                <div>
+                                    <label className="block text-gray-700">Cost</label>
+                                    <input
+                                        type="number"
+                                        name="cost"
+                                        value={formData.cost}
+                                        onChange={handleInputChange}
+                                        className="border border-gray-300 p-2 rounded-lg w-full"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-gray-700">Quantity</label>
+                                    <input
+                                        type="number"
+                                        name="quantity"
+                                        value={formData.quantity}
+                                        onChange={handleInputChange}
+                                        className="border border-gray-300 p-2 rounded-lg w-full"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-gray-700">Dish Type</label>
+                                    <FormControl fullWidth>
+                                        <InputLabel htmlFor="dishType">Dish Type</InputLabel>
+                                        <Select
+                                            id="dishType"
+                                            name="dishType"
+                                            value={formData.dishType}
+                                            onChange={handleInputChange}
+                                            className="w-full"
+                                        >
+                                            {dishTypes.map(type => (
+                                                <MenuItem key={type.value} value={type.value}>{type.label}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                                <div>
+                                    <label className="block text-gray-700">Category</label>
+                                    <Select
                                                         labelId="category-label"
                                                         id="category"
                                                         value={selectedCategory}
@@ -243,29 +304,32 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
                                                             </MenuItem>
                                                         ))}
                                                     </Select>
-                                                </div>
-                                                <div className="flex flex-col mb-4">
-                                                    <label htmlFor="quantity" className="text-sm font-semibold text-gray-700 mb-1">Quantity</label>
-                                                    <input type="number" id="quantity" name="quantity" value={formData.quantity} onChange={handleInputChange} className="p-2 border rounded-md" />
-                                                </div>
-                                                <div className="flex flex-col mb-4">
-                                                    <label htmlFor="image" className="text-sm font-semibold text-gray-700 mb-1">Image</label>
-                                                    <input type="file" id="image" name="imageFile" accept="image/*" onChange={handleImageChange} className="p-2 border rounded-md" />
-                                                </div>
-                                            </div>
-                                            <button type="submit" className="bg-white border-2 border-orange-500 text-black rounded-md py-3 px-6 mt-4 focus:outline-none focus:ring-2 focus:ring-yellow-600 flex items-center justify-center">
-                                                <span className="font-bold">Save</span>
-                                            </button>
-                                        </form>
-                                    </div>
-                                )}
-
+                                </div>
+                                <div>
+                                    <label className="block text-gray-700">Image</label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                        className="border border-gray-300 p-2 rounded-lg w-full"
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                            <div className="mt-4">
+                                <button type="submit" className="bg-gray-800 text-black rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-gray-600">
+                                    <i className="fa fa-save"></i>
+                                </button>
+                            </div>
+                        </form>
+                    )}
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
         </DefaultLayout>
     );
 };
+
 export default ProductDetailPage;

@@ -110,6 +110,7 @@ const AddProductForm = () => {
     formData.append('name', data.name);
     formData.append('description', data.description);
     formData.append('price', data.price);
+    formData.append('cost', data.cost); 
     formData.append('dishType', data.dishType.value);
     formData.append('quantity', data.quantity);
     formData.append('restaurant', data.restaurant._id);
@@ -230,7 +231,24 @@ const AddProductForm = () => {
                   className="w-full p-2 border rounded-full border-gray-300 focus:outline-none font-medium focus:ring-2 focus:ring-orange-500"
                 /> */}
                 {errors.price && <span className="text-red-500">Price is required</span>}
+              <Controller
+                name="cost"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    type="number"
+                    placeholder="Cost"
+                    fullWidth
+                    required
+                    error={Boolean(errors.cost)}
+                    helperText={errors.cost?.message}
+                  />
+                )}
+              />
               </div>
+              
               <div className="relative">
                 <Controller
                   name="dishType"
