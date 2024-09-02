@@ -165,7 +165,7 @@ const RevenueComponent = () => {
                     </button>
                 </form>
                 {revenue !== null && (
-                    <p className="mt-4">Total Revenue for {selectedRestaurantId}: ${revenue}</p>
+                    <p className="mt-4">Total Revenue for {selectedRestaurantId}: {revenue} dt</p>
                 )}
             </div>
         </div>

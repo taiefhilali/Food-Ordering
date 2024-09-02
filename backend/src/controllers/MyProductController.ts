@@ -362,3 +362,67 @@ exports.diffcostpricestat = async (req: Request, res: Response) => {
     res.status(500).send('Internal Server Error');
   }
 }
+
+exports.RevenuebyCategory = async (req: Request, res: Response) => {
+  try {
+    const results = await Product.aggregate([
+      {
+        $lookup: {
+          from: 'categories', // Collection name for the categories
+          localField: 'category',
+          foreignField: '_id',
+          as: 'categoryDetails'
+        }
+      },
+      {
+        $unwind: '$categoryDetails'
+      },
+      {
+        $group: {
+          _id: '$categoryDetails.value', // Use 'value' field instead of '_id'
+          totalRevenue: { $sum: '$price' }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          category: '$_id',
+          totalRevenue: 1
+        }
+      }
+    ]);
+
+    const categories = results.map(result => result.category);
+    const revenues = results.map(result => result.totalRevenue);
+
+    res.json({ categories, revenue: revenues });
+  } catch (error) {
+    console.error('Error fetching revenue by category:', error);
+    res.status(500).send('Server Error');
+  }
+//   try {
+//     const results = await Product.aggregate([
+//         {
+//             $group: {
+//                 _id: "$category",
+//                 totalRevenue: { $sum: "$price" }
+//             }
+//         },
+//         {
+//             $project: {
+//                 _id: 0,
+//                 category: "$_id",
+//                 totalRevenue: 1
+//             }
+//         }
+//     ]);
+
+//     const categories = results.map(result => result.category);
+//     const revenues = results.map(result => result.totalRevenue);
+
+//     res.json({ categories, revenue: revenues });
+// } catch (error) {
+//     console.error('Error fetching revenue by category:', error);
+//     res.status(500).send('Server Error');
+// }
+}

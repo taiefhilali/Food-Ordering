@@ -74,4 +74,52 @@
     display: block;
     font-size: 14px; /* Reduced font size */
   }
-  
+  /* Ensure chart-container has proper spacing */
+.chart-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* Style the wrapper to control the size of the pie chart */
+.pie-chart-wrapper {
+  width: 300px; /* Adjust width as needed */
+  height: 300px; /* Adjust height as needed */
+  margin: 0 auto; /* Center the chart */
+}
+
+/* Ensure pie chart scales within its container */
+.pie-chart-wrapper canvas {
+  max-width: 100%;
+  height: auto;
+}
+/* Container to hold both charts side by side */
+.charts-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+/* Styling for the left chart (ApexChart) */
+.chart-left {
+  flex: 2; /* Take more space */
+  margin-right: 10px; /* Add some space between the charts */
+}
+
+/* Styling for the right chart (Pie chart) */
+.chart-right {
+  flex: 1; /* Take less space */
+  margin-left: 10px; /* Add some space between the charts */
+}
+
+/* Style the wrapper to control the size of the pie chart */
+.pie-chart-wrapper {
+  width: 100%; /* Full width of its container */
+  height: 200px; /* Adjust height to make it smaller */
+  margin: 0 auto; /* Center the chart */
+}
+
+/* Ensure pie chart scales within its container */
+.pie-chart-wrapper canvas {
+  max-width: 100%;
+  height: auto;
+}

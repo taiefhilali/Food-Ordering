@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Chart from 'react-apexcharts';
-import DefaultLayout from '@/layouts/DefaultLayout';
-import Breadcrumb from '../Breadcrumbs/Breadcrumb';
+
 
 const ApexChart = () => {
   const [revenueData, setRevenueData] = useState([]);

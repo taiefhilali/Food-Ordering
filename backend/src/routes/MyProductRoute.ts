@@ -22,7 +22,7 @@ router.get('/search', productController.searchProductByName);
 router.post('/sell', productController.sellProduct);
 router.post('/', upload.single("imageFile"), verifyToken, verifyVendor, productController.createMyProduct);
 router.get('/revenue/:date', productController.revenuStatistics);
-
+router.get('/revenue-by-category',productController.RevenuebyCategory);
 
 // Define the more specific route before the less specific one
 router.get('/:restaurantId/revenue', productController.calculateRestaurantRevenue);
