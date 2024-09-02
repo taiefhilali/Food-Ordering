@@ -15,7 +15,7 @@ const upload = multer({
 });
 
 
-router.get('/', productController.getAllProducts);
+router.get('/',productController.getAllProducts);
 router.get('/quantity', productController.quantityProduct);
 router.get('/all', verifyToken, productController.productsByUserId);
 router.get('/search', productController.searchProductByName);
@@ -34,8 +34,9 @@ router.put('/:id', productController.updateProduct);
 router.delete('/:id', verifyToken, verifyVendor, productController.deleteProduct);
 router.patch('/:id/toggle-approval', verifyToken, verifyAdmin, productController.toggleProductApproval);
 router.get('/:restaurantId', productController.productsByRestaurantId);
-router.get('/category/:categoryId', verifyToken, verifyVendor,productController.getProductBycategory);
+router.get('/category/:categoryId', verifyToken,productController.getProductBycategory);
 router.post('/like/:productId', productController.LikeProduct);
+router.get('/stats/price-cost-difference',productController.diffcostpricestat);
 
 // Route for fetching products by restaurantId
 export default router;

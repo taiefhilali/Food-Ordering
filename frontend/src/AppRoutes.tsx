@@ -46,6 +46,8 @@ import AdminsDisplay from './components/Authentication/AdminsDisplay'
 import ClientsDisplay from './components/Authentication/ClientsDisplay'
 import VendorsDisplay from './components/Authentication/VendorsDisplay'
 import AdditivesForm from './forms/manage-product-forms/AdditivesForm'
+import RestaurantDetails from './pages/Restaurant/RestaurantDetails '
+import EditRestaurant from './pages/Restaurant/EditRestaurant'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -215,6 +217,8 @@ const AppRoutes = () => {
           </>
         }
       />
+              <Route path="/restaurant-details/:id" element={<RestaurantDetails />} />
+
       <Route
         path="/product/:productId"
         element={

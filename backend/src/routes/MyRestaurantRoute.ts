@@ -19,7 +19,7 @@ router.post("/",upload.single("imageFile"),verifyToken,verifyVendor,validateMyRe
 router.get("/",verifyToken,verifyVendor,MyRestaurantController.getMyRestaurant);
 router.get("/allmyrestaurants",verifyToken,verifyVendor,MyRestaurantController.getAllRestaurantbyUser);
 router.get("/restaurants",MyRestaurantController.getAllRestaurant);
-router.put("/",validateMyRestaurantRequest,MyRestaurantController.updateMyRestaurant)
+router.put("/:id",validateMyRestaurantRequest,MyRestaurantController.updateMyRestaurant)
 router.get('/search', MyRestaurantController.searchRestaurantByName);
 
 router.get('/:restaurantName',MyRestaurantController.getRestaurantbyName)

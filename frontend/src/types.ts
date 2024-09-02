@@ -26,6 +26,7 @@ export type Restaurant = {
   percentage: number[],
   isApproved: boolean,
 ratingCount: number,
+description: string
 };
 
 export type OrderStatus =

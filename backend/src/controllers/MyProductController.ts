@@ -333,3 +333,32 @@ exports.LikeProduct = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+exports.diffcostpricestat = async (req: Request, res: Response) => {
+  try {
+    const products = await Product.find();
+
+    // Calculate total price, total cost, and total profit
+    const statistics = products.reduce((acc, product) => {
+      const difference = product.price - product.cost;
+      acc.totalPrice += product.price;
+      acc.totalCost += product.cost;
+      acc.totalDifference += difference;
+      acc.productCount += 1;
+      return acc;
+    }, {
+      totalPrice: 0,
+      totalCost: 0,
+      totalDifference: 0,
+      productCount: 0,
+      averageDifference:0
+    });
+
+    // Calculate average difference
+    statistics.averageDifference = statistics.productCount ? statistics.totalDifference / statistics.productCount : 0;
+
+    res.json(statistics);
+  } catch (error) {
+    console.error('Error fetching price-cost statistics:', error);
+    res.status(500).send('Internal Server Error');
+  }
+}

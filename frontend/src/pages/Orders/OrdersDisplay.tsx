@@ -565,15 +565,16 @@ const InvoicesTable = () => {
     Order is Ready
   </button>
 
-  <button
+  {/* <button
     key={invoice._id}
     onClick={() => handleOrderReady(invoice._id)}
     className={`px-4 py-2 rounded-full ${readyOrders.has(invoice._id) ? 'bg-gray-500 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'} text-white`}
     disabled={readyOrders.has(invoice._id)}
   >
     Order Details
-  </button>
-  <Link to={`/order-details/${invoice._id}`} className="  text-indigo-600 hover:text-indigo-900">View Details</Link>
+  </button> */}
+  <Link to={`/order-details/${invoice._id}`}     className={`px-4 py-2 rounded-full ${readyOrders.has(invoice._id) ? 'bg-gray-500 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'} text-white`}
+  >View Details</Link>
 
 </div>
                     </td>
