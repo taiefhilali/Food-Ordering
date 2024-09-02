@@ -15,6 +15,7 @@ const handleValidationErrors = async (
 
 
 export const validateMyRestaurantRequest = [
+  
   body("restaurantName").notEmpty().withMessage("Restaurant name is required"),
   body("estimatedDeliveryTime")
     .isInt({ min: 0 })

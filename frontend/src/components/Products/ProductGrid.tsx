@@ -2,15 +2,33 @@ import React from 'react';
 import ProductCard from './ProductCard';
 import '../../assets/css/ProductMenu.css'; // Import CSS file
 
-type Product = {
+export type Additives = {
+  name: string;
+  price: number;
+  icon: string;
+};
+
+export type Product = {
   _id: string;
   name: string;
-  description: string;
+  description?: string;
+  cost: number;
   price: number;
-  dishType: string;
+  dishType: 'main' | 'side' | 'beverage' | 'entry' | 'dessert';
+  restaurant: string; // Assuming ObjectId is a string in TypeScript
   quantity: number;
-  imageUrl: string;
+  imageUrl?: string;
+  isApproved?: boolean;
+  user?: string; // Assuming ObjectId is a string in TypeScript
+  soldQuantity: number;
+  revenue?: number;
+  createdAt?: Date;
+  category: string; // Assuming ObjectId is a string in TypeScript
+  likes: string[]; // Assuming ObjectId is a string in TypeScript
+  additives: Additives[]; // Array of additives
+  totalRevenue?: number;
 };
+
 
 type ProductGridProps = {
   products: Product[];

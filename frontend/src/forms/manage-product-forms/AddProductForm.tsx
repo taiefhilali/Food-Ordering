@@ -8,14 +8,17 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import dishAnimationdata from '../../assets/dish.json';
 import Lottie from 'react-lottie';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TextEditor from '@/components/TextEditor';
 import Select, { GroupBase } from 'react-select';
 import Input from '../../components/Inputs/Input'; // Adjust the import path accordingly
 import QuantityInput from '../../components/Inputs/QuantityInput'; // Adjust the import path accordingly
+import AddCircleIcon from '@mui/icons-material/AddCircle'; // Import the icon from Material Icons
 
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
+import AdditivesInput from './AdditivesInput';
+import { log } from 'console';
 type Restaurant = {
   _id: string;
   restaurantName: string;
@@ -55,6 +58,7 @@ const AddProductForm = () => {
   const socket = io("http://localhost:8000", { transports: ["websocket"] });
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -103,23 +107,24 @@ const AddProductForm = () => {
 
     fetchData();
   }, []);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  
   const onSubmit = async (data: any) => {
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('description', data.description);
-    formData.append('price', data.price);
-    formData.append('cost', data.cost); 
-    formData.append('dishType', data.dishType.value);
+    formData.append('price', data.price); 
+    formData.append('cost', data.cost);
+    formData.append('dishType', data.dishType?.value || '');
     formData.append('quantity', data.quantity);
-    formData.append('restaurant', data.restaurant._id);
-
-    if (data.imageFile) {
+    formData.append('restaurant', data.restaurant?._id || '');
+    formData.append('additives', JSON.stringify(data.additives));
+  console.log('=============additives=======================');
+  console.log(data.additives);
+  console.log('=============additives=======================');
+    if (data.imageFile?.[0]) {
       formData.append('imageFile', data.imageFile[0]);
     }
-    // Append category if it's selected
-    if (data.category) {
+    if (data.category?.value) {
       formData.append('category', data.category.value);
     }
     try {
@@ -127,7 +132,6 @@ const AddProductForm = () => {
       if (!token) {
         throw new Error('No token found');
       }
-
       const response = await fetch('http://localhost:7000/api/my/products', {
         method: 'POST',
         body: formData,
@@ -135,11 +139,9 @@ const AddProductForm = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
       if (!response.ok) {
         throw new Error('Failed to add product');
       }
-
       const responseData = await response.json();
       console.log('Product created successfully:', responseData.product);
       Swal.fire({
@@ -151,9 +153,65 @@ const AddProductForm = () => {
       socket.emit('newProductAdded', responseData.product);
     } catch (error) {
       console.error('Error adding product:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'There was an error adding the product.',
+      });
     }
   };
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const onSubmit = async (data: any) => {
+  //   const formData = new FormData();
+  //   formData.append('name', data.name);
+  //   formData.append('description', data.description);
+  //   formData.append('price', data.price);
+  //   formData.append('cost', data.cost); 
+  //   formData.append('dishType', data.dishType.value);
+  //   formData.append('quantity', data.quantity);
+  //   formData.append('restaurant', data.restaurant._id);
+  //   formData.append('additives', JSON.stringify(additives)); // Add this line
 
+  //   if (data.imageFile) {
+  //     formData.append('imageFile', data.imageFile[0]);
+  //   }
+  //   // Append category if it's selected
+  //   if (data.category) {
+  //     formData.append('category', data.category.value);
+  //   }
+  //   try {
+  //     const token = localStorage.getItem('userToken');
+  //     if (!token) {
+  //       throw new Error('No token found');
+  //     }
+
+  //     const response = await fetch('http://localhost:7000/api/my/products', {
+  //       method: 'POST',
+  //       body: formData,
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Failed to add product');
+  //     }
+
+  //     const responseData = await response.json();
+  //     console.log('Product created successfully:', responseData.product);
+  //     Swal.fire({
+  //       icon: 'success',
+  //       title: 'Product Added',
+  //       text: 'Product has been added successfully!',
+  //     });
+  //     navigate('/display-products');
+  //     socket.emit('newProductAdded', responseData.product);
+  //   } catch (error) {
+  //     console.error('Error adding product:', error);
+  //   }
+  // };
+ 
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
@@ -201,6 +259,7 @@ const AddProductForm = () => {
       <div className="max-w-4xl mx-auto bg-white shadow-switcher rounded-lg p-9 mt-20 flex border-orange-500 border-opacity-45 border-2">
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full md:w-full pr-8">
+        
             <div className="mt-0">
               <h6 className='flex justify-center items-center font-semibold  border-meta-8'>Fill this form to add your item 💭</h6>
               <DishAnimation />
@@ -219,6 +278,7 @@ const AddProductForm = () => {
                 /> */}
                 {errors.name && <span className="text-red-500">Name is required</span>}
               </div>
+              
               <div className="relative">
                 <Input
                   placeholder="Price(dt)"
@@ -283,6 +343,7 @@ const AddProductForm = () => {
                 />
 
               </div>
+            
               <div className="relative">
                 <Controller
                   name="restaurant"
@@ -302,6 +363,14 @@ const AddProductForm = () => {
                   )}
                 />
                 {errors.restaurant && <span className="text-red-500">Please select a restaurant</span>}
+                <div className="ml-5 mt-3">
+                {/* <Link to="/additives" className="text-orange-500 flex items-center">
+                <AddCircleIcon fontSize="sm" /> 
+                <span className="ml-2">Add more additives</span>
+              </Link> */}
+                          <AdditivesInput />
+
+            </div>
               </div>
             </div>
             <div className="flex justify-center mt-4 space-x-4">

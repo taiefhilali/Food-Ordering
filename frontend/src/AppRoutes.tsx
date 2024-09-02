@@ -45,6 +45,7 @@ import OrderDetails from './pages/Orders/OrderDetails'
 import AdminsDisplay from './components/Authentication/AdminsDisplay'
 import ClientsDisplay from './components/Authentication/ClientsDisplay'
 import VendorsDisplay from './components/Authentication/VendorsDisplay'
+import AdditivesForm from './forms/manage-product-forms/AdditivesForm'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -222,6 +223,8 @@ const AppRoutes = () => {
           </>
         }
       />
+      <Route path="/additives" element={<AdditivesForm />} />
+
   <Route
         path="/chat"
         element={
