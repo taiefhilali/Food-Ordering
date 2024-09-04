@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>33/132</span>
+                <span class='fraction'>34/136</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">17.39% </span>
+                <span class="strong">16% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/23</span>
+                <span class='fraction'>4/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25.83% </span>
+                <span class="strong">26.01% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>31/120</span>
+                <span class='fraction'>32/123</span>
             </div>
         
             
@@ -402,7 +402,13 @@
 <a name='L337'></a><a href='#L337'>337</a>
 <a name='L338'></a><a href='#L338'>338</a>
 <a name='L339'></a><a href='#L339'>339</a>
-<a name='L340'></a><a href='#L340'>340</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L340'></a><a href='#L340'>340</a>
+<a name='L341'></a><a href='#L341'>341</a>
+<a name='L342'></a><a href='#L342'>342</a>
+<a name='L343'></a><a href='#L343'>343</a>
+<a name='L344'></a><a href='#L344'>344</a>
+<a name='L345'></a><a href='#L345'>345</a>
+<a name='L346'></a><a href='#L346'>346</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -607,9 +613,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -738,6 +742,14 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -946,9 +958,7 @@ const getAllRestaurant = <span class="fstat-no" title="function not covered" >as
 const createMyRestaurant = <span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const userId = (<span class="cstat-no" title="statement not covered" >req as any).user.id;</span>
-<span class="cstat-no" title="statement not covered" >    console.log('====================================');</span>
-<span class="cstat-no" title="statement not covered" >    console.log(userId);</span>
-<span class="cstat-no" title="statement not covered" >    console.log('====================================');</span>
+&nbsp;
     const existingRestaurant = <span class="cstat-no" title="statement not covered" >await Restaurant.findOne({ user: userId });</span>
 &nbsp;
     // if (existingRestaurant) {
@@ -1078,8 +1088,16 @@ const getRestaurantbyName=async (req:Request, res:Response) =&gt; {
 <span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: 'Server error' });</span>
   }
 }
-&nbsp;
-export default { createMyRestaurant,LikeRestaurant, searchRestaurantByName,getMyRestaurant,getRestaurantbyName, updateMyRestaurant, getAllRestaurantbyUser,getAllRestaurant, getCuisinesStat,toggleRestaurantApproval };
+const restaurantsbyspcuser = <span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+<span class="cstat-no" title="statement not covered" >  try {</span>
+    const { userId } = <span class="cstat-no" title="statement not covered" >req.params;</span>
+    const restaurants = <span class="cstat-no" title="statement not covered" >await Restaurant.find({ user: userId });</span>
+<span class="cstat-no" title="statement not covered" >    res.json(restaurants);</span>
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({ message: 'Error fetching restaurants', error });</span>
+  }
+  }
+export default { createMyRestaurant,LikeRestaurant, searchRestaurantByName,getMyRestaurant,getRestaurantbyName, updateMyRestaurant, getAllRestaurantbyUser,getAllRestaurant, getCuisinesStat,toggleRestaurantApproval,restaurantsbyspcuser };
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1087,7 +1105,7 @@ export default { createMyRestaurant,LikeRestaurant, searchRestaurantByName,getMy
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-29T22:29:29.004Z
+                at 2024-09-04T12:40:40.663Z
             </div>
         <script src="../prettify.js"></script>
         <script>

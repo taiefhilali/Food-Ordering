@@ -232,7 +232,8 @@ describe('Product Controller', () => {
     await Product.create([
       { 
         name: 'Product 1', 
-        price: 10, 
+        price: 10,
+        cost:8,
         category: new mongoose.Types.ObjectId(),
         quantity: 100, 
         restaurant: new mongoose.Types.ObjectId(), 
@@ -240,7 +241,8 @@ describe('Product Controller', () => {
       },
       { 
         name: 'Product 2', 
-        price: 20, 
+        price: 20,
+        cost:10, 
         category: new mongoose.Types.ObjectId(), 
         quantity: 200, 
         restaurant: new mongoose.Types.ObjectId(), 
@@ -254,8 +256,14 @@ describe('Product Controller', () => {
     // await mongoose.connection.close();
   }, 10000);
   afterAll(async () => {
+    // Delete the two products created during the tests
+    await Product.deleteMany({
+      name: { $in: ['Product 1', 'Product 2'] },
+    });
+  
     await mongoose.connection.close();
   });
+  
   
   test('should get all products', async () => {
     const response = await request(app).get('/api/my/products');
@@ -267,6 +275,7 @@ describe('Product Controller', () => {
     const product = new Product({
       name: 'Test Product',
       price: 10,
+      cost:8,
       dishType: 'main',
       restaurant: new mongoose.Types.ObjectId(),
       quantity: 100,
@@ -284,6 +293,7 @@ describe('Product Controller', () => {
     const product = new Product({
       name: 'Test Product',
       price: 10,
+      cost:8,
       dishType: 'main',
       restaurant: new mongoose.Types.ObjectId(),
       quantity: 100,
@@ -303,6 +313,7 @@ describe('Product Controller', () => {
     const product = new Product({
       name: 'Test Product',
       price: 10,
+      cost:8,
       dishType: 'main',
       restaurant: new mongoose.Types.ObjectId(),
       quantity: 100,
@@ -330,6 +341,7 @@ describe('Product Controller', () => {
     const product = new Product({
       name: 'Test Product',
       price: 10,
+      cost:8,
       dishType: 'main',
       restaurant: new mongoose.Types.ObjectId(),
       quantity: 100,

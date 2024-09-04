@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.77% </span>
+                <span class="strong">36.04% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>34/90</span>
+                <span class='fraction'>31/86</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">38.27% </span>
+                <span class="strong">36.36% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>31/81</span>
+                <span class='fraction'>28/77</span>
             </div>
         
             
@@ -232,19 +232,13 @@
 <a name='L167'></a><a href='#L167'>167</a>
 <a name='L168'></a><a href='#L168'>168</a>
 <a name='L169'></a><a href='#L169'>169</a>
-<a name='L170'></a><a href='#L170'>170</a>
-<a name='L171'></a><a href='#L171'>171</a>
-<a name='L172'></a><a href='#L172'>172</a>
-<a name='L173'></a><a href='#L173'>173</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L170'></a><a href='#L170'>170</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -300,6 +294,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -397,7 +392,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -410,13 +404,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Category from '../models/Category'
 import { Request, Response, response } from "express"
 import multer from "multer";
-import { title } from "process";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
 &nbsp;
 // Multer setup for image upload
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 &nbsp;
 // Controller function to create a category with image upload
  const createCategory= <span class="fstat-no" title="function not covered" >async (r</span>eq: Request, res: Response) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
@@ -472,6 +463,7 @@ const updateCategory = async (req: Request, res: Response) =&gt; {
 const uploadimage = <span class="fstat-no" title="function not covered" >async (f</span>ile: Express.Multer.File) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
     const image = <span class="cstat-no" title="statement not covered" >file;</span>
     const base64Image = <span class="cstat-no" title="statement not covered" >Buffer.from(image.buffer).toString("base64");</span>
+&nbsp;
     const dataURL = <span class="cstat-no" title="statement not covered" >`data:${image.mimetype};base64,${base64Image}`;</span>
     const uploadResponse = <span class="cstat-no" title="statement not covered" >await cloudinary.v2.uploader.upload(dataURL);</span>
 <span class="cstat-no" title="statement not covered" >    return uploadResponse.url;</span>
@@ -570,7 +562,6 @@ const getDistinctCategories = <span class="fstat-no" title="function not covered
       const categories = <span class="cstat-no" title="statement not covered" >await Category.find({ user: userId });</span>
       
 <span class="cstat-no" title="statement not covered" >      res.json(categories);</span>
-<span class="cstat-no" title="statement not covered" >      console.log('====================================',categories); </span>
 &nbsp;
     } catch (err) {
 <span class="cstat-no" title="statement not covered" >      console.error('Error fetching categories:', err);</span>
@@ -586,7 +577,7 @@ const getDistinctCategories = <span class="fstat-no" title="function not covered
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-29T22:29:29.004Z
+                at 2024-09-04T12:40:40.663Z
             </div>
         <script src="../prettify.js"></script>
         <script>

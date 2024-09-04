@@ -48,6 +48,7 @@ import VendorsDisplay from './components/Authentication/VendorsDisplay'
 import AdditivesForm from './forms/manage-product-forms/AdditivesForm'
 import RestaurantDetails from './pages/Restaurant/RestaurantDetails '
 import EditRestaurant from './pages/Restaurant/EditRestaurant'
+import Dashboardadmin from './components/Dashboard/statisticsAdmin'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -277,6 +278,14 @@ const AppRoutes = () => {
         element={
           <>
             <Statistics />
+          </>
+        }
+      />
+            <Route
+        path="/statsticsAdmin"
+        element={
+          <>
+            <Dashboardadmin />
           </>
         }
       />
