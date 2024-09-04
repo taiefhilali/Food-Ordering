@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './statistics.css';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb';
-import ApexChart from '../Products/RevenueByDateComponent';
 import axios from 'axios';
-import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
@@ -19,13 +17,13 @@ const CardCounter: React.FC<{ icon: string, count: number, label: string, color:
   </div>
 );
 
-interface PriceCostStats {
-  totalPrice: number;
-  totalCost: number;
-  totalDifference: number;
-  productCount: number;
-  averageDifference: number;
-}
+// interface PriceCostStats {
+//   totalPrice: number;
+//   totalCost: number;
+//   totalDifference: number;
+//   productCount: number;
+//   averageDifference: number;
+// }
 
 const Dashboardadmin: React.FC = () => {
   const [restaurantCount, setRestaurantCount] = useState(0);

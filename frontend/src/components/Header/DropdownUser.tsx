@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import UserOne from '../../images/user/userr.png';
 import axios from 'axios';
 // interface UserDetails {
 //   email: string;

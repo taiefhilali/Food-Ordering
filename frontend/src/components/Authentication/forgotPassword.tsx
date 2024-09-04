@@ -26,10 +26,8 @@ const ForgotPasswordPage: FC = () => {
       });
       setResetToken(response.data.resetToken);
       setStep('reset');
-      setError('');
     } catch (err) {
-      console.error('Error sending reset email:', err.response.data.message);
-      setError(err.response.data.message);
+      console.error('Error sending reset email:');
     }
   };
 
@@ -49,8 +47,7 @@ const ForgotPasswordPage: FC = () => {
       });
       navigate('/login'); // Redirect to login page after successful password reset
     } catch (err) {
-      console.error('Error resetting password:', err.response.data.message);
-      setError(err.response.data.message);
+      console.error('Error resetting password:');
     }
   };
 

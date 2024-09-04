@@ -29,38 +29,38 @@ type ProductDetailPageProps = {
     product: Product; // Use the Product type for the product prop
 };
 
-const customStyles = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    control: (provided: any) => ({
-        ...provided,
-        borderRadius: '9999px', // Rounded full
-        padding: '4px',
-        borderColor: '#d1d5db', // Tailwind gray-300
-        boxShadow: 'none',
-        '&:hover': {
-            borderColor: '#fb923c', // Tailwind orange-500
-        },
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    menu: (provided: any) => ({
-        ...provided,
-        borderRadius: '0.5rem', // Tailwind rounded-lg
-    }),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    option: (provided: any, state: { isFocused: any; }) => ({
-        ...provided,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '8px 12px',
-        backgroundColor: state.isFocused ? '#fb923c' : 'white', // Tailwind orange-500 for focused state
-        color: state.isFocused ? 'white' : 'black',
-        '&:active': {
-            backgroundColor: '#fb923c',
-            color: 'white',
-        },
-    }),
-};
+// const customStyles = {
+//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//     control: (provided: any) => ({
+//         ...provided,
+//         borderRadius: '9999px', // Rounded full
+//         padding: '4px',
+//         borderColor: '#d1d5db', // Tailwind gray-300
+//         boxShadow: 'none',
+//         '&:hover': {
+//             borderColor: '#fb923c', // Tailwind orange-500
+//         },
+//     }),
+//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//     menu: (provided: any) => ({
+//         ...provided,
+//         borderRadius: '0.5rem', // Tailwind rounded-lg
+//     }),
+//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//     option: (provided: any, state: { isFocused: any; }) => ({
+//         ...provided,
+//         display: 'flex',
+//         alignItems: 'center',
+//         justifyContent: 'space-between',
+//         padding: '8px 12px',
+//         backgroundColor: state.isFocused ? '#fb923c' : 'white', // Tailwind orange-500 for focused state
+//         color: state.isFocused ? 'white' : 'black',
+//         '&:active': {
+//             backgroundColor: '#fb923c',
+//             color: 'white',
+//         },
+//     }),
+// };
 
 // Function component for the ProductDetailPage
 const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialProduct }) => {

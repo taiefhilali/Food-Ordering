@@ -254,14 +254,18 @@ describe('Product Controller', () => {
   afterEach(async () => {
     // await mongoose.connection.dropDatabase();
     // await mongoose.connection.close();
+    await Product.deleteMany({ name: { $in: ['Product 1', 'Product 2','Updated Product Name','Test Product'] } });
+    await mongoose.connection.close();
+
+
   }, 10000);
   afterAll(async () => {
     // Delete the two products created during the tests
-    await Product.deleteMany({
-      name: { $in: ['Product 1', 'Product 2'] },
-    });
+    // await Product.deleteMany({
+    //   name: { $in: ['Product 1', 'Product 2'] },
+    // });
   
-    await mongoose.connection.close();
+    // await mongoose.connection.close();
   });
   
   

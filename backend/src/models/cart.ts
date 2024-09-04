@@ -152,7 +152,6 @@ import mongoose, { Schema } from "mongoose";
 
 // const Cart = mongoose.model<ICart>('Cart', cartSchema);
 // export default Cart;
-import { Request, Response } from 'express';
 
 // Define the interface for CartItem
 export interface ICartItem extends Document {

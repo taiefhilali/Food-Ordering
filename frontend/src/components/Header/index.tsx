@@ -6,7 +6,6 @@ import DarkModeSwitcher from './DarkModeSwitcher';
 import { useState } from 'react';
 import axios from 'axios';
 import { Product } from '@/types/product';
-import { Description } from '@radix-ui/react-dialog';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;

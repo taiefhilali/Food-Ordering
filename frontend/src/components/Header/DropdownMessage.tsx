@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import Axios
 
-import UserOne from '../../images/user/user-01.png';
 
 
 const DropdownMessage = () => {

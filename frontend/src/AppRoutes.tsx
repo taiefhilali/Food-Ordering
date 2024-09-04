@@ -27,27 +27,27 @@ import CategoryComponent from './components/Categories/CategoryComponent'
 import ProductTable from './pages/Products/ProductTable'
 import LoginFormModal from './forms/manage-user-form/LoginFormModal'
 import { useEffect, useState } from 'react'
-import UnauthorizedPage from './components/UnauthorizedPage'
+// import UnauthorizedPage from './components/UnauthorizedPage'
 import AddCategoryForm from './forms/manage-category-form/AddCategoryForm'
 import OrdersList from './pages/Orders/OrdersDisplay'
 import RestaurantTable from './pages/Restaurant/RestaurantTable'
-import UsersDisplay from './components/Authentication/AdminsDisplay'
-import { BrowserRouter as Router } from 'react-router-dom';
-import UserDisplayTest from './pages/Users/userDisplayTest'
+// import UsersDisplay from './components/Authentication/AdminsDisplay'
+// import { BrowserRouter as Router } from 'react-router-dom';
+// import UserDisplayTest from './pages/Users/userDisplayTest'
 import StockComponent from './components/Products/StockComponent'
 import RevenueByDateComponent from './components/Products/RevenueByDateComponent'
 import Statistics from './components/Dashboard/Statistics'
 import QRCodeGenerator from './pages/QrcodeGenerator/QRCodeGenerator'
 import ChatComponent from './components/Chat/ChatComponent'
 import AddCouponCode from './pages/Discount/AddCouponCode'
-import CouponList from './pages/Discount/CouponList'
+// import CouponList from './pages/Discount/CouponList'
 import OrderDetails from './pages/Orders/OrderDetails'
 import AdminsDisplay from './components/Authentication/AdminsDisplay'
 import ClientsDisplay from './components/Authentication/ClientsDisplay'
 import VendorsDisplay from './components/Authentication/VendorsDisplay'
 import AdditivesForm from './forms/manage-product-forms/AdditivesForm'
 import RestaurantDetails from './pages/Restaurant/RestaurantDetails '
-import EditRestaurant from './pages/Restaurant/EditRestaurant'
+// import EditRestaurant from './pages/Restaurant/EditRestaurant'
 import Dashboardadmin from './components/Dashboard/statisticsAdmin'
 
 const AppRoutes = () => {
@@ -92,7 +92,7 @@ const AppRoutes = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  const userType = localStorage.getItem('userType');
+  // const userType = localStorage.getItem('userType');
 
 
   return (

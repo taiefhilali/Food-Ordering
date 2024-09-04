@@ -41,7 +41,11 @@ describe('Category Controller', () => {
 
   afterEach(async () => {
     // await mongoose.connection.db.dropDatabase();
-    await mongoose.connection.close();
+    if (mongoose.connection.readyState === 1) {
+   
+    await Category.deleteMany({ title: { $in: ['Category 1', 'Category 2','Updated Category Title'] } });
+
+    await mongoose.connection.close();}
   });
 
   test('should get all categories', async () => {

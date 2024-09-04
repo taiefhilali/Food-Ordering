@@ -7,6 +7,7 @@ const path = require('path');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 import axios from 'axios';
+import Product from '../models/Product'; // Adjust the path as needed
 
 export const saveInvoice = async (req: Request, res: Response) => {
   try {
@@ -488,3 +489,58 @@ export const getinfosid = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Server error' });
   }
 }
+async function getRecommendations(userId: string) {
+  // Fetch all invoices for the user
+  const userInvoices = await Invoice.find({ userId }).populate('items.productId');
+
+  // Count the frequency of each dish type the user has ordered
+  const dishTypeCounts: Record<string, number> = {};
+  userInvoices.forEach((invoice) => {
+    invoice.items.forEach((item: any) => {
+      if (item.dishType in dishTypeCounts) {
+        dishTypeCounts[item.dishType]++;
+      } else {
+        dishTypeCounts[item.dishType] = 1;
+      }
+    });
+  });
+
+  // Sort dish types by frequency
+  const sortedDishTypes = Object.entries(dishTypeCounts).sort(([, a], [, b]) => b - a);
+
+  // Get the most frequently ordered dish type
+  const [mostFrequentDishType] = sortedDishTypes;
+
+  // Fetch other popular products in this category
+  const recommendations = await Product.find({ dishType: mostFrequentDishType });
+
+  return recommendations;
+}
+
+// Example usage (can be removed or kept for testing purposes)
+getRecommendations('userId')
+  .then((recommendations) => console.log(recommendations))
+  .catch((err) => console.error(err));
+
+
+  export const getUserRecommendations = async (req: Request, res: Response) => {
+    try {
+      const userId = (req as any).user.id; // Assuming you have the user ID in the request object
+  
+      if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+      }
+  
+      const recommendations = await getRecommendations(userId);
+  
+      if (!recommendations || recommendations.length === 0) {
+        return res.status(404).json({ message: 'No recommendations found' });
+      }
+  
+      return res.status(200).json(recommendations);
+    } catch (error) {
+      console.error('Error fetching recommendations:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  
