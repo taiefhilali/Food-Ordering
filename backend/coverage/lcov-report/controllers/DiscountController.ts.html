@@ -149,38 +149,7 @@
 <a name='L84'></a><a href='#L84'>84</a>
 <a name='L85'></a><a href='#L85'>85</a>
 <a name='L86'></a><a href='#L86'>86</a>
-<a name='L87'></a><a href='#L87'>87</a>
-<a name='L88'></a><a href='#L88'>88</a>
-<a name='L89'></a><a href='#L89'>89</a>
-<a name='L90'></a><a href='#L90'>90</a>
-<a name='L91'></a><a href='#L91'>91</a>
-<a name='L92'></a><a href='#L92'>92</a>
-<a name='L93'></a><a href='#L93'>93</a>
-<a name='L94'></a><a href='#L94'>94</a>
-<a name='L95'></a><a href='#L95'>95</a>
-<a name='L96'></a><a href='#L96'>96</a>
-<a name='L97'></a><a href='#L97'>97</a>
-<a name='L98'></a><a href='#L98'>98</a>
-<a name='L99'></a><a href='#L99'>99</a>
-<a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a>
-<a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a>
-<a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a>
-<a name='L115'></a><a href='#L115'>115</a>
-<a name='L116'></a><a href='#L116'>116</a>
-<a name='L117'></a><a href='#L117'>117</a>
-<a name='L118'></a><a href='#L118'>118</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L87'></a><a href='#L87'>87</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -190,9 +159,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -269,35 +235,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Request, Response, response } from "express"
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Request, Response } from "express"
 import Restaurant from "../models/Restaurant";
 import Discount from '../models/Discount'; // Adjust the path as necessary
   export const validatecoupon = async (req: Request, res: Response) =&gt; 
@@ -308,10 +246,7 @@ import Discount from '../models/Discount'; // Adjust the path as necessary
     <span class="missing-if-branch" title="if path not taken" >I</span>if (!coupon) {
 <span class="cstat-no" title="statement not covered" >      return res.status(400).json({ message: 'Invalid coupon code' });</span>
     }
-    // const currentDate = new Date();
-    // if (currentDate &gt; coupon.expirationDate) {
-    //   return res.status(400).json({ message: 'Coupon code has expired' });
-    // }
+  
     return res.status(200).json({ discount: coupon.discount });
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    return res.status(500).json({ message: 'Server error', error });</span>
@@ -386,34 +321,6 @@ export const getCouponsByRestaurant = async (req: Request, res: Response) =&gt; 
   }
 };
 &nbsp;
-// export const getCouponsByRestaurant = async (req: Request, res: Response) =&gt; {
-//   const { restaurantName } = req.query; // Using query parameter
-&nbsp;
-//   try {
-//     if (!restaurantName) {
-//       return res.status(400).json({ message: 'Restaurant name is required' });
-//     }
-&nbsp;
-//     const restaurant = await Restaurant.findOne({ restaurantName });
-//     if (!restaurant) {
-//       return res.status(404).json({ message: 'Restaurant not found' });
-//     }
-&nbsp;
-//     const coupons = await Discount.find({ restaurantName: restaurant._id });
-//     return res.status(200).json({ coupons });
-//   } catch (error) {
-//     return res.status(500).json({ message: 'Server error', error });
-//   }
-// };
-// export const deleteExpiredCoupons = async () =&gt; {
-//   try {
-//     const currentDate = new Date();
-//     const result = await Discount.deleteMany({ expirationDate: { $: currentDate } });
-//     console.log(`${result.deletedCount} expired coupons removed.`);
-//   } catch (error) {
-//     console.error('Error deleting expired coupons:', error);
-//   }
-// };
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -421,7 +328,7 @@ export const getCouponsByRestaurant = async (req: Request, res: Response) =&gt; 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-09-04T16:19:35.465Z
+                at 2024-09-04T16:58:34.695Z
             </div>
         <script src="../prettify.js"></script>
         <script>
