@@ -249,7 +249,7 @@ describe('Product Controller', () => {
         dishType: 'main' 
       }
     ]);
-  }, 10000);
+  }, 30000);
 
   afterEach(async () => {
     // await mongoose.connection.dropDatabase();

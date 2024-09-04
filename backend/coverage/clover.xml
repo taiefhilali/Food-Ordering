@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1725453640707" clover="3.2.0">
-  <project timestamp="1725453640707" name="All files">
-    <metrics statements="749" coveredstatements="328" conditionals="102" coveredconditionals="12" methods="149" coveredmethods="47" elements="1000" coveredelements="387" complexity="0" loc="749" ncloc="749" packages="4" files="17" classes="17"/>
+<coverage generated="1725453856711" clover="3.2.0">
+  <project timestamp="1725453856712" name="All files">
+    <metrics statements="749" coveredstatements="331" conditionals="102" coveredconditionals="12" methods="149" coveredmethods="49" elements="1000" coveredelements="392" complexity="0" loc="749" ncloc="749" packages="4" files="17" classes="17"/>
     <package name="controllers">
-      <metrics statements="604" coveredstatements="215" conditionals="76" coveredconditionals="8" methods="133" coveredmethods="41"/>
+      <metrics statements="604" coveredstatements="218" conditionals="76" coveredconditionals="8" methods="133" coveredmethods="43"/>
       <file name="CategoryController.ts" path="C:\Users\msi\Desktop\Food-Ordering\backend\src\controllers\CategoryController.ts">
         <metrics statements="77" coveredstatements="28" conditionals="3" coveredconditionals="0" methods="18" coveredmethods="6"/>
         <line num="1" count="1" type="stmt"/>
@@ -134,14 +134,14 @@
         <line num="86" count="0" type="stmt"/>
       </file>
       <file name="MyProductController.ts" path="C:\Users\msi\Desktop\Food-Ordering\backend\src\controllers\MyProductController.ts">
-        <metrics statements="157" coveredstatements="42" conditionals="18" coveredconditionals="1" methods="41" coveredmethods="8"/>
+        <metrics statements="157" coveredstatements="45" conditionals="18" coveredconditionals="1" methods="41" coveredmethods="10"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
         <line num="22" count="0" type="stmt"/>
         <line num="23" count="0" type="stmt"/>
         <line num="63" count="1" type="stmt"/>
