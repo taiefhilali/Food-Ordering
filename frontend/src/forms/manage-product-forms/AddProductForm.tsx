@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
@@ -8,17 +8,15 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import dishAnimationdata from '../../assets/dish.json';
 import Lottie from 'react-lottie';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import TextEditor from '@/components/TextEditor';
 import Select, { GroupBase } from 'react-select';
 import Input from '../../components/Inputs/Input'; // Adjust the import path accordingly
 import QuantityInput from '../../components/Inputs/QuantityInput'; // Adjust the import path accordingly
-import AddCircleIcon from '@mui/icons-material/AddCircle'; // Import the icon from Material Icons
 
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 import AdditivesInput from './AdditivesInput';
-import { log } from 'console';
 type Restaurant = {
   _id: string;
   restaurantName: string;
@@ -161,57 +159,7 @@ const AddProductForm = () => {
     }
   };
   
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const onSubmit = async (data: any) => {
-  //   const formData = new FormData();
-  //   formData.append('name', data.name);
-  //   formData.append('description', data.description);
-  //   formData.append('price', data.price);
-  //   formData.append('cost', data.cost); 
-  //   formData.append('dishType', data.dishType.value);
-  //   formData.append('quantity', data.quantity);
-  //   formData.append('restaurant', data.restaurant._id);
-  //   formData.append('additives', JSON.stringify(additives)); // Add this line
-
-  //   if (data.imageFile) {
-  //     formData.append('imageFile', data.imageFile[0]);
-  //   }
-  //   // Append category if it's selected
-  //   if (data.category) {
-  //     formData.append('category', data.category.value);
-  //   }
-  //   try {
-  //     const token = localStorage.getItem('userToken');
-  //     if (!token) {
-  //       throw new Error('No token found');
-  //     }
-
-  //     const response = await fetch('http://localhost:7000/api/my/products', {
-  //       method: 'POST',
-  //       body: formData,
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to add product');
-  //     }
-
-  //     const responseData = await response.json();
-  //     console.log('Product created successfully:', responseData.product);
-  //     Swal.fire({
-  //       icon: 'success',
-  //       title: 'Product Added',
-  //       text: 'Product has been added successfully!',
-  //     });
-  //     navigate('/display-products');
-  //     socket.emit('newProductAdded', responseData.product);
-  //   } catch (error) {
-  //     console.error('Error adding product:', error);
-  //   }
-  // };
- 
+  
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
@@ -300,10 +248,8 @@ const AddProductForm = () => {
                     {...field}
                     type="number"
                     placeholder="Cost"
-                    fullWidth
                     required
                     error={Boolean(errors.cost)}
-                    helperText={errors.cost?.message}
                   />
                 )}
               />

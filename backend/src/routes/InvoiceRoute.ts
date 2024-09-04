@@ -1,6 +1,6 @@
 // routes/invoice.js
 import express from 'express';
-import { saveInvoice,getInvoicesByRestaurant,getAllInvoices,getInvoicesByUser,getInvoicesByRestaurantid,notifyOrderReady,getinfosid,getUserRecommendations,generateInvoicePDF,exportpdf} from '../controllers/InvoiceController'; // Adjust the path
+import { saveInvoice,getInvoicesByRestaurant,getAllInvoices,getInvoicesByUser,getInvoicesByRestaurantid,notifyOrderReady,getinfosid,getUserRecommendations,exportpdf} from '../controllers/InvoiceController'; // Adjust the path
 const { verifyToken } = require('../middleware/verifyToken');
 
 const router = express.Router();

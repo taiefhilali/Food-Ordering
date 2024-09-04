@@ -1,5 +1,5 @@
 import  { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import Input from '../../components/Inputs/Input';
 import DefaultLayout from '@/layouts/DefaultLayout';
@@ -13,7 +13,7 @@ type Adiitives = {
     // Other fields...
   };
 const AdditivesForm = () => {
-  const { register, handleSubmit, control, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [additives, setAdditives] = useState<Adiitives[]>([]);
 
   const onSubmit = async (data: Adiitives) => {

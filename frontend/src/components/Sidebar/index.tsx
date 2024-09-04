@@ -500,9 +500,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="2"
+                           strokeLinecap="round"
+                            strokeLinejoin="round"
                           >
                             <circle cx="12" cy="12" r="10" fill="#FBC02D" />
                             <path
@@ -753,9 +753,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="2"
+                           strokeLinecap="round"
+                            strokeLinejoin="round"
                           >
                             <path d="M6 6h15l1 9H7l1-9zM6 6l1 6h12l1-6H6zM3 3h1l3 11h11l3-11h1M3 3l1 1h1l3 10h12l3-10h1l1-1" />
                             <circle cx="8" cy="21" r="1" />
@@ -1262,13 +1262,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           ry="10"
                           fill="#e0e0e0"
                           stroke="#b0bec5"
-                          stroke-width="2"
+                          strokeWidth="2"
                         />
                         <polygon
                           points="50,80 50,100 70,80"
                           fill="#e0e0e0"
                           stroke="#b0bec5"
-                          stroke-width="2"
+                          strokeWidth="2"
                         />
                         <circle cx="40" cy="40" r="8" fill="#f66711" />
                         <circle cx="80" cy="40" r="8" fill="#f66711" />
@@ -1277,10 +1277,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <text
                           x="50%"
                           y="50%"
-                          text-anchor="middle"
+                          textAnchor="middle"
                           dy=".3em"
-                          font-family="Arial, sans-serif"
-                          font-size="14"
+                          fontFamily="Arial, sans-serif"
+                          fontSize="14"
                           fill="#000"
                         >
                           Chat
@@ -1311,7 +1311,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           ry="10"
                           fill="#a5a395"
                           stroke="#fbc02d"
-                          stroke-width="2"
+                          strokeWidth="2"
                         />
                         <line
                           x1="10"
@@ -1319,17 +1319,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           x2="190"
                           y2="40"
                           stroke="#fbc02d"
-                          stroke-width="2"
+                          strokeWidth="2"
                         />
                         <circle cx="30" cy="50" r="10" fill="#fbc02d" />
                         <circle cx="170" cy="50" r="10" fill="#fbc02d" />
                         <text
                           x="50%"
                           y="50%"
-                          text-anchor="middle"
+                          textAnchor="middle"
                           dy=".3em"
-                          font-family="Arial, sans-serif"
-                          font-size="16"
+                          fontFamily="Arial, sans-serif"
+                          fontSize="16"
                           fill="#000"
                         >
                           20% OFF
@@ -1337,9 +1337,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <text
                           x="50%"
                           y="70%"
-                          text-anchor="middle"
-                          font-family="Arial, sans-serif"
-                          font-size="12"
+                          textAnchor="middle"
+                          fontFamily="Arial, sans-serif"
+                          fontSize="12"
                           fill="#000"
                         >
                           USE CODE: SAVE20
@@ -1370,7 +1370,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           ry="15"
                           fill="#f5f5f5"
                           stroke="#cccccc"
-                          stroke-width="2"
+                          strokeWidth="2"
                         />
                         <rect x="30" y="30" width="40" height="40" fill="#000" />
                         <rect x="30" y="120" width="40" height="40" fill="#000" />
@@ -1382,10 +1382,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <text
                           x="50%"
                           y="70%"
-                          text-anchor="middle"
+                          textAnchor="middle"
                           dy=".3em"
-                          font-family="Arial, sans-serif"
-                          font-size="14"
+                          fontFamily="Arial, sans-serif"
+                          fontSize="14"
                           fill="#000"
                         >
                           QR Code
@@ -1414,15 +1414,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           height="280"
                           fill="#c4c4c4"
                           stroke="#cccccc"
-                          stroke-width="2"
+                          strokeWidth="2"
                         />
-                        <line x1="50" y1="250" x2="350" y2="250" stroke="#000" stroke-width="1" />
-                        <line x1="50" y1="50" x2="50" y2="250" stroke="#000" stroke-width="1" />
+                        <line x1="50" y1="250" x2="350" y2="250" stroke="#000" strokeWidth="1" />
+                        <line x1="50" y1="50" x2="50" y2="250" stroke="#000" strokeWidth="1" />
                         <polyline
                           points="50,200 100,150 150,180 200,120 250,160 300,100 350,140"
                           fill="none"
                           stroke="#4caf50"
-                          stroke-width="2"
+                          strokeWidth="2"
                         />
                         <circle cx="50" cy="200" r="4" fill="#4caf50" />
                         <circle cx="100" cy="150" r="4" fill="#4caf50" />
@@ -1434,9 +1434,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <text
                           x="30"
                           y="200"
-                          text-anchor="end"
-                          font-family="Arial, sans-serif"
-                          font-size="12"
+                          textAnchor="end"
+                          fontFamily="Arial, sans-serif"
+                          fontSize="12"
                           fill="#000"
                         >
                           50
@@ -1444,9 +1444,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <text
                           x="30"
                           y="150"
-                          text-anchor="end"
-                          font-family="Arial, sans-serif"
-                          font-size="12"
+                          textAnchor="end"
+                          fontFamily="Arial, sans-serif"
+                          fontSize="12"
                           fill="#000"
                         >
                           100
@@ -1454,9 +1454,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <text
                           x="30"
                           y="100"
-                          text-anchor="end"
-                          font-family="Arial, sans-serif"
-                          font-size="12"
+                          textAnchor="end"
+                          fontFamily="Arial, sans-serif"
+                          fontSize="12"
                           fill="#000"
                         >
                           150
@@ -1464,9 +1464,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <text
                           x="30"
                           y="50"
-                          text-anchor="end"
-                          font-family="Arial, sans-serif"
-                          font-size="12"
+                          textAnchor="end"
+                          fontFamily="Arial, sans-serif"
+                          fontSize="12"
                           fill="#000"
                         >
                           200
@@ -1474,9 +1474,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <text
                           x="50"
                           y="270"
-                          text-anchor="middle"
-                          font-family="Arial, sans-serif"
-                          font-size="14"
+                          textAnchor="middle"
+                          fontFamily="Arial, sans-serif"
+                          fontSize="14"
                           fill="#000"
                         >
                           Stock
@@ -1504,9 +1504,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                   strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
                     <path d="M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0-6a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1 1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM5.707 6.707a1 1 0 0 1 1.414 0l.707.707a1 1 0 0 1 0 1.414l-.707.707a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 0-1.414zM18.293 18.293a1 1 0 0 1 0-1.414l.707-.707a1 1 0 0 1 1.414 1.414l-.707.707a1 1 0 0 1-1.414 0zM6.707 18.293a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 1.414l-.707.707zM18.293 6.707a1 1 0 0 1 1.414 0l.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 0-1.414zM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                   </svg>

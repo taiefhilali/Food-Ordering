@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import { describe, beforeEach, afterEach, test, expect, jest,afterAll } from '@jest/globals';
+import { describe, beforeEach, afterEach, test, expect } from '@jest/globals';
 import Category from '../../src/models/Category';
 import categoryRoutes from '../routes/CategoriesRoute';
 import jwt from 'jsonwebtoken';
@@ -40,7 +40,6 @@ describe('Category Controller', () => {
   });
 
   afterEach(async () => {
-    // await mongoose.connection.db.dropDatabase();
     if (mongoose.connection.readyState === 1) {
    
     await Category.deleteMany({ title: { $in: ['Category 1', 'Category 2','Updated Category Title'] } });
@@ -55,22 +54,6 @@ describe('Category Controller', () => {
     expect(response.body).toBeInstanceOf(Array);
   }, 10000);
 
-//   test('should get categories by user ID', async () => {
-//     const userId = new mongoose.Types.ObjectId();
-//     const category = new Category({
-//       title: 'User Category',
-//       value: 'user_category',
-//       user: userId
-//     });
-//     await category.save();
-
-//     const response = await request(app)
-//       .get('/api/my/categories/all')
-//       .set('Authorization', `Bearer ${validToken}`);
-//     expect(response.status).toBe(200);
-//     expect(response.body).toBeInstanceOf(Array);
-//     expect(response.body[0]).toHaveProperty('title', category.title);
-//   }, 10000);
 
 
 test('should update a category by ID', async () => {
@@ -96,23 +79,7 @@ test('should update a category by ID', async () => {
     expect(updatedCategory).toHaveProperty('title', updatedData.title);
   }, 10000);
   
-//   test('should update a category by ID', async () => {
-//     const category = new Category({
-//       title: 'Test Category',
-//       value: 'test_category',
-//       user: new mongoose.Types.ObjectId()
-//     });
-//     await category.save();
 
-//     const updatedData = { title: 'Updated Category Title', value: 'updated_value' };
-//     const response = await request(app)
-//       .put(`/api/my/categories/${category._id}`)
-//       .send(updatedData)
-//       .set('Authorization', `Bearer ${validToken}`);
-
-//     expect(response.status).toBe(200);
-//     expect(response.body.Category).toHaveProperty('title', updatedData.title);
-//   }, 10000);
 
   test('should delete a category by ID', async () => {
     const category = new Category({

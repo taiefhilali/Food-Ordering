@@ -1,21 +1,13 @@
-// import Scrollbar from 'src/components/Scrollbar';
-// import { SidebarContext } from 'src/contexts/SidebarContext';
 
 import {
   Box,
   Drawer,
-  alpha,
   styled,
   Divider,
   useTheme,
   Button,
-  lighten,
   darken,
-  Tooltip
 } from '@mui/material';
-
-import SidebarMenu from './SidebarMenu';
-// import Logo from 'src/components/LogoSign';
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -30,8 +22,7 @@ const SidebarWrapper = styled(Box)(
 );
 
 function Sidebar() {
-  // const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
-  // const closeSidebar = () => toggleSidebar();
+
   const theme = useTheme();
 
   return (
@@ -97,8 +88,7 @@ function Sidebar() {
           boxShadow: `${theme.sidebar.boxShadow}`
         }}
         anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-        // open={sidebarToggle}
-        // onClose={closeSidebar}
+     
         variant="temporary"
         elevation={9}
       >

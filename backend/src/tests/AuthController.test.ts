@@ -58,55 +58,6 @@ describe('Authentication Controller', () => {
         sandbox.restore();
     });
 
-    // test('createUser should handle errors correctly', async () => {
-    //     const user = {
-    //         email: 'test@example.com',
-    //         username: 'testuser',
-    //         password: 'password123',
-    //     };
-
-    //     // Mocking the error scenario by forcing a failure in the route handler
-    //     sandbox.stub(User.prototype, 'save').throws(new Error('Database error'));
-
-    //     const response = await request(app)
-    //         .post('/api/my/auth/register') // Ensure this path matches the actual route
-    //         .send(user);
-
-    //     expect(response.status).toBe(500);
-    //     expect(response.body).toHaveProperty('error', 'Unknown error occurred');
-    //     expect(response.body).toHaveProperty('status', false);
-    // });
-
-    // test('loginUser should return a JWT token on successful login', async () => {
-    //     const user = {
-    //         email: 'test@example.com',
-    //         password: 'password123',
-    //     };
-
-    //     // Hash the password for comparison
-    //     const hashedPassword = await bcrypt.hash(user.password, 10);
-
-    //     // Mocking User model methods
-    //     const mockUser = {
-    //         _id: 'userId',
-    //         email: user.email,
-    //         password: hashedPassword, // Use hashed password
-    //         userType: 'Client',
-    //         toObject: function() { return this; }, // Ensure toObject method returns the user object
-    //     };
-
-    //     sandbox.stub(User, 'findOne').resolves(mockUser as any);
-
-    //     const response = await request(app)
-    //         .post('/api/my/auth/log') // Ensure this matches the actual endpoint
-    //         .send(user);
-
-    //     console.log('Response status:', response.status); // Log the response status for debugging
-    //     console.log('Response body:', response.body); // Log the response body for debugging
-
-    //     expect(response.status).toBe(200);
-    //     expect(response.body).toHaveProperty('userToken', 'mockToken');
-    // });
 
     test('forgotPassword should send a reset token email', async () => {
         const user = { email: 'test@example.com' };

@@ -17,45 +17,12 @@ const CardCounter: React.FC<{ icon: string, count: number, label: string, color:
   </div>
 );
 
-// interface PriceCostStats {
-//   totalPrice: number;
-//   totalCost: number;
-//   totalDifference: number;
-//   productCount: number;
-//   averageDifference: number;
-// }
 
 const Dashboardadmin: React.FC = () => {
   const [restaurantCount, setRestaurantCount] = useState(0);
   const [productCount, setProductCount] = useState(0);
   const [categoryCount, setCategoryCount] = useState(0);
-//   const [priceCostStats, setPriceCostStats] = useState<PriceCostStats>({
-//     totalPrice: 0,
-//     totalCost: 0,
-//     totalDifference: 0,
-//     productCount: 0,
-//     averageDifference: 0,
-//   });
 
-//   const [pieChartData, setPieChartData] = useState({
-//     labels: [],
-//     datasets: [{
-//       label: 'Revenue by Category',
-//       data: [],
-//       backgroundColor: ['#f5893d', '#D3D3D3', '#FF8C00', '#A9A9A9', '#FF6347'], // Orange and gray colors
-//     }],
-//   });
-//   const pieChartOptions = {
-//     plugins: {
-//         legend: {
-//             labels: {
-//                 font: {
-//                     weight: 'bold'  // Makes the label text bold
-//                 }
-//             }
-//         }
-//     }
-// };
   useEffect(() => {
     const fetchRestaurantCount = async () => {
       try {
