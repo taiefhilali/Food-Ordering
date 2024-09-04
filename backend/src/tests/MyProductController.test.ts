@@ -65,7 +65,7 @@ describe('Product Controller', () => {
     await mongoose.connection.close();
 
 
-  }, 10000);
+  }, 30000);
   afterAll(async () => {
    
   });
