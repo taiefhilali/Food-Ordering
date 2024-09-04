@@ -1,5 +1,4 @@
-import { Request, Response, response } from "express"
-import mongoose from 'mongoose';
+import { Request, Response } from "express"
 const Feedback = require('../models/Feedback');
 
 // Controller function to add a new feedback

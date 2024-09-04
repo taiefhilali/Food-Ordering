@@ -1,6 +1,5 @@
 const Foods = require('../models/Foods')
-import { Request, Response, response } from "express"
-import { title } from "process";
+import { Request, Response } from "express"
 
 
 

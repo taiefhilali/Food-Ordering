@@ -82,52 +82,8 @@ const registerUser = async (req: Request, res: Response) => {
   }
 };
  
-// Register a new user
-// const registerUser = async (req: Request, res: Response) => {
-//   try {
-//     const { email, firstname, lastname, password } = req.body;
-//     const existingUser = await User.findOne({ email });
 
-//     if (existingUser) {
-//       return res.status(400).json({ message: 'User already exists' });
-//     }
 
-//     // Hash the password
-//     const hashedPassword = await hashPassword(password);
-
-//     // Example of uploading an image using an upload function
-//     const imageUrl = await uploadimage(req.file as Express.Multer.File); // Assuming you have an upload function defined
-
-//     const verificationToken = generateVerificationToken();
-//     const newUser = new User({ email, firstname, lastname, imageUrl, verificationToken, password: hashedPassword });
-
-//     // Save user to database
-//     await newUser.save();
-
-//     // Send verification email
-//     const transporter = nodemailer.createTransport({
-//       service: 'Gmail',
-//       auth: {
-//         user: 'bobtaief@gmail.com',
-//         pass: 'hcdz tdlj wywv dfxj'
-//       }
-//     });
-
-//     const mailOptions = {
-//       from: 'bobtaief@gmail.com',
-//       to: email,
-//       subject: 'Verify Your Email Address',
-//       text: `Please click on the following link to verify your email: http://localhost:3000/${verificationToken}`
-//     };
-
-//     await transporter.sendMail(mailOptions);
-
-//     res.status(201).json(newUser.toObject());
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Error registering user' });
-//   }
-// };
 
 // Login user
 const loginUser = async (req: Request, res: Response) => {

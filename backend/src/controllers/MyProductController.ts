@@ -1,20 +1,11 @@
-// controllers/productController.js
-import Restaurant from "../models/Restaurant";
 import { Request, Response } from "express";
 import cloudinary from "cloudinary";
-import mongoose from "mongoose";
 import Product  from '../models/Product'; // Adjust the path as needed
-import { Error } from 'mongoose'; // Import the Error type from mongoose
-// const Product = require('../models/Product')
+import mongoose from "mongoose";
 
 // Get all products
 exports.getAllProducts = async (req: Request, res: Response) => {
-  // try {
-  //   const products = await Product.find();
-  //   res.json(products);
-  // } catch (error) {
-  //   res.status(500).json({ message: (error as Error).message });
-  // }
+  
   try {
     const products = await Product.find();
     res.status(200).json(products);
@@ -24,41 +15,8 @@ exports.getAllProducts = async (req: Request, res: Response) => {
 }
 };
 
-// Create a new product
 
-// Create a new product
-// exports.createMyProduct = async (req: Request, res: Response) => {
-//   try {
-//     // Extract userId from authenticated user data
-//     const userId = (req as any).user.id;
 
-//     // Upload image to Cloudinary
-//     const imageUrl = await uploadimage(req.file as Express.Multer.File);
-
-//     // Parse additives field if it's a string
-//     const additives = Array.isArray(req.body.additives)
-//       ? req.body.additives
-//       : JSON.parse(req.body.additives || "[]");
-
-//     // Create new Product instance
-//     const product = new Product({
-//       ...req.body,
-//       additives: additives,
-//       imageUrl: imageUrl,
-//       user: new mongoose.Types.ObjectId(userId), // Assign userId to the user field
-//     });
-//     console.log('Additives:', req.body.additives);
-
-//     // Save the product to the database
-//     await product.save();
-
-//     // Send success response
-//     res.status(201).json({ message: "Product created successfully", product });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Something went wrong!" });
-//   }
-// };
 
 exports.createMyProduct = async (req: Request, res: Response) => {
   try {
@@ -400,29 +358,4 @@ exports.RevenuebyCategory = async (req: Request, res: Response) => {
     console.error('Error fetching revenue by category:', error);
     res.status(500).send('Server Error');
   }
-//   try {
-//     const results = await Product.aggregate([
-//         {
-//             $group: {
-//                 _id: "$category",
-//                 totalRevenue: { $sum: "$price" }
-//             }
-//         },
-//         {
-//             $project: {
-//                 _id: 0,
-//                 category: "$_id",
-//                 totalRevenue: 1
-//             }
-//         }
-//     ]);
-
-//     const categories = results.map(result => result.category);
-//     const revenues = results.map(result => result.totalRevenue);
-
-//     res.json({ categories, revenue: revenues });
-// } catch (error) {
-//     console.error('Error fetching revenue by category:', error);
-//     res.status(500).send('Server Error');
-// }
 }

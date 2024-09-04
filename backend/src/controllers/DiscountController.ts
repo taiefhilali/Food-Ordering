@@ -1,4 +1,4 @@
-import { Request, Response, response } from "express"
+import { Request, Response } from "express"
 import Restaurant from "../models/Restaurant";
 import Discount from '../models/Discount'; // Adjust the path as necessary
   export const validatecoupon = async (req: Request, res: Response) => 
@@ -9,10 +9,7 @@ import Discount from '../models/Discount'; // Adjust the path as necessary
     if (!coupon) {
       return res.status(400).json({ message: 'Invalid coupon code' });
     }
-    // const currentDate = new Date();
-    // if (currentDate > coupon.expirationDate) {
-    //   return res.status(400).json({ message: 'Coupon code has expired' });
-    // }
+  
     return res.status(200).json({ discount: coupon.discount });
   } catch (error) {
     return res.status(500).json({ message: 'Server error', error });
@@ -87,31 +84,3 @@ export const getCouponsByRestaurant = async (req: Request, res: Response) => {
   }
 };
 
-// export const getCouponsByRestaurant = async (req: Request, res: Response) => {
-//   const { restaurantName } = req.query; // Using query parameter
-
-//   try {
-//     if (!restaurantName) {
-//       return res.status(400).json({ message: 'Restaurant name is required' });
-//     }
-
-//     const restaurant = await Restaurant.findOne({ restaurantName });
-//     if (!restaurant) {
-//       return res.status(404).json({ message: 'Restaurant not found' });
-//     }
-
-//     const coupons = await Discount.find({ restaurantName: restaurant._id });
-//     return res.status(200).json({ coupons });
-//   } catch (error) {
-//     return res.status(500).json({ message: 'Server error', error });
-//   }
-// };
-// export const deleteExpiredCoupons = async () => {
-//   try {
-//     const currentDate = new Date();
-//     const result = await Discount.deleteMany({ expirationDate: { $: currentDate } });
-//     console.log(`${result.deletedCount} expired coupons removed.`);
-//   } catch (error) {
-//     console.error('Error deleting expired coupons:', error);
-//   }
-// };

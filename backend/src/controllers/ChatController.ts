@@ -1,13 +1,12 @@
 import { Request, Response } from 'express';
 import Chat, { IChat } from '../models/Chat';
-import { Server as SocketIOServer, Socket } from 'socket.io'; // Import types for Socket.IO
+import { Server as SocketIOServer } from 'socket.io'; // Import types for Socket.IO
 import User, { IUser } from '../models/User';
 
 // Function to fetch messages from MongoDB
 export const FetchMessages = async (_req: Request, res: Response) => {
   try {
     const messages: IChat[] = await Chat.find().populate('sender', 'username imageUrl').populate('replyTo', 'content sender createdAt');
-    // console.log('Fetched messages:', messages);
     res.json(messages);
   } catch (error) {
     console.error('Error fetching messages:', error);
@@ -84,31 +83,7 @@ export const saveMessage = async (req: Request, res: Response) => {
 };
 
 
-  // export const fetchusersByUserType=  async (req: Request, res: Response) =>{
-  //    try {
-  //       const userId = (req as any).user.id; // Assuming `req.user` contains authenticated user's information
-  //       if (!userId) {
-  //     return res.status(400).json({ message: 'Vendor ID is required' });
-  //   }
 
-  //   // Fetch all users who are clients
-  //   const clients = await User.find({ userType: 'Client' }).exec();
-
-  //   // Fetch chats where the vendor is either the sender or the recipient
-  //   const chats = await Chat.find({
-  //     $or: [{ sender: userId }, { replyTo: userId }]
-  //   }).exec();
-
-  //   // Extract user IDs from chats
-  //   const userIdsFromChats = chats.map(chat => chat.sender.toString());
-
-  //   // Filter clients who have chatted with the vendor
-  //   const filteredClients = clients.filter(client => userIdsFromChats.includes(client._id.toString()));
-
-  //   res.json(filteredClients);
-  // } catch (error) {
-  //   res.status(500).json("server error");
-  // }}
 
   export const fetchUsersByUserType = async (req: Request, res: Response) => {
     try {

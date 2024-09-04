@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import Restaurant from "../models/Restaurant";
-// const qr = require('qrcode'); // Import the qrcode package
 const fs = require('fs');
 const path = require('path');
 const QrCode=require('../models/QrCode');

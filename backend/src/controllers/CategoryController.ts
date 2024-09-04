@@ -1,6 +1,5 @@
 import Category from '../models/Category'
-import { Request, Response, response } from "express"
-import multer from "multer";
+import { Request, Response } from "express"
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
 
