@@ -331,9 +331,9 @@ async function getRecommendations(userId: string) {
 }
 
 // Example usage (can be removed or kept for testing purposes)
-getRecommendations('userId')
-  .then((recommendations) => console.log(recommendations))
-  .catch((err) => console.error(err));
+// getRecommendations('userId')
+//   .then((recommendations) => console.log(recommendations))
+//   .catch((err) => console.error(err));
 
 
   export const getUserRecommendations = async (req: Request, res: Response) => {

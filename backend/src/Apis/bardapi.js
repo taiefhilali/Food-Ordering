@@ -6,7 +6,7 @@ const { GoogleAuth } = require('google-auth-library');
 const mongoose = require('mongoose');
 const BotMessage = require('../models/BotMessage');  // Import the bot message model
 
-const MODEL_NAME = 'models/chat-bison-001';
+const MODEL_NAME = 'models/chat-bison-002';
 const API_KEY = process.env.BARD_API_KEY;
 
 // Connect to MongoDB
