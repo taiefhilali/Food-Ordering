@@ -15,8 +15,6 @@ import Chart from './pages/Chart';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Tables from './pages/Tables';
-import Alerts from './pages/UiElements/Alerts';
-import Buttons from './pages/UiElements/Buttons';
 import Displayrestaurants from './pages/Restaurant/Displayrestaurants'
 import DetailsSection from './forms/manage-restaurant-form/DetailsSection'
 import DisplayProductsPage from './pages/Products/DisplayProducts'; // Import the DisplayProductsPage component
@@ -92,14 +90,11 @@ const AppRoutes = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-  // const userType = localStorage.getItem('userType');
 
 
   return (
 
-<>
-
-    <Routes>
+<Routes>
 
 
       <Route path='/' element={<Layout><HomePage></HomePage></Layout>}></Route>
@@ -115,14 +110,13 @@ const AppRoutes = () => {
       <Route
         path="/authentication"
         element={
-          <>
+          
             <LoginFormModal closeModal={closeModal} />
 
-          </>
+          
         }
       />
 
-      //vendor
  
           <Route
             path="/manage-restaurant"
@@ -139,25 +133,7 @@ const AppRoutes = () => {
           />
         <Route path="/order-details/:id" element={<OrderDetails />} />
 
-      {/* {userType === "Vendor" ? (
-        <>
-          <Route
-            path="/manage-restaurant"
-            element={<ManageRestaurantPage />}
-          />
-          <Route
-            path="/display-products"
-            element={<DisplayProductsPage />}
-          />
-          
-        </>
-      ) : (
-        <Route
-          path="*"
-          element={<UnauthorizedPage />}
-        />
-      )} */}
-//Admin
+
       <Route
         path="/adminproducts"
         element={
@@ -213,9 +189,9 @@ const AppRoutes = () => {
       <Route
         path="/display-restaurant-details"
         element={
-          <>
+          
             <Displayrestaurants />
-          </>
+          
         }
       />
               <Route path="/restaurant-details/:id" element={<RestaurantDetails />} />
@@ -223,9 +199,9 @@ const AppRoutes = () => {
       <Route
         path="/product/:productId"
         element={
-          <>
+          
             <ProductDetailContainer />
-          </>
+          
         }
       />
       <Route path="/additives" element={<AdditivesForm />} />
@@ -233,17 +209,17 @@ const AppRoutes = () => {
   <Route
         path="/chat"
         element={
-          <>
+          
             <ChatComponent />
-          </>
+          
         }
       />
       <Route
         path="/details"
         element={
-          <>
+          
             <DetailsSection />
-          </>
+          
         }
       />
       <Route
@@ -276,17 +252,17 @@ const AppRoutes = () => {
       <Route
         path="/statsticsVendor"
         element={
-          <>
+          
             <Statistics />
-          </>
+          
         }
       />
             <Route
         path="/statsticsAdmin"
         element={
-          <>
+          
             <Dashboardadmin />
-          </>
+          
         }
       />
          <Route
@@ -301,17 +277,17 @@ const AppRoutes = () => {
       <Route
         path="/add-product"
         element={
-          <>
+          
             < ManageProductPage />
-          </>
+          
         }
       />
          <Route
         path="/stock"
         element={
-          <>
+          
             < StockComponent />
-          </>
+          
         }
       />
        <Route
@@ -326,87 +302,69 @@ const AppRoutes = () => {
       <Route
         path="/admins"
         element={
-          <>
+          
             <AdminsDisplay />
-          </>
+          
         }
       />
       <Route
         path="/clients"
         element={
-          <>
+          
             <ClientsDisplay />
-          </>
         }
       />
       <Route
         path="/vendors"
         element={
-          <>
+          
             <VendorsDisplay />
-          </>
+          
         }
       />
       <Route
         path="/categories"
         element={
-          <>
+          
             <CategoryComponent />
-          </>
+          
         }
       />
  <Route
         path="/categories"
         element={
-          <>
+          
             <CategoryComponent />
-          </>
+          
         }
       />
  <Route
         path="/manage-categories"
         element={
-          <>
+          
             <AddCategoryForm fetchCategories={function (): void {
               throw new Error('Function not implemented.')
             } } />
-          </>
+          
         }
       />
       <Route
         path="/chart"
         element={
-          <>
+
             <Chart />
-          </>
+          
         }
       />
-      <Route
-        path="/ui/alerts"
-        element={
-          <>
-            <PageTitle title="Alerts | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-            <Alerts />
-          </>
-        }
-      />
+    
         <Route
         path="/QrCode"
         element={
-          <>
+          
             <QRCodeGenerator />
-          </>
         }
       />
-      <Route
-        path="/ui/buttons"
-        element={
-          <>
-            <PageTitle title="Buttons | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-            <Buttons />
-          </>
-        }
-      />
+     
       <Route
         path="/auth/signin"
         element={
@@ -420,10 +378,10 @@ const AppRoutes = () => {
       <Route
         path="/register"
         element={
-          <>
+          
             <RegisterForm closeModal={closeModal} />
 
-          </>
+          
         }
       />
 
@@ -437,7 +395,6 @@ const AppRoutes = () => {
         }
       />
     </Routes>
-    </>
   )
 }
 

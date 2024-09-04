@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-// interface UserDetails {
-//   email: string;
-//   // Add other fields as per your user details structure
-// }
+
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [userDetails, setUserDetails] = useState({
@@ -65,15 +62,7 @@ const DropdownUser = () => {
   };
 
   useEffect(() => {
-    // const storedUserDetails = localStorage.getItem('loggedInUser');
 
-    // if (storedUserDetails) {
-    //   const parsedUserDetails = JSON.parse(storedUserDetails);
-    //   const { email, ...rest } = parsedUserDetails;
-    //   const modifiedEmail = email.split('@')[0]; // Get everything before the '@' symbol
-
-    //   setUserDetails({ email: modifiedEmail, ...rest });
-    // }
     fetchUserData();
 
   }, []);

@@ -1,4 +1,3 @@
-// routes/messages.ts
 
 import express from 'express';
 

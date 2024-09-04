@@ -1,9 +1,7 @@
 import express from "express";
 import authController from "../controllers/authController";
 import User from "../models/User";
-import multer from "multer"
 import passport from "passport";
-const { verifyToken, verifyUserType,verifyVendor } = require('../middleware/verifyToken')
 
 const router=express.Router();
 const CLIENT_URL = "http://localhost:3000";
@@ -11,8 +9,6 @@ const CLIENT_URL = "http://localhost:3000";
  router.post('/register',authController.createUser);
 router.post("/login",authController.loginUser);
 router.post("/log",authController.loguser);
-// router.post('/forgot-password',verifyToken, verifyVendor,authController.forgotPassword);
-// router.post('/reset-password',verifyToken, verifyVendor,authController.resetPassword);
 router.post('/forgot-password',authController.forgotPassword);
 router.post('/reset-password',authController.resetPassword);
 router.get("/login/success", (req, res) => {
@@ -65,7 +61,7 @@ router.get("/login/success", (req, res) => {
   );
   router.post('/clerk-user', async (req, res) => {
     try {
-      const { userId, email, token, userType,username } = req.body; // Extract relevant user data
+      const { userId, email, userType,username } = req.body; // Extract relevant user data
   
       // Check if user already exists in MongoDB
       let user = await User.findOne({ clerkId: userId });

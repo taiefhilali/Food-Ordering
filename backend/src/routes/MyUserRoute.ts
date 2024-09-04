@@ -2,7 +2,7 @@ import express from "express";
 import MyUserController from "../controllers/MyUserController";
 import User from "../models/User";
 import multer from "multer"
-const { verifyToken, verifyUserType,verifyVendor,verifyAdmin } = require('../middleware/verifyToken')
+const { verifyToken, verifyUserType,verifyVendor } = require('../middleware/verifyToken')
 
 
 const router = express.Router();

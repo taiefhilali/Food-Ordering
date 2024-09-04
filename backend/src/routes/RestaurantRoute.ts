@@ -1,6 +1,5 @@
 import express from "express";
 import { param } from "express-validator";
-import MyRestaurantController from "../controllers/MyRestaurantController";
 import RestaurantController from "../controllers/RestaurantController";
 const { verifyToken, verifyVendor } = require('../middleware/verifyToken')
 

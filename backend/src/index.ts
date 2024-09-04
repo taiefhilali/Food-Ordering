@@ -1,4 +1,4 @@
-import express from "express";
+import express,{ Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
@@ -22,8 +22,8 @@ import NotifRoute from "./routes/NotificationRoute";
 import Stripe from 'stripe';
 const socketIo = require('socket.io');
 const http = require('http');
-import { Server as SocketIOServer, Socket } from 'socket.io'; // Import Socket and Server from socket.io
-import Notification, { NotificationDocument } from './models/Notification'; // Import Notification model
+import {  Socket } from 'socket.io'; // Import Socket and Server from socket.io
+import Notification from './models/Notification'; // Import Notification model
 import passport from 'passport';
 import User, { IUser } from './models/User';
 const session = require('express-session');
@@ -32,7 +32,6 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 import discountRoute from "./routes/DiscountRoute";
 import crypto from 'crypto'; // Import crypto module
 import cron from 'node-cron';
-import { Request, Response, NextFunction } from 'express'; // Import Request, Response, and NextFunction types
 import Chat from "./models/Chat";
 import { handleChatMessage } from "./controllers/ChatController";
 // const { TextServiceClient } =

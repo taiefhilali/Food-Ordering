@@ -2,17 +2,13 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import request from 'supertest';
 import sinon from 'sinon';
-import authController from '../controllers/authController';
 import User from '../models/User';
 import passport from 'passport';
 import { describe, beforeEach, afterEach, test, expect, beforeAll } from '@jest/globals';
 import authRoutes from '../../src/routes/authRoute'; // Adjust path if necessary
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
-import { Transporter, SendMailOptions } from 'nodemailer'; // Import types
-import { SinonStub } from 'sinon';
-import { SentMessageInfo } from 'nodemailer'; // Import types
+import nodemailer, { Transporter, SentMessageInfo } from 'nodemailer'; // Import types
 
 // Set up the Express app and routes for testing
 const app = express();
