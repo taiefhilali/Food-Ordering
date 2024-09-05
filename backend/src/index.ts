@@ -34,8 +34,8 @@ import crypto from 'crypto'; // Import crypto module
 import cron from 'node-cron';
 import Chat from "./models/Chat";
 import { handleChatMessage } from "./controllers/ChatController";
-// const { TextServiceClient } =
-//   require("@google-ai/generativelanguage").v1beta2;
+const { TextServiceClient } =
+  require("@google-ai/generativelanguage").v1beta2;
 
 const { GoogleAuth } = require("google-auth-library");
 
@@ -117,7 +117,7 @@ app.use('/api/my/notifications', NotifRoute);
 app.use('/api/my/feedback', feebackRoute);
 app.use('/api/my/messages', chatRoute);
 app.use('/api/my/discounts', discountRoute);
-// app.use('/api/my/bard', bardRoute);
+app.use('/api/my/bard', bardRoute);
 app.use('/api/my/invoice', invoiceRoute);
 
 // Initialize Passport
@@ -128,22 +128,22 @@ app.use(passport.session());
 
 //gemini configuration 
 
-// const client = new TextServiceClient({
-//   authClient: new GoogleAuth().fromAPIKey(API_KEY),
-// });
+const client = new TextServiceClient({
+  authClient: new GoogleAuth().fromAPIKey(API_KEY),
+});
 
-// const prompt = "Repeat after me: one, two,";
+const prompt = "Repeat after me: one, two,";
 
-// client
-//   .generateText({
-//     model: MODEL_NAME,
-//     prompt: {
-//       text: prompt,
-//     },
-//   })
-//   .then((result: any) => {
-//     console.log(JSON.stringify(result, null, 2));
-//   });
+client
+  .generateText({
+    model: MODEL_NAME,
+    prompt: {
+      text: prompt,
+    },
+  })
+  .then((result: any) => {
+    console.log(JSON.stringify(result, null, 2));
+  });
 
 //gemini configuration 
 
