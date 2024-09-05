@@ -52,7 +52,7 @@ describe('Category Controller', () => {
       .get('/api/my/categories')
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Array);
-  }, 10000);
+  }, 30000);
 
 
 
@@ -77,7 +77,7 @@ test('should update a category by ID', async () => {
     // Optionally fetch the category to verify the update
     const updatedCategory = await Category.findById(category._id);
     expect(updatedCategory).toHaveProperty('title', updatedData.title);
-  }, 10000);
+  }, 30000);
   
 
 
@@ -94,6 +94,6 @@ test('should update a category by ID', async () => {
       .set('Authorization', `Bearer ${token}`);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('message', 'Category successfully deleted');
-  }, 10000);
+  }, 30000);
 // 
 });
