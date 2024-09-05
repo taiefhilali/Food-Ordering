@@ -11,7 +11,7 @@
     "test:discount": "jest --testPathPattern=src/tests/MyDiscountController.test.ts"
   },
   "publishConfig": {
-    "registry": "http://172.10.0.140:8081/repository/repository/"
+    "registry": "http://192.168.56.10:8081/repository/repository/"
   },
   "jest": {
     "testEnvironment": "node",
