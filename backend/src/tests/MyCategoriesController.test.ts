@@ -45,7 +45,7 @@ describe('Category Controller', () => {
     await Category.deleteMany({ title: { $in: ['Category 1', 'Category 2','Updated Category Title'] } });
 
     await mongoose.connection.close();}
-  });
+  },30000);
 
   test('should get all categories', async () => {
     const response = await request(app)

@@ -42,14 +42,14 @@ beforeEach(async () => {
       restaurantName: restaurant._id // Ensure this is set
     },
   ]);
-});
+},30000);
 
 
 afterEach(async () => {
   // Clean up the database after each test
   await Discount.deleteMany({ couponCode: { $in: ['DISCOUNT11', 'DISCOUNT23', 'DISCOUNT30', 'DISCOUNT39'] } });
   await Restaurant.deleteMany({ restaurantName: 'Test Restaurant' });
-});
+},30000);
 afterAll(async () => {
   if (mongoose.connection.readyState === 1) {
 
@@ -58,7 +58,7 @@ afterAll(async () => {
   await Discount.deleteMany({ couponCode: { $in: ['DISCOUNT11', 'DISCOUNT23', 'DISCOUNT30', 'DISCOUNT39'] } });
   await mongoose.connection.close();
 }
-});
+},30000);
 describe('Discount Controller', () => {
   test('should add a new coupon', async () => {
     const response = await request(app)
