@@ -21,7 +21,7 @@ const scanner = require('sonarqube-scanner').default;
 scanner(
   {
     serverUrl: 'http://192.168.56.10:9000',
-    token: '44b3ef6161f80bc0c05d08f070026f438b734e9e',
+    token: '10e49f83555486520d15689dfb5c0910d8729e35',
     options: {
       'sonar.projectName': 'quickbite',
       'sonar.projectDescription': 'quickbite',
