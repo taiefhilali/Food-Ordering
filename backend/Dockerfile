@@ -7,6 +7,7 @@ WORKDIR /backend/src/index
 # Copy package.json and package-lock.json
 COPY /package*.json ./
 
+RUN  npm install -g npm@10.8.3
 # Install dependencies
 RUN npm install
 

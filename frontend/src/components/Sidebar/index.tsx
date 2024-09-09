@@ -316,6 +316,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   }}
                 </SidebarLinkGroup>
               )}
+
+
               {/* Restaurant side bar */}
               {userType === 'Vendor' && (
                 <SidebarLinkGroup
@@ -501,7 +503,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
-                           strokeLinecap="round"
+                            strokeLinecap="round"
                             strokeLinejoin="round"
                           >
                             <circle cx="12" cy="12" r="10" fill="#FBC02D" />
@@ -754,7 +756,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
-                           strokeLinecap="round"
+                            strokeLinecap="round"
                             strokeLinejoin="round"
                           >
                             <path d="M6 6h15l1 9H7l1-9zM6 6l1 6h12l1-6H6zM3 3h1l3 11h11l3-11h1M3 3l1 1h1l3 10h12l3-10h1l1-1" />
@@ -1238,6 +1240,74 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
 
               </li>
+              {userType === 'Admin' && (
+                <ul>
+
+                  <li>
+                    <NavLink
+                      to="/categoriestable"
+                      className={`group relative flex items-center gap-2.5 rounded-full px-4 py-2 font-medium text-graydarkduration-300 ease-in-out hover:bg-orange-300 dark:hover:bg-meta-4 ${(pathname === '/dashboards' || pathname.includes('dashboard')) && 'bg-graydark dark:bg-meta-4'}`}
+                    >
+                      {/* SVG Icon */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <rect x="3" y="3" width="7" height="7" stroke="currentColor" fill="none"></rect>
+
+                        <rect x="3" y="14" width="7" height="7" stroke="currentColor" fill="none"></rect>
+
+                        <rect x="14" y="8" width="7" height="7" stroke="currentColor" fill="none"></rect>
+                      </svg>
+
+
+                      Categories
+                    </NavLink>
+                  </li>
+
+
+                </ul>
+              )}
+              {userType === 'Admin' && (
+                <ul>
+
+                  <li>
+                    <NavLink
+                      to="/Orderstable"
+                      className={`group relative flex items-center gap-2.5 rounded-full px-4 py-2 font-medium text-graydarkduration-300 ease-in-out hover:bg-orange-300 dark:hover:bg-meta-4 ${(pathname === '/dashboards' || pathname.includes('dashboard')) && 'bg-graydark dark:bg-meta-4'}`}
+                    >
+                      {/* SVG Icon */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <circle cx="9" cy="21" r="1.5" fill="currentColor"></circle>
+                        <circle cx="20" cy="21" r="1.5" fill="currentColor"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61l1.68-8.39H6"></path>
+                      </svg>
+
+                      Orders
+                    </NavLink>
+                  </li>
+
+
+                </ul>
+              )}
+
               {userType === 'Vendor' && (
                 <ul>
                   <li>
@@ -1505,7 +1575,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
-                   strokeLinecap="round"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                   >
                     <path d="M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0-6a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1 1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM5.707 6.707a1 1 0 0 1 1.414 0l.707.707a1 1 0 0 1 0 1.414l-.707.707a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 0-1.414zM18.293 18.293a1 1 0 0 1 0-1.414l.707-.707a1 1 0 0 1 1.414 1.414l-.707.707a1 1 0 0 1-1.414 0zM6.707 18.293a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 1.414l-.707.707zM18.293 6.707a1 1 0 0 1 1.414 0l.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a1 1 0 0 1 0-1.414zM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
@@ -1636,8 +1706,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           />
                         </svg>
                       </NavLink> */}
-                      {/* <!-- Dropdown Menu Start --> */}
-                      {/* <div
+              {/* <!-- Dropdown Menu Start --> */}
+              {/* <div
                         className={`translate transform overflow-hidden ${!open && 'hidden'
                           }`}
                       >
@@ -1666,8 +1736,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                         </ul>
                       </div> */}
-                      {/* <!-- Dropdown Menu End --> */}
-                    {/* </React.Fragment>
+              {/* <!-- Dropdown Menu End --> */}
+              {/* </React.Fragment>
                   );
                 }}
               </SidebarLinkGroup> */}

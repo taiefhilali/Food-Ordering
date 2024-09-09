@@ -14,7 +14,7 @@ import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-import Tables from './pages/Tables';
+// import Tables from './pages/Tables';
 import Displayrestaurants from './pages/Restaurant/Displayrestaurants'
 import DetailsSection from './forms/manage-restaurant-form/DetailsSection'
 import DisplayProductsPage from './pages/Products/DisplayProducts'; // Import the DisplayProductsPage component
@@ -47,6 +47,9 @@ import AdditivesForm from './forms/manage-product-forms/AdditivesForm'
 import RestaurantDetails from './pages/Restaurant/RestaurantDetails '
 // import EditRestaurant from './pages/Restaurant/EditRestaurant'
 import Dashboardadmin from './components/Dashboard/statisticsAdmin'
+import OrdersTable from './pages/Orders/OrdersTable'
+import CategoryTable from './components/Categories/CategoriesTable'
+import DisplayCategories from './pages/Categories/DisplayCategories'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -142,6 +145,22 @@ const AppRoutes = () => {
 
         }
       />
+       <Route
+        path="/Orderstable"
+        element={
+
+          <OrdersTable />
+
+        }
+      />
+          <Route
+        path="/categoriestable"
+        element={
+
+          <DisplayCategories />
+
+        }
+      />
            <Route
         path="/adminrestaurants"
         element={
@@ -231,15 +250,7 @@ const AppRoutes = () => {
           </>
         }
       />
-      <Route
-        path="/tables"
-        element={
-          <>
-            <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-            <Tables />
-          </>
-        }
-      />
+    
       <Route
         path="/settings"
         element={

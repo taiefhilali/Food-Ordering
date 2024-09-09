@@ -64,8 +64,8 @@ cloudinary.config({
 export const stripe = new Stripe('sk_test_51PM7rN03qVjqSurgaFDcUo3Y1GrtFJoYzoiHZZRIWvNhaIec7DrXqNPLFuori2tTwAjBPEQwHF4UOuLBIptnxx4m00OwswBdhb');
 
 
-const MODEL_NAME = "models/text-bison-001";
-const API_KEY = "AIzaSyBSlbF1pZtkBsVS_em2bMONJB5kMDYZImI";
+const MODEL_NAME = "models/text-bison-32k";
+const API_KEY = "AIzaSyDlYwF1X42cvtJO7Iws_pY2hfuwdgJ3XFs";
 
 //firebase configuration
 import firebase from 'firebase-admin';
@@ -134,6 +134,13 @@ const client = new TextServiceClient({
 
 const prompt = "Repeat after me: one, two,";
 
+// Log the request being made
+console.log("Making API request to Google Gemini API...");
+console.log("Request Data:", {
+  model: MODEL_NAME,
+  prompt: prompt,
+});
+
 client
   .generateText({
     model: MODEL_NAME,
@@ -142,9 +149,14 @@ client
     },
   })
   .then((result: any) => {
-    console.log(JSON.stringify(result, null, 2));
+    // Log the response data
+    console.log("API Response Received:", JSON.stringify(result, null, 2));
+  })
+  .catch((error: any) => {
+    // Log the error details
+    console.error("API Error:", error.message);
+    console.error("Error Stack:", error.stack);
   });
-
 //gemini configuration 
 
 // Initialize Facebook authentication strategy
