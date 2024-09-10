@@ -412,17 +412,19 @@ const InvoicesTable = () => {
     const fetchAllInvoices = async () => {
       try {
         const selectedRestaurantId = localStorage.getItem('selectedRestaurantId');
+        
+        // Check if selectedRestaurantId exists
         if (!selectedRestaurantId) {
-          throw new Error('Selected restaurant ID not found in local storage');
+          setError('Please select a restaurant to view the invoices.');
+          return; // Stop execution if no restaurant is selected
         }
-
+  
         const response = await axios.get(`http://localhost:7000/api/my/invoice/restaurant/${selectedRestaurantId}`);
-
-        // Assuming the invoices have a `createdAt` or `updatedAt` field
+        
+        // Assuming the invoices have a createdAt or updatedAt field
         const sortedInvoices = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
+  
         setInvoices(sortedInvoices);
-        console.log(sortedInvoices, 'sorted invoices!!');
       } catch (error) {
         console.error('Error fetching invoices:', error);
         setError('Error fetching invoices');
@@ -430,9 +432,10 @@ const InvoicesTable = () => {
         setIsLoading(false);
       }
     };
-
+  
     fetchAllInvoices();
   }, []);
+  
 
 
   // Fetch restaurants

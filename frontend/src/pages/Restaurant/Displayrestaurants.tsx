@@ -117,8 +117,13 @@ const RestaurantList = () => {
               </div>
 
               <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
-                <Link to={`/restaurant-details/${restaurant._id}`}>
-                  <button className="px-4 py-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white">View Details</button>
+                <Link
+                  to={`/restaurant-details/${restaurant._id}`}
+                  onClick={() => localStorage.setItem('selectedRestaurantId', restaurant._id)}
+                >
+                  <button className="px-4 py-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white">
+                    View Details
+                  </button>
                 </Link>
               </div>
             </div>
