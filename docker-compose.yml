@@ -21,7 +21,7 @@ services:
       dockerfile: Dockerfile
     container_name: backend
     ports:
-      - '7000:7000'
+      - '7001:7000'  # Change host port for backend
     depends_on:
       - mongo
     environment:
@@ -41,7 +41,7 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     ports:
-      - '3000:3000'
+      - '3001:3000'  # Change host port for frontend
     depends_on:
       - backend
     environment:
