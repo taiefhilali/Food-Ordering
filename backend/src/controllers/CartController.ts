@@ -1,4 +1,4 @@
-import Cart, { ICartItem } from '../models/Cart'; // Ensure the correct path to the Cart model
+import Cart,{ ICartItem } from '../models/Cart';
 import { Request, Response } from "express"
 import mongoose from 'mongoose';
 import stripe from 'stripe';
@@ -313,7 +313,7 @@ const payment = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const totalAmount = cart ? cart.items.reduce((sum, item) => sum + item.totalPrice, 0) : 0;
+    const totalAmount = cart ? cart.items.reduce((sum: number, item: ICartItem) => sum + item.totalPrice, 0) : 0;
 
     res.status(200).json({
       user: {

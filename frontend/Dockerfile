@@ -8,8 +8,10 @@
     COPY /package*.json ./
     
     # RUN  npm install -g npm@10.8.3 --force
+    RUN npm install react-lottie@latest --save
+    # RUN  npm install -g npm@10.8.3 --force
     # Install dependencies
-    RUN npm install --force
+    RUN npm install --legacy-peer-deps
     
     # Copy the rest of the application code
     COPY . .
