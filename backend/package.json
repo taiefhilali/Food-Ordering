@@ -4,6 +4,7 @@
   "description": "",
   "main": "./src/index.ts",
   "scripts": {
+    "start": "ts-node-esm ./src/index.ts",
     "dev": "nodemon",
     "test": "jest --detectOpenHandles",
     "test:category": "jest --testPathPattern=src/tests/MyCategoriesController.test.ts",
