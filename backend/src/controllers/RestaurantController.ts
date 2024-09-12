@@ -185,9 +185,21 @@ const searchRestaurant = async (req: Request, res: Response) => {
 };
 
 
+const getMostRatedRestaurants = async (req: Request, res: Response) => {
+  try {
+    // Fetch restaurants sorted by rating and limit the result to the top 10 (or any other number)
+    const restaurants = await Restaurant.find({})
+      .sort({ rating: -1, ratingCount: -1 }) // Sort by rating and reviews count
+      .limit(10); // You can adjust the limit
 
+    res.status(200).json(restaurants);
+  } catch (error) {
+    console.error('Error fetching most-rated restaurants:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
 
 
 export default {
-  searchRestaurant, addrestaurant, addratingtorestaurant, serviceAvailability, deleteResataurant, getRestaurant
+  searchRestaurant, addrestaurant, getMostRatedRestaurants,addratingtorestaurant, serviceAvailability, deleteResataurant, getRestaurant
 };

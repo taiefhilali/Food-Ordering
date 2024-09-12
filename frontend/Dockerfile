@@ -6,12 +6,13 @@
     
     # Copy package.json and package-lock.json
     COPY /package*.json ./
-    
-    # RUN  npm install -g npm@10.8.3 --force
+    RUN npm install core-js@latest --force
+
+     RUN  npm install -g npm@10.8.3 --force
    # RUN npm install react-lottie@latest --force
     # RUN  npm install -g npm@10.8.3 --force
     # Install dependencies
-    RUN npm install --legacy-peer-deps
+    RUN npm install --force
     
     # Copy the rest of the application code
     COPY . .

@@ -25,6 +25,7 @@ export type Restaurant = {
   lastUpdated: string;
   percentage: number[],
   isApproved: boolean,
+  rating:number,
 ratingCount: number,
 description: string
 };
