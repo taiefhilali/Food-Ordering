@@ -6,7 +6,31 @@ export type User = {
   city: string;
   country: string;
 };
+export interface Reply {
+  _id: string;
+  replyText: string;
+  createdAt: Date;
+}
 
+export interface Feedback {
+  _id: string;
+  userId: User;
+  restaurantId: string;
+  feedbackText: string;
+  createdAt: Date;
+  replies?: Reply[]; // Make sure replies is included here
+}
+
+export type Product = {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  quantity: number;
+  imageUrl: string;
+  likes: string[]; // Array of User IDs (as strings)
+};
 export type MenuItem = {
   _id: string;
   name: string;

@@ -23,6 +23,7 @@ interface IProduct extends Document {
   createdAt?: Date;
   category: mongoose.Schema.Types.ObjectId;
   likes: mongoose.Schema.Types.ObjectId[];
+  // likes?:number;
   additives: typeof additivesSchema[];
   totalRevenue?: number;
   sell: (quantitySold: number) => Promise<void>;
@@ -45,6 +46,7 @@ const productSchema: Schema<IProduct> = new Schema({
   createdAt: { type: Date, default: Date.now },
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Categories', required: true },
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }],
+  // likes: { type: Number, default: 0 }, // Change likes to a number with a default of 0
   additives: {
     type: [additivesSchema],
     default: [],

@@ -1,20 +1,21 @@
 import { Request, Response } from "express"
 import Restaurant from "../models/Restaurant";
 import Discount from '../models/Discount'; // Adjust the path as necessary
-  export const validatecoupon = async (req: Request, res: Response) => 
-      {
-        const { couponCode } = req.body;
+
+export const validatecoupon = async (req: Request, res: Response) => {
+  const { couponCode } = req.body;
   try {
     const coupon = await Discount.findOne({ couponCode });
     if (!coupon) {
       return res.status(400).json({ message: 'Invalid coupon code' });
     }
-  
+
     return res.status(200).json({ discount: coupon.discount });
   } catch (error) {
     return res.status(500).json({ message: 'Server error', error });
   }
-  };
+};
+
 const retryOperation = async (operation: () => Promise<any>, retries: number = 3): Promise<any> => {
   let attempt = 0;
   while (attempt < retries) {

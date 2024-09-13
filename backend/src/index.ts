@@ -31,22 +31,22 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 const FacebookStrategy = require('passport-facebook').Strategy;
 import discountRoute from "./routes/DiscountRoute";
 import crypto from 'crypto'; // Import crypto module
-import cron from 'node-cron';
 import Chat from "./models/Chat";
 import { handleChatMessage } from "./controllers/ChatController";
-const { TextServiceClient } =
-  require("@google-ai/generativelanguage").v1beta2;
-
-const { GoogleAuth } = require("google-auth-library");
+const { TextServiceClient } = require("@google-ai/generativelanguage").v1beta2;
+// import {
+//   GoogleGenerativeAI,
+//   HarmCategory,
+//   HarmBlockThreshold,
+//   GenerativeModel,
+// } from "@google/generative-ai";
+  const { GoogleAuth } = require('google-auth-library');
 
 const generateRandomString = (length: number) => {
   return crypto.randomBytes(Math.ceil(length / 2))
     .toString('hex'); // convert to hexadecimal format
 };
-// cron.schedule('0 0 * * *', async () => {
-//   console.log('Running scheduled task to delete expired coupons...');
-//   await deleteExpiredCoupons();
-// });
+
 
 const SESSION_SECRET = generateRandomString(32);
 //cloudinary configuration
@@ -64,8 +64,9 @@ cloudinary.config({
 export const stripe = new Stripe('sk_test_51PM7rN03qVjqSurgaFDcUo3Y1GrtFJoYzoiHZZRIWvNhaIec7DrXqNPLFuori2tTwAjBPEQwHF4UOuLBIptnxx4m00OwswBdhb');
 
 
-const MODEL_NAME = "models/text-bison-32k";
+// const MODEL_NAME = "models/text-bison-001";
 const API_KEY = "AIzaSyDlYwF1X42cvtJO7Iws_pY2hfuwdgJ3XFs";
+const MODEL_NAME = "gemini-1.5-flash";
 
 //firebase configuration
 import firebase from 'firebase-admin';
@@ -128,35 +129,36 @@ app.use(passport.session());
 
 //gemini configuration 
 
-const client = new TextServiceClient({
-  authClient: new GoogleAuth().fromAPIKey(API_KEY),
-});
+// const client = new TextServiceClient({
+//   authClient: new GoogleAuth().fromAPIKey(API_KEY),
+// });
 
-const prompt = "Repeat after me: one, two,";
+// const prompt = "Repeat after me: one, two,";
 
-// Log the request being made
-console.log("Making API request to Google Gemini API...");
-console.log("Request Data:", {
-  model: MODEL_NAME,
-  prompt: prompt,
-});
+// // Log the request being made
+// console.log("Making API request to Google Gemini API...");
+// console.log("Request Data:", {
+//   model: MODEL_NAME,
+//   prompt: prompt,
+// });
 
-client
-  .generateText({
-    model: MODEL_NAME,
-    prompt: {
-      text: prompt,
-    },
-  })
-  .then((result: any) => {
-    // Log the response data
-    console.log("API Response Received:", JSON.stringify(result, null, 2));
-  })
-  .catch((error: any) => {
-    // Log the error details
-    console.error("API Error:", error.message);
-    console.error("Error Stack:", error.stack);
-  });
+// client.generateText({
+//     model: MODEL_NAME,
+//     prompt: {
+//       text: prompt,
+//     },
+//   })
+//   .then((result: any) => {
+//     // Log the response data
+//     console.log("API Response Received:", JSON.stringify(result, null, 2));
+//   })
+//   .catch((error: any) => {
+//     // Log the error details
+//     console.error("API Error:", error.message);
+//     console.error("Error Stack:", error.stack);
+//   });
+// Instantiate GoogleGenerativeAI client
+
 //gemini configuration 
 
 // Initialize Facebook authentication strategy
@@ -183,7 +185,7 @@ passport.use(new GoogleStrategy({
           username: profile.displayName,
           userType: 'Vendor',
           imageUrl: profile.photos && profile.photos[0] ? profile.photos[0].value : '',
-          googleId: profile.id, // Set googleId from Google profile
+          // googleId: profile.id, // Set googleId from Google profile
           // Add other necessary fields
         });
 
@@ -289,7 +291,7 @@ async function (accessToken: string, refreshToken: string, profile: any, cb: (er
           username: profile.displayName,
           userType: 'Vendor',
           imageUrl: profile.photos && profile.photos[0] ? profile.photos[0].value : '',
-          googleId: profile.id, // Set googleId from Google profile
+          // googleId: profile.id, // Set googleId from Google profile
           // Add other necessary fields
         });
 

@@ -5,6 +5,7 @@ import Breadcrumb from '../Breadcrumbs/Breadcrumb';
 import axios from 'axios';
 import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
 import MostRatedRestaurants from './MostRatedRestaurants';
+import MostLikedProducts from './MostLikedProducts';
 
 ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
 
@@ -90,9 +91,11 @@ const Dashboardadmin: React.FC = () => {
       </div>
 
       <div className="charts-container">
+      <MostLikedProducts/>
                 <div className="chart-left">
                     {/* <ApexChart /> */}
                     <MostRatedRestaurants/>
+                  
                 </div>
           
             </div>

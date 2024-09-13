@@ -359,3 +359,23 @@ exports.RevenuebyCategory = async (req: Request, res: Response) => {
     res.status(500).send('Server Error');
   }
 }
+
+exports.getMostLikedProducts = async (req: Request, res: Response) => {
+  try {
+    // Fetch products sorted by the length of the 'likes' array in descending order and limit to top 10
+    const products = await Product.find({})
+      .sort({ likes: -1 }) // Sort based on the size of the 'likes' array
+      .limit(10); // Adjust the limit as needed
+
+    // If no products are found, return a 404 error
+    if (products.length === 0) {
+      return res.status(404).json({ error: 'No products found' });
+    }
+
+    // Return the found products in JSON format
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error fetching most liked products:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};

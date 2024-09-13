@@ -4,11 +4,11 @@ import RestaurantController from "../controllers/RestaurantController";
 const { verifyToken, verifyVendor } = require('../middleware/verifyToken')
 
 const router= express.Router();
+router.get('/most-rated', RestaurantController.getMostRatedRestaurants);
 
 router.get("/search/:restaurantName",param("restaurantName").isString().trim().notEmpty().withMessage("restaurant name must be a valid string"),RestaurantController.searchRestaurant);
 // Route to add a new restaurant
 router.post("/", verifyToken,verifyVendor,RestaurantController.addrestaurant);
-router.get('/most-rated', RestaurantController.getMostRatedRestaurants);
 
 // Route to toggle service availability of a restaurant
 router.patch("/serviceAvailability/:id",verifyToken,verifyVendor, RestaurantController.serviceAvailability);

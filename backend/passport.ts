@@ -12,7 +12,7 @@ passport.use(new GoogleStrategy({
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: "http://www.example.com/auth/google/callback"
   },
-  function(accessToken, refreshToken, profile, cb) {
+  async function(accessToken, refreshToken, profile, cb) {
 
     try {
         // Check if user already exists in database based on Google ID
@@ -28,7 +28,7 @@ passport.use(new GoogleStrategy({
             username: profile.displayName,
             userType: 'Vendor', // Example: Set the userType based on your application logic
             imageUrl: profile.photos[0].value, // Example: Set the imageUrl based on profile photo
-            googleId: profile.id,
+            // googleId: profile.id,
             // Add other necessary fields
           });
 

@@ -14,8 +14,8 @@ interface IUser extends Document {
   verificationToken?: string;
   password: string;
   blocked?: boolean;
-  googleId?: string;
-  facebookId?: string;
+  // googleId?: string;
+  // facebookId?: string;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -63,17 +63,17 @@ const userSchema = new mongoose.Schema<IUser>({
     type: Boolean,
     default: false,
   },
-  googleId: { type: String, 
-    // unique: true,
-    default: "idgoogleee",
-     sparse: true }, // Ensure sparse index if you want to allow multiple nulls
+  // googleId: { type: String, 
+  //   // unique: true,
+  //   default: "idgoogleee",
+  //    sparse: true }, // Ensure sparse index if you want to allow multiple nulls
 
-  facebookId: {
-    type: String,
-    default: "idfacebookkk",
-    // unique: true,
-    sparse:true
-  },
+  // facebookId: {
+  //   type: String,
+  //   default: "idfacebookkk",
+  //   // unique: true,
+  //   sparse:true
+  // },
 }, { timestamps: true });
 
 const User = mongoose.model<IUser>('User', userSchema);

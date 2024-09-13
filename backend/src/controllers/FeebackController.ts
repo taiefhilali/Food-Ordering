@@ -29,7 +29,28 @@ const getFeedbacksByRestaurant = async (req:Request, res:Response) => {
         res.status(500).json({ error: 'Failed to fetch feedback' });
     }
 };
+const feedbacksreplies = async (req:Request, res:Response) => {
 
+    const { feedbackId } = req.params;
+    const { replyText } = req.body;
+  
+    try {
+      const feedback = await Feedback.findById(feedbackId);
+      if (!feedback) {
+        return res.status(404).json({ error: 'Feedback not found' });
+      }
+  
+      feedback.replies.push({
+        replyText,
+        createdAt: new Date(),
+      });
+  
+      await feedback.save();
+      res.status(200).json({ message: 'Reply added' });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to add reply' });
+    }
+}
 module.exports = {
-  addFeedback,getFeedbacksByRestaurant
+  addFeedback,getFeedbacksByRestaurant,feedbacksreplies
 };
