@@ -1,39 +1,66 @@
 .feedback-container {
     max-height: 80%;
     overflow-y: auto;
-    padding: 10px;
+    padding: 20px;
     margin-bottom: 30px;
-  }
-  
-  .feedback-item {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-  }
-  
-  .feedback-header {
+}
+
+.feedback-item {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
     display: flex;
-    justify-content: space-between;
-  }
-  
-  .feedback-time {
-    font-size: 0.85em;
+    flex-direction: column;
+
+}
+
+.feedback-header {
+    display: flex;
+    align-items: center;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-image-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.feedback-time {
+    font-size: 0.8em;
     color: #666;
-  }
-  
-  .feedback-text {
-    padding: 16px; /* Adjust the padding as needed */
-    border: 1px solid #ccc; /* Border color */
-    border-radius: 8px; /* Rounded corners */
-    background-color: #f9f9f9; /* Background color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better effect */
-    margin-bottom: 16px; /* Space between feedback items */
-  }
-  
-  .feedback-replies {
+}
+
+.feedback-text {
+    margin-top: 60px;
+    /* Adds space above the feedback text */
+    margin-bottom: -5px;
+    padding: 16px;
+    /* Adds padding inside the feedback text box */
+
+    margin-left: -135px;
+    display: block;
+    /* Ensures that the feedback text is a block-level element */
+}
+
+
+.feedback-replies {
     margin-top: 16px;
-  }
-  
-  .reply-item {
+    margin-left: 40px;
+    /* Indent the replies */
+}
+
+.reply-item {
     display: flex;
     flex-direction: column;
     margin-bottom: 12px;
@@ -41,67 +68,66 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
-  }
-  
-  .admin-info {
+}
+
+.admin-info {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
-  }
-  
-  .admin-image {
+}
+
+.admin-image {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
     margin-right: 8px;
-  }
-  
-  .admin-details {
+}
+
+.admin-details {
     display: flex;
     flex-direction: column;
-  }
-  
-  .admin-name {
+}
+
+.admin-name {
     font-weight: bold;
     margin-bottom: 4px;
-  }
-  
-  .reply-time {
+}
+
+.reply-time {
     font-size: 0.8em;
     color: #777;
-  }
-  
-  .reply-text {
+}
+
+.reply-text {
     margin: 0;
-  }
-  
-    
-  .admin-reply-form {
+}
+
+.admin-reply-form {
     margin-top: 10px;
-  }
-  
-  .reply-input {
+}
+
+.reply-input {
     width: 100%;
     padding: 8px;
     margin-bottom: 5px;
-  }
-  
-  .reply-button {
+}
+
+.reply-button {
     background-color: #e4883dd4;
     color: white;
     padding: 5px 10px;
     border: none;
     cursor: pointer;
-  }
-  
-  .close-modal-button {
-    margin-bottom: -960px;
-    margin-left: 590px;
+}
+
+.close-modal-button {
     background-color: #ed781278;
     color: white;
-    padding: 10px 20px;
+    padding: 5px 15px;
     border: none;
     cursor: pointer;
-  }
-  
+    position: absolute;
+    top: 10px;
+    right: 40px;
+}

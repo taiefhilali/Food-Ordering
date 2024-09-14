@@ -1,15 +1,19 @@
-export type User = {
+export interface User {
   _id: string;
   email: string;
   name: string;
   addressLine1: string;
   city: string;
   country: string;
-};
+  username: string;
+  imageUrl: string;
+}
+
 export interface Reply {
   _id: string;
   replyText: string;
   createdAt: Date;
+  user: User; // Include user reference
 }
 
 export interface Feedback {
@@ -18,7 +22,7 @@ export interface Feedback {
   restaurantId: string;
   feedbackText: string;
   createdAt: Date;
-  replies?: Reply[]; // Make sure replies is included here
+  replies?: Reply[]; // Make sure replies is included
 }
 
 export type Product = {
