@@ -56,6 +56,7 @@ export type Restaurant = {
   rating:number,
 ratingCount: number,
 description: string
+
 };
 
 export type OrderStatus =

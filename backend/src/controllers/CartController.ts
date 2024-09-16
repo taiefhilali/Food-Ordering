@@ -7,8 +7,7 @@ import { io } from './../index'
 
 require('dotenv').config(); // Ensure you have dotenv configured to load environment variables
 
-// const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-// const stripeClient = require('stripe')(stripeSecretKey);
+
 
 const stripeSecretKey = 'sk_test_51PM7rN03qVjqSurgaFDcUo3Y1GrtFJoYzoiHZZRIWvNhaIec7DrXqNPLFuori2tTwAjBPEQwHF4UOuLBIptnxx4m00OwswBdhb'; // Replace with your actual Stripe secret key
 const stripeClient = new stripe(stripeSecretKey);

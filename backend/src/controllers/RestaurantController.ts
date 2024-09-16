@@ -200,6 +200,6 @@ const getMostRatedRestaurants = async (req: Request, res: Response) => {
 };
 
 
-export default {
+  export default {
   searchRestaurant, addrestaurant, getMostRatedRestaurants,addratingtorestaurant, serviceAvailability, deleteResataurant, getRestaurant
 };

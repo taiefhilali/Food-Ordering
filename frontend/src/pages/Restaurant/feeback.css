@@ -42,13 +42,13 @@
 }
 
 .feedback-text {
-    margin-top: 60px;
+    margin-top: 50px;
     /* Adds space above the feedback text */
     margin-bottom: -5px;
     padding: 16px;
+    margin-left: -135px;
     /* Adds padding inside the feedback text box */
 
-    margin-left: -135px;
     display: block;
     /* Ensures that the feedback text is a block-level element */
 }

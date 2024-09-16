@@ -28,13 +28,7 @@ const ProductTable: React.FC = () => {
       .catch(error => console.error('Error fetching products:', error));
   }, []);
 
-  // const handleToggleEnable = (productId: string) => {
-  //   const updatedProducts = products.map(product =>
-  //     product._id === productId ? { ...product, enabled: !product.enabled } : product
-  //   );
-  //   setProducts(updatedProducts);
-  //   // Here you would typically make an API call to update the product's enable status
-  // };
+
 
   const handleToggleEnable = async (productId: string) => {
     try {

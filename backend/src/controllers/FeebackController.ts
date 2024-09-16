@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import mongoose from "mongoose";
 const Feedback = require('../models/Feedback');
 
 // Controller function to add a new feedback
@@ -60,7 +61,7 @@ const feedbacksreplies = async (req: Request, res: Response) => {
         feedback.replies.push({
             replyText,
             createdAt: new Date(),
-            user: userId, // Store only the user ID here
+            user: new mongoose.Types.ObjectId(userId), // Ensure userId is of ObjectId type
         });
 
         await feedback.save();

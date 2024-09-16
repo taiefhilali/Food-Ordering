@@ -30,30 +30,36 @@ const RestaurantTable = () => {
   const handleAdminReply = async (feedbackId: string) => {
     try {
       const token = localStorage.getItem('userToken');
+      const userId = localStorage.getItem('userId'); // Get the user ID from local storage
       const replyText = adminReplyText[feedbackId];
+      console.log('UserId:', userId);
 
       if (!replyText) {
         return; // Do not send empty replies
       }
-
+  
       await axios.post(
         `http://localhost:7000/api/my/feedback/${feedbackId}/reply`,
-        { replyText },
+        {
+          replyText: replyText,
+          createdAt: new Date(), // Include the current date in the request payload
+          user: userId, // Include the user ID in the request payload
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-
+  
       // Optionally, update feedbacks with the new reply without a page reload
       const updatedFeedbacks = feedbacks.map(feedback =>
         feedback._id === feedbackId
-          ? { ...feedback, replies: [...(feedback.replies || []), { replyText, createdAt: new Date() }] }
+          ? { ...feedback, replies: [...(feedback.replies || []), { replyText, createdAt: new Date(), user: userId }] }
           : feedback
       );
       setFeedbacks(updatedFeedbacks);
-
+  
       // Clear reply input after sending
       setAdminReplyText(prevState => ({
         ...prevState,
@@ -67,6 +73,7 @@ const RestaurantTable = () => {
       console.error('Error sending reply:', error);
     }
   };
+  
 
   const toggleReplyForm = (feedbackId: string) => {
     setShowReplyForm(prevState => ({
@@ -293,22 +300,22 @@ const RestaurantTable = () => {
               feedbacks.map(feedback => (
                 <div key={feedback._id} className="feedback-item">
                   <div className="feedback-header">
-                    <img 
-                      src={feedback.userId.imageUrl} 
-                      alt={`${feedback.userId.username}'s profile`} 
+                    <img
+                      src={feedback.userId.imageUrl}
+                      alt={`${feedback.userId.username}'s profile`}
                       className="user-image-circle"
-                    />        
+                    />
 
                     <div className="user-info">
                       <strong>{feedback.userId.username}</strong>
                       <span className="feedback-time">{new Date(feedback.createdAt).toLocaleString()}</span>
                     </div>
-                    
+
                     <div className="feedback-text">
                       <p>{feedback.feedbackText}</p>
                     </div>
                   </div>
-                  
+
                   {feedback.replies && feedback.replies.length > 0 && (
                     <div className="feedback-replies">
                       {feedback.replies.map(reply => (
@@ -323,18 +330,22 @@ const RestaurantTable = () => {
                           <p className="reply-text">{reply.replyText}</p>
                         </div>
                       ))}
-                      
-                      
+
+
                       <button onClick={() => toggleReplyForm(feedback._id)} className="reply-link text-slate-400">
-                      Reply
-                    </button>
-                    
+                        Reply
+                      </button>
+
                     </div>
                   )}
 
                   {/* Reply Link and Form */}
                   <div className="admin-reply-form">
-                  
+
+                    <button onClick={() => toggleReplyForm(feedback._id)} className="reply-link text-slate-400">
+                      Reply
+                    </button>
+
                     {showReplyForm[feedback._id] && (
                       <div className="reply-form">
                         <textarea

@@ -100,7 +100,7 @@ app.use(session({
 // Configure CORS to allow requests from localhost:3000
 app.use(cors({
   origin: 'http://localhost:3000', // Replace with your frontend URL during development
-  methods: "GET,POST,PUT,DELETE",
+  methods: "GET,POST,PUT,DELETE,PATCH",
   allowedHeaders: ['Authorization', 'Content-Type'],
   credentials: true,
 }));

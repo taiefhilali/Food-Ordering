@@ -16,6 +16,7 @@ interface IUser extends Document {
   blocked?: boolean;
   // googleId?: string;
   // facebookId?: string;
+  
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -63,6 +64,7 @@ const userSchema = new mongoose.Schema<IUser>({
     type: Boolean,
     default: false,
   },
+
   // googleId: { type: String, 
   //   // unique: true,
   //   default: "idgoogleee",
@@ -73,7 +75,9 @@ const userSchema = new mongoose.Schema<IUser>({
   //   default: "idfacebookkk",
   //   // unique: true,
   //   sparse:true
-  // },
+  // }
+  
+
 }, { timestamps: true });
 
 const User = mongoose.model<IUser>('User', userSchema);
