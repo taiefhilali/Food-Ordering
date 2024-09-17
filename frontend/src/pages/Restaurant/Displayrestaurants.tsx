@@ -6,6 +6,7 @@ import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
 import { Link } from 'react-router-dom';
 import './feeback.css'
 import Modal from 'react-modal'; // Ensure that Modal is properly imported
+import Swal from 'sweetalert2';
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -14,22 +15,28 @@ const RestaurantList = () => {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const adminName = localStorage.getItem('username');
-  const adminImageUrl = localStorage.getItem('imageUrl');
+
+  const [adminReplyText, setAdminReplyText] = useState<{ [key: string]: string }>({});
+  const [showReplyForm, setShowReplyForm] = useState<{ [key: string]: boolean }>({});
 
   // State for holding admin replies
-  const [adminReplyText, setAdminReplyText] = useState<{ [key: string]: string }>({});
 
+  const toggleReplyForm = (feedbackId: string) => {
+    setShowReplyForm(prevState => ({
+      ...prevState,
+      [feedbackId]: !prevState[feedbackId],
+    }));
+  };
   const handleReplyChange = (feedbackId: string, value: string) => {
     setAdminReplyText(prevState => ({
       ...prevState,
       [feedbackId]: value,
     }));
   };
-
   const handleAdminReply = async (feedbackId: string) => {
     try {
       const token = localStorage.getItem('userToken');
+      const userId = localStorage.getItem('userId'); // Get the user ID from local storage
       const replyText = adminReplyText[feedbackId];
 
       if (!replyText) {
@@ -38,7 +45,11 @@ const RestaurantList = () => {
 
       await axios.post(
         `http://localhost:7000/api/my/feedback/${feedbackId}/reply`,
-        { replyText },
+        {
+          replyText: replyText,
+          createdAt: new Date(), // Include the current date in the request payload
+          user: userId, // Include the user ID in the request payload
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,23 +57,75 @@ const RestaurantList = () => {
         }
       );
 
-      // Optionally, update feedbacks with the new reply without a page reload
-      const updatedFeedbacks = feedbacks.map(feedback =>
-        feedback._id === feedbackId
-          ? { ...feedback, replies: [...(feedback.replies || []), { replyText, createdAt: new Date() }] }
-          : feedback
-      );
-      setFeedbacks(updatedFeedbacks);
+      // After successfully posting the reply, re-fetch feedbacks
+      if (selectedRestaurantId) {
+        const response = await axios.get(`http://localhost:7000/api/my/feedback/${selectedRestaurantId}`);
+        setFeedbacks(response.data);
+      }
 
-      // Clear reply input after sending
+      // Clear the reply text and close the form
       setAdminReplyText(prevState => ({
         ...prevState,
         [feedbackId]: '',
       }));
+      setShowReplyForm(prevState => ({
+        ...prevState,
+        [feedbackId]: false,
+      }));
+
+      Swal.fire('Success!', 'Your reply has been submitted.', 'success');
     } catch (error) {
       console.error('Error sending reply:', error);
+      Swal.fire('Error!', 'There was an error submitting your reply.', 'error');
     }
   };
+
+
+  const handleDeleteReply = async (replyId: string, feedbackId: string) => {
+    try {
+      const token = localStorage.getItem('userToken');
+      const userid = localStorage.getItem('userId');
+
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f2ab48',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`http://localhost:7000/api/my/feedback/${feedbackId}/reply/${replyId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Remove the deleted reply from the state
+        const updatedFeedbacks = feedbacks.map(feedback =>
+          feedback._id === feedbackId
+            ? {
+              ...feedback,
+              replies: feedback.replies.filter(reply => reply._id !== replyId),
+            }
+            : feedback
+        );
+        setFeedbacks(updatedFeedbacks);
+
+        Swal.fire('Deleted!', 'Your reply has been deleted.', 'success');
+      }
+    } catch (error) {
+      console.error('Error deleting reply:', error);
+      Swal.fire('Error!', 'There was an error deleting the reply.', 'error');
+    }
+  };
+
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
@@ -259,50 +322,52 @@ const RestaurantList = () => {
                   {/* Display replies if available */}
                   {feedback.replies && feedback.replies.length > 0 && (
                     <div className="feedback-replies">
-                      {feedback.replies.map(reply => (
+                      {feedback.replies.map((reply: Reply) => (
                         <div key={reply._id} className="reply-item">
                           <div className="admin-info">
-                            {/* Safely access reply.user properties */}
-                            {reply.user ? (
-                              <>
-                                <img
-                                  src={reply.user.imageUrl || 'default-image-url'}
-                                  alt={reply.user.username || 'Anonymous'}
-                                  className="admin-image"
-                                />
-                                <div className="admin-details">
-                                  <strong className="admin-name">{reply.user.username || 'Anonymous'}</strong>
-                                  <span className="reply-time">{new Date(reply.createdAt).toLocaleString()}</span>
-                                </div>
-                              </>
-                            ) : (
-                              <div className="admin-info">
-                                <img src="default-image-url" alt="Anonymous" className="admin-image" />
-                                <div className="admin-details">
-                                  <strong className="admin-name">Anonymous</strong>
-                                  <span className="reply-time">{new Date(reply.createdAt).toLocaleString()}</span>
-                                </div>
-                              </div>
-                            )}
+                            <img
+                              src={reply.user?.imageUrl || 'default-image-url'} // Provide a default image if imageUrl is not available
+                              alt={reply.user?.username || 'Unknown User'} // Provide a fallback name if username is not available
+                              className="admin-image"
+                            />
+                            <div className="admin-details">
+                              <strong className="admin-name">{reply.user?.username || 'Unknown User'}</strong>
+                              <span className="reply-time">{new Date(reply.createdAt).toLocaleString()}</span>
+                            </div>
                           </div>
                           <p className="reply-text">{reply.replyText}</p>
+                          <button onClick={() => handleDeleteReply(reply._id, feedback._id)} className="delete-reply-button">
+                            X
+                          </button>
                         </div>
                       ))}
                     </div>
                   )}
 
 
-                  {/* Admin Reply Form */}
+
+                  {/* Reply Link and Form */}
                   <div className="admin-reply-form">
-                    <textarea
-                      value={adminReplyText[feedback._id] || ''} // Local state for each reply
-                      onChange={(e) => handleReplyChange(feedback._id, e.target.value)}
-                      placeholder="Write a reply..."
-                      className="reply-input"
-                    />
-                    <button onClick={() => handleAdminReply(feedback._id)} className="reply-button">
-                      Reply
+                    <button
+                      onClick={() => toggleReplyForm(feedback._id)}
+                      className="reply-toggle-button"
+                    >
+                      {showReplyForm[feedback._id] ? 'Cancel' : 'Reply'}
                     </button>
+
+                    {showReplyForm[feedback._id] && (
+                      <div className="reply-form">
+                        <textarea
+                          value={adminReplyText[feedback._id] || ''}
+                          onChange={(e) => handleReplyChange(feedback._id, e.target.value)}
+                          placeholder="Write a reply..."
+                          className="reply-input"
+                        />
+                        <button onClick={() => handleAdminReply(feedback._id)} className="reply-button">
+                          Submit
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))
@@ -310,6 +375,7 @@ const RestaurantList = () => {
               <p>No feedback available</p>
             )}
           </div>
+
           <button onClick={closeFeedbackModal} className="close-modal-button">
             X
           </button>
