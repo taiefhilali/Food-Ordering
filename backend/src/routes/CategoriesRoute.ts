@@ -18,10 +18,10 @@ router.post('/', verifyToken, verifyVendor, upload.single("imageFile"), Category
 router.get('/all',verifyToken,verifyVendor,CategoryController. categoriesByUserId);
 
 // Route to update a category by ID
-router.put('/:id',verifyToken,verifyAdmin, CategoryController.updateCategory);
+router.put('/:id',verifyToken, CategoryController.updateCategory);
 
 // Route to delete a category by ID
-router.delete('/:id',verifyToken,verifyVendor, CategoryController.deleteCategory);
+router.delete('/:id',verifyToken, CategoryController.deleteCategory);
 
 // Route to get all categories
 router.get('/',CategoryController.getAllCategories);

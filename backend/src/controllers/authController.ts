@@ -56,7 +56,7 @@ const loguser = async (req: Request, res: Response) => {
       id: existingUser._id,
       userType: existingUser.userType,
       email: existingUser.email
-    }, process.env.JWT_SECRET || 'defaultsecret', { expiresIn: '50 days' });
+    }, process.env.JWT_SECRET || 'defaultsecret', { expiresIn: '100 days' });
 
     // Send back the user data excluding the password and including the token
     const { password: _, ...userWithoutPassword } = existingUser.toObject();

@@ -59,20 +59,24 @@ describe('User Controller', () => {
     //     expect(response.body).toHaveProperty('username', 'testuser');
     //     sinon.assert.calledOnce(nodemailerSendMailStub);
     // });
-
     test('loginUser should log in a user with valid credentials', async () => {
-        sandbox.stub(User, 'findOne').resolves({
-            password: await bcrypt.hash('password123', 10),
-            toObject: () => ({ email: 'test@example.com' })
-        } as any);
-
-        const response = await request(app)
-            .post('/login')
-            .send({ email: 'test@example.com', password: 'password123' });
-
-        expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('email', 'test@example.com');
-    });
+      // Hash the password before stubbing
+      const hashedPassword = await bcrypt.hash('password123', 10);
+  
+      sandbox.stub(User, 'findOne').resolves({
+          password: hashedPassword,
+          isVerified: true, // Make sure the isVerified property is included to pass the email verification check
+          toObject: () => ({ email: 'test@example.com' }),
+      } as any);
+  
+      const response = await request(app)
+          .post('/login')
+          .send({ email: 'test@example.com', password: 'password123' });
+  
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('email', 'test@example.com');
+  });
+  
 
     test('getUser should return user details by ID', async () => {
         sandbox.stub(User, 'findById').resolves({

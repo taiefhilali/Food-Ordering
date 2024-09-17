@@ -21,7 +21,7 @@ router.get('/users',verifyToken,verifyVendor,MyUserController.getAllUsers);
 router.get('/admins', MyUserController.getAllAdmins);
 
 // Route to get all Clients
-router.get('/clients', MyUserController.getAllClients);
+router.get('/clients', MyUserController.getAllClients); 
 
 // Route to get all Vendors
 router.get('/vendors',MyUserController.getAllVendors);
