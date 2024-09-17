@@ -3,7 +3,9 @@ import mongoose from 'mongoose';
 const replySchema = new mongoose.Schema({
   replyText: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Add user reference
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  adminUsername: { type: String, required: true },
+  adminImageUrl: { type: String, required: true }
 });
 
 const feedbackSchema = new mongoose.Schema({

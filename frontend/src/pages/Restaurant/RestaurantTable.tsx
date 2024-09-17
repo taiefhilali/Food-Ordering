@@ -32,8 +32,9 @@ const RestaurantTable = () => {
       const token = localStorage.getItem('userToken');
       const userId = localStorage.getItem('userId'); // Get the user ID from local storage
       const replyText = adminReplyText[feedbackId];
-      console.log('UserId:', userId);
-
+      const adminUsername = localStorage.getItem('username');
+      const adminImageUrl = localStorage.getItem('imageUrl');
+  
       if (!replyText) {
         return; // Do not send empty replies
       }
@@ -41,9 +42,11 @@ const RestaurantTable = () => {
       await axios.post(
         `http://localhost:7000/api/my/feedback/${feedbackId}/reply`,
         {
-          replyText: replyText,
-          createdAt: new Date(), // Include the current date in the request payload
-          user: userId, // Include the user ID in the request payload
+          replyText,
+          createdAt: new Date(),
+          user: userId,
+          adminUsername, // Include admin's username
+          adminImageUrl  // Include admin's image URL
         },
         {
           headers: {
@@ -55,7 +58,13 @@ const RestaurantTable = () => {
       // Optionally, update feedbacks with the new reply without a page reload
       const updatedFeedbacks = feedbacks.map(feedback =>
         feedback._id === feedbackId
-          ? { ...feedback, replies: [...(feedback.replies || []), { replyText, createdAt: new Date(), user: userId }] }
+          ? {
+              ...feedback,
+              replies: [
+                ...(feedback.replies || []),
+                { replyText, createdAt: new Date(), user: userId, adminUsername, adminImageUrl }
+              ],
+            }
           : feedback
       );
       setFeedbacks(updatedFeedbacks);
@@ -73,6 +82,7 @@ const RestaurantTable = () => {
       console.error('Error sending reply:', error);
     }
   };
+  
   
 
   const toggleReplyForm = (feedbackId: string) => {
