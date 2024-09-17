@@ -334,6 +334,7 @@ import Select, { GroupBase } from 'react-select';
 import { Controller, useForm } from 'react-hook-form';
 import { io } from 'socket.io-client';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 type Restaurant = {
   _id: string;
@@ -403,6 +404,7 @@ const InvoicesTable = () => {
   const [error, setError] = useState<string | null>(null);
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [readyOrders, setReadyOrders] = useState<Set<string>>(new Set());
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
 
   const methods = useForm();
   const { control } = methods;
@@ -412,18 +414,18 @@ const InvoicesTable = () => {
     const fetchAllInvoices = async () => {
       try {
         const selectedRestaurantId = localStorage.getItem('selectedRestaurantId');
-        
+
         // Check if selectedRestaurantId exists
         if (!selectedRestaurantId) {
           setError('Please select a restaurant to view the invoices.');
           return; // Stop execution if no restaurant is selected
         }
-  
+
         const response = await axios.get(`http://localhost:7000/api/my/invoice/restaurant/${selectedRestaurantId}`);
-        
+
         // Assuming the invoices have a createdAt or updatedAt field
         const sortedInvoices = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  
+
         setInvoices(sortedInvoices);
       } catch (error) {
         console.error('Error fetching invoices:', error);
@@ -432,10 +434,10 @@ const InvoicesTable = () => {
         setIsLoading(false);
       }
     };
-  
+
     fetchAllInvoices();
   }, []);
-  
+
 
 
   // Fetch restaurants
@@ -476,7 +478,7 @@ const InvoicesTable = () => {
       const response = await axios.post(`http://localhost:7000/api/my/invoice/${invoiceId}/notify`, {
         message: 'Your order is ready!',
       });
-  
+
       // Emit the orderReady event to the server
       const socket = io('http://localhost:8000');
       socket.emit('orderReady', {
@@ -484,16 +486,26 @@ const InvoicesTable = () => {
         message: 'Your order is ready!',
         restaurant: 'Your Restaurant Name', // Replace with actual restaurant data
       });
-  
+
       setReadyOrders((prev) => new Set(prev).add(invoiceId));
       console.log('Notification sent:', response.data);
-      alert('Customer has been notified!');
+      // Show success message using Swal
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Customer has been notified!',
+      });
     } catch (error) {
       console.error('Error notifying customer:', error);
-      alert('Failed to notify customer.');
+      // Show error message using Swal
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Failed to notify customer.',
+      });
     }
   };
-  
+
   if (isLoading) return <div>Loading invoices...</div>;
   if (error) return <div>Error loading invoices: {error}</div>;
 
@@ -558,28 +570,22 @@ const InvoicesTable = () => {
                       {new Date(invoice.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">
-                    <div className="flex space-x-4">
-  <button
-    key={invoice._id}
-    onClick={() => handleOrderReady(invoice._id)}
-    className={`px-4 py-2 rounded-full ${readyOrders.has(invoice._id) ? 'bg-gray-500 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'} text-white`}
-    disabled={readyOrders.has(invoice._id)}
-  >
-    Order is Ready
-  </button>
+                      <div className="flex space-x-4">
+                        <button
+                          className={`px-2 py-1 rounded-full ${readyOrders.has(invoice._id) ? 'bg-gray-500 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'} text-white`}
+                          onClick={() => handleOrderReady(invoice._id)}
+                          disabled={readyOrders.has(invoice._id)}
+                        >
+                          {readyOrders.has(invoice._id) ? 'Notified' : 'Order is ready!'}
+                        </button>
 
-  {/* <button
-    key={invoice._id}
-    onClick={() => handleOrderReady(invoice._id)}
-    className={`px-4 py-2 rounded-full ${readyOrders.has(invoice._id) ? 'bg-gray-500 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'} text-white`}
-    disabled={readyOrders.has(invoice._id)}
-  >
-    Order Details
-  </button> */}
-  <Link to={`/order-details/${invoice._id}`}     className={`px-4 py-2 rounded-full ${readyOrders.has(invoice._id) ? 'bg-gray-500 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600'} text-white`}
-  >View Details</Link>
-
-</div>
+                        <Link
+                          to={`/order-details/${invoice._id}`}
+                          className="px-4 py-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white"
+                        >
+                          View Details
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 </React.Fragment>
