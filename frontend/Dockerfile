@@ -6,6 +6,8 @@
     
     # Copy package.json and package-lock.json
     COPY /package*.json ./
+    RUN npm install react-chartjs-2@latest react-chat-elements@latest react-chat-ui@latest react-facebook-login@latest --force
+
     RUN npm install core-js@latest --force
 
      RUN  npm install -g npm@10.8.3 --force
