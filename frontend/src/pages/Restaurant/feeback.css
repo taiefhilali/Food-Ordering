@@ -60,15 +60,7 @@
     /* Indent the replies */
 }
 
-.reply-item {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 12px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
+
 
 .admin-info {
     display: flex;
@@ -131,3 +123,40 @@
     top: 10px;
     right: 40px;
 }
+/* Container for each reply item */
+.reply-item {
+    position: relative; /* Allows positioning the delete button absolutely */
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  .reply-toggle-button {
+    background-color: #6d6d6d23;
+    margin-left: 10px;
+  }
+  
+  /* Style for the delete button */
+  .delete-reply-button {
+    position: absolute; /* Position it absolutely within the reply-item container */
+    top: 10px; /* Adjust the top spacing as needed */
+    right: 10px; /* Adjust the right spacing as needed */
+    background-color: rgba(247, 81, 5, 0.262); /* Red background color */
+    color: white; /* White text color */
+    border: none; /* Remove default border */
+    border-radius: 50%; /* Make it round */
+    width: 24px; /* Set the width */
+    height: 24px; /* Set the height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px; /* Font size for the X */
+    cursor: pointer; /* Show a pointer cursor on hover */
+  }
+  
+  /* Optional: Style the delete button on hover */
+  .delete-reply-button:hover {
+    background-color: darkred; /* Darker red on hover */
+  }
+  

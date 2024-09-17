@@ -32,12 +32,11 @@ const RestaurantTable = () => {
       const token = localStorage.getItem('userToken');
       const userId = localStorage.getItem('userId'); // Get the user ID from local storage
       const replyText = adminReplyText[feedbackId];
-      console.log('UserId:', userId);
 
       if (!replyText) {
         return; // Do not send empty replies
       }
-  
+
       await axios.post(
         `http://localhost:7000/api/my/feedback/${feedbackId}/reply`,
         {
@@ -51,29 +50,75 @@ const RestaurantTable = () => {
           },
         }
       );
-  
-      // Optionally, update feedbacks with the new reply without a page reload
-      const updatedFeedbacks = feedbacks.map(feedback =>
-        feedback._id === feedbackId
-          ? { ...feedback, replies: [...(feedback.replies || []), { replyText, createdAt: new Date(), user: userId }] }
-          : feedback
-      );
-      setFeedbacks(updatedFeedbacks);
-  
-      // Clear reply input after sending
+
+      // After successfully posting the reply, re-fetch feedbacks
+      if (selectedRestaurantId) {
+        const response = await axios.get(`http://localhost:7000/api/my/feedback/${selectedRestaurantId}`);
+        setFeedbacks(response.data);
+      }
+
+      // Clear the reply text and close the form
       setAdminReplyText(prevState => ({
         ...prevState,
         [feedbackId]: '',
       }));
       setShowReplyForm(prevState => ({
         ...prevState,
-        [feedbackId]: false, // Hide the reply form after submission
+        [feedbackId]: false,
       }));
+
+      Swal.fire('Success!', 'Your reply has been submitted.', 'success');
     } catch (error) {
       console.error('Error sending reply:', error);
+      Swal.fire('Error!', 'There was an error submitting your reply.', 'error');
     }
   };
-  
+
+
+  const handleDeleteReply = async (replyId: string, feedbackId: string) => {
+    try {
+      const token = localStorage.getItem('userToken');
+      const userid = localStorage.getItem('userId');
+
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f2ab48',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      });
+
+      if (result.isConfirmed) {
+        await axios.delete(`http://localhost:7000/api/my/feedback/${feedbackId}/reply/${replyId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Remove the deleted reply from the state
+        const updatedFeedbacks = feedbacks.map(feedback =>
+          feedback._id === feedbackId
+            ? {
+              ...feedback,
+              replies: feedback.replies.filter(reply => reply._id !== replyId),
+            }
+            : feedback
+        );
+        setFeedbacks(updatedFeedbacks);
+
+        Swal.fire('Deleted!', 'Your reply has been deleted.', 'success');
+      }
+    } catch (error) {
+      console.error('Error deleting reply:', error);
+      Swal.fire('Error!', 'There was an error deleting the reply.', 'error');
+    }
+  };
 
   const toggleReplyForm = (feedbackId: string) => {
     setShowReplyForm(prevState => ({
@@ -318,32 +363,37 @@ const RestaurantTable = () => {
 
                   {feedback.replies && feedback.replies.length > 0 && (
                     <div className="feedback-replies">
-                      {feedback.replies.map(reply => (
+                      {feedback.replies.map((reply: Reply) => (
                         <div key={reply._id} className="reply-item">
                           <div className="admin-info">
-                            <img src={adminImageUrl} alt={adminName} className="admin-image" />
+                            <img
+                              src={reply.user?.imageUrl || 'default-image-url'} // Provide a default image if imageUrl is not available
+                              alt={reply.user?.username || 'Unknown User'} // Provide a fallback name if username is not available
+                              className="admin-image"
+                            />
                             <div className="admin-details">
-                              <strong className="admin-name">{adminName}</strong>
+                              <strong className="admin-name">{reply.user?.username || 'Unknown User'}</strong>
                               <span className="reply-time">{new Date(reply.createdAt).toLocaleString()}</span>
                             </div>
                           </div>
                           <p className="reply-text">{reply.replyText}</p>
+                          <button onClick={() => handleDeleteReply(reply._id, feedback._id)} className="delete-reply-button">
+                            X
+                          </button>
                         </div>
                       ))}
-
-
-                      <button onClick={() => toggleReplyForm(feedback._id)} className="reply-link text-slate-400">
-                        Reply
-                      </button>
-
                     </div>
                   )}
 
+
+
                   {/* Reply Link and Form */}
                   <div className="admin-reply-form">
-
-                    <button onClick={() => toggleReplyForm(feedback._id)} className="reply-link text-slate-400">
-                      Reply
+                    <button
+                      onClick={() => toggleReplyForm(feedback._id)}
+                      className="reply-toggle-button"
+                    >
+                      {showReplyForm[feedback._id] ? 'Cancel' : 'Reply'}
                     </button>
 
                     {showReplyForm[feedback._id] && (
