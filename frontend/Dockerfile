@@ -7,7 +7,8 @@ WORKDIR /frontend
 COPY package*.json ./
 
 # Install dependencies with specific versions
-RUN npm install --force
+RUN npm install --legacy-peer-deps
+
 
 # Install additional packages (if required)
 # Make sure to use compatible versions
