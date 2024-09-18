@@ -74,31 +74,33 @@ const formatOptionLabel = ({ restaurantName, imageUrl }: Restaurant) => (
 
 const InvoicesTable = () => {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [readyOrders, setReadyOrders] = useState<Set<string>>(new Set());
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
-
   const methods = useForm();
   const { control } = methods;
+  const [readyOrders, setReadyOrders] = useState<Set<string>>(new Set());
+
+
 
   // Fetch invoices
+  // Fetch invoices when selectedRestaurant changes
   useEffect(() => {
     const fetchAllInvoices = async () => {
+      if (!selectedRestaurant) return;
+
+      setIsLoading(true);
+      setError(null);
+
       try {
-        const selectedRestaurantId = localStorage.getItem('selectedRestaurantId');
+        const response = await axios.get(
+          `http://localhost:7000/api/my/invoice/restaurant/${selectedRestaurant._id}`
+        );
 
-        // Check if selectedRestaurantId exists
-        if (!selectedRestaurantId) {
-          setError('Please select a restaurant to view the invoices.');
-          return; // Stop execution if no restaurant is selected
-        }
-
-        const response = await axios.get(`http://localhost:7000/api/my/invoice/restaurant/${selectedRestaurantId}`);
-
-        // Assuming the invoices have a createdAt or updatedAt field
-        const sortedInvoices = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const sortedInvoices = response.data.sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
 
         setInvoices(sortedInvoices);
       } catch (error) {
@@ -110,12 +112,11 @@ const InvoicesTable = () => {
     };
 
     fetchAllInvoices();
-  }, []);
+  }, [selectedRestaurant]);
 
 
-
-  // Fetch restaurants
-  useEffect(() => {
+   // Fetch restaurants
+   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('userToken');
@@ -140,12 +141,14 @@ const InvoicesTable = () => {
   }, []);
 
   const handleRestaurantChange = (selectedRestaurant: Restaurant | null) => {
+    setSelectedRestaurant(selectedRestaurant);
     if (selectedRestaurant) {
       localStorage.setItem('selectedRestaurantId', selectedRestaurant._id);
     } else {
       localStorage.removeItem('selectedRestaurantId');
     }
   };
+
 
   const handleOrderReady = async (invoiceId: string) => {
     try {
@@ -187,9 +190,9 @@ const InvoicesTable = () => {
     <DefaultLayout>
       <Breadcrumb pageName="Display Invoices" />
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">All Orders</h4>
+      <h4 className="mb-6 text-xl font-semibold">All Orders</h4>
         <div className="overflow-x-auto">
-          <div className="relative">
+          <div className="relative mb-4">
             <Controller
               name="restaurant"
               control={control}
@@ -211,8 +214,8 @@ const InvoicesTable = () => {
               )}
             />
           </div>
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-strokedark">
-            <thead className="bg-gray-200 dark:bg-meta-4">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead>
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Order ID</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider">Items</th>
@@ -273,3 +276,9 @@ const InvoicesTable = () => {
 };
 
 export default InvoicesTable;
+
+
+
+
+
+//
