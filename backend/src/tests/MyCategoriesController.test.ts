@@ -35,7 +35,7 @@ describe('Category Controller', () => {
       { title: 'Category 1', value: 'category_1', user: new mongoose.Types.ObjectId() },
       { title: 'Category 2', value: 'category_2', user: new mongoose.Types.ObjectId() },
     ]);
-  });
+  }, 30000);
 
   afterEach(async () => {
     if (mongoose.connection.readyState === 1) {
