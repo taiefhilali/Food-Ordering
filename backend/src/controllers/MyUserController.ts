@@ -5,9 +5,6 @@ import cloudinary from "cloudinary";
 const bcrypt = require('bcrypt');
 import CryptoTs from 'crypto-ts';
 
-
-
-
 const MAX_FILENAME_LENGTH = 100; // Example: Maximum filename length allowed
 
 // Function to encrypt password using crypto-ts
@@ -65,7 +62,7 @@ const registerUser = async (req: Request, res: Response) => {
       service: 'Gmail',
       auth: {
         user: 'bobtaief@gmail.com',
-        pass: 'your-gmail-app-password'
+        pass: 'ovdt hawt cehv yrvh'
       }
     });
 
@@ -259,6 +256,25 @@ const blockUser= async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Error blocking user' });
   }
 };
+
+const unblockUser = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { blocked: false },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'User unblocked successfully' });
+  } catch (error) {
+    console.error('Error unblocking user:', error);
+    res.status(500).json({ message: 'Error unblocking user' });
+  }
+};
+
 // Controller function to get all Admins
  const getAllAdmins = async (req: Request, res: Response) => {
   try {
@@ -291,4 +307,4 @@ const blockUser= async (req: Request, res: Response) => {
 
 export default { registerUser, loginUser, getUser, deleteUser,updateUser,uploadProfilePicture,getAllUsers,blockUser,getAllAdmins,
   getAllClients,
-  getAllVendors};
+  getAllVendors,unblockUser};

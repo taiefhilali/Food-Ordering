@@ -3,6 +3,7 @@
   import DefaultLayout from '@/layouts/DefaultLayout'; 
   import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'; 
   import React from 'react';
+  import { Invoice } from '@/types';
 
 
 
@@ -23,7 +24,6 @@
           if (!userId) {
             throw new Error('User ID not found in local storage');
           }
-          const token = localStorage.getItem('userToken');
 
           const response = await axios.get('http://localhost:7000/api/my/invoice/all'); // Adjust the API endpoint as needed
           setInvoices(response.data);
@@ -60,10 +60,11 @@
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200 dark:bg-boxdark dark:divide-strokedark">
-                {invoices.map((invoice) => (
+                {invoices.map((invoice:Invoice) => (
                   <React.Fragment key={invoice._id}>
+
                     <tr>
-                      <td colSpan="4">
+                      <td >
                         <table className="min-w-full divide-y divide-gray-200 dark:divide-strokedark mt-2">
                           <thead>
                             <tr>
@@ -85,7 +86,7 @@
                               </tr>
                             ))}
                             <tr>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-orange-600 dark:text-white">Order Summary</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-orange-600 dark:text-white">Order Summary</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">Total Amount = {invoice.totalAmount} dt</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white"></td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">{new Date(invoice.createdAt).toLocaleDateString()}</td>

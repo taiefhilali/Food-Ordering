@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
@@ -59,7 +60,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute   left-0 top-0 z-9999 flex h-screen  rounded-sm  w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      className={`absolute   left-0 top-0 z-9999 flex h-screen  rounded-md  w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
@@ -568,8 +569,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <li>
                               <NavLink
                                 to="/display-products"
-                                className="group relative flex items-center gap-2.5 rounded-full px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-orange-400"
-                                activeClassName="text-white"
+                                className={({ isActive }) =>
+                                  `group relative flex items-center gap-2.5 rounded-full px-4 font-medium text-bodydark2 duration-300 ease-in-out ${isActive ? 'text-white' : 'hover:text-orange-400'
+                                  }`
+                                }
                               >
                                 <svg
                                   className="fill-current"
@@ -793,8 +796,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <li>
                               <NavLink
                                 to="/display-orders"
-                                className="group relative flex items-center gap-2.5 rounded-full px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-orange-400"
-                                activeClassName="text-white"
+                                className={({ isActive }) => 
+                                  `group relative flex items-center gap-2.5 rounded-full px-4 font-medium ${
+                                    isActive ? 'text-bodydark2' : 'text-bodydark2 hover:text-orange-400'
+                                  } duration-300 ease-in-out`
+                                }
                               >
                                 <svg
                                   className="fill-current"
@@ -909,8 +915,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <li>
                               <NavLink
                                 to="/admins"
-                                className="group relative flex items-center gap-2.5 rounded-full px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-orange-400"
-                                activeClassName="text-white"
+                                className={({ isActive }) => 
+                                  `group relative flex items-center gap-2.5 rounded-full px-4 font-medium ${
+                                    isActive ? 'text-bodydark2' : 'text-bodydark2 hover:text-orange-400'
+                                  } duration-300 ease-in-out`
+                                }
                               >
                                 <svg
                                   className="fill-current"
@@ -941,8 +950,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               </NavLink>
                               <NavLink
                                 to="/vendors"
-                                className="group relative flex items-center gap-2.5 rounded-full px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-orange-400"
-                                activeClassName="text-white"
+                                className={({ isActive }) => 
+                                  `group relative flex items-center gap-2.5 rounded-full px-4 font-medium ${
+                                    isActive ? 'text-bodydark2' : 'text-bodydark2 hover:text-orange-400'
+                                  } duration-300 ease-in-out`
+                                }
                               >
                                 <svg
                                   className="fill-current"
@@ -973,8 +985,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               </NavLink>
                               <NavLink
                                 to="/clients"
-                                className="group relative flex items-center gap-2.5 rounded-full px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-orange-400"
-                                activeClassName="text-white"
+                                className={({ isActive }) => 
+                                  `group relative flex items-center gap-2.5 rounded-full px-4 font-medium ${
+                                    isActive ? 'text-bodydark2' : 'text-bodydark2 hover:text-orange-400'
+                                  } duration-300 ease-in-out`
+                                }
                               >
                                 <svg
                                   className="fill-current"
@@ -1025,7 +1040,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       <React.Fragment>
                         <NavLink
                           to="#"
-                          className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-graydarkduration-300 ease-in-out hover:bg-orange-300 dark:hover:bg-meta-4 ${(pathname === '/dashboards' ||
+                          className={`group relative flex items-center gap-2.5 rounded-full px-4 py-2 font-medium text-graydarkduration-300 ease-in-out hover:bg-orange-300 dark:hover:bg-meta-4 ${(pathname === '/dashboards' ||
                             pathname.includes('dashboard')) &&
                             'bg-graydark dark:bg-meta-4'
                             }`}
@@ -1068,8 +1083,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <li>
                               <NavLink
                                 to="/adminproducts"
-                                className="group relative flex items-center gap-2.5 rounded-full px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-orange-400"
-                                activeClassName="text-white"
+                                className={({ isActive }) => 
+                                  `group relative flex items-center gap-2.5 rounded-full px-4 font-medium ${
+                                    isActive ? 'text-bodydark2' : 'text-bodydark2 hover:text-orange-400'
+                                  } duration-300 ease-in-out`
+                                }
                               >
                                 <svg
                                   className="fill-current"
@@ -1121,7 +1139,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       <React.Fragment>
                         <NavLink
                           to="#"
-                          className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-graydarkduration-300 ease-in-out hover:bg-orange-300 dark:hover:bg-meta-4 ${(pathname === '/dashboards' ||
+                          className={`group relative flex items-center gap-2.5 rounded-full px-4 py-2 font-medium text-graydarkduration-300 ease-in-out hover:bg-orange-300 dark:hover:bg-meta-4 ${(pathname === '/dashboards' ||
                             pathname.includes('dashboard')) &&
                             'bg-graydark dark:bg-meta-4'
                             }`}
@@ -1193,8 +1211,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <li>
                               <NavLink
                                 to="/adminrestaurants"
-                                className="group relative flex items-center gap-2.5 rounded-full px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-orange-400"
-                                activeClassName="text-white"
+                                className={({ isActive }) => 
+                                  `group relative flex items-center gap-2.5 rounded-full px-4 font-medium ${
+                                    isActive ? 'text-bodydark2' : 'text-bodydark2 hover:text-orange-400'
+                                  } duration-300 ease-in-out`
+                                }
                               >
                                 <svg
                                   className="fill-current"
@@ -1599,7 +1620,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <li>
                 <NavLink
                   to="/chart"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-graydarkduration-300 ease-in-out over:bg-orange-400 dark:hover:bg-meta-4 ${pathname.includes('chart') && 'bg-graydark dark:bg-meta-4'
+                  className={`group relative flex items-center gap-2.5 rounded-full py-2 px-4 font-medium text-graydarkduration-300 ease-in-out over:bg-orange-400 dark:hover:bg-meta-4 ${pathname.includes('chart') && 'bg-graydark dark:bg-meta-4'
                     }`}
                 >
                   <svg

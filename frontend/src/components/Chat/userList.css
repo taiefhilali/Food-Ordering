@@ -13,13 +13,16 @@
   height: 40px; /* Adjust the height as needed */
   object-fit: cover; /* Ensures the image covers the area without distortion */
   border-radius: 50%; /* Makes the image circular */
-  margin-bottom: 10px; /* Adds space between items */
+  margin-bottom: 30px;
+  margin-left: 30px;/* Adjust the space between items as needed */
+  /* Adds space between items */
 }
 
 .chat-item {
   display: flex; /* Ensure each chat item stays as a flex container */
   align-items: center; /* Align items in the center vertically */
-  margin-bottom: 10px;/* Adjust the space between items as needed */
+  margin-bottom: 10px;
+  margin-left: 60px;/* Adjust the space between items as needed */
  
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb';
@@ -80,34 +81,51 @@ const AdminsDisplay: React.FC = () => {
     }
   };
 
-  const handleBlock = async (userId: string) => {
+  const handleBlockToggle = async (userId: string, isBlocked: boolean) => {
     try {
-      const token = localStorage.getItem('userToken');
-      if (!token) {
-        throw new Error('No token found');
-      }
+        const token = localStorage.getItem('userToken');
+        if (!token) {
+            throw new Error('No token found');
+        }
 
-      // Perform block user operation (Example: send a request to block user endpoint)
-      // Replace the URL with your actual endpoint
-      await axios.put(`http://localhost:7000/api/my/user/block/${userId}`, null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        const url = isBlocked
+            ? `http://localhost:7000/api/my/user/unblock/${userId}`
+            : `http://localhost:7000/api/my/user/block/${userId}`;
 
-      // Update local state after blocking user
-      const updatedUsers = users.map((user) =>
-        user._id === userId ? { ...user, blocked: true } : user
-      );
-      setUsers(updatedUsers);
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: isBlocked ? "You want to unblock this user?" : "You want to block this user?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#f2ab48',
+            cancelButtonColor: '#d33',
+            confirmButtonText: isBlocked ? 'Yes, unblock it!' : 'Yes, block it!',
+        });
 
-      Swal.fire('Blocked!', 'User has been blocked.', 'success');
+        if (result.isConfirmed) {
+            await axios.put(url, null, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            // Update local state after toggling block status
+            const updatedUsers = users.map((user) =>
+                user._id === userId ? { ...user, blocked: !isBlocked } : user
+            );
+            setUsers(updatedUsers);
+
+            Swal.fire(
+                isBlocked ? 'Unblocked!' : 'Blocked!',
+                `User has been ${isBlocked ? 'unblocked' : 'blocked'}.`,
+                'success'
+            );
+        }
     } catch (error) {
-      console.error('Error blocking user:', error);
-      Swal.fire('Error!', 'There was an error blocking the user.', 'error');
+        console.error('Error toggling user block status:', error);
+        Swal.fire('Error!', 'There was an error updating the user status.', 'error');
     }
-  };
-
+};
   return (
     <DefaultLayout>
       <Breadcrumb pageName="User Table" />
@@ -119,25 +137,29 @@ const AdminsDisplay: React.FC = () => {
                 <button onClick={() => handleDelete(user._id)}>
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
-                </div>
-                <div className="user-card-block">
-                <button onClick={() => handleBlock(user._id)}>
+              </div>
+              <div className="user-card-block">
+                <button
+                  onClick={() => handleBlockToggle(user._id, user.blocked)}
+                  style={{ backgroundColor: user.blocked ? '#f8d7da' : '#ffffff' }}
+                >
                   <FontAwesomeIcon icon={faBan} />
+                  {user.blocked ? ' Unblock' : ' Block'}
                 </button>
               </div>
               <div className="user-card-content">
                 {user.imageUrl && (
                   <img src={user.imageUrl} alt={user.username} className="user-avatar" />
-                )} 
+                )}
                 <span className="user-type-badge">{user.userType}</span>
                 <div className="user-info">
                   <p className="user-name">{user.firstname + ' ' + user.lastname}</p>
                   <p>{user.username}</p>
                   <p className="user-email">{user.email}</p>
                   {user.blocked && (
-                  <span className="blocked-badge">Blocked</span>
-                )}
-                 
+                    <span className="blocked-badge">Blocked</span>
+                  )}
+
                 </div>
               </div>
             </li>

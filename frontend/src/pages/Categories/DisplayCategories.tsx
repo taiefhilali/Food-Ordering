@@ -1,42 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import './categoriesTable.css';
-import DefaultLayout from '@/layouts/DefaultLayout';
-import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
+
 
 interface Category {
     _id: string;
     title: string;
     value: string;
-    imageUrl: string; // Add imageUrl to the Category interface
+    imageUrl: string;
 }
 
-const DisplayCategories: React.FC = () => {
-    const [categories, setCategories] = useState<Category[]>([]);
+interface DisplayCategoriesProps {
+    categories: Category[];
+    fetchCategories: () => Promise<void>;
+}
+
+const DisplayCategories: React.FC<DisplayCategoriesProps> = ({ categories, fetchCategories }) => {
 
     useEffect(() => {
         fetchCategories();
-    }, []);
-
-    const fetchCategories = async () => {
-        try {
-            const token = localStorage.getItem('userToken');
-            if (!token) {
-                throw new Error('No token found');
-            }
-            const userId = localStorage.getItem('userId');
-            const response = await axios.get('http://localhost:7000/api/my/categories', {
-                params: { userId },
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setCategories(response.data);
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-        }
-    };
+    }, [fetchCategories]); 
 
     const handleDelete = async (categoryId: string) => {
         try {
@@ -44,40 +28,40 @@ const DisplayCategories: React.FC = () => {
             if (!token) {
                 throw new Error('No token found');
             }
-            const response = await axios.delete(`http://localhost:7000/api/my/categories/${categoryId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+            
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#f2ab48",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
             });
 
-            if (response.data.status === true) {
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Your file has been deleted.",
-                            icon: "success"
-                        });
-                    }
+            if (result.isConfirmed) {
+                const response = await axios.delete(`http://localhost:7000/api/my/categories/${categoryId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
 
-                // Update categories list
-                fetchCategories();
-            } else {
-                throw new Error('Failed to delete category');
+                if (response.data.status === true) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your category has been deleted.",
+                        icon: "success"
+                    });
+
+                    // Update categories list
+                    await fetchCategories();
+                } else {
+                    throw new Error('Failed to delete category');
+                }
             }
         } catch (error) {
             console.error('Error deleting category:', error);
 
-            // Handle error with Swal
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -87,8 +71,6 @@ const DisplayCategories: React.FC = () => {
     };
 
     return (
-        <DefaultLayout>
-            <Breadcrumb pageName="Categories List" />
             <div className="max-w-full mx-auto mt-10">
                 <table className="product-table">
                     <thead>
@@ -104,7 +86,7 @@ const DisplayCategories: React.FC = () => {
                                 <td>
                                     <div className="product-image-container">
                                         <img
-                                            src={category.imageUrl} // Display category image
+                                            src={category.imageUrl}
                                             alt={category.title}
                                             className="product-image"
                                         />
@@ -119,7 +101,6 @@ const DisplayCategories: React.FC = () => {
                     </tbody>
                 </table>
             </div>
-        </DefaultLayout>
     );
 };
 

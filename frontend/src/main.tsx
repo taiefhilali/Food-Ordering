@@ -4,7 +4,7 @@ import './index.css'
 import { BrowserRouter as Router } from 'react-router-dom'
 import AppRoutes from './AppRoutes'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { ClerkProvider, useUser, SignedOut } from '@clerk/clerk-react';
+import { ClerkProvider } from '@clerk/clerk-react';
 import './css/style.css';
 import './css/satoshi.css';
 import 'jsvectormap/dist/css/jsvectormap.css';
@@ -24,13 +24,7 @@ const queryClient = new QueryClient({
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 
-const customTheme = {
-  colors: {
-    primary: '#FDBA74',
-    secondary: '#ffff',
 
-  }
-}
 if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key")
 }

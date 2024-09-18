@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import ProductDetailPage from '../../pages/Products/ProductDetailPage';
 import '../../assets/css/ProductDetails.css'; // Import CSS file
 
+// Product type definition
 type Product = {
     _id: string;
     name: string;
@@ -12,8 +13,11 @@ type Product = {
     dishType: string;
     quantity: number;
     imageUrl: string;
-    brand: string; // Add brand to match the ProductDetailPage component
+    brand: string;
+    cost: number;
+    category: string; // Add category to match ProductDetailPage
 };
+
 const ProductDetailContainer = () => {
     const { productId } = useParams<{ productId: string }>();
     const [product, setProduct] = useState<Product | null>(null);

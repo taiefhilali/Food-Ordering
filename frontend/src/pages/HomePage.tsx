@@ -1,5 +1,4 @@
 
-import RestaurantDisplayHome from '@/components/Restaurants/RestaurantDisplayHome'
 import '../assets/css/header.css'
 export default function HomePage() {
     return (

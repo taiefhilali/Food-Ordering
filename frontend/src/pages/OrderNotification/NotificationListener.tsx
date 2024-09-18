@@ -24,7 +24,7 @@ const NotificationListener = () => {
     };
   }, []);
 
-  const showNotification = (data) => {
+  const showNotification = (data: { orderDetails: { amount: number; }; }) => {
     if (notificationPermission === 'granted') {
       new Notification('New Order', {
         body: `Order for $${(data.orderDetails.amount / 100).toFixed(2)} placed!`,

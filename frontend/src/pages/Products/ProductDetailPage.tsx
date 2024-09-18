@@ -8,7 +8,10 @@ import Swal from 'sweetalert2';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import HTMLContent from '../../components/HTMLContent'; // Adjust the import path accordingly
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material';
-
+type Category = {
+    value: string;
+    label: string;
+};
 
 // Define the type of the product prop
 type Product = {
@@ -46,7 +49,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
         category: initialProduct.category
     });
     const navigate = useNavigate();
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategory, setSelectedCategory] = useState('');
 
     useEffect(() => {
@@ -72,7 +75,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
         { value: 'dessert', label: 'Dessert' },
     ];
 
-    const handleCategoryChange = (event) => {
+    const handleCategoryChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setSelectedCategory(event.target.value);
         // Additional actions based on selected category can be added here
     };
@@ -131,12 +134,20 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
             [name]: value
         }));
     };
+    
     useEffect(() => {
         setFormData(prevState => ({
             ...prevState,
             category: selectedCategory
         }));
     }, [selectedCategory]);
+    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
     
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -206,7 +217,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
                                     <textarea
                                         name="description"
                                         value={formData.description}
-                                        onChange={handleInputChange}
+                                        onChange={handleTextAreaChange}
                                         className="border border-gray-300 p-2 rounded-lg w-full"
                                     />
                                 </div>
@@ -248,7 +259,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ product: initialP
                                             id="dishType"
                                             name="dishType"
                                             value={formData.dishType}
-                                            onChange={handleInputChange}
+                                            onChange={handleCategoryChange}
                                             className="w-full"
                                         >
                                             {dishTypes.map(type => (

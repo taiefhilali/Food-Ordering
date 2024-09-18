@@ -26,7 +26,9 @@ router.get('/clients', MyUserController.getAllClients);
 // Route to get all Vendors
 router.get('/vendors',MyUserController.getAllVendors);
 // Register endpoint (for user registration)
-router.post('/register',verifyToken, verifyUserType, upload.single("imageFile"), MyUserController.registerUser);
+router.post('/register', upload.single("imageFile"), MyUserController.registerUser);
+
+// router.post('/register',verifyToken, verifyUserType, upload.single("imageFile"), MyUserController.registerUser);
 router.post("/login", verifyToken, verifyUserType, MyUserController.loginUser);
 // Email verification endpoint
 router.get('/verify/:token', async (req, res) => {
@@ -50,6 +52,7 @@ router.delete("/delete/:id",verifyToken,verifyVendor, MyUserController.deleteUse
 router.put("/update/:id",verifyToken,verifyVendor, MyUserController.updateUser);
 router.post('/uploadProfilePicture/:userId', verifyToken,verifyVendor,upload.single('File'),MyUserController.uploadProfilePicture);
 router.put('/block/:id',verifyToken,verifyVendor,MyUserController.blockUser);
+router.put('/unblock/:id',verifyToken,verifyVendor, MyUserController.unblockUser);
 
 
 export default router;

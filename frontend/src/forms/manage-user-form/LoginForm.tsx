@@ -27,75 +27,75 @@ const LoginForm: React.FC<LoginFormProps> = ({ closeModal }) => {
 
   const handleLogin = async () => {
     try {
-      console.log('Attempting to log in');
-      const token = localStorage.getItem('userToken');
+        console.log('Attempting to log in');
+        const token = localStorage.getItem('userToken');
 
-      const response = await axios.post('http://localhost:7000/api/my/auth/log', {
-        email: email,
-        password: password,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-      });
-
-      console.log('Response received from login endpoint');
-
-      if (response && response.data) {
-        console.log('Response Data:', response.data);
-
-        const userToken = response.data.userToken;
-        const userId = response.data._id;
-
-        if (!userId) {
-          console.error('User ID is not found in the response data');
-          return;
-        }
-        const { firstname, lastname } = response.data;
-   
-        // Store token and user info in local storage
-        localStorage.setItem('firstname', firstname);
-        localStorage.setItem('lastname', lastname);
-        localStorage.setItem('userToken', userToken);
-        localStorage.setItem('userId', userId);
-        localStorage.setItem('loggedInUser', JSON.stringify({ email: email, userId: userId }));
-
-        console.log('User logged in successfully:', response.data);
-
-        // Show success message using SweetAlert
-        Swal.fire({
-          icon: 'success',
-          title: 'Login Successful!',
-          text: 'You have successfully logged in.',
-          buttonsStyling: true,
-          confirmButtonColor: '#ff6411'
-        }).then(() => {
-          navigate('/settings');
-          closeModal(); // Call closeModal when login is successful
+        const response = await axios.post('http://localhost:7000/api/my/auth/log', {
+            email: email,
+            password: password,
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
         });
-      } else {
-        console.log('Empty response data');
+
+        console.log('Response received from login endpoint');
+
+        if (response && response.data) {
+            console.log('Response Data:', response.data);
+
+            const { userToken, _id, firstname, lastname, blocked } = response.data;
+
+            if (!userToken || !_id) {
+                console.error('Token or User ID is missing in the response data');
+                return;
+            }
+
+            // Store token and user info in local storage
+            localStorage.setItem('firstname', firstname);
+            localStorage.setItem('lastname', lastname);
+            localStorage.setItem('userToken', userToken);
+            localStorage.setItem('userId', _id);
+            localStorage.setItem('loggedInUser', JSON.stringify({ email, userId: _id }));
+
+            if (blocked) {
+                // Display message or redirect to a "Blocked" page
+                Swal.fire('Blocked!', 'Your account is blocked. Please contact the admin.', 'warning');
+                return; 
+            }
+
+            // Show success message using SweetAlert
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Successful!',
+                text: 'You have successfully logged in.',
+                buttonsStyling: true,
+                confirmButtonColor: '#ff6411'
+            }).then(() => {
+                navigate('/settings');
+                closeModal(); // Call closeModal when login is successful
+            });
+        } else {
+            console.log('Empty response data');
+            // Show error message using SweetAlert
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: 'Invalid email or password. Please try again.',
+                confirmButtonColor: '#ff6411',
+            });
+        }
+    } catch (error) {
+        console.log('Error logging in:', error);
         // Show error message using SweetAlert
         Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text: 'Invalid email or password. Please try again.',
-          confirmButtonColor: '#ff6411'
-          ,
+            icon: 'error',
+            title: 'Login Failed',
+            text: 'Error logging in. Please try again later.',
+            confirmButtonColor: '#ff6411'
         });
-      }
-    } catch (error) {
-      console.log('Error logging in:', error);
-      // Show error message using SweetAlert
-      Swal.fire({
-        icon: 'error',
-        title: 'Login Failed',
-        text: 'Error logging in. Please try again later.',
-        confirmButtonColor:'#ff6411'
-
-      });
     }
-  };
+};
 
   const toggleForgotPassword = () => {
     setShowForgotPassword(!showForgotPassword); // Toggle the state to show/hide ForgotPasswordPage

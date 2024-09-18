@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '../Breadcrumbs/Breadcrumb';
@@ -103,34 +104,79 @@ const VendorsDisplay: React.FC = () => {
             Swal.fire('Error!', 'There was an error deleting your user.', 'error');
         }
     };
-
-    const handleBlock = async (userId: string) => {
+    const handleBlockToggle = async (userId: string, isBlocked: boolean) => {
         try {
             const token = localStorage.getItem('userToken');
             if (!token) {
                 throw new Error('No token found');
             }
-
-            // Perform block user operation (Example: send a request to block user endpoint)
-            // Replace the URL with your actual endpoint
-            await axios.put(`http://localhost:7000/api/my/user/block/${userId}`, null, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+    
+            const url = isBlocked
+                ? `http://localhost:7000/api/my/user/unblock/${userId}`
+                : `http://localhost:7000/api/my/user/block/${userId}`;
+    
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: isBlocked ? "You want to unblock this user?" : "You want to block this user?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f2ab48',
+                cancelButtonColor: '#d33',
+                confirmButtonText: isBlocked ? 'Yes, unblock it!' : 'Yes, block it!',
             });
-
-            // Update local state after blocking user
-            const updatedUsers = users.map((user) =>
-                user._id === userId ? { ...user, blocked: true } : user
-            );
-            setUsers(updatedUsers);
-
-            Swal.fire('Blocked!', 'User has been blocked.', 'success');
+    
+            if (result.isConfirmed) {
+                await axios.put(url, null, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+    
+                // Update local state after toggling block status
+                const updatedUsers = users.map((user) =>
+                    user._id === userId ? { ...user, blocked: !isBlocked } : user
+                );
+                setUsers(updatedUsers);
+    
+                Swal.fire(
+                    isBlocked ? 'Unblocked!' : 'Blocked!',
+                    `User has been ${isBlocked ? 'unblocked' : 'blocked'}.`,
+                    'success'
+                );
+            }
         } catch (error) {
-            console.error('Error blocking user:', error);
-            Swal.fire('Error!', 'There was an error blocking the user.', 'error');
+            console.error('Error toggling user block status:', error);
+            Swal.fire('Error!', 'There was an error updating the user status.', 'error');
         }
     };
+    
+    // const handleBlock = async (userId: string) => {
+    //     try {
+    //         const token = localStorage.getItem('userToken');
+    //         if (!token) {
+    //             throw new Error('No token found');
+    //         }
+
+    //         // Perform block user operation (Example: send a request to block user endpoint)
+    //         // Replace the URL with your actual endpoint
+    //         await axios.put(`http://localhost:7000/api/my/user/block/${userId}`, null, {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`,
+    //             },
+    //         });
+
+    //         // Update local state after blocking user
+    //         const updatedUsers = users.map((user) =>
+    //             user._id === userId ? { ...user, blocked: true } : user
+    //         );
+    //         setUsers(updatedUsers);
+
+    //         Swal.fire('Blocked!', 'User has been blocked.', 'success');
+    //     } catch (error) {
+    //         console.error('Error blocking user:', error);
+    //         Swal.fire('Error!', 'There was an error blocking the user.', 'error');
+    //     }
+    // };
 
     const toggleRestaurants = (userId: string) => {
         setExpandedUserId(expandedUserId === userId ? null : userId);
@@ -150,8 +196,12 @@ const VendorsDisplay: React.FC = () => {
                             </div>
 
                             <div className="user-card-block">
-                                <button onClick={() => handleBlock(user._id)}>
+                            <button
+                                    onClick={() => handleBlockToggle(user._id, user.blocked)}
+                                    style={{ backgroundColor: user.blocked ? '#f8d7da' : '#ffffff' }}
+                                >
                                     <FontAwesomeIcon icon={faBan} />
+                                    {user.blocked ? ' Unblock' : ' Block'}
                                 </button>
                             </div>
                             <div className="user-card-content">

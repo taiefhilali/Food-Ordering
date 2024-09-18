@@ -68,15 +68,22 @@ const DropdownNotification: React.FC = () => {
     };
   }, []);
   useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
+    const clickHandler = (event: MouseEvent) => {
+      const target = event.target as Node; // Cast target to Node
+  
       if (!dropdown.current) return;
+  
       if (!dropdownOpen || dropdown.current.contains(target) || (trigger.current && trigger.current.contains(target)))
         return;
+  
       setDropdownOpen(false);
     };
+  
     document.addEventListener('click', clickHandler);
+  
     return () => document.removeEventListener('click', clickHandler);
   }, [dropdownOpen]);
+  
 
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
@@ -145,16 +152,22 @@ const DropdownNotification: React.FC = () => {
   //   };
   // }, []); // Empty dependency array ensures this effect runs only once
   useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
+    const clickHandler = (event: MouseEvent) => {
+      const target = event.target as Node; // Cast target to Node
+  
       if (!dropdown.current) return;
+  
       if (!dropdownOpen || dropdown.current.contains(target) || (trigger.current && trigger.current.contains(target)))
         return;
+  
       setDropdownOpen(false);
     };
+  
     document.addEventListener('click', clickHandler);
+  
     return () => document.removeEventListener('click', clickHandler);
   }, [dropdownOpen]);
-
+  
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!dropdownOpen || keyCode !== 27) return;

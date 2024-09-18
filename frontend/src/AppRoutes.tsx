@@ -1,7 +1,6 @@
 
-import { Navigate, Route, Routes } from 'react-router-dom'
+import {  Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './layouts/layout'
-import HomePage from './pages/HomePage'
 import ManageRestaurantPage from './pages/Restaurant/ManageRestaurantPage'
 import ForgotPasswordPage from './components/Authentication/forgotPassword'
 import Dashboard from './components/Dashboard'
@@ -11,7 +10,6 @@ import FormLayout from './pages/Form/FormLayout';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
-import Chart from './pages/Chart';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 // import Tables from './pages/Tables';
@@ -26,7 +24,6 @@ import ProductTable from './pages/Products/ProductTable'
 import LoginFormModal from './forms/manage-user-form/LoginFormModal'
 import { useEffect, useState } from 'react'
 // import UnauthorizedPage from './components/UnauthorizedPage'
-import AddCategoryForm from './forms/manage-category-form/AddCategoryForm'
 import OrdersList from './pages/Orders/OrdersDisplay'
 import RestaurantTable from './pages/Restaurant/RestaurantTable'
 // import UsersDisplay from './components/Authentication/AdminsDisplay'
@@ -48,8 +45,7 @@ import RestaurantDetails from './pages/Restaurant/RestaurantDetails '
 // import EditRestaurant from './pages/Restaurant/EditRestaurant'
 import Dashboardadmin from './components/Dashboard/statisticsAdmin'
 import OrdersTable from './pages/Orders/OrdersTable'
-import CategoryTable from './components/Categories/CategoriesTable'
-import DisplayCategories from './pages/Categories/DisplayCategories'
+import ManageCategoriesPage from './forms/manage-category-form/ManageCategoriesPage'
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
@@ -86,9 +82,9 @@ const AppRoutes = () => {
     };
 
     getUser();
-  }, []);
+  });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [, setIsModalOpen] = useState(false);
   // Function to close the modal
   const closeModal = () => {
     setIsModalOpen(false);
@@ -100,7 +96,7 @@ const AppRoutes = () => {
 <Routes>
 
 
-      <Route path='/' element={<Layout><HomePage></HomePage></Layout>}></Route>
+      <Route path='/' element={<Layout></Layout>}></Route>
       <Route path='/user-profile' element={<span>hello</span>}></Route>
       <Route path='*' element={<Navigate to="/" />} />
       <Route
@@ -157,7 +153,7 @@ const AppRoutes = () => {
         path="/categoriestable"
         element={
 
-          <DisplayCategories />
+          <CategoryComponent />
 
         }
       />
@@ -349,24 +345,10 @@ const AppRoutes = () => {
           
         }
       />
- <Route
-        path="/manage-categories"
-        element={
-          
-            <AddCategoryForm fetchCategories={function (): void {
-              throw new Error('Function not implemented.')
-            } } />
-          
-        }
-      />
-      <Route
-        path="/chart"
-        element={
+      {/* <Route path="/manage-categories" element={<AddCategoryForm fetchCategories={fetchCategories} />} /> */}
+      <Route path="/manage-categories" element={<ManageCategoriesPage />} />
 
-            <Chart />
-          
-        }
-      />
+      
     
         <Route
         path="/QrCode"
@@ -405,6 +387,8 @@ const AppRoutes = () => {
           </>
         }
       />
+
+    
     </Routes>
   )
 }

@@ -4,7 +4,6 @@ import Swal from 'sweetalert2';
 import { io } from 'socket.io-client';
 import '../../assets/css/loginmodal.css'; // Replace with actual path to your CSS file
 import Input from '../../components/Inputs/RegisterInput';
-import InputImage from '../../components/Inputs/LoginInput';
 
 interface RegisterFormProps {
   closeModal: () => void;
@@ -35,7 +34,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
   console.log('User token:', userToken);
 
   const socket = io('http://localhost:8000', {
-    multiplex:false,
+    multiplex: false,
     transports: ['websocket', 'polling', 'flashsocket'],
     extraHeaders: {
       Authorization: `Bearer ${userToken}`,
@@ -97,6 +96,119 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
     return '';
   };
 
+  //   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //     e.preventDefault();
+
+  //     const { email, firstname, lastname, password, username, imageFile } = formData;
+
+  //     let formIsValid = true;
+  //     const errors = {
+  //         email: '',
+  //         firstname: '',
+  //         lastname: '',
+  //         password: '',
+  //         username: '',
+  //         imageFile: '',
+  //     };
+
+  //     if (!validateEmail(email)) {
+  //         formIsValid = false;
+  //         errors.email = 'Invalid email format.';
+  //     }
+
+  //     if (!firstname) {
+  //         formIsValid = false;
+  //         errors.firstname = 'First name is required.';
+  //     }
+
+  //     if (!lastname) {
+  //         formIsValid = false;
+  //         errors.lastname = 'Last name is required.';
+  //     }
+
+  //     if (!validatePassword(password)) {
+  //         formIsValid = false;
+  //         errors.password =
+  //             'Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one number.';
+  //     }
+
+  //     if (!validateUsername(username)) {
+  //         formIsValid = false;
+  //         errors.username = 'Username must be at least 3 characters long.';
+  //     }
+
+  //     const imageError = validateImageFile(imageFile);
+  //     if (imageError) {
+  //         formIsValid = false;
+  //         errors.imageFile = imageError;
+  //     }
+
+  //     setErrors(errors);
+
+  //     if (!formIsValid) {
+  //         return;
+  //     }
+
+  //     setIsSubmitting(true);
+
+  //     const data = new FormData();
+  //     data.append('email', email);
+  //     data.append('firstname', firstname);
+  //     data.append('lastname', lastname);
+  //     data.append('password', password);
+  //     data.append('username', username);
+  //     data.append('userType', userType); // Add userType to formData
+  //     if (imageFile) {
+  //         data.append('imageFile', imageFile);
+  //     }
+
+  //     const token = localStorage.getItem('userToken');
+
+  //     try {
+  //         const response = await axios.post('http://localhost:7000/api/my/user/register', data, {
+  //             headers: {
+  //                 Authorization: `Bearer ${token}`,
+  //                 'Content-Type': 'multipart/form-data',
+  //             },
+  //         });
+
+  //         if (response.status === 201) {
+  //             localStorage.setItem('firstname', firstname);
+  //             localStorage.setItem('lastname', lastname);
+  //             // Emit WebSocket event
+  //             socket.emit('newUserAdded', {
+  //                 email,
+  //                 firstname,
+  //                 lastname,
+  //                 username,
+  //                 // Add any other relevant data you want to emit
+  //             });
+
+  //             // Show success alert with email verification message
+  //             Swal.fire({
+  //                 icon: 'success',
+  //                 title: 'Registration Successful!',
+  //                 text: 'Please verify your registration by checking your email.',
+  //                 imageUrl: 'https://img.icons8.com/clouds/100/000000/email.png', // Replace with your preferred email icon URL
+  //                 imageWidth: 20,
+  //                 imageHeight: 20,
+  //             }).then(() => {
+  //                 closeModal();
+  //             });
+  //         } else {
+  //             throw new Error('Failed to register.');
+  //         }
+  //     } catch (error) {
+  //         console.error('Error registering user:', error);
+  //         Swal.fire({
+  //             icon: 'error',
+  //             title: 'Registration Failed',
+  //             text: 'Error registering user. Please try again.',
+  //         });
+  //     } finally {
+  //         setIsSubmitting(false);
+  //     }
+  // };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -163,12 +275,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
       data.append('imageFile', imageFile);
     }
 
-    const token = localStorage.getItem('userToken');
 
     try {
       const response = await axios.post('http://localhost:7000/api/my/user/register', data, {
         headers: {
-          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
@@ -184,10 +294,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
           username,
           // Add any other relevant data you want to emit
         });
+
+        // Show success alert with email verification message
         Swal.fire({
           icon: 'success',
           title: 'Registration Successful!',
-          text: 'You have successfully registered.',
+          text: 'Please verify your registration by checking your email.',
+          imageUrl: 'https://img.icons8.com/clouds/100/000000/email.png', // Replace with your preferred email icon URL
+          imageWidth: 20,
+          imageHeight: 20,
         }).then(() => {
           closeModal();
         });
@@ -205,7 +320,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
       setIsSubmitting(false);
     }
   };
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center max-w-4xl ">
       <div className="mb-6 w-full max-w-4xl flex flex-wrap">
@@ -284,60 +398,60 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
       <div className="mb-4 w-full max-w-md">
         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="imageFile">
         </label>
-        <InputImage
+        <input
           type="file"
           name="imageFile"
           onChange={handleChange}
           accept="image/*"
           required
-
         />
+
         {errors.imageFile && (
           <p className="text-red-500 text-xs italic">{errors.imageFile}</p>
         )}
       </div>
 
       <div >
-  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="userType">
-    
-  </label>
-  <div className="mb-4 w-full max-w-md">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="userType">
 
-  <div >
-    <label className="inline-flex items-center">
-      <input
-        type="radio"
-        name="userType"
-        value="Vendor"
-        checked={userType === "Vendor"}
-        onChange={handleChange}
-        className="form-radio"
-        required
-      />
-      <span className="ml-2">Vendor</span>
-    </label>
-    <label className="inline-flex items-center ml-4">
-      <input 
-        type="radio"
-        name="userType"
-        value="Admin"
-        checked={userType === "Admin"}
-        onChange={handleChange}
-        className="form-radio"
-        required
-      />
-      <span className="ml-2">Admin</span>
-    </label>
-  </div>
-</div>
+        </label>
+        <div className="mb-4 w-full max-w-md">
 
-</div>
+          <div >
+            <label className="inline-flex items-center">
+              <input
+                type="radio"
+                name="userType"
+                value="Vendor"
+                checked={userType === "Vendor"}
+                onChange={handleChange}
+                className="form-radio"
+                required
+              />
+              <span className="ml-2">Vendor</span>
+            </label>
+            <label className="inline-flex items-center ml-4">
+              <input
+                type="radio"
+                name="userType"
+                value="Admin"
+                checked={userType === "Admin"}
+                onChange={handleChange}
+                className="form-radio"
+                required
+              />
+              <span className="ml-2">Admin</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
 
 
-      <div className="w-full max-w-md">
+      <div className="w-60 max-w-md">
         <button
           type="submit"
-          className="bg-slate-500 border-b-meta-7 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full"
+          className="bg-slate-500 border-b-meta-7 text-white font-bold py-2 px-3 rounded-full focus:outline-none focus:shadow-outline w-full"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Registering...' : 'Register'}

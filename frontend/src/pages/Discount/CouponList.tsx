@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Grid, Card, CardContent, Typography, Alert } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -9,7 +10,7 @@ type Coupon = {
     expirationDate: string;
 };
 
-const StyledCard = styled(Card)(({ theme }) => ({
+const StyledCard = styled(Card)(() => ({
     borderRadius: '20px',  // Rounded corners
     border: '1px solid #ddd',  // Border color
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',  // Shadow for depth

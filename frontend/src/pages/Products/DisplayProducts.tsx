@@ -6,16 +6,31 @@ import '../../assets/css/ProductMenu.css'; // Import your CSS file
 import axios from 'axios';
 import Skeleton from '../../components/Products/Skeleton'; // Import Skeleton component
 
-type Product = {
+export type Additives = {
+  name: string;
+  price: number;
+  icon: string;
+};
+
+export type Product = {
   _id: string;
   name: string;
-  description: string;
+  description?: string; // Optional
+  cost?: number; // Optional
   price: number;
-  category: string;
+  dishType?: 'main' | 'side' | 'beverage' | 'entry' | 'dessert'; // Optional
+  restaurant?: string; // Optional
   quantity: number;
-  imageUrl: string;
-  isApproved: boolean;
-  createdAt: string; // Ensure you have createdAt field for sorting
+  imageUrl?: string; // Optional
+  isApproved?: boolean; // Optional
+  user?: string; // Optional
+  soldQuantity?: number; // Optional
+  revenue?: number; // Optional
+  createdAt?: Date; // Optional
+  category: string;
+  likes: string[];
+  additives: Additives[];
+  totalRevenue?: number; // Optional
 };
 
 const ProductDisplayPage: React.FC = () => {
@@ -42,13 +57,14 @@ const ProductDisplayPage: React.FC = () => {
 
       // Sort products by createdAt timestamp in descending order (newest first)
       const sortedProducts = response.data.sort((a: Product, b: Product) => {
-        const dateA = new Date(a.createdAt);
-        const dateB = new Date(b.createdAt);
+        const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0); // Default to epoch if undefined
+        const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0); // Default to epoch if undefined
         return dateB.getTime() - dateA.getTime();
       });
 
       // Filter products to include only those that are approved
-      const approvedProducts = sortedProducts.filter(product => product.isApproved);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const approvedProducts = sortedProducts.filter((product: { isApproved: any; }) => product.isApproved);
 
       setProducts(approvedProducts);
     } catch (error) {

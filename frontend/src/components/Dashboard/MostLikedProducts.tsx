@@ -4,7 +4,7 @@ import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
 
 const MostLikedProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [, setProducts] = useState<Product[]>([]);
   const [chartOptions, setChartOptions] = useState<ApexCharts.ApexOptions>({
     chart: {
       type: 'bar',

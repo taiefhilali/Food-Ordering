@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Restaurant, Feedback } from '@/types';
+import { Restaurant, Feedback, Reply } from '@/types';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
 import { Link } from 'react-router-dom';
@@ -84,7 +84,6 @@ const RestaurantList = () => {
   const handleDeleteReply = async (replyId: string, feedbackId: string) => {
     try {
       const token = localStorage.getItem('userToken');
-      const userid = localStorage.getItem('userId');
 
       if (!token) {
         throw new Error('No token found');
@@ -112,7 +111,7 @@ const RestaurantList = () => {
           feedback._id === feedbackId
             ? {
               ...feedback,
-              replies: feedback.replies.filter(reply => reply._id !== replyId),
+              replies: feedback.replies?.filter(reply => reply._id !== replyId) || [], // Use optional chaining and fallback to empty array
             }
             : feedback
         );

@@ -15,11 +15,16 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
 
   const fetchTodayDate = () => {
     const today = new Date();
-    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'short', // Can be 'narrow', 'short', 'long'
+      year: 'numeric',
+      month: 'short', // Can be 'numeric', '2-digit', 'narrow', 'short', 'long'
+      day: 'numeric'
+    };
     const formattedDate = today.toLocaleDateString('en-US', options);
     setTodayDate(formattedDate);
   };
-
+  
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <h2 className="text-title-md2 font-semibold text-black dark:text-white">

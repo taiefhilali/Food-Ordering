@@ -1,12 +1,16 @@
 import "quill/dist/quill.snow.css"; // Import Quill styles
 import ReactQuill from "react-quill"; // Import ReactQuill
-import { useEffect } from "react";
-import { useFormContext } from "react-hook-form";
-import { FieldError } from 'react-hook-form'; // Import FieldError type
 
-const TextEditor = () => {
-  const { register, setValue, trigger, formState: { errors } } = useFormContext(); // Ensure useFormContext is correctly imported
 
+interface TextEditorProps {
+  value: string;
+  onChange: (content: string) => void;
+  onBlur: () => void;
+  name: string;
+  disabled?: boolean;
+}
+
+const TextEditor: React.FC<TextEditorProps> = ({ value, onChange, onBlur, disabled }) => {
   const modules = {
     toolbar: [
       [{ size: ["small", false, "large", "huge"] }],
@@ -42,34 +46,20 @@ const TextEditor = () => {
     "link", "image", "align", "size",
   ];
 
-  useEffect(() => {
-    register('description', {
-      required: 'Description is required',
-      validate: (value) => value.trim().length > 0 || 'Description cannot be empty',
-    });
-  }, [register]);
-
-  const handleChange = (content: any) => {
-    setValue('description', content); // Update form state with editor content
-    trigger('description'); // Trigger validation
-  };
-
   return (
     <div>
       <ReactQuill
         theme="snow"
         modules={modules}
         formats={formats}
-        onChange={handleChange}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
         placeholder="Write your content..."
         style={{ height: "220px", width: "100%", border: "1px solid #ccc", borderRadius: "5px", padding: "10px" }}
+        readOnly={disabled}
       />
-  {errors.description && (
-        <span className="text-red-500">
-          {typeof errors.description === 'string' ? errors.description : 'Error: Invalid description'}
-        </span>         )}
-
-         </div>
+    </div>
   );
 };
 

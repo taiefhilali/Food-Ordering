@@ -1,5 +1,13 @@
+import React from 'react';
 
-const UserCard = ({ user }) => {
+import { User } from '@/types';
+
+// Define the props type
+interface UserCardProps {
+  user: User;
+}
+
+const UserCard: React.FC<UserCardProps> = ({ user }) => {
   return (
     <div className="card">
       <div className="card-body">

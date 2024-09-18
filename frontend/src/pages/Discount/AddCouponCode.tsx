@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import  { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import Select from 'react-select';
@@ -109,6 +110,7 @@ const AddCouponCode = () => {
             },
             width: '200%'
         }),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         menu: (provided: any) => ({
             ...provided,
             borderRadius: '0.5rem',

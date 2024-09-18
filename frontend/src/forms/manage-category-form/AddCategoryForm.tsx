@@ -20,6 +20,8 @@ const CategoryAnimation = () => {
     return <Lottie options={defaultOptions} height={100} width={100} />;
 };
 interface AddCategoryFormProps {
+    fetchCategories: () => Promise<void>;
+    deleteCategory: (categoryId: string) => Promise<void>;
 }
 interface Category {
     _id: string;
@@ -120,7 +122,7 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
+    
             if (response.data.status === true) {
                 // Handle success with Swal
                 Swal.fire({
@@ -128,14 +130,15 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
                     title: 'Category Deleted!',
                     text: 'The category has been successfully deleted.',
                 });
-
-                // Update categories list
+    
+                // Update categories list immediately
+                setCategories(prevCategories => prevCategories.filter(category => category._id !== categoryId));
             } else {
                 throw new Error('Failed to delete category');
             }
         } catch (error) {
             console.error('Error deleting category:', error);
-
+    
             // Handle error with Swal
             Swal.fire({
                 icon: 'error',
@@ -144,6 +147,7 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
             });
         }
     };
+    
 
     return (
         <DefaultLayout>

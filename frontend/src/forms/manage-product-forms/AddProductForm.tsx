@@ -1,5 +1,7 @@
+/* eslint-disable no-empty-pattern */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
@@ -8,12 +10,18 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import dishAnimationdata from '../../assets/dish.json';
 import Lottie from 'react-lottie';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import TextEditor from '@/components/TextEditor';
 import Select, { GroupBase } from 'react-select';
 import Input from '../../components/Inputs/Input'; // Adjust the import path accordingly
 import QuantityInput from '../../components/Inputs/QuantityInput'; // Adjust the import path accordingly
 
+// Define the type for the options
+type RestaurantOption = {
+  _id: string;
+  restaurantName: string;
+  imageUrl: string;
+};
 import Button from '@mui/material/Button';
 import { styled } from '@mui/system';
 import AdditivesInput from './AdditivesInput';
@@ -22,6 +30,29 @@ type Restaurant = {
   restaurantName: string;
   imageUrl: string;
 };
+interface Product {
+  _id: string;
+  name: string;
+  cost: number;
+  dishType: string;
+  restaurant: string;
+  soldQuantity: number;
+  revenue: number;
+  createdAt: string;
+  likes: string[];
+  additives: string[];
+  totalRevenue: number;
+  description?: string;
+  imageUrl?: string;
+  isApproved?: boolean;
+}
+
+// Define the props for ManageProductForm
+interface ManageProductFormProps {
+  product: Product; // Adjust this type if necessary
+  onSave: (data: FormData) => void;
+  isLoading: boolean;
+}
 
 const DishAnimation = () => {
   const defaultOptions = {
@@ -47,8 +78,9 @@ const StyledInput = styled(QuantityInput)`
     border-color: orange;
     box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
   }
-`;
-const AddProductForm = () => {
+`;  
+
+const AddProductForm:React.FC<ManageProductFormProps> = ({  }) => {
   useGetMyRestaurant();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const methods = useForm();
@@ -105,20 +137,20 @@ const AddProductForm = () => {
 
     fetchData();
   }, []);
-  
+
   const onSubmit = async (data: any) => {
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('description', data.description);
-    formData.append('price', data.price); 
+    formData.append('price', data.price);
     formData.append('cost', data.cost);
     formData.append('dishType', data.dishType?.value || '');
     formData.append('quantity', data.quantity);
     formData.append('restaurant', data.restaurant?._id || '');
     formData.append('additives', JSON.stringify(data.additives));
-  console.log('=============additives=======================');
-  console.log(data.additives);
-  console.log('=============additives=======================');
+    console.log('=============additives=======================');
+    console.log(data.additives);
+    console.log('=============additives=======================');
     if (data.imageFile?.[0]) {
       formData.append('imageFile', data.imageFile[0]);
     }
@@ -158,8 +190,8 @@ const AddProductForm = () => {
       });
     }
   };
-  
-  
+
+
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
@@ -190,7 +222,9 @@ const AddProductForm = () => {
     }),
   };
 
-  const formatOptionLabel = ({ restaurantName, imageUrl }) => (
+
+  // Update the formatOptionLabel function with proper typing
+  const formatOptionLabel = ({ restaurantName, imageUrl }: RestaurantOption) => (
     <div className="flex justify-between items-center">
       <span>{restaurantName}</span>
       <img
@@ -200,6 +234,16 @@ const AddProductForm = () => {
       />
     </div>
   );
+  // const formatOptionLabel = ({ restaurantName, imageUrl }) => (
+  //   <div className="flex justify-between items-center">
+  //     <span>{restaurantName}</span>
+  //     <img
+  //       src={imageUrl}
+  //       alt={restaurantName}
+  //       className="w-8 h-8 rounded-full ml-2"
+  //     />
+  //   </div>
+  // );
 
   return (
     <>
@@ -207,7 +251,7 @@ const AddProductForm = () => {
       <div className="max-w-4xl mx-auto bg-white shadow-switcher rounded-lg p-9 mt-20 flex border-orange-500 border-opacity-45 border-2">
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full md:w-full pr-8">
-        
+
             <div className="mt-0">
               <h6 className='flex justify-center items-center font-semibold  border-meta-8'>Fill this form to add your item 💭</h6>
               <DishAnimation />
@@ -226,7 +270,7 @@ const AddProductForm = () => {
                 /> */}
                 {errors.name && <span className="text-red-500">Name is required</span>}
               </div>
-              
+
               <div className="relative">
                 <Input
                   placeholder="Price(dt)"
@@ -239,22 +283,22 @@ const AddProductForm = () => {
                   className="w-full p-2 border rounded-full border-gray-300 focus:outline-none font-medium focus:ring-2 focus:ring-orange-500"
                 /> */}
                 {errors.price && <span className="text-red-500">Price is required</span>}
-              <Controller
-                name="cost"
-                control={control}
-                defaultValue=""
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    type="number"
-                    placeholder="Cost"
-                    required
-                    error={Boolean(errors.cost)}
-                  />
-                )}
-              />
+                <Controller
+                  name="cost"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="number"
+                      placeholder="Cost"
+                      required
+                      error={Boolean(errors.cost)}
+                    />
+                  )}
+                />
               </div>
-              
+
               <div className="relative">
                 <Controller
                   name="dishType"
@@ -289,7 +333,7 @@ const AddProductForm = () => {
                 />
 
               </div>
-            
+
               <div className="relative">
                 <Controller
                   name="restaurant"
@@ -310,13 +354,13 @@ const AddProductForm = () => {
                 />
                 {errors.restaurant && <span className="text-red-500">Please select a restaurant</span>}
                 <div className="ml-5 mt-3">
-                {/* <Link to="/additives" className="text-orange-500 flex items-center">
+                  {/* <Link to="/additives" className="text-orange-500 flex items-center">
                 <AddCircleIcon fontSize="sm" /> 
                 <span className="ml-2">Add more additives</span>
               </Link> */}
-                          <AdditivesInput />
+                  <AdditivesInput />
 
-            </div>
+                </div>
               </div>
             </div>
             <div className="flex justify-center mt-4 space-x-4">
@@ -357,8 +401,16 @@ const AddProductForm = () => {
               <Controller
                 name="description"
                 control={control}
-                rules={{ required: true }}
-                render={({ field }) => <TextEditor {...field} />}
+                rules={{ required: 'Description is required' }}
+                render={({ field }) => (
+                  <TextEditor
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    disabled={field.disabled}
+                  />
+                )}
               />
               {errors.description && <span className="text-red-500">Description is required</span>}
             </div>

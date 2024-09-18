@@ -3,6 +3,7 @@
 import { useCreateProduct, useGetMyProducts } from "@/api/MyProductApi";
 import ManageProductForm from "@/forms/manage-product-forms/AddProductForm";
 
+
 import DefaultLayout from "@/layouts/DefaultLayout";
 
 export default function ManageProductPage() {
@@ -16,7 +17,7 @@ export default function ManageProductPage() {
   <DefaultLayout>
   {/* <ManageRestaurantForm restaurant={restaurant}
     onSave={isEditing? updateRestaurant:createRestaurant} isLoading={isCreateLoading || isUpdateloading} /> */}
-     <ManageProductForm product={products}
+     <ManageProductForm product={products} 
     onSave={createProduct} isLoading={isCreateLoading } />
    </DefaultLayout>
 );

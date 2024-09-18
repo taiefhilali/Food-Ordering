@@ -5,7 +5,7 @@ import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
 
 const MostRatedRestaurants = () => {
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [, setRestaurants] = useState<Restaurant[]>([]);
   const [chartOptions, setChartOptions] = useState<ApexCharts.ApexOptions>({
     chart: {
       type: 'bar',
@@ -55,7 +55,7 @@ const MostRatedRestaurants = () => {
 
   return (
     <div className="most-rated-restaurants">
-      <ReactApexChart options={chartOptions} series={chartSeries} type="bar" height={350} width={350} />
+      <ReactApexChart options={chartOptions} series={chartSeries} type="bar" height={450} width={350} />
     </div>
   );
 };

@@ -1,10 +1,9 @@
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layouts/DefaultLayout';
 import CoverOne from '../images/cover/cover-01.png';
-import userSix from '../images/user/user-06.png';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 const Profile = () => {
 
@@ -45,7 +44,8 @@ const Profile = () => {
 
     fetchUserData();
   }, []);
-  function handleUpdateImage(event: ChangeEvent<HTMLInputElement>): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function handleUpdateImage(_event: ChangeEvent<HTMLInputElement>): void {
     throw new Error('Function not implemented.');
   }
 

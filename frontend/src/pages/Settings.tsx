@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEventHandler, FormEventHandler } from 'react';
 import axios from 'axios';
 import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
 import Swal from 'sweetalert2';
-
 
 const UserProfile = () => {
   const MAX_FILENAME_LENGTH = 100;
@@ -45,7 +44,7 @@ const UserProfile = () => {
     fetchUserData();
   }, []);
 
-  const updateUser = async (event) => {
+  const updateUser: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
     const userId = localStorage.getItem('userId');
@@ -57,16 +56,20 @@ const UserProfile = () => {
     }
 
     try {
-      const url = `http://localhost:7000/api/my/user/update/${userId}`;
-      const response = await axios.put(url, {
-        phoneNumber: event.target.phoneNumber.value,
-        email: event.target.emailAddress.value,
-        username: event.target.Username.value,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const formData = new FormData(event.currentTarget);
+      const response = await axios.put(
+        `http://localhost:7000/api/my/user/update/${userId}`,
+        {
+          phoneNumber: formData.get('phoneNumber'),
+          email: formData.get('emailAddress'),
+          username: formData.get('Username'),
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       Swal.fire({
         icon: 'success',
         title: 'Success!',
@@ -90,8 +93,8 @@ const UserProfile = () => {
     }
   };
 
-  const handleFileChange = async (event) => {
-    const selectedFile = event.target.files[0];
+  const handleFileChange: ChangeEventHandler<HTMLInputElement> = async (event) => {
+    const selectedFile = event.target.files?.[0];
     if (!selectedFile) {
       console.error('No file selected');
       return;
@@ -126,7 +129,7 @@ const UserProfile = () => {
       Swal.fire({
         icon: 'success',
         title: 'Success!',
-        text: 'User information updated successfully.',
+        text: 'Profile picture updated successfully.',
       });
       // Update user state with new image URL
       setUser((prevUser) => ({
@@ -140,35 +143,10 @@ const UserProfile = () => {
       Swal.fire({
         icon: 'error',
         title: 'Error!',
-        text: 'Failed to update user information. Please try again.',
+        text: 'Failed to update profile picture. Please try again.',
       });
     }
   };
-  // const deleteProfilePicture = async () => {
-  //   const userId = localStorage.getItem('userId');
-  //   const token = localStorage.getItem('userToken');
-
-  //   if (!userId || !token) {
-  //     console.error('No userId or token found');
-  //     return;
-  //   }
-
-  //   try {
-  //     const url = `http://localhost:7000/api/my/user/deleteProfilePicture/${userId}`;
-  //     const response = await axios.delete(url, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-
-  //     console.log('Profile picture deleted successfully:', response.data);
-
-  //     // Optionally update user state or perform other actions after deletion
-
-  //   } catch (error) {
-  //     console.error('Error deleting profile picture:', error);
-  //   }
-  // };
 
   return (
     <DefaultLayout>
@@ -257,7 +235,6 @@ const UserProfile = () => {
                         id="Username"
                         placeholder="devidjhon24"
                         value={user.username}
-                        
                       />
                     </div>
 
@@ -359,7 +336,7 @@ const UserProfile = () => {
         )}
       </div>
     </DefaultLayout>
-  )
+  );
 };
 
 export default UserProfile;

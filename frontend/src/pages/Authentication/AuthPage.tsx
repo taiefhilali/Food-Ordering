@@ -9,7 +9,9 @@ const AuthPage = () => {
     // };
   
     return (
-        <LoginFormModal></LoginFormModal>
+        <LoginFormModal closeModal={function (): void {
+            throw new Error('Function not implemented.');
+        } }></LoginFormModal>
     )};
 //       <Container>
 //         <Title>Welcome to Food Ordering App</Title>

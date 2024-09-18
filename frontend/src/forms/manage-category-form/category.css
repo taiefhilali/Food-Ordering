@@ -1,0 +1,23 @@
+/* CSS file (e.g., ManageCategoriesPage.css) */
+
+.separator {
+    border: 0;
+    width: 1px; /* Width of the vertical line */
+    background: #ccc; /* Color of the separator line */
+    height: 100%; /* Height of the separator, adjust as needed */
+    margin: 0 20px; /* Space around the separator, adjust as needed */
+}
+
+
+.category-display {
+    padding: 10px;
+}
+
+.category-item {
+    margin-bottom: 15px;
+}
+
+.category-item img {
+    max-width: 100%;
+    height: auto;
+}

@@ -1,6 +1,8 @@
 .form-radio:checked {
   border-color: #ff6e00;
   background-color: #ff6e00;
+  /* Add width if needed */
+  /* width: 20px; */ /* Example width for form-radio */
 }
 
 .custom-sign-in-button {
@@ -8,10 +10,13 @@
   padding: 10px 20px; /* Custom padding */
   color: white; /* Custom text color */
   border: none; /* Remove default border */
-  /* Add more custom styles as needed */
+  /* Add width if needed */
+  /* width: 200px; */ /* Example width for button */
 }
+
 .animation-container {
   border-radius: 50px; /* Adjust the radius as needed */
-  overflow: hidden;
-/* Ensure the border radius is applied correctly */
+  overflow: hidden; /* Ensure the border radius is applied correctly */
+  /* Add width if needed */
+  width: 150%; /* Example width for container */
 }

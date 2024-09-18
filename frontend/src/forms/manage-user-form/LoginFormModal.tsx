@@ -97,7 +97,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
            <Lottie options={defaultOptions} height="100%" width="100% " /> 
         </div>
         <div className="flex-grow px-4">
-          <div className="flex justify-end">
+          <div className="flex justify-center ml-60">
             <button
               className="text-black hover:text-gray-300 focus:outline-none"
               onClick={closeModal}
@@ -120,11 +120,12 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
               <img src={Facebook} alt="" className="icon" style={{ height: '40px', width: '40px' }} />
             </div>
           </div>
-          <div className="flex items-center my-4">
-            <div className="flex-grow border-t border-gray-400"></div>
-            <span className="mx-4 text-gray-500">OR</span>
-            <div className="flex-grow border-t border-gray-400"></div>
-          </div>
+          <div className="flex items-center my-3">
+  <div className="w-1/3 border-t border-gray-400"></div>
+  <span className="mx-4 text-gray-500">OR</span>
+  <div className="w-1/3 border-t border-gray-400"></div>
+</div>
+
           <div className="flex justify-center mb-6">
             <button
               className={`mr-4 px-4 py-2 rounded ${activeTab === 'login' ? 'bg-white text-orange-500' : 'text-orange-500 hover:text-orange-300'}`}
