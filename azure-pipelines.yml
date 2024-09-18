@@ -16,6 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install --force
+    npm install --legacy-peer-deps
+
     npm run build
-  displayName: 'npm install --force and build'
+  displayName: 'npm install and build'
