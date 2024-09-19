@@ -323,8 +323,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center max-w-4xl ">
       <div className="mb-6 w-full max-w-4xl flex flex-wrap">
-        <div className="w-full md:w-1/2 md:pr-2">
-          <Input
+      <div className="w-full sm:w-1/2 pr-15 mb-4 sm:mb-0">
+      <Input
             type="text"
             name="firstname"
             value={formData.firstname}
@@ -336,8 +336,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
             <p className="text-red-500 text-xs italic">{errors.firstname}</p>
           )}
         </div>
-        <div className="w-full md:w-1/2 md:pl-2">
-          <Input
+        <div className="w-full sm:w-1/2 pr-15 mb-4 sm:mb-0">
+        <Input
             type="text"
             name="lastname"
             value={formData.lastname}
@@ -351,7 +351,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
         </div>
       </div>
 
-      <div className="mb-4 w-full max-w-md flex flex-wrap">
+      <div className="mb-4 w-full max-w-md pr-16 flex flex-wrap">
         <div className="w-full md:w-1/2 md:pr-2">
           <Input
             type="email"
@@ -380,7 +380,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ closeModal }) => {
           )}
         </div>
       </div>
-      <div className="mb-4 w-full max-w-md">
+
+
+
+
+      
+      <div className="mb-4 w-50 mr-10 max-w-md">
         <Input
           type="password"
           name="password"

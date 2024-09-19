@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Lottie from 'react-lottie';
+import Lottie from 'lottie-react';
 import { SignInButton, UserButton, useUser } from "@clerk/clerk-react";
 import { useNavigate } from 'react-router-dom';
 import heroAnimation from '../../assets/heroAnimation1.json';
@@ -39,15 +39,7 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
     setActiveTab(tab);
   };
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: heroAnimation,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
-    
-  };
+
 
   useEffect(() => {
     const handleSignIn = async () => {
@@ -89,12 +81,25 @@ const LoginFormModal: React.FC<LoginFormModalProps> = ({ closeModal }) => {
     handleSignIn();
   }, [user, navigate]);
 
+  const HeroAnimation = () => {
+    return (
+        <Lottie
+            animationData={heroAnimation} // Directly pass animationData
+            loop={true} // Looping
+            autoplay={true} // Autoplay
+            style={{ height: '100%', width: '100%' }} // Styling
+        />
+    );
+};
+
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="bg-white text-black p-8 rounded shadow-lg z-50 flex w-full max-w-3xl  border-2 border-opacity-50 border-orange-500 opacity-90">
         <div className="flex-shrink-0 w-1/2 rounded-sm overflow-hidden">
-           <Lottie options={defaultOptions} height="100%" width="100% " /> 
+           {/* <Lottie options={defaultOptions} height="100%" width="100% " />  */}
+           <HeroAnimation/>
         </div>
         <div className="flex-grow px-4">
           <div className="flex justify-center ml-60">

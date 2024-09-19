@@ -4,20 +4,18 @@ import DefaultLayout from '@/layouts/DefaultLayout';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import Input from '../../components/Inputs/Input';
 import Swal from 'sweetalert2';
-import Lottie from 'react-lottie';
+import Lottie from 'lottie-react';
 import categoryAnimationdata from '../../assets/category.json';
 
 const CategoryAnimation = () => {
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: categoryAnimationdata,
-        rendererSettings: {
-            preserveAspectRatio: 'xMidYMid slice',
-        },
-    };
-
-    return <Lottie options={defaultOptions} height={100} width={100} />;
+    return (
+        <Lottie
+            animationData={categoryAnimationdata} // Pass animationData directly
+            loop={true} // Control looping directly with props
+            autoplay={true} // Control autoplay directly with props
+            style={{ height: 100, width: 100 }} // Adjust style directly
+        />
+    );
 };
 interface AddCategoryFormProps {
     fetchCategories: () => Promise<void>;
@@ -196,14 +194,14 @@ const AddCategoryForm: React.FC<AddCategoryFormProps> = () => {
                                 <Input
                                     placeholder="Type Category Title"
                                     value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
+                                    onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setTitle(e.target.value)}
                                 />
                             </div>
                             <div className="mb-5.5">
                                 <Input
                                     placeholder="Type Category value"
                                     value={value}
-                                    onChange={(e) => setValue(e.target.value)}
+                                    onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setValue(e.target.value)}
                                 />
                             </div>
                             <div className="mb-5.5">

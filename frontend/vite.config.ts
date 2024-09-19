@@ -7,6 +7,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      'jsvectormap': '/node_modules/jsvectormap'
+
     },
   },
   server:{

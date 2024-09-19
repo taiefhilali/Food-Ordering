@@ -5,9 +5,9 @@ import Breadcrumb from '../Breadcrumbs/Breadcrumb';
 import ApexChart from '../Products/RevenueByDateComponent';
 import axios from 'axios';
 import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const CardCounter: React.FC<{ icon: string, count: number, label: string, color: string }> = ({ icon, count, label, color }) => (
   <div className="card-counter-wrapper">
@@ -40,24 +40,32 @@ const Dashboard: React.FC = () => {
   });
 
   const [pieChartData, setPieChartData] = useState({
-    labels: [],
+    labels: [] as string[],
     datasets: [{
       label: 'Revenue by Category',
-      data: [],
-      backgroundColor: ['#f5893d', '#D3D3D3', '#FF8C00', '#A9A9A9', '#FF6347'], // Orange and gray colors
+      data: [] as number[],
+      backgroundColor: ['#f5893d', '#D3D3D3', '#FF8C00', '#A9A9A9', '#FF6347'],
     }],
   });
+
   const pieChartOptions = {
     plugins: {
-        legend: {
-            labels: {
-                font: {
-                    weight: 'bold'  // Makes the label text bold
-                }
-            }
-        }
-    }
-};
+      legend: {
+        position: 'top' as const,
+        labels: {
+          font: {
+            family: 'Satoshi', // Font family
+            weight: 'bold' as const, // Font weight
+            size: 14, // Font size
+          },
+        },
+      },
+      tooltip: {
+        // Tooltip configuration if needed
+      },
+    },
+  };
+
   useEffect(() => {
     const fetchRestaurantCount = async () => {
       try {
@@ -124,7 +132,7 @@ const Dashboard: React.FC = () => {
           datasets: [{
             label: 'Revenue by Category',
             data: revenue,
-            backgroundColor: ['#f5893d', '#D3D3D3', '#FF8C00', '#A9A9A9', '#FF6347'], // Orange and gray colors
+            backgroundColor: ['#f5893d', '#D3D3D3', '#FF8C00', '#A9A9A9', '#FF6347'],
           }],
         });
       } catch (error) {
@@ -150,20 +158,19 @@ const Dashboard: React.FC = () => {
           <CardCounter icon="fa-dollar-sign" count={priceCostStats.totalDifference} label="Total Profit" color="warning" />
           <CardCounter icon="fa-calculator" count={Math.round(priceCostStats.averageDifference)} label="Avg Profit per Item" color="info" />
         </div>
-
       </div>
 
       <div className="charts-container">
-                <div className="chart-left">
-                    <ApexChart />
-                </div>
-                <div className="chart-right">
-                    <h3>Revenue by Category</h3>
-                    <div className="pie-chart-wrapper">
-                        <Pie data={pieChartData} options={pieChartOptions} />
-                    </div>
-                </div>
-            </div>
+        <div className="chart-left">
+          <ApexChart />
+        </div>
+        <div className="chart-right">
+          <h3>Revenue by Category</h3>
+          <div className="pie-chart-wrapper">
+            <Pie data={pieChartData} options={pieChartOptions} />
+          </div>
+        </div>
+      </div>
     </DefaultLayout>
   );
 };

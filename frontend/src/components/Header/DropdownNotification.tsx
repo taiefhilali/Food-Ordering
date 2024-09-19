@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
 import axios from 'axios';
 import noNotificationsAnimationData from '../../assets/emptyy.json';
-import Lottie from 'react-lottie';
+import Lottie from 'lottie-react';
 
 // Define Notification interface
 interface Notification {
@@ -21,18 +21,20 @@ interface Notification {
   timestamp: Date;
   user: string;
 }
-
 const NoNotificationsAnimation = () => {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: noNotificationsAnimationData,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
-  };
-  return <Lottie options={defaultOptions} height={200} width={200} />;
+  return <Lottie animationData={noNotificationsAnimationData} loop autoplay />;
 };
+// const NoNotificationsAnimation = () => {
+//   const defaultOptions = {
+//     loop: true,
+//     autoplay: true,
+//     animationData: noNotificationsAnimationData,
+//     rendererSettings: {
+//       preserveAspectRatio: 'xMidYMid slice',
+//     },
+//   };
+//   return <Lottie options={defaultOptions} height={200} width={200} />;
+// };
 
 const userToken = localStorage.getItem('userToken');
 

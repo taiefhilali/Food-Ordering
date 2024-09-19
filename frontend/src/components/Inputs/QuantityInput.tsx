@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Input as BaseInput, InputProps } from '@mui/base/Input';
+import Input,{ InputProps } from '@mui/material/Input';
 import { styled } from '@mui/system';
 
 const QuantityInput = React.forwardRef(function CustomInput(
   props: InputProps,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) {
-  return <BaseInput slots={{ input: InputElement }} {...props} ref={ref} />;
+  return <Input {...props} inputComponent={InputElement} ref={ref} />;
 });
 
 const InputElement = styled('input')(

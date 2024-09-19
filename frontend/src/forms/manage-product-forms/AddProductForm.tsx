@@ -9,7 +9,7 @@ import { useGetMyRestaurant } from '../../api/MyRestaurantApi';
 import io from 'socket.io-client';
 import axios from 'axios';
 import dishAnimationdata from '../../assets/dish.json';
-import Lottie from 'react-lottie';
+import Lottie from 'lottie-react';
 import { useNavigate } from 'react-router-dom';
 import TextEditor from '@/components/TextEditor';
 import Select, { GroupBase } from 'react-select';
@@ -53,18 +53,15 @@ interface ManageProductFormProps {
   onSave: (data: FormData) => void;
   isLoading: boolean;
 }
-
 const DishAnimation = () => {
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: dishAnimationdata,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
-  };
-
-  return <Lottie options={defaultOptions} height={200} width={200} />;
+  return (
+    <Lottie
+      animationData={dishAnimationdata} // Directly pass animationData
+      loop={true} // Control looping with a prop
+      autoplay={true} // Control autoplay with a prop
+      style={{ height: 200, width: 200, marginLeft: 300 }} // Adjust size with style prop
+    />
+  );
 };
 // Define a styled input using MUI's styled API
 const StyledInput = styled(QuantityInput)`
@@ -78,9 +75,9 @@ const StyledInput = styled(QuantityInput)`
     border-color: orange;
     box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
   }
-`;  
+`;
 
-const AddProductForm:React.FC<ManageProductFormProps> = ({  }) => {
+const AddProductForm: React.FC<ManageProductFormProps> = ({ }) => {
   useGetMyRestaurant();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const methods = useForm();
@@ -257,10 +254,12 @@ const AddProductForm:React.FC<ManageProductFormProps> = ({  }) => {
               <DishAnimation />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
-              <div className="relative">
+              <div className="relative ml-1 ">
                 <Input
                   placeholder="Product Name"
                   {...register('name', { required: true })}
+                  className="w-full p-2 border rounded-full border-slate-300 focus:outline-none font-medium focus:ring-2 focus:ring-orange-500"
+
                 />
                 {/* <input
                   type="text"
@@ -271,18 +270,14 @@ const AddProductForm:React.FC<ManageProductFormProps> = ({  }) => {
                 {errors.name && <span className="text-red-500">Name is required</span>}
               </div>
 
-              <div className="relative">
+              <div className="relative flex flex-col space-y-2">
                 <Input
-                  placeholder="Price(dt)"
+                  placeholder="Price (dt)"
                   {...register('price', { required: true })}
+                  className="w-full p-2 border rounded-full border-slate-300 focus:outline-none font-medium focus:ring-2 focus:ring-orange-500"
                 />
-                {/* <input
-                  type="text"
-                  placeholder="Price"
-                  {...register('price', { required: true })}
-                  className="w-full p-2 border rounded-full border-gray-300 focus:outline-none font-medium focus:ring-2 focus:ring-orange-500"
-                /> */}
                 {errors.price && <span className="text-red-500">Price is required</span>}
+
                 <Controller
                   name="cost"
                   control={control}
@@ -291,13 +286,15 @@ const AddProductForm:React.FC<ManageProductFormProps> = ({  }) => {
                     <Input
                       {...field}
                       type="number"
-                      placeholder="Cost"
+                      placeholder="Cost (dt)"
                       required
-                      error={Boolean(errors.cost)}
+                      className="w-full p-2 border rounded-full border-slate-300 focus:outline-none font-medium focus:ring-2 focus:ring-orange-500"
                     />
                   )}
                 />
+                {errors.cost && <span className="text-red-500">Cost is required</span>}
               </div>
+
 
               <div className="relative">
                 <Controller
@@ -391,6 +388,7 @@ const AddProductForm:React.FC<ManageProductFormProps> = ({  }) => {
                 <Input
                   type='file'
                   placeholder="Select Your Image"
+                  className="w-full p-2 border rounded-full border-slate-300 focus:outline-none font-medium focus:ring-2 focus:ring-orange-500"
                   {...register('imageFile', { required: true })}
                 />
                 {errors.imageFile && <span className="text-red-500">Image is required</span>}

@@ -94,8 +94,13 @@ const DisplayCategories: React.FC<DisplayCategoriesProps> = ({ categories, fetch
                                 </td>
                                 <td>{category.title}</td>
                                 <td>
-                                    <button onClick={() => handleDelete(category._id)}>X</button>
-                                </td>
+    <button 
+        onClick={() => handleDelete(category._id)}
+        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+    >
+        X
+    </button>
+</td>
                             </tr>
                         ))}
                     </tbody>

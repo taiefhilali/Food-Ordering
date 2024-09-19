@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Input as BaseInput, InputProps } from '@mui/base/Input';
+import Input,{ InputProps } from '@mui/material/Input';
 import { styled } from '@mui/system';
 
-const Input = React.forwardRef(function CustomInput(
+const Inputs = React.forwardRef(function CustomInput(
   props: InputProps,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) {
-  return <BaseInput slots={{ input: InputElement }} {...props} ref={ref} />;
+  return <Input {...props} inputComponent={InputElement} ref={ref} />;
 });
 
 const InputElement = styled('input')(
@@ -17,7 +17,7 @@ const InputElement = styled('input')(
   font-weight: 400;
   line-height: 1.5;
   padding: 8px 12px;
-  border-radius: 30px;
+  border-radius: 70px;
   color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
   background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
   border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
@@ -60,4 +60,4 @@ const grey = {
   900: '#1C2025',
 };
 
-export default Input;
+export default Inputs;

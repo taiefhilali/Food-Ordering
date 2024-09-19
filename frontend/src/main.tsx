@@ -7,9 +7,8 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { ClerkProvider } from '@clerk/clerk-react';
 import './css/style.css';
 import './css/satoshi.css';
-import 'jsvectormap/dist/css/jsvectormap.css';
 import 'flatpickr/dist/flatpickr.min.css';
-
+import 'jsvectormap/dist/jsvectormap.css';
 const queryClient = new QueryClient({
   
   defaultOptions: {
