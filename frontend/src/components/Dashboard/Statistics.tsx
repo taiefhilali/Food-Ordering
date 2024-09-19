@@ -167,7 +167,7 @@ const Dashboard: React.FC = () => {
         <div className="chart-right">
           <h3>Revenue by Category</h3>
           <div className="pie-chart-wrapper">
-            <Pie data={pieChartData} options={pieChartOptions} />
+            <Pie data={pieChartData} options={pieChartOptions}  />
           </div>
         </div>
       </div>

@@ -1,97 +1,85 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
 
-  .container {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .card-row {
-    display: flex;
-    justify-content: space-evenly; /* Adjust spacing between cards */
-    align-items: center; /* Align items vertically */
-    width: 90%;
-    gap: 30px; /* Add gap between cards */
-  }
-  
-  .card-counter-wrapper {
-    width: 100%;
-    margin-bottom: 10px; /* Space between the cards */
-  }
-  
-  .card-counter {
-    box-shadow: 2px 2px 10px #DADADA;
-    margin: 5px;
-    padding: 10px 5px; /* Reduced padding */
-    background-color: #fff;
-    height: 50px; /* Reduced height */
-    width: 100%; /* Ensure the cards align in one line */
-    border-radius: 5px;
-    transition: .3s linear all;
-    display: flex; /* Flexbox for alignment */
-    align-items: center;
-    justify-content: space-between;
-    position: relative; /* Ensure absolute positioning works within card */
-  }
-  
-  .card-counter:hover {
-    box-shadow: 4px 4px 20px #DADADA;
-    transition: .3s linear all;
-  }
-  
-  .card-counter.primary {
-    background-color: rgba(255, 153, 0, 0.7); /* Reduced opacity */
-    color: #FFF;
-  }
-  
-  .card-counter.danger {
-    background-color: rgba(151, 137, 136, 0.7); /* Reduced opacity */
-    color: #FFF;
-  }  
-  
-  .card-counter.success {
-    background-color: #F98641; /* Reduced opacity */
-    color: #FFF;
-  }  
-  
-  .card-counter.info {
-    background-color: rgba(83, 90, 91, 0.7); /* Reduced opacity */
-    color: #FFF;
-  }  
-  
-  .card-counter i {
-    font-size: 3em; /* Reduced font size */
-    opacity: 0.2;
-  }
-  
-  .card-counter .count-numbers {
-    font-size: 24px; /* Reduced font size */
-    display: block;
-  }
-  
-  .card-counter .count-name {
-    font-style: italic;
-    text-transform: capitalize;
-    opacity: 0.5;
-    display: block;
-    font-size: 14px; /* Reduced font size */
-  }
-  /* Ensure chart-container has proper spacing */
+.card-row {
+  display: flex;
+  justify-content: space-evenly; /* Adjust spacing between cards */
+  align-items: center; /* Align items vertically */
+  width: 90%;
+  gap: 30px; /* Add gap between cards */
+}
+
+.card-counter-wrapper {
+  width: 100%;
+  margin-bottom: 10px; /* Space between the cards */
+}
+
+.card-counter {
+  box-shadow: 2px 2px 10px #DADADA;
+  margin: 5px;
+  padding: 10px 5px; /* Reduced padding */
+  background-color: #fff;
+  height: 50px; /* Reduced height */
+  width: 100%; /* Ensure the cards align in one line */
+  border-radius: 5px;
+  transition: .3s linear all;
+  display: flex; /* Flexbox for alignment */
+  align-items: center;
+  justify-content: space-between;
+  position: relative; /* Ensure absolute positioning works within card */
+}
+
+.card-counter:hover {
+  box-shadow: 4px 4px 20px #DADADA;
+  transition: .3s linear all;
+}
+
+.card-counter.primary {
+  background-color: rgba(255, 153, 0, 0.7); /* Reduced opacity */
+  color: #FFF;
+}
+
+.card-counter.danger {
+  background-color: rgba(151, 137, 136, 0.7); /* Reduced opacity */
+  color: #FFF;
+}  
+
+.card-counter.success {
+  background-color: #F98641; /* Reduced opacity */
+  color: #FFF;
+}  
+
+.card-counter.info {
+  background-color: rgba(83, 90, 91, 0.7); /* Reduced opacity */
+  color: #FFF;
+}  
+
+.card-counter i {
+  font-size: 3em; /* Reduced font size */
+  opacity: 0.2;
+}
+
+.card-counter .count-numbers {
+  font-size: 24px; /* Reduced font size */
+  display: block;
+}
+
+.card-counter .count-name {
+  font-style: italic;
+  text-transform: capitalize;
+  opacity: 0.5;
+  display: block;
+  font-size: 14px; /* Reduced font size */
+}
+
+/* Ensure chart-container has proper spacing */
 .chart-container {
   margin: 20px 0;
   text-align: center;
 }
 
-/* Style the wrapper to control the size of the pie chart */
-.pie-chart-wrapper {
-  width: 300px; /* Adjust width as needed */
-  height: 300px; /* Adjust height as needed */
-  margin: 0 auto; /* Center the chart */
-}
-
-/* Ensure pie chart scales within its container */
-.pie-chart-wrapper canvas {
-  max-width: 100%;
-  height: auto;
-}
 /* Container to hold both charts side by side */
 .charts-container {
   display: flex;
@@ -109,17 +97,19 @@
 .chart-right {
   flex: 1; /* Take less space */
   margin-left: 10px; /* Add some space between the charts */
+  height: 400px; /* Adjust height as needed */
+  width: 100%; /* Full width of its container */
 }
 
 /* Style the wrapper to control the size of the pie chart */
 .pie-chart-wrapper {
   width: 100%; /* Full width of its container */
-  height: 200px; /* Adjust height to make it smaller */
+  height: 100%; /* Full height of its container */
   margin: 0 auto; /* Center the chart */
 }
 
 /* Ensure pie chart scales within its container */
 .pie-chart-wrapper canvas {
   max-width: 100%;
-  height: auto;
+  height: 100%;
 }
