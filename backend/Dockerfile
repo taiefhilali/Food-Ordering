@@ -9,7 +9,7 @@ COPY /package*.json ./
 
 # RUN  npm install -g npm@10.8.3
 # Install dependencies
-RUN npm install
+RUN npm install 
 # Install nodemon globally (optional)
 RUN npm install -g nodemon
 RUN npm install -g ts-node
