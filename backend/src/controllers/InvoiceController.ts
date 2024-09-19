@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'; // Ensure mongoose is imported
 import Invoice from '../models/Invoice'; // Adjust the path if necessary
 import { Request, Response } from 'express'; // Adjust import as needed
-import { io } from '..';
+import { io } from '../';
 const path = require('path');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');

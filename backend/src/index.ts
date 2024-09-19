@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import myUserRoute from "./routes/MyUserRoute"
 import { v2 as cloudinary } from "cloudinary";
 import myRestaurantRoute from "./routes/MyRestaurantRoute";
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(() => console.log("CONNECTED TO DB!!"));//casting 
+// mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(() => console.log("CONNECTED TO DB!!"));//casting 
 import RestaurantRoute from "./routes/RestaurantRoute";
 // @ts-ignore
 import bardRoute from './Apis/bardapi';
@@ -97,7 +97,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-const io = require('socket.io')(server, {
+export const io = require('socket.io')(server, {
   cors: {
     origin: 'https://nice-ocean-0e358e710.5.azurestaticapps.net',
     methods: ['GET', 'POST']
