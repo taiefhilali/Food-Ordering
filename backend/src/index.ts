@@ -1,4 +1,4 @@
-import express,{ Request, Response } from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
@@ -22,7 +22,7 @@ import NotifRoute from "./routes/NotificationRoute";
 import Stripe from 'stripe';
 const socketIo = require('socket.io');
 const http = require('http');
-import {  Socket } from 'socket.io'; // Import Socket and Server from socket.io
+import { Socket } from 'socket.io'; // Import Socket and Server from socket.io
 import Notification from './models/Notification'; // Import Notification model
 import passport from 'passport';
 import User, { IUser } from './models/User';
@@ -40,7 +40,7 @@ const { TextServiceClient } = require("@google-ai/generativelanguage").v1beta2;
 //   HarmBlockThreshold,
 //   GenerativeModel,
 // } from "@google/generative-ai";
-  const { GoogleAuth } = require('google-auth-library');
+const { GoogleAuth } = require('google-auth-library');
 
 const generateRandomString = (length: number) => {
   return crypto.randomBytes(Math.ceil(length / 2))
@@ -58,6 +58,12 @@ cloudinary.config({
 
 
 })
+// Use environment variables
+const mongoUri: string = process.env.MONGO_URI as string;
+
+mongoose.connect(mongoUri)
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 
 // stripe configuration 
@@ -200,22 +206,22 @@ passport.use(new GoogleStrategy({
       return cb(err);
     }
   }));
-  // Serialize user into the session
- 
-  passport.serializeUser((user, done) => {
-    done(null,( user as IUser)._id); // Store user _id in session
-  });
-  
-  passport.deserializeUser((id: string, done: (err: Error | null, user: IUser | null) => void) => {
-    User.findById(id)
-      .then((user: IUser | null) => {
-        done(null, user); // Retrieve user from MongoDB by id
-      })
-      .catch((err: Error) => {
-        done(err, null); // Handle error if user retrieval fails
-      });
-  });
-  
+// Serialize user into the session
+
+passport.serializeUser((user, done) => {
+  done(null, (user as IUser)._id); // Store user _id in session
+});
+
+passport.deserializeUser((id: string, done: (err: Error | null, user: IUser | null) => void) => {
+  User.findById(id)
+    .then((user: IUser | null) => {
+      done(null, user); // Retrieve user from MongoDB by id
+    })
+    .catch((err: Error) => {
+      done(err, null); // Handle error if user retrieval fails
+    });
+});
+
 // Routes
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -238,18 +244,18 @@ app.get('/auth/google/callback',
     function newFunction() {
     }
   });
-  app.get('/api/my/user/:id', async (req: Request, res: Response) => {
-    try {
-      const user = await User.findById(req.params.id);
-      if (!user) {
-        return res.status(404).send('User not found');
-      }
-      res.json(user);
-    } catch (error) {
-      res.status(500).send('Server error');
+app.get('/api/my/user/:id', async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).send('User not found');
     }
-  });
-  
+    res.json(user);
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+});
+
 // Example profile route (protected route)
 app.get('/profile', (req, res) => {
   if (req.isAuthenticated()) {
@@ -272,10 +278,11 @@ app.get('/logout', (req, res) => {
 //facebook begin
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
-  clientSecret:process.env.FACEBOOK_APP_SECRET ,
+  clientSecret: process.env.FACEBOOK_APP_SECRET,
   callbackURL: "http://localhost:7000/auth/facebook/callback"
 },
-async function (accessToken: string, refreshToken: string, profile: any, cb: (error: any, user?: any) => void) {    try {
+  async function (accessToken: string, refreshToken: string, profile: any, cb: (error: any, user?: any) => void) {
+    try {
       console.log('Facebook profile:', profile); // Check profile data received
 
       // Check if user already exists in database based on Google ID
@@ -308,9 +315,9 @@ async function (accessToken: string, refreshToken: string, profile: any, cb: (er
   }));
 
 
-  // Google authentication route
+// Google authentication route
 app.get('/auth/facebook',
-passport.authenticate('facebook', { scope: ['profile', 'email'] }));
+  passport.authenticate('facebook', { scope: ['profile', 'email'] }));
 //facebook end
 // Socket.io connection
 io.on('connection', (socket: Socket) => { // Explicitly type Socket
@@ -320,21 +327,21 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
   // Example: Handle 'newProductAdded' event
   socket.on('newProductAdded', async (data) => {
     console.log('New product added:', data);
-  
+
     try {
       // Save notification to MongoDB or any other backend logic
       const notificationData = new Notification({
-              event: 'newProductAdded',
-              data: data,
-              timestamp: new Date(),
-                user: data.user // Assuming userId is passed with data
-            });
-            const savedNotification = await notificationData.save();
+        event: 'newProductAdded',
+        data: data,
+        timestamp: new Date(),
+        user: data.user // Assuming userId is passed with data
+      });
+      const savedNotification = await notificationData.save();
 
       // Example: Emitting 'messages' event with updated data
       io.emit('messages', notificationData); // Broadcast to all connected clients
-      
-      
+
+
     } catch (error) {
       console.error('Error handling newProductAdded:', error);
     }
@@ -379,74 +386,74 @@ io.on('connection', (socket: Socket) => { // Explicitly type Socket
   });
 
   // Handle incoming messages
-    // Handle incoming messages
-    socket.on('chat message', async (data) => {
-      try {
-        const { sender, content } = data;
-        const newMessage = new Chat({ sender, content });
-        await newMessage.save();
-    
-        // Broadcast message to all connected clients
-        io.emit('chat message', {
-          _id: newMessage._id,
-          sender,
-          content,
-          createdAt: newMessage.createdAt,
-        });
-    
-        console.log('Message broadcasted:', {
-          _id: newMessage._id,
-          sender,
-          content,
-          createdAt: newMessage.createdAt,
-        });
-    
-      } catch (error) {
-        console.error('Error saving message:', error);
-      }
-    });
-    socket.on('invoiceSaved', async (data) => {
-      console.log('Invoice saved:', data);
-    
-      try {
-        // Save notification to MongoDB
-        const notificationData = new Notification({
-          event: 'invoiceSaved',
-          data: data,
-          timestamp: new Date(),
-        });
-    
-        const savedNotification = await notificationData.save();
-        console.log('Notification saved to MongoDB:', savedNotification);
-        console.log('Notification Data:', notificationData.data);
+  // Handle incoming messages
+  socket.on('chat message', async (data) => {
+    try {
+      const { sender, content } = data;
+      const newMessage = new Chat({ sender, content });
+      await newMessage.save();
 
-        // Emit notification to all connected clients
-        io.emit('notifications', savedNotification);  // Emit the actual saved notification
-      } catch (error) {
-        console.error('Error saving notification to MongoDB:');
-      }
-    });
-    socket.on('orderReady', async (data) => {
-      console.log('orderReady event received:', data);
-  
-      try {
-        // Create a new notification document
-        const notificationData = new Notification({
-          event: 'orderReady',
-          data: data,
-          timestamp: new Date(),
-        });
-  
-        // Save the notification to MongoDB
-        const savedNotification = await notificationData.save();
-        console.log('Notification saved to MongoDB:', savedNotification);
-  
-        // Emit the notification to all connected clients
-        io.emit('notifications', savedNotification);
-      } catch (error) {
-        console.error('Error saving notification to MongoDB:', error);
-      }
-    });
+      // Broadcast message to all connected clients
+      io.emit('chat message', {
+        _id: newMessage._id,
+        sender,
+        content,
+        createdAt: newMessage.createdAt,
+      });
+
+      console.log('Message broadcasted:', {
+        _id: newMessage._id,
+        sender,
+        content,
+        createdAt: newMessage.createdAt,
+      });
+
+    } catch (error) {
+      console.error('Error saving message:', error);
+    }
+  });
+  socket.on('invoiceSaved', async (data) => {
+    console.log('Invoice saved:', data);
+
+    try {
+      // Save notification to MongoDB
+      const notificationData = new Notification({
+        event: 'invoiceSaved',
+        data: data,
+        timestamp: new Date(),
+      });
+
+      const savedNotification = await notificationData.save();
+      console.log('Notification saved to MongoDB:', savedNotification);
+      console.log('Notification Data:', notificationData.data);
+
+      // Emit notification to all connected clients
+      io.emit('notifications', savedNotification);  // Emit the actual saved notification
+    } catch (error) {
+      console.error('Error saving notification to MongoDB:');
+    }
+  });
+  socket.on('orderReady', async (data) => {
+    console.log('orderReady event received:', data);
+
+    try {
+      // Create a new notification document
+      const notificationData = new Notification({
+        event: 'orderReady',
+        data: data,
+        timestamp: new Date(),
+      });
+
+      // Save the notification to MongoDB
+      const savedNotification = await notificationData.save();
+      console.log('Notification saved to MongoDB:', savedNotification);
+
+      // Emit the notification to all connected clients
+      io.emit('notifications', savedNotification);
+    } catch (error) {
+      console.error('Error saving notification to MongoDB:', error);
+    }
+  });
   // socket.on('chat message', async (data) => {
   //   try {
   //     // Save message to MongoDB
