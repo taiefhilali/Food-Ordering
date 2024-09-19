@@ -33,7 +33,7 @@ const ChatComponent: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState<number>(0);
-  const socket = io('https://nice-ocean-0e358e710.5.azurestaticapps.net', { transports: ['websocket'] });
+  const socket = io('http://localhost:8000', { transports: ['websocket'] });
 
   useEffect(() => {
     const fetchSenders = async () => {

@@ -26,18 +26,13 @@ const NoNotificationsAnimation = () => {
 };
 
 const userToken = localStorage.getItem('userToken');
-const socket = io('https://nice-ocean-0e358e710.5.azurestaticapps.net', {
+
+// Replace with your server's URL
+const socket = io('http://localhost:8000', {
   extraHeaders: {
     Authorization: `Bearer ${userToken}`,
   },
 });
-
-// Replace with your server's URL
-// const socket = io('http://localhost:8000', {
-//   extraHeaders: {
-//     Authorization: `Bearer ${userToken}`,
-//   },
-// });
 
 const DropdownNotification: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
