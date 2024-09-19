@@ -24,26 +24,20 @@ interface Notification {
 const NoNotificationsAnimation = () => {
   return <Lottie animationData={noNotificationsAnimationData} loop autoplay />;
 };
-// const NoNotificationsAnimation = () => {
-//   const defaultOptions = {
-//     loop: true,
-//     autoplay: true,
-//     animationData: noNotificationsAnimationData,
-//     rendererSettings: {
-//       preserveAspectRatio: 'xMidYMid slice',
-//     },
-//   };
-//   return <Lottie options={defaultOptions} height={200} width={200} />;
-// };
 
 const userToken = localStorage.getItem('userToken');
-
-// Replace with your server's URL
-const socket = io('http://localhost:8000', {
+const socket = io('https://nice-ocean-0e358e710.5.azurestaticapps.net', {
   extraHeaders: {
     Authorization: `Bearer ${userToken}`,
   },
 });
+
+// Replace with your server's URL
+// const socket = io('http://localhost:8000', {
+//   extraHeaders: {
+//     Authorization: `Bearer ${userToken}`,
+//   },
+// });
 
 const DropdownNotification: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -96,63 +90,7 @@ const DropdownNotification: React.FC = () => {
     return () => document.removeEventListener('keydown', keyHandler);
   }, [dropdownOpen]);
 
-  // useEffect(() => {
-  //   // Fetch notifications based on user ID using Axios
-  //   const fetchNotifications = async () => {
-  //     try {
-  //       const userToken = localStorage.getItem('userToken');
-  //       const userId = localStorage.getItem('userId');
 
-  //       if (!userId) {
-  //         throw new Error('No userId found');
-  //       }
-
-  //       const response = await axios.get<Notification[]>('http://localhost:7000/api/my/notifications/all', {
-  //         params: { userId },
-  //         headers: {
-  //           Authorization: `Bearer ${userToken}`,
-  //         },
-  //       });
-
-  //       const fetchedNotifications = response.data;
-
-  //       fetchedNotifications.sort((a, b) => {
-  //         const dateA = new Date(a.timestamp);
-  //         const dateB = new Date(b.timestamp);
-  //         return dateB.getTime() - dateA.getTime();
-  //       });
-
-  //       setNotifications(fetchedNotifications);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error('Error fetching notifications:', error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchNotifications(); // Call the fetch function on component mount
-
-  //   // Listen for socket events
-  //   socket.on('messages', (notificationData: Notification) => {
-  //     console.log('New message received:', notificationData);
-  //     setNotifications((prevNotifications) => [
-  //       { event: notificationData.event, data: notificationData.data, timestamp: notificationData.timestamp, user: notificationData.user },
-  //       ...prevNotifications, // Maintain previous notifications
-  //     ]);
-  //   });
-  //   if (audioRef.current) {
-  //     console.log('Playing notification sound');
-  //     audioRef.current.play().catch((error) => {
-  //       console.error('Error playing notification sound:', error);
-  //     });
-  //   } else {
-  //     console.error('Audio reference is null');
-  //   }
-  //   // Clean up socket listeners
-  //   return () => {
-  //     socket.off('messages');
-  //   };
-  // }, []); // Empty dependency array ensures this effect runs only once
   useEffect(() => {
     const clickHandler = (event: MouseEvent) => {
       const target = event.target as Node; // Cast target to Node
