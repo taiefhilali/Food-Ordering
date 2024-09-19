@@ -65,7 +65,6 @@ mongoose.connect(mongoUri)
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-
 // stripe configuration 
 export const stripe = new Stripe('sk_test_51PM7rN03qVjqSurgaFDcUo3Y1GrtFJoYzoiHZZRIWvNhaIec7DrXqNPLFuori2tTwAjBPEQwHF4UOuLBIptnxx4m00OwswBdhb');
 
@@ -83,14 +82,28 @@ firebase.initializeApp({
 
 const app = express();
 const server = http.createServer(app);
-export const io = require('socket.io')(server, {
+// export const io = require('socket.io')(server, {
+//   cors: {
+//     origin: 'http://localhost:3000', // Replace with your frontend URL during development
+//     methods: ['GET', 'POST'],
+//     allowedHeaders: ['Authorization'],
+//     credentials: true,
+//   },
+// });
+const corsOptions = {
+  origin: 'https://nice-ocean-0e358e710.5.azurestaticapps.net',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+const io = require('socket.io')(server, {
   cors: {
-    origin: 'http://localhost:3000', // Replace with your frontend URL during development
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Authorization'],
-    credentials: true,
-  },
+    origin: 'https://nice-ocean-0e358e710.5.azurestaticapps.net',
+    methods: ['GET', 'POST']
+  }
 });
+
 app.use(express.json());
 app.use(session({
   secret: SESSION_SECRET, // Replace with your own secret key
