@@ -152,8 +152,8 @@ export const forgotPassword = async (req: Request, res: Response) => {
       to: email,
       subject: 'Password Reset Request',
       html: `<p>You are receiving this email because you (or someone else) has requested the reset of the password for your account.</p>
-            <p>Please click on the following link, or paste this into your browser to complete the process:</p>
-            <p><a href="http://localhost:3000/reset-password/${resetToken}</a></p>
+            <p>Please copy this token to reset your password </p>
+            <h6>${resetToken}</h6>
             <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>`,
     };
 

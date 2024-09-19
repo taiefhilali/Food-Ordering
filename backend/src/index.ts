@@ -93,7 +93,7 @@ const server = http.createServer(app);
 const corsOptions = {
   origin: 'https://nice-ocean-0e358e710.5.azurestaticapps.net',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: ['Authorization', 'Content-Type'],
+  allowedHeaders: ['Authorization', 'Content-Type','Access-Control-Allow-Headers'],
   credentials: true,
 };
 
@@ -101,6 +101,7 @@ app.use(cors(corsOptions));
 export const io = require('socket.io')(server, {
   cors: {
     origin: 'https://nice-ocean-0e358e710.5.azurestaticapps.net',
+    allowedHeaders: ['Authorization', 'Content-Type','Access-Control-Allow-Headers'],
     methods: ['GET', 'POST']
   }
 });
