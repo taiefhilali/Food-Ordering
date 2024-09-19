@@ -93,6 +93,7 @@ const server = http.createServer(app);
 const corsOptions = {
   origin: 'https://nice-ocean-0e358e710.5.azurestaticapps.net',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Authorization', 'Content-Type'],
   credentials: true,
 };
 
